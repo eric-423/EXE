@@ -3,24 +3,25 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class mentoring extends Model {
+  class KPI extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({ training }) {
+    static associate({ Branch }) {
       // define association here
-      this.belongsTo(training, { foreignKey: "training_id" })
+      this.belongsTo(Branch, { foreignKey: "branchId" })
     }
   }
-  mentoring.init({
-    mentoring_name: DataTypes.STRING,
-    mentoring_content: DataTypes.STRING,
-    note: DataTypes.STRING
+  KPI.init({
+    amount: DataTypes.FLOAT,
+    date: DataTypes.DATE,
+    status: DataTypes.BOOLEAN,
+    target: DataTypes.FLOAT
   }, {
     sequelize,
-    modelName: 'mentoring',
+    modelName: 'KPI',
   });
-  return mentoring;
+  return KPI;
 };

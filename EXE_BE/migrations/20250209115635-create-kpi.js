@@ -2,45 +2,31 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('promotions', {
-      promotion_id: {
+    await queryInterface.createTable('KPIs', {
+      id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      promotion_type_id: {
+      branchId: {
         type: Sequelize.INTEGER,
         references: {
-          model: "promotion_types",
-          key: "promotion_type_id"
+          model: "Branches",
+          key: "id"
         }
       },
-      create_by: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: "users",
-          key: "user_id"
-        }
-      }
-      ,
-      name: {
-        type: Sequelize.STRING
+      amount: {
+        type: Sequelize.FLOAT
       },
-      description: {
-        type: Sequelize.STRING
-      },
-      start_date: {
+      date: {
         type: Sequelize.DATE
-      },
-      end_date: {
-        type: Sequelize.DATE
-      },
-      discount_value: {
-        type: Sequelize.INTEGER
       },
       status: {
         type: Sequelize.BOOLEAN
+      },
+      target: {
+        type: Sequelize.FLOAT
       },
       createdAt: {
         allowNull: false,
@@ -53,6 +39,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('promotions');
+    await queryInterface.dropTable('KPIs');
   }
 };
