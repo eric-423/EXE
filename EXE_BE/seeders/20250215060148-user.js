@@ -2,19 +2,335 @@
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
-    /**
-     * Add seed commands here.
-     *
-     * Example:
-     * await queryInterface.bulkInsert('People', [{
-     *   name: 'John Doe',
-     *   isBetaMember: false
-     * }], {});
-    */
+  async up(queryInterface, Sequelize) {
+    await queryInterface.bulkInsert('Users', [
+      {
+        branchId: 1,
+        roleId: 1,
+        memberRank: 1,
+        fullName: "Alice Smith",
+        password: "123",
+        email: "alicesmith@gmail.com",
+        status: true,
+        dateOfBirth: "1990-12-09",
+        note: "Alice is a good person, she always helps other people",
+        isBan: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        branchId: 2,
+        roleId: 2,
+        memberRank: 2,
+        fullName: "Bob Johnson",
+        password: "123",
+        email: "bobjohnson@gmail.com",
+        status: true,
+        dateOfBirth: "1985-03-15",
+        note: "Bob is a hardworking manager.",
+        isBan: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        branchId: 3,
+        roleId: 3,
+        memberRank: 3,
+        fullName: "Charlie Brown",
+        password: "123",
+        email: "charliebrown@gmail.com",
+        status: true,
+        dateOfBirth: "1992-06-20",
+        note: "Charlie is a friendly member.",
+        isBan: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        branchId: 4,
+        roleId: 4,
+        memberRank: 4,
+        fullName: "Diana Prince",
+        password: "123",
+        email: "dianaprince@gmail.com",
+        status: true,
+        dateOfBirth: "1988-09-25",
+        note: "Diana is a highly skilled staff.",
+        isBan: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        branchId: 5,
+        roleId: 5,
+        memberRank: 5,
+        fullName: "Edward Elric",
+        password: "123",
+        email: "edwardelric@gmail.com",
+        status: true,
+        dateOfBirth: "1990-11-30",
+        note: "Edward is a franchise owner.",
+        isBan: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        branchId: 6,
+        roleId: 6,
+        memberRank: 6,
+        fullName: "Fiona Gallagher",
+        password: "123",
+        email: "fionagallagher@gmail.com",
+        status: true,
+        dateOfBirth: "1995-10-05",
+        note: "Fiona is a loyal customer.",
+        isBan: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        branchId: 7,
+        roleId: 7,
+        memberRank: 7,
+        fullName: "George Washington",
+        password: "123",
+        email: "georgewashington@gmail.com",
+        status: true,
+        dateOfBirth: "1980-07-10",
+        note: "George is a reliable shipper.",
+        isBan: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        branchId: 8,
+        roleId: 1,
+        memberRank: 8,
+        fullName: "Hannah Montana",
+        password: "123",
+        email: "hannahmontana@gmail.com",
+        status: true,
+        dateOfBirth: "1994-08-15",
+        note: "Hannah is an inspiring leader.",
+        isBan: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        branchId: 1,
+        roleId: 5,
+        memberRank: 5,
+        fullName: "Trinh Dinh Ngoc An",
+        password: "123123123",
+        email: "ericAnticode@gmail.com",
+        status: true,
+        dateOfBirth: "2003-04-02",
+        note: "An san so rich franchise owner.",
+        isBan: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        branchId: 3,
+        roleId: 5,
+        memberRank: 5,
+        fullName: "Trương Quang Hiếu Trung",
+        password: "123123123",
+        email: "trungtruong@gmail.com",
+        status: true,
+        dateOfBirth: "2003-03-03",
+        note: "nhà quận 1 đẹp trai rich-franchise owner.",
+        isBan: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        branchId: 9,
+        roleId: 2,
+        memberRank: 9,
+        fullName: "Ian Malcolm",
+        password: "123",
+        email: "ianmalcolm@gmail.com",
+        status: true,
+        dateOfBirth: "1987-02-12",
+        note: "Ian is a great problem solver.",
+        isBan: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        branchId: 10,
+        roleId: 3,
+        memberRank: 10,
+        fullName: "Jack Sparrow",
+        password: "123",
+        email: "jacksparrow@gmail.com",
+        status: true,
+        dateOfBirth: "1991-04-05",
+        note: "Jack is adventurous and fun.",
+        isBan: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        branchId: 1,
+        roleId: 4,
+        memberRank: 11,
+        fullName: "Katherine Johnson",
+        password: "123",
+        email: "katherinejohnson@gmail.com",
+        status: true,
+        dateOfBirth: "1986-06-18",
+        note: "Katherine is a brilliant mathematician.",
+        isBan: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        branchId: 2,
+        roleId: 5,
+        memberRank: 12,
+        fullName: "Liam Neeson",
+        password: "123",
+        email: "liamneeson@gmail.com",
+        status: true,
+        dateOfBirth: "1975-08-20",
+        note: "Liam is a talented actor.",
+        isBan: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        branchId: 3,
+        roleId: 6,
+        memberRank: 13,
+        fullName: "Mia Wallace",
+        password: "123",
+        email: "miawallace@gmail.com",
+        status: true,
+        dateOfBirth: "1992-10-25",
+        note: "Mia is a creative artist.",
+        isBan: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        branchId: 4,
+        roleId: 7,
+        memberRank: 14,
+        fullName: "Nina Simone",
+        password: "123",
+        email: "ninasimone@gmail.com",
+        status: true,
+        dateOfBirth: "1983-12-30",
+        note: "Nina is a passionate musician.",
+        isBan: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        branchId: 5,
+        roleId: 1,
+        memberRank: 15,
+        fullName: "Oliver Twist",
+        password: "123",
+        email: "olivertwist@gmail.com",
+        status: true,
+        dateOfBirth: "1990-11-15",
+        note: "Oliver is a brave young boy.",
+        isBan: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        branchId: 6,
+        roleId: 2,
+        memberRank: 16,
+        fullName: "Pamela Anderson",
+        password: "123",
+        email: "pamelaanderson@gmail.com",
+        status: true,
+        dateOfBirth: "1970-02-20",
+        note: "Pamela is a famous actress.",
+        isBan: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        branchId: 7,
+        roleId: 3,
+        memberRank: 17,
+        fullName: "Quentin Tarantino",
+        password: "123",
+        email: "quentintarantino@gmail.com",
+        status: true,
+        dateOfBirth: "1963-03-27",
+        note: "Quentin is a legendary director.",
+        isBan: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        branchId: 8,
+        roleId: 4,
+        memberRank: 18,
+        fullName: "Rachel Green",
+        password: "123",
+        email: "rachelgreen@gmail.com",
+        status: true,
+        dateOfBirth: "1994-04-10",
+        note: "Rachel is a fashion icon.",
+        isBan: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        branchId: 9,
+        roleId: 5,
+        memberRank: 19,
+        fullName: "Steve Jobs",
+        password: "123",
+        email: "stevejobs@gmail.com",
+        status: true,
+        dateOfBirth: "1955-02-24",
+        note: "Steve is a visionary entrepreneur.",
+        isBan: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        branchId: 10,
+        roleId: 6,
+        memberRank: 20,
+        fullName: "Tina Fey",
+        password: "123",
+        email: "tinafey@gmail.com",
+        status: true,
+        dateOfBirth: "1970-05-18",
+        note: "Tina is a talented comedian.",
+        isBan: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        branchId: 1,
+        roleId: 7,
+        memberRank: 21,
+        fullName: "Uma Thurman",
+        password: "123",
+        email: "umathurman@gmail.com",
+        status: true,
+        dateOfBirth: "1970-07-20",
+        note: "Uma is a skilled actress.",
+        isBan: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    ], {});
+
   },
 
-  async down (queryInterface, Sequelize) {
+  async down(queryInterface, Sequelize) {
     /**
      * Add commands to revert seed here.
      *
