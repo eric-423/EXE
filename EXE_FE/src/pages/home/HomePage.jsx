@@ -1,5 +1,8 @@
+import { useDocumentTitle } from "../../hooks";
+
 const HomePage = () => {
-  return <div>HomePage</div>;
+  useDocumentTitle("Home");
+  return <div></div>;
 };
 
 export default HomePage;
