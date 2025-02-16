@@ -1,6 +1,16 @@
+import { useState } from "react";
 import "./HomePageHeader.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 const HomePageHeader = () => {
+    const [location, setLocation] = useState("Chọn cửa hàng");
+    const [address, setAddress] = useState("");
+
+    const handleChangeLocation = (event) => {
+        setLocation(event.target.value);
+    }
+    const handleChangeAdress = (event) => {
+        setAddress(event.target.value);
+    }
 
     return <div className="homepage-header" >
         <section className="pt-5 pb-5 homepage-search-block position-relative">
@@ -21,7 +31,7 @@ const HomePageHeader = () => {
                                     <div className="col-lg-3 col-md-3 col-sm-12 form-group">
                                         <div className="location-dropdown">
                                             <i className="icofont-location-arrow" />
-                                            <select className="custom-select form-control-lg text-center ">
+                                            <select value={location} onChange={handleChangeLocation} className="custom-select form-control-lg text-center ">
                                                 <option> Chọn cửa hàng </option>
                                                 <option> Kha Vạn Cân </option>
                                                 <option> Võ Văn Ngân </option>
@@ -30,7 +40,7 @@ const HomePageHeader = () => {
                                         </div>
                                     </div>
                                     <div className="col-lg-7 col-md-7 col-sm-12 form-group ">
-                                        <input type="text" placeholder="Enter your delivery location" className="form-control form-control-lg" />
+                                        <input type="text" value={address} onChange={handleChangeAdress} placeholder="Địa chỉ giao hàng" className="form-control form-control-lg" />
                                         <a className="locate-me" href="#"><i className="icofont-ui-pointer" /> Vị trí hiện tại</a>
                                     </div>
                                     <div className="col-lg-2 col-md-2 col-sm-12 form-group text-center">
@@ -41,9 +51,9 @@ const HomePageHeader = () => {
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-    </div>;
+            </div >
+        </section >
+    </div >;
 };
 
 export default HomePageHeader;

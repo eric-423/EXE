@@ -12,6 +12,7 @@ const routes = {
     stores: "/stores",
     notFound: "/404",
     hiring: "/hiring",
+    best: "/best",
   },
   api: {
     loginGoogle: "/api/auth/callback/google/redirect",

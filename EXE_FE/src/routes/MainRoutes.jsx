@@ -10,9 +10,10 @@ const MainRouter = () => {
 
 //* ==================== Define children routes ==================== */
 const publicRoutes = {
-  children: [{ path: config.routes.public.home, element: <Home /> }],
+  children: [
+    { path: config.routes.public.home, element: <Home /> },
+  ],
 };
-
 const notFoundRoutes = { path: "*", element: <NotFound /> };
 
 //* ==================== Define main routes ==================== */
