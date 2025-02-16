@@ -42,8 +42,8 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          mentor: 27,
-          learner: 30,
+          mentor: 13,
+          learner: 7,
           lesson: 4,
           point: 100,
           startDate: new Date(),
@@ -54,8 +54,8 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          mentor: 36,
-          learner: 39,
+          mentor: 4,
+          learner: 16,
           lesson: 5,
           point: 100,
           startDate: new Date(),
@@ -66,7 +66,6 @@ module.exports = {
           updatedAt: new Date()
         }
       ], {});
-
   },
 
   async down(queryInterface, Sequelize) {

@@ -39,6 +39,41 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date()
       },
+      {
+        name: "Training 6",
+        note: "Note 6",
+        point: 6,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        name: "Training 7",
+        note: "Note 7",
+        point: 7,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        name: "Training 8",
+        note: "Note 8",
+        point: 8,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        name: "Training 9",
+        note: "Note 9",
+        point: 9,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        name: "Training 10",
+        note: "Note 10",
+        point: 10,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
     ], {});
 
   },
