@@ -4,6 +4,7 @@
   --tertiary-color: #ebd187;
   --light-color: #efe6db;
   --dark-color: #2d1e1a;
+  font-family: "Playfair Display", serif;
 }
 body {
   background: var(--light-color);
