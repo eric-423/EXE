@@ -19,7 +19,7 @@ module.exports = {
         },
         {
           type: 5,
-          createdBy: 10,
+          createdBy: 14,
           name: "Mua 1 Cơm Tấm Sườn, Tặng 1 Trà Đá",
           description: "Thưởng thức combo ngon miệng: Mua 1 phần Cơm Tấm Sườn, tặng ngay 1 ly Trà Đá mát lạnh!",
           startDate: new Date(),
@@ -31,7 +31,7 @@ module.exports = {
         },
         {
           type: 3,
-          createdBy: 14,
+          createdBy: 21,
           name: "Miễn phí giao hàng cho đơn từ 100k",
           description: "Đặt hàng Cơm Tấm Ngon với hóa đơn từ 100,000 VNĐ trở lên và được giao hàng hoàn toàn miễn phí!",
           startDate: new Date(),
@@ -43,7 +43,7 @@ module.exports = {
         },
         {
           type: 2,
-          createdBy: 21,
+          createdBy: 5,
           name: "Tặng kèm canh miễn phí",
           description: "Mỗi phần cơm tấm sẽ được tặng kèm 1 chén canh miễn phí.",
           startDate: new Date(),
@@ -53,9 +53,10 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date()
         },
+
         {
           type: 1,
-          createdBy: 28,
+          createdBy: 14,
           name: "Ưu đãi thành viên",
           description: "Khách hàng thành viên sẽ được giảm 5% trên tổng hoá đơn.",
           startDate: new Date(),
@@ -67,7 +68,7 @@ module.exports = {
         },
         {
           type: 5,
-          createdBy: 37,
+          createdBy: 21,
           name: "Mua 2 tặng 1 lạp xưởng",
           description: "Khi mua 2 phần cơm tấm bất kỳ, bạn sẽ được tặng thêm 1 lạp xưởng.",
           startDate: new Date(),
@@ -79,7 +80,7 @@ module.exports = {
         },
         {
           type: 3,
-          createdBy: 44,
+          createdBy: 5,
           name: "Freeship 5km",
           description: "Quán cơm tấm ngon freeship cho khách hàng trong vòng bán kính 5km.",
           startDate: new Date(),

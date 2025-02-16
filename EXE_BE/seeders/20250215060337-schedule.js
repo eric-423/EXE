@@ -22,7 +22,7 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          userId: 25,
+          userId: 23,
           name: "Bob Johnson",
           content: "Ca tối: 18:00 - 22:00, Hỗ trợ khách hàng trực tuyến",
           date: new Date(),
@@ -30,7 +30,7 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          userId: 34,
+          userId: 15,
           name: "Ian Malcolm",
           content: "Ca sáng: 9:00 - 13:00, Nghiên cứu thị trường",
           date: new Date(),
@@ -38,7 +38,7 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          userId: 41,
+          userId: 13,
           name: "Pamela Anderson",
           content: "Ca chiều: 14:00 - 18:00, Đào tạo nhân viên mới",
           date: new Date(),
