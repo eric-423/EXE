@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": "cungcungcung",
+    "password": "12345",
     "database": "exe_dtb",
     "host": "127.0.0.1",
     "dialect": "mysql"
