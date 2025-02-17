@@ -1,0 +1,19 @@
+@import "../../../styles/global.css";
+
+.label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--dark-color);
+  margin-bottom: 0.5rem;
+  font-family: "Playfair Display", serif;
+}
+
+.background {
+  background-color: var(--light-color) !important;
+  stroke: var(--dark-color) !important;
+  stroke-width: 0.5px;
+  border-radius: 5px;
+  width: 100%;
+  margin: 0;
+  text-align: left;
+}

@@ -7,6 +7,8 @@ const DropdownLocation = ({
   items = [],
   onSelect,
   defaultSelected,
+  className,
+  style,
 }) => {
   const data = items.map((item) => ({
     label: item.name,
@@ -21,6 +23,8 @@ const DropdownLocation = ({
       onSelect={onSelect}
       defaultSelected={defaultSelected}
       filterable={true}
+      className={className}
+      style={style}
     ></DropdownUI>
   );
 };
@@ -48,6 +52,8 @@ DropdownLocation.propTypes = {
     locationType.district,
   ]),
   onSelect: PropTypes.func,
+  className: PropTypes.string,
+  style: PropTypes.object,
 };
 
 DropdownLocation.defaultProps = {
@@ -55,6 +61,8 @@ DropdownLocation.defaultProps = {
   items: [],
   onSelect: () => {},
   defaultSelected: null,
+  className: "",
+  style: {},
 };
 
 export default DropdownLocation;

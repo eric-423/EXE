@@ -81,7 +81,7 @@ h6 {
   font-weight: 600;
 }
 .dropdown-cart-top-header h6 {
-  font-size: 14px;
+  font-size: 13px;
 }
 .food-item {
   border: 1px solid;
@@ -315,7 +315,7 @@ small {
   border-radius: 3px;
 }
 .modal-footer .btn {
-  font-size: 14px;
+  font-size: 13px;
   padding: 12px 16px;
 }
 .btn-success,
@@ -613,7 +613,7 @@ small {
   border: 1px solid #dee0e6;
   border-radius: 2px;
   display: inline-block;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   padding: 8px 15px;
   margin: 0 0 10px 0;
@@ -655,7 +655,7 @@ small {
   width: 100%;
 }
 .mall-category-item h6 {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   margin: 0;
   padding: 10px 10px 3px 10px;
@@ -978,7 +978,7 @@ small {
   background: #edf1f4;
 }
 .footer h6 {
-  font-size: 14px;
+  font-size: 13px;
   text-transform: uppercase;
 }
 .footer ul {

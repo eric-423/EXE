@@ -1,6 +1,7 @@
 import { Dropdown, Form } from "react-bootstrap";
 import PropTypes from "prop-types";
 import React, { useState, forwardRef, useEffect } from "react";
+import styles from "./DropdownUI.module.css";
 
 // CustomMenu component for filtering dropdown items
 const CustomMenu = forwardRef(
@@ -48,6 +49,8 @@ const DropdownUI = ({
   disabled = false,
   variant = "primary",
   defaultSelected, // New prop for default selected item
+  className, // New prop for custom class name
+  style, // New prop for custom styles
 }) => {
   const [selectedItem, setSelectedItem] = useState(
     defaultSelected || toggleText
@@ -65,18 +68,18 @@ const DropdownUI = ({
     if (selected) {
       setSelectedItem(selected.label);
       if (onSelect) {
-        console.log("onselect");
         onSelect(eventKey);
       } // Trigger parent onSelect callback
     }
   };
 
   return (
-    <Dropdown onSelect={handleSelect}>
+    <Dropdown onSelect={handleSelect} className={`${className} `} style={style}>
       <Dropdown.Toggle
         variant={variant}
         id="dropdown-basic"
         disabled={disabled}
+        className={`${styles.label} ${styles.background}`}
       >
         {selectedItem}
       </Dropdown.Toggle>
@@ -110,6 +113,8 @@ DropdownUI.propTypes = {
   disabled: PropTypes.bool,
   variant: PropTypes.string,
   defaultSelected: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), // Default selected value
+  className: PropTypes.string, // Prop type for custom class name
+  style: PropTypes.object, // Prop type for custom styles
 };
 
 DropdownUI.defaultProps = {
@@ -119,6 +124,8 @@ DropdownUI.defaultProps = {
   disabled: false,
   variant: "primary",
   defaultSelected: null,
+  className: "",
+  style: {},
 };
 
 export default DropdownUI;
