@@ -2,29 +2,21 @@ import { Col, Image, Tab, Container, Row } from "react-bootstrap";
 import styles from "./Menu.module.css";
 import { Link } from "react-router-dom";
 import ProductList from "../../components/product/ProductList";
-import DropdownUI from "../../components/ui/dropdown/DropdownUI";
-import { useState, useEffect } from "react";
+import DropdownLocation from "../../components/ui/dropdown/DropdownLocation";
+import { locationDropdown } from "../../config/constant";
+import useSelectLocation from "../../hooks/useSelectLocation";
+import { useState } from "react";
 
 const Menu = () => {
   const [onStoresShow, setOnStoresShow] = useState(false);
-  const selection = [
-    { id: 1, label: "Tất cả" },
-    { id: 2, label: "Món chay" },
-    { id: 3, label: "Món mặn" },
-    { id: 4, label: "Món ngọt" },
-    { id: 5, label: "Món khai vị" },
-    { id: 6, label: "Món chính" },
-    { id: 7, label: "Món tráng miệng" },
-  ];
+  const { cities, city, districts, district, onSelectCity, onSelectDistrict } =
+    useSelectLocation();
+
   const category = [
     { id: 1, label: "Cơm tấm" },
     { id: 2, label: "Món gọi thêm" },
     { id: 3, label: "Nước giải khát" },
   ];
-
-  useEffect(() => {
-    async () => {};
-  }, []);
 
   return (
     <>
@@ -73,14 +65,18 @@ const Menu = () => {
                       <div
                         className={`${styles.hoverEffect} ${styles.rounded} p-2 border-bottom`}
                       >
-                        {category.map((item) => (
-                          <p
-                            className="ml-3 my-2 font-weight-bold"
-                            key={item.id}
-                          >
-                            {item.label}
-                          </p>
-                        ))}
+                        <DropdownLocation
+                          items={cities}
+                          defaultSelected={city.id}
+                          type={locationDropdown.cities}
+                          onSelect={onSelectCity}
+                        />
+                        <DropdownLocation
+                          items={districts}
+                          defaultSelected={district?.id}
+                          type={locationDropdown.districts}
+                          onSelect={onSelectDistrict}
+                        />
                       </div>
                     )}
                   </div>
@@ -111,7 +107,7 @@ const Menu = () => {
                   >
                     Checkout
                   </Link>
-                  <DropdownUI items={selection} />
+                  {/* <DropdownUI items={selection} /> */}
                   <div className="pt-2"></div>
                   <div className="alert alert-success" role="alert">
                     You have saved <strong>$1,884</strong> on the bill

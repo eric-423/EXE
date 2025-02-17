@@ -22,12 +22,11 @@ p {
 .smoothTransition {
   max-height: 0;
   opacity: 0;
-  overflow: hidden;
   transition: max-height 0.4s ease-out, opacity 0.3s ease-out;
 }
 
 .show {
-  max-height: 500px; /* Adjust based on content height */
+  max-height: 800px; /* Adjust based on content height */
   opacity: 1;
 }
 .clickable {
