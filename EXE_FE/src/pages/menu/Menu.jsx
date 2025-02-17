@@ -1,10 +1,12 @@
 import { Col, Image, Tab, Container, Row } from "react-bootstrap";
-
+import styles from "./Menu.module.css";
 import { Link } from "react-router-dom";
 import ProductList from "../../components/product/ProductList";
 import DropdownUI from "../../components/ui/dropdown/DropdownUI";
+import { useState, useEffect } from "react";
 
 const Menu = () => {
+  const [onStoresShow, setOnStoresShow] = useState(false);
   const selection = [
     { id: 1, label: "Tất cả" },
     { id: 2, label: "Món chay" },
@@ -14,30 +16,74 @@ const Menu = () => {
     { id: 6, label: "Món chính" },
     { id: 7, label: "Món tráng miệng" },
   ];
+  const category = [
+    { id: 1, label: "Cơm tấm" },
+    { id: 2, label: "Món gọi thêm" },
+    { id: 3, label: "Nước giải khát" },
+  ];
+
+  useEffect(() => {
+    async () => {};
+  }, []);
+
   return (
     <>
-      <h1 className="text-center">Tấm Tắc</h1>
+      <h1 className="text-center">Thực đơn Tấm Tắc</h1>
+      <p className="text-center w-50 m-auto">
+        Tấm Tắc là chuỗi hệ thống cửa hàng cơm tấm với mong muốn mang đến cho
+        sinh viên những bữa cơm tấm chất lượng với giá cả hợp lý, đảm bảo vệ
+        sinh an toàn thực phẩm
+      </p>
       <Tab.Container defaultActiveKey="first">
         <section className="offer-dedicated-body pt-2 pb-2 mt-4 mb-4">
           <Container>
             <Row>
               <Col md={4}>
-                <div className="bg-white rounded shadow-sm text-white mb-4 p-4 clearfix restaurant-detailed-earn-pts card-icon-overlap">
-                  <Image
-                    fluid
-                    className="float-left mr-3"
-                    src="/img/earn-score-icon.png"
-                  />
-                  <h6 className="pt-0 text-primary mb-1 font-weight-bold">
-                    OFFER
-                  </h6>
-                  <p className="mb-0">
-                    60% off on orders above $99 | Use coupon{" "}
-                    <span className="text-danger font-weight-bold">
-                      OSAHAN50
-                    </span>
-                  </p>
-                  <div className="icon-overlap"></div>
+                <div className={`mb-1 p-3`}>
+                  <div className={`${styles.rounded} p-2 ${styles.customBg}`}>
+                    <h5 className="pt-0 ml-1 my-auto font-weight-bold">
+                      Thực đơn
+                    </h5>
+                  </div>
+                  <div
+                    className={`${styles.hoverEffect} ${styles.rounded} p-2 border-bottom`}
+                  >
+                    {category.map((item) => (
+                      <p className="ml-3 my-2 font-weight-bold" key={item.id}>
+                        {item.label}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+                <div className={`mb-1 p-3`}>
+                  <div
+                    className={`${styles.rounded} p-2 ${styles.customBg} ${styles.clickable}`}
+                    onClick={() => setOnStoresShow(!onStoresShow)}
+                  >
+                    <h5 className={`pt-0 ml-1 my-auto font-weight-bold `}>
+                      Danh sách cửa hàng
+                    </h5>
+                  </div>
+                  <div
+                    className={`${styles.smoothTransition} ${
+                      onStoresShow ? styles.show : ""
+                    } ${styles.rounded} p-2 border-bottom`}
+                  >
+                    {onStoresShow && (
+                      <div
+                        className={`${styles.hoverEffect} ${styles.rounded} p-2 border-bottom`}
+                      >
+                        {category.map((item) => (
+                          <p
+                            className="ml-3 my-2 font-weight-bold"
+                            key={item.id}
+                          >
+                            {item.label}
+                          </p>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <div className="generator-bg rounded shadow-sm mb-4 p-4 osahan-cart-item">
                   <h5 className="mb-1 text-white">Your Order</h5>
@@ -65,7 +111,7 @@ const Menu = () => {
                   >
                     Checkout
                   </Link>
-                  <DropdownUI options={selection} />
+                  <DropdownUI items={selection} />
                   <div className="pt-2"></div>
                   <div className="alert alert-success" role="alert">
                     You have saved <strong>$1,884</strong> on the bill

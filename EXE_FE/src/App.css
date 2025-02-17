@@ -1,27 +1,12 @@
-/*
-Template Name: Osahan Eat - Online Food Ordering Website HTML Template
-Author: Askbootstrap
-Author URI: https://themeforest.net/user/askbootstrap
-Version: 1.0
-*/
-/*
--- Body
--- Nav
--- login/Register
--- Homepage Search Block
--- Homepage
--- Customize Bootstrap
--- Listing
--- Detail
--- Checkout Page
--- My Account
--- Track Order Page
--- Footer
--- Mobile Media
-*/
-/* Body */
+:root {
+  --primary-color: #da7339;
+  --secondary-color: #78a243;
+  --tertiary-color: #ebd187;
+  --light-color: #efe6db;
+  --dark-color: #2d1e1a;
+}
 body {
-  background: #f3f7f8;
+  background: var(--light-color);
   font-size: 13px;
   font-weight: 500;
 }
@@ -30,10 +15,12 @@ a {
   outline: none !important;
   color: #ff3008;
   text-decoration: none !important;
+  font-family: "Playfair Display", serif;
 }
 p {
   font-size: 13px;
-  color: #7a7e8a;
+  color: var(--dark-color);
+  font-family: "Playfair Display", serif;
 }
 img {
   image-rendering: auto;
@@ -50,7 +37,8 @@ h3,
 h4,
 h5,
 h6 {
-  color: #000000;
+  color: var(--dark-color);
+  font-family: "Playfair Display", serif;
 }
 /* Nav */
 .osahan-nav {
@@ -62,9 +50,6 @@ h6 {
   font-weight: 600;
   padding: 28px 0px !important;
   margin: 0 0 0 31px;
-}
-.dropdown-cart .dropdown-menu {
-  padding-top: 0px !important;
 }
 .nav-osahan-pic {
   width: 32px;
@@ -111,7 +96,6 @@ h6 {
 .dropdown-cart-top-body .food-item {
   float: left;
   margin: 4px 10px 0 0;
-  padding-left: 1px;
 }
 /* login/Register */
 :root {
@@ -123,7 +107,7 @@ h6 {
   min-height: 100vh;
 }
 .bg-image {
-  background-image: url("/img/login-bg.png");
+  background-image: url("../img/login-bg.png");
   background-size: cover;
   background-position: center;
 }
@@ -264,36 +248,8 @@ h6 {
   outline: none !important;
   border: 1px solid #ced4da;
 }
-.owl-carousel {
-  position: relative;
-}
-.owl-theme .owl-nav [class*="owl-"] {
-  position: absolute;
-  bottom: calc(50% - 20px);
-  background: #fff none repeat scroll 0 0 !important;
-  border-radius: 30px !important;
-  box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.2);
-  color: #000 !important;
-  height: 40px;
-  line-height: 40px;
-  margin: 0 !important;
-  text-align: center;
-  text-transform: uppercase;
-  width: 40px;
-  display: flex !important;
-  align-items: center;
-  justify-content: center;
-}
-.owl-theme .owl-nav [class*="owl-"] i {
-  font-size: 13px !important;
-  font-weight: normal !important;
-}
-.owl-theme .owl-nav .owl-prev {
-  margin-left: -16px !important;
-}
-.owl-theme .owl-nav .owl-next {
-  right: 0px;
-  margin-right: -16px !important;
+.owl-carousel-category .owl-nav button {
+  top: 36px;
 }
 /* Homepage */
 .owl-carousel-four .item {
@@ -322,10 +278,9 @@ h6 {
   font-size: 12px;
 }
 .osahan-category-item img {
-  width: 40px !important;
+  width: 40px;
   height: 40px;
   object-fit: cover;
-  display: inline-block !important;
   border-radius: 50px;
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
   margin: 2px 0 8px 0;
@@ -527,21 +482,9 @@ small {
 .filters-card-header a i {
   margin: 2px -2px 0 0;
 }
-.position-absolute {
-  z-index: 1;
-}
-iframe.position-absolute {
-  z-index: 0;
-}
 .list-card .count-number {
   margin: 4px 0 0 0;
   display: inline-block;
-}
-.list-card a {
-  color: inherit;
-}
-.list-card a:hover {
-  color: #0091bc;
 }
 .list-card .star {
   right: 8px;
@@ -776,9 +719,6 @@ iframe.position-absolute {
 .restaurant-detailed-ratings-and-reviews hr {
   margin: 0 -24px;
 }
-.star-rating {
-  cursor: pointer;
-}
 .graph-star-rating-header .star-rating {
   font-size: 17px;
 }
@@ -995,15 +935,6 @@ iframe.position-absolute {
   position: absolute;
   top: 0;
 }
-.card.offer-card .card-btn {
-  font-size: 13px;
-  color: #ff3008;
-  vertical-align: top !important;
-  border: 0px !important;
-}
-.card.offer-card .card-btn:hover {
-  color: #0056b3;
-}
 .payments-item .media {
   align-items: center;
 }
@@ -1030,7 +961,6 @@ iframe.position-absolute {
   vertical-align: bottom;
 }
 /* Track Order Page */
-
 .osahan-track-order-page {
   min-height: 676px;
 }

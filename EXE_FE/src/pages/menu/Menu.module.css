@@ -1,0 +1,71 @@
+@import "../../styles/global.css"; /* Import shared styles */
+/* Menu.module.css */
+p {
+  font-size: 14px;
+  color: var(--dark-color);
+  font-family: "Playfair Display", serif;
+}
+.custom-text-center {
+  text-align: center;
+}
+
+.custom-width-50 {
+  width: 50%;
+}
+.hoverEffect {
+  transition: 0.3s;
+  :hover {
+    color: var(--primary-color);
+    cursor: pointer;
+  }
+}
+.smoothTransition {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease-out, opacity 0.3s ease-out;
+}
+
+.show {
+  max-height: 500px; /* Adjust based on content height */
+  opacity: 1;
+}
+.clickable {
+  cursor: pointer;
+  :hover {
+    color: var(--primary-color);
+  }
+}
+
+.custom-margin-auto {
+  margin: auto;
+}
+
+.offer-dedicated-body {
+  padding: 20px 0;
+  margin: 30px 0;
+}
+
+.customBg {
+  background-color: var(--tertiary-color);
+}
+
+.rounded {
+  border-radius: 5px;
+}
+
+.restaurantDetailedEarnPts {
+  color: white;
+  padding: 20px;
+  position: relative;
+}
+
+.generator-bg {
+  background: linear-gradient(135deg, #ff3008 1%, #fe792b 100%);
+}
+
+.icon-overlap {
+  position: absolute;
+  bottom: -10px;
+  right: -10px;
+}

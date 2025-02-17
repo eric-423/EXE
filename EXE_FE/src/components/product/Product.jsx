@@ -1,4 +1,5 @@
 import React from "react";
+import styles from "./Product.module.css";
 import { Link } from "react-router-dom";
 import { Image, Badge, Button } from "react-bootstrap";
 import PropTypes from "prop-types";
@@ -40,10 +41,12 @@ class Product extends React.Component {
 
   render() {
     return (
-      <div className="list-card bg-white h-100 rounded overflow-hidden position-relative shadow-sm">
-        <div className="list-card-image">
+      <div
+        className={`bg-white h-100 rounded overflow-hidden position-relative shadow-sm ${styles.listCard}`}
+      >
+        <div className={styles.listCardImage}>
           {this.props.rating ? (
-            <div className="star position-absolute">
+            <div className={`position-absolute ${styles.star}`}>
               <Badge variant="success">
                 {/* <Icofont icon="star" /> {this.props.rating} */}
               </Badge>
