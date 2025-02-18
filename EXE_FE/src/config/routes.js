@@ -13,6 +13,7 @@ const routes = {
     notFound: "/404",
     hiring: "/hiring",
     menu: "/menu",
+    best: "/best",
   },
   api: {
     loginGoogle: "/api/auth/callback/google/redirect",

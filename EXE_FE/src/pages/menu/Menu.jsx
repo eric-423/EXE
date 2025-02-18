@@ -1,80 +1,114 @@
-import { Col, Image, Tab, Container, Row } from "react-bootstrap";
-
-import { Link } from "react-router-dom";
+import { Col, Tab, Container, Row, Form } from "react-bootstrap";
+import styles from "./Menu.module.css";
 import ProductList from "../../components/product/ProductList";
-import DropdownUI from "../../components/ui/dropdown/DropdownUI";
+import DropdownLocation from "../../components/ui/dropdown/DropdownLocation";
+import { locationDropdown } from "../../config/constant";
+import { useDocumentTitle, useSelectLocation } from "../../hooks";
+import { useState } from "react";
+import MinimizedStoreList from "../../components/store/miniStore/MinimizedStoreList";
+import InputUI from "../../components/ui/input/InputUI";
+import ButtonUI from "../../components/ui/button/ButtonUI";
+import { FaSearch } from "react-icons/fa"; // Import the search icon
 
 const Menu = () => {
-  const selection = [
-    { id: 1, label: "Tất cả" },
-    { id: 2, label: "Món chay" },
-    { id: 3, label: "Món mặn" },
-    { id: 4, label: "Món ngọt" },
-    { id: 5, label: "Món khai vị" },
-    { id: 6, label: "Món chính" },
-    { id: 7, label: "Món tráng miệng" },
+  const [onStoresShow, setOnStoresShow] = useState(false);
+  const { cities, city, districts, district, onSelectCity, onSelectDistrict } =
+    useSelectLocation();
+
+  const category = [
+    { id: 1, label: "Cơm tấm" },
+    { id: 2, label: "Món gọi thêm" },
+    { id: 3, label: "Nước giải khát" },
   ];
+
+  useDocumentTitle("Thực đơn Tấm Tắc");
+
   return (
     <>
-      <h1 className="text-center">Tấm Tắc</h1>
+      <h1 className="text-center">Thực đơn Tấm Tắc</h1>
+      <p className="text-center w-50 m-auto">
+        Tấm Tắc là chuỗi hệ thống cửa hàng cơm tấm với mong muốn mang đến cho
+        sinh viên những bữa cơm tấm chất lượng với giá cả hợp lý, đảm bảo vệ
+        sinh an toàn thực phẩm
+      </p>
       <Tab.Container defaultActiveKey="first">
-        <section className="offer-dedicated-body pt-2 pb-2 mt-4 mb-4">
+        <section className="pt-2 pb-2 mt-4 mb-4">
           <Container>
             <Row>
               <Col md={4}>
-                <div className="bg-white rounded shadow-sm text-white mb-4 p-4 clearfix restaurant-detailed-earn-pts card-icon-overlap">
-                  <Image
-                    fluid
-                    className="float-left mr-3"
-                    src="/img/earn-score-icon.png"
-                  />
-                  <h6 className="pt-0 text-primary mb-1 font-weight-bold">
-                    OFFER
-                  </h6>
-                  <p className="mb-0">
-                    60% off on orders above $99 | Use coupon{" "}
-                    <span className="text-danger font-weight-bold">
-                      OSAHAN50
-                    </span>
-                  </p>
-                  <div className="icon-overlap"></div>
-                </div>
-                <div className="generator-bg rounded shadow-sm mb-4 p-4 osahan-cart-item">
-                  <h5 className="mb-1 text-white">Your Order</h5>
-                  <p className="mb-4 text-white">6 Items</p>
-                  <div className="bg-white rounded shadow-sm mb-2"></div>
-                  <div className="mb-2 bg-white rounded p-2 clearfix">
-                    <Image
-                      fluid
-                      className="float-left"
-                      src="/img/wallet-icon.png"
-                    />
-                    <h6 className="font-weight-bold text-right mb-2">
-                      Subtotal : <span className="text-danger">$456.4</span>
+                <div className={`mb-1 p-3`}>
+                  <div className={`${styles.rounded} p-2 ${styles.customBg}`}>
+                    <h6 className="pt-0 ml-1 my-auto font-weight-bold">
+                      Thực đơn
                     </h6>
-                    <p className="seven-color mb-1 text-right">
-                      Extra charges may apply
-                    </p>
-                    <p className="text-black mb-0 text-right">
-                      You have saved $955 on the bill
-                    </p>
                   </div>
-                  <Link
-                    to="/thanks"
-                    className="btn btn-success btn-block btn-lg"
+                  <div
+                    className={`${styles.hoverEffect} ${styles.rounded} p-2`}
                   >
-                    Checkout
-                  </Link>
-                  <DropdownUI options={selection} />
-                  <div className="pt-2"></div>
-                  <div className="alert alert-success" role="alert">
-                    You have saved <strong>$1,884</strong> on the bill
+                    {category.map((item) => (
+                      <p className="ml-3 my-2 font-weight-bold" key={item.id}>
+                        {item.label}
+                      </p>
+                    ))}
                   </div>
-                  <div className="pt-2"></div>
-                  <div className="text-center pt-2"></div>
+                </div>
+                <div className={`mb-1 p-3`}>
+                  <div
+                    className={`${styles.rounded} p-2 ${styles.customBg} ${styles.clickable}`}
+                    onClick={() => setOnStoresShow(!onStoresShow)}
+                  >
+                    <h6 className={`pt-0 ml-1 my-auto font-weight-bold `}>
+                      Danh sách cửa hàng
+                    </h6>
+                  </div>
+                  <div
+                    className={`${styles.smoothTransition} ${
+                      onStoresShow ? styles.show : ""
+                    } ${styles.rounded} p-2`}
+                  >
+                    {onStoresShow && (
+                      <Form>
+                        <div className={`${styles.rounded} border-bottom`}>
+                          <DropdownLocation
+                            items={cities}
+                            defaultSelected={city?.id}
+                            type={locationDropdown.cities}
+                            style={{ marginBottom: "7px" }}
+                            onSelect={onSelectCity}
+                            className={styles.customDropdown}
+                          />
+                          <DropdownLocation
+                            items={districts}
+                            defaultSelected={district?.id}
+                            type={locationDropdown.districts}
+                            style={{ marginBottom: "7px" }}
+                            onSelect={onSelectDistrict}
+                            className={styles.customDropdown}
+                          />
+                          <div className={styles.inputButtonContainer}>
+                            <InputUI
+                              placeholder="Tên khu vực..."
+                              className={styles.customInput}
+                            />
+                            <ButtonUI
+                              variant="secondary"
+                              className={styles.customButton}
+                            >
+                              <FaSearch />
+                            </ButtonUI>
+                          </div>
+                        </div>
+                      </Form>
+                    )}
+                  </div>
+                </div>
+                <div className=" mb-4 p-3">
+                  <MinimizedStoreList />
                 </div>
               </Col>
-              <ProductList />
+              <Col md={8}>
+                <ProductList />
+              </Col>
             </Row>
           </Container>
         </section>
