@@ -1,185 +1,69 @@
-import React from "react";
-import styles from "./Product.module.css";
-import { Link } from "react-router-dom";
-import { Image, Badge, Button } from "react-bootstrap";
-import PropTypes from "prop-types";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./Product.css";
+import { Col, Container, Row } from "react-bootstrap";
+import { PropTypes } from "prop-types";
 
-class Product extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      quantity: this.props.qty || 0,
-      // eslint-disable-next-line react/prop-types
-      show: this.props.show || true,
-      max: this.props.maxValue || 5,
-      min: this.props.minValue || 0,
-    };
-  }
-
-  // IncrementItem = () => {
-  //   if (this.state.quantity >= this.state.max) {
-  //   } else {
-  //     this.setState({
-  //       quantity: this.state.quantity + 1,
-  //     });
-  //     this.props.getValue({
-  //       id: this.props.id,
-  //       quantity: this.state.quantity + 1,
-  //     });
-  //   }
-  // };
-  // DecreaseItem = () => {
-  //   if (this.state.quantity <= this.state.min) {
-  //   } else {
-  //     this.setState({ quantity: this.state.quantity - 1 });
-  //     this.props.getValue({
-  //       id: this.props.id,
-  //       quantity: this.state.quantity - 1,
-  //     });
-  //   }
-  // };
-
-  render() {
-    return (
-      <div
-        className={`bg-white h-100 rounded overflow-hidden position-relative shadow-sm ${styles.listCard}`}
-      >
-        <div className={styles.listCardImage}>
-          {this.props.rating ? (
-            <div className={`position-absolute ${styles.star}`}>
-              <Badge variant="success">
-                {/* <Icofont icon="star" /> {this.props.rating} */}
-              </Badge>
-            </div>
-          ) : (
-            ""
-          )}
-          <div
-            className={`favourite-heart position-absolute ${this.props.favIcoIconColor}`}
-          >
-            <Link to="#">{/* <Icofont icon="heart" /> */}</Link>
-          </div>
-          {this.props.showPromoted ? (
-            <div className="member-plan position-absolute">
-              <Badge variant={this.props.promotedVariant}>Promoted</Badge>
-            </div>
-          ) : (
-            ""
-          )}
-          <Link to="#">
-            <Image
-              src={this.props.image}
-              className={this.props.imageClass}
-              alt={this.props.imageAlt}
-            />
-          </Link>
+const Product = ({ image, title, description, price, oldPrice }) => (
+  <Col className="col-4 mb-3 ">
+    <div className=" item">
+      <div className="list-card-image">
+        <div className="favourite-heart text-danger position-absolute">
+          <a href="detail.html">
+            <i className="icofont-heart"></i>
+          </a>
         </div>
-        <div className="p-3 position-relative">
-          <div className="list-card-body">
-            <h6 className="mb-1">
-              <Link to="#" className="text-black">
-                {this.props.title}
-              </Link>
-            </h6>
-            {this.props.subTitle ? (
-              <p className="text-gray mb-3">{this.props.subTitle}</p>
-            ) : (
-              ""
-            )}
-            {this.props.price ? (
-              <p className="text-gray time mb-0">
-                <Link
-                  className="btn btn-link btn-sm pl-0 text-black pr-0"
-                  to="#"
-                >
-                  {this.props.priceUnit}
-                  {this.props.price}{" "}
-                </Link>
-                {this.props.isNew ? (
-                  <Badge variant="success" className="ml-1">
-                    NEW
-                  </Badge>
-                ) : (
-                  ""
-                )}
+        <a href="detail.html">
+          <img src={image} className="img-fluid item-img" alt={title} />
+        </a>
+      </div>
 
-                {this.state.quantity === 0 ? (
-                  <span className="float-right">
-                    <Button
-                      variant="outline-secondary"
-                      onClick={this.IncrementItem}
-                      size="sm"
-                    >
-                      ADD
-                    </Button>
-                  </span>
-                ) : (
-                  <span className="count-number float-right">
-                    <Button
-                      variant="outline-secondary"
-                      onClick={this.DecreaseItem}
-                      className="btn-sm left dec"
-                    >
-                      {" "}
-                      {/* <Icofont icon="minus" />{" "} */}
-                    </Button>
-                    <input
-                      className="count-number-input"
-                      type="text"
-                      value={this.state.quantity}
-                      readOnly
-                    />
-                    <Button
-                      variant="outline-secondary"
-                      onClick={this.IncrementItem}
-                      className="btn-sm right inc"
-                    >
-                      {" "}
-                      {/* <Icofont icon="icofont-plus" />{" "} */}
-                    </Button>
-                  </span>
-                )}
-              </p>
-            ) : (
-              ""
-            )}
+      <div className="p-3 content">
+        <div className="list-card-body">
+          <h6 className="mb-1">
+            <a href="detail.html" className="text-black">
+              {title}
+            </a>
+          </h6>
+          <p className="text-gray mb-2 mh-25 restrict-height">{description}</p>
+        </div>
+
+        <div className="d-flex justify-content-between ">
+          {oldPrice ? (
+            <div className="list-card-badge">
+              <span className="badge badge-success">{price}</span>
+              <small
+                className="ml-2"
+                style={{ textDecoration: "line-through" }}
+              >
+                {oldPrice}
+              </small>
+            </div>
+          ) : (
+            <div className="list-card-badge">
+              <span className="noDiscount">{price}</span>
+            </div>
+          )}
+          <div>
+            <a
+              href="detail.html"
+              className="btn btn-outline-dark btn-sm pl-3 pr-3"
+            >
+              Thêm
+            </a>
           </div>
         </div>
       </div>
-    );
-  }
-}
+    </div>
+  </Col>
+);
 
 Product.propTypes = {
-  title: PropTypes.string.isRequired,
-  imageAlt: PropTypes.string,
   image: PropTypes.string.isRequired,
-  imageClass: PropTypes.string,
-  isNew: PropTypes.bool,
-  subTitle: PropTypes.string,
-  price: PropTypes.number.isRequired,
-  priceUnit: PropTypes.string.isRequired,
-  showPromoted: PropTypes.bool,
-  promotedVariant: PropTypes.string,
-  favIcoIconColor: PropTypes.string,
-  rating: PropTypes.string,
-  id: PropTypes.number.isRequired,
-  qty: PropTypes.number,
-  minValue: PropTypes.number,
-  maxValue: PropTypes.number,
-  //getValue: PropTypes.func.isRequired,
-};
-Product.defaultProps = {
-  imageAlt: "",
-  imageClass: "",
-  isNew: false,
-  subTitle: "",
-  price: "",
-  priceUnit: "$",
-  showPromoted: false,
-  promotedVariant: "dark",
-  favIcoIconColor: "",
-  rating: "",
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  time: PropTypes.string.isRequired,
+  price: PropTypes.string.isRequired,
+  oldPrice: PropTypes.string,
 };
 
 export default Product;

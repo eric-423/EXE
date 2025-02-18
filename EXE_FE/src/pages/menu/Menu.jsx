@@ -97,7 +97,9 @@ const Menu = () => {
                   <MinimizedStoreList />
                 </div>
               </Col>
-              <ProductList />
+              <Col md={8}>
+                <ProductList />
+              </Col>
             </Row>
           </Container>
         </section>
