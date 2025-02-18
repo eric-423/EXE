@@ -1,14 +1,14 @@
 import { Col, Tab, Container, Row, Form } from "react-bootstrap";
 import styles from "./Menu.module.css";
-import ProductList from "../../components/product/ProductList";
+import ProductList from "../../components/menu/product/ProductList";
 import DropdownLocation from "../../components/ui/dropdown/DropdownLocation";
 import { locationDropdown } from "../../config/constant";
 import { useDocumentTitle, useSelectLocation } from "../../hooks";
 import { useState } from "react";
-import MinimizedStoreList from "../../components/store/miniStore/MinimizedStoreList";
+import MinimizedStoreList from "../../components/menu/store/miniStore/MinimizedStoreList";
 import InputUI from "../../components/ui/input/InputUI";
 import ButtonUI from "../../components/ui/button/ButtonUI";
-import { FaSearch } from "react-icons/fa"; // Import the search icon
+import { FaSearch } from "react-icons/fa";
 
 const Menu = () => {
   const [onStoresShow, setOnStoresShow] = useState(false);

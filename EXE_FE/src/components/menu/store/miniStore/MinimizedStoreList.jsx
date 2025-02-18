@@ -1,7 +1,7 @@
 import MinimizedStore from "./MinimizedStore";
 import styles from "../Store.module.css";
 
-import bannerImage from "../../../assets/images/Home - Banner.jpg";
+import bannerImage from "../../../../assets/images/Home - Banner.jpg";
 
 const MinimizedStoreList = () => {
   return (
