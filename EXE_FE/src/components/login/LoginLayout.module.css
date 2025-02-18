@@ -1,0 +1,95 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap');
+
+:root {
+    --primary-color: #DA7339;
+    --secondary-color: #78A243;
+    --tertiary-color: #EBD187;
+    --light-color: #EFE6DB;
+    --dark-color: #2D1E1A;
+}
+
+.container {
+    min-height: calc(100vh - 60px);
+    width: 100%;
+}
+
+.splitLayout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.imageSection {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+}
+
+.imageSection img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.8);
+}
+
+.formSection {
+    flex: 1;
+    background-color: var(--light-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.formContainer {
+    width: 100%;
+    max-width: 500px;
+    padding: 0 2rem;
+    margin-left: 2rem;
+}
+
+.title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-align: left;
+}
+
+.primaryText {
+    color: var(--primary-color);
+}
+
+.secondaryText {
+    color: var(--secondary-color);
+}
+
+.subtitle {
+    text-align: left;
+    color: var(--dark-color);
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    font-family: 'Playfair Display', serif;
+}
+
+@media (max-width: 768px) {
+    .splitLayout {
+        flex-direction: column;
+    }
+
+    .imageSection {
+        height: 200px;
+    }
+
+    .formSection {
+        padding: 2rem 1rem;
+    }
+
+    .title {
+        font-size: 2rem;
+    }
+
+    .formContainer {
+        margin-left: 0;
+        padding: 0 1rem;
+    }
+}
