@@ -1,0 +1,185 @@
+body {
+    background-color: rgb(235, 209, 135);
+    font-family: 'Times New Roman', sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.franchiescontent {
+    height: 200px;
+    background-color: rgb(239, 230, 219);
+    width: 600px;
+    border-radius: 20px;
+}
+
+.images {
+    padding-top: 31px;
+    padding-left: 25px;
+}
+
+.franchiescontent img {
+    width: 81%;
+    height: 100%;
+}
+
+.franchise-form {
+    background-color: rgb(239, 230, 219);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 20px;
+    box-sizing: border-box;
+    width: 70%;
+    height: 650px;
+    border-radius: 20px;
+
+}
+
+.franchise-form-title {
+    border: 4px solid rgb(218, 115, 57);
+    border-radius: 20px;
+    width: 85%;
+    height: 90%
+}
+
+.franchise-title {
+    font-size: 25px;
+    font-weight: 600;
+    color: black;
+    text-align: center;
+    padding-top: 10px;
+    font-family: 'Times New Roman', Times, serif;
+    box-sizing: border-box;
+    margin-top: 25px;
+}
+
+.frachise-content {
+    align-items: center;
+    box-sizing: border-box;
+    width: 100%;
+    font-size: 19px;
+    padding: 20px 20px 0 20px;
+    text-align: center;
+}
+
+.InputName {
+    background-color: rgb(239, 230, 219);
+    width: 80%;
+    height: 40px;
+    border-radius: 8px;
+    padding-left: 10px;
+    font-size: 18px;
+    box-sizing: border-box;
+    margin-left: 37px;
+    margin-bottom: 10px;
+    border: 1px solid black;
+}
+
+.infomationInput {
+    width: 82%;
+    display: flex;
+    margin-left: 37px;
+
+}
+
+.infomationInput input {
+    width: 100%;
+    height: 40px;
+    border-radius: 8px;
+    padding-left: 10px;
+    font-size: 18px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    border: 1px solid black;
+    background-color: rgb(239, 230, 219);
+}
+
+.infomationSelect {
+    width: 82%;
+    display: flex;
+    margin-left: 37px;
+}
+
+.infomationSelect select {
+    width: 100%;
+    height: 40px;
+    border-radius: 8px;
+    padding-left: 10px;
+    font-size: 18px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    margin-right: 10px;
+    border: 1px solid black;
+    background-color: rgb(239, 230, 219);
+}
+
+.franchise-form-title textarea {
+    width: 80%;
+    height: 100px;
+    border-radius: 8px;
+    padding-left: 10px;
+    padding-top: 10px;
+    font-size: 18px;
+    box-sizing: border-box;
+    margin-left: 37px;
+    margin-bottom: 10px;
+    border: 1px solid black;
+    background-color: rgb(239, 230, 219);
+}
+
+.franchise-form-title button {
+    width: 50%;
+    height: 30px;
+    border-radius: 8px;
+    padding-left: 10px;
+    font-size: 18px;
+    box-sizing: border-box;
+    border: none;
+    margin-left: 105px;
+    margin-bottom: 10px;
+    margin-top: 15px;
+    background-color: rgb(218, 115, 57);
+    color: white;
+}
+
+
+.Search {
+    border-radius: 5px;
+    padding-left: 10px;
+    font-size: 18px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    border: 1px solid black;
+    height: 50px;
+    background-color: rgb(239, 230, 219);
+}
+
+.cityDropdown {
+    border-radius: 5px;
+    padding-left: 10px;
+    font-size: 18px;
+    box-sizing: border-box;
+    border: 1px solid black;
+    height: 50px;
+    margin-left: 100px;
+    background-color: rgb(239, 230, 219);
+
+}
+
+.districtDropdown {
+    border-radius: 5px;
+    padding-left: 10px;
+    font-size: 18px;
+    box-sizing: border-box;
+    border: 1px solid black;
+    height: 50px;
+    background-color: rgb(239, 230, 219);
+    margin-left: 10px;
+    margin-right: 10px;
+}
