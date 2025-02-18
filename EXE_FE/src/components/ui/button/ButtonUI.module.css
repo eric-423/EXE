@@ -1,0 +1,47 @@
+@import "../../../styles/global.css";
+
+.button {
+  display: flex;
+  align-items: center; /* Align items vertically in the center */
+  justify-content: center; /* Center the content horizontally */
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 13px;
+  font-family: "Playfair Display", serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.button.primary {
+  background-color: var(--primary-color);
+  color: var(--light-color);
+}
+
+.button.primary:hover {
+  background-color: var(--light-color);
+  stroke: var(--primary-color);
+  stroke-width: 2px;
+  color: var(--primary-color);
+}
+
+.button.secondary {
+  background-color: var(--secondary-color);
+  color: var(--light-color);
+}
+
+.button.secondary:hover {
+  color: var(--secondary-color);
+  background-color: var(--light-color);
+}
+
+.button.tertiary {
+  background-color: var(--dark-color);
+  color: var(--light-color);
+}
+
+.button.tertiary:hover {
+  color: var(--dark-color);
+  background-color: var(--light-color);
+}
