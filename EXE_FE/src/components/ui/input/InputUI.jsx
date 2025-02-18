@@ -9,7 +9,7 @@ const InputUI = ({ type, placeholder, value, onChange, className }) => {
       placeholder={placeholder}
       value={value}
       onChange={onChange}
-      className={classNames(styles.input, className)}
+      className={`${styles.input} ${className}`}
     />
   );
 };

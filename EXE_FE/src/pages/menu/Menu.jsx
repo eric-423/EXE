@@ -81,13 +81,18 @@ const Menu = () => {
                             style={{ marginBottom: "7px" }}
                             onSelect={onSelectDistrict}
                           />
-                          <InputUI
-                            placeholder="Tên khu vực..."
-                            className={`${styles.customInput}`}
-                          />
-                          <ButtonUI variant="secondary">
-                            <FaSearch />
-                          </ButtonUI>
+                          <div className={styles.inputButtonContainer}>
+                            <InputUI
+                              placeholder="Tên khu vực..."
+                              className={styles.customInput}
+                            />
+                            <ButtonUI
+                              variant="secondary"
+                              className={styles.customButton}
+                            >
+                              <FaSearch />
+                            </ButtonUI>
+                          </div>
                         </div>
                       </Form>
                     )}

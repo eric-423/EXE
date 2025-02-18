@@ -77,4 +77,19 @@ p {
 
 .customInput {
   width: 70%;
+  flex: 1; /* Allow the input to take up remaining space */
+}
+.inputButtonContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Adjust the gap as needed */
+}
+.customButton {
+  height: 100%;
+  width: auto;
+  padding: 0; /* Match the padding of the input */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box; /* Ensure padding is included in the height */
 }
