@@ -1,0 +1,34 @@
+import styles from "./LoginLayout.module.css";
+import bannerImage from "../../assets/images/Home - Banner.jpg";
+import Footer from "../footer/Footer";
+
+const LoginLayout = ({ children, subtitle }) => {
+    return (
+        <>
+            <div className={styles.container}>
+                <div className={styles.splitLayout}>
+                    <div className={styles.imageSection}>
+                        <img src={bannerImage} alt="Cơm tấm banner" />
+                    </div>
+                    <div className={styles.formSection}>
+                        <div className={styles.formContainer}>
+                            <h1 className={styles.title}>
+                                <span className={styles.primaryText}>Tấm</span>{" "}
+                                ngon,{" "}
+                                <span className={styles.secondaryText}>
+                                    Tắc
+                                </span>{" "}
+                                nhớ!
+                            </h1>
+                            <p className={styles.subtitle}>{subtitle}</p>
+                            {children}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <Footer />
+        </>
+    );
+};
+
+export default LoginLayout;
