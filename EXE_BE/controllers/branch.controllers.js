@@ -1,4 +1,3 @@
-const { where } = require('sequelize')
 const { Branch } = require('../models')
 
 
@@ -10,7 +9,7 @@ const createBranch = async (req, res) => {
         res.status(201).send(newBranch)
     } catch (error) {
         console.error(error);
-        res.status(500).send({ message: "Internal server error", error: error.message });
+        return res.status(500).send({ message: "Internal server error", error: error.message });
     }
 }
 
@@ -20,7 +19,7 @@ const readAllBranch = async (req, res) => {
         res.status(200).send(branches)
     } catch (error) {
         console.error(error);
-        res.status(500).send({ message: "Internal server error", error: error.message });
+        return res.status(500).send({ message: "Internal server error", error: error.message });
     }
 }
 
@@ -33,13 +32,13 @@ const readById = async (req, res) => {
             }
         });
         if (!branch) {
-            res.status(404).send({ message: "Branch Not Found" });
+            return res.status(404).send({ message: "Branch Not Found" });
         }
         res.status(200).send(branch);
 
     } catch (error) {
         console.error(error);
-        res.status(500).send({ message: "Internal server error", error: error.message });
+        return res.status(500).send({ message: "Internal server error", error: error.message });
     }
 }
 
@@ -64,6 +63,7 @@ const deleteBranch = async (req, res) => {
 const updateBranch = async (req, res) => {
     const id = req.params
     const { name, address, phoneNumber, isParent } = req.body
+
     try {
         const updatedBranch = await Branch.findOne({
             where: {
@@ -71,7 +71,7 @@ const updateBranch = async (req, res) => {
             }
         })
         if (!updatedBranch) {
-            res.status(404).send({ message: "Branch Not Found" });
+            return res.status(404).send({ message: "Branch Not Found" });
         }
         updatedBranch.name = name
         updatedBranch.address = address
@@ -82,7 +82,7 @@ const updateBranch = async (req, res) => {
         res.status(200).send(updateBranch);
     } catch (error) {
         console.error(error);
-        res.status(500).send({ message: "Internal server error", error: error.message });
+        return res.status(500).send({ message: "Internal server error", error: error.message });
     }
 }
 

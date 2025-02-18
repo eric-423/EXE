@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Product.css";
-import { Col, Container, Row } from "react-bootstrap";
+import { Col } from "react-bootstrap";
 import { PropTypes } from "prop-types";
 
 const Product = ({ image, title, description, price, oldPrice }) => (

@@ -6,7 +6,7 @@
   --dark-color: #2d1e1a;
 }
 body {
-  background: var(--light-color);
+  background: var(--light-color) !important;
   font-size: 13px;
   font-weight: 500;
 }
@@ -20,7 +20,7 @@ a {
 p {
   font-size: 13px;
   color: var(--dark-color);
-  font-family: "Playfair Display", serif;
+  font-family: "Playfair Display", serif !important;
 }
 img {
   image-rendering: auto;
@@ -38,7 +38,7 @@ h4,
 h5,
 h6 {
   color: var(--dark-color);
-  font-family: "Playfair Display", serif;
+  font-family: "Playfair Display", serif !important;
 }
 /* Nav */
 .osahan-nav {
@@ -101,6 +101,12 @@ h6 {
 :root {
   --input-padding-x: 1.5rem;
   --input-padding-y: 0.75rem;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
 }
 .login,
 .image {

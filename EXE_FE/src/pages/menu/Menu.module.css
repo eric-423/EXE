@@ -27,6 +27,8 @@ p {
 .customDropdown {
   position: relative;
   display: inline-block;
+  width: 100%;
+  color: var(--dark-color) !important;
   :hover .dropdown-content {
     display: block;
   }

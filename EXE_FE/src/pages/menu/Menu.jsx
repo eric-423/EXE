@@ -3,7 +3,7 @@ import styles from "./Menu.module.css";
 import ProductList from "../../components/product/ProductList";
 import DropdownLocation from "../../components/ui/dropdown/DropdownLocation";
 import { locationDropdown } from "../../config/constant";
-import { useSelectLocation } from "../../hooks";
+import { useDocumentTitle, useSelectLocation } from "../../hooks";
 import { useState } from "react";
 import MinimizedStoreList from "../../components/store/miniStore/MinimizedStoreList";
 import InputUI from "../../components/ui/input/InputUI";
@@ -20,6 +20,8 @@ const Menu = () => {
     { id: 2, label: "Món gọi thêm" },
     { id: 3, label: "Nước giải khát" },
   ];
+
+  useDocumentTitle("Thực đơn Tấm Tắc");
 
   return (
     <>
@@ -73,6 +75,7 @@ const Menu = () => {
                             type={locationDropdown.cities}
                             style={{ marginBottom: "7px" }}
                             onSelect={onSelectCity}
+                            className={styles.customDropdown}
                           />
                           <DropdownLocation
                             items={districts}
@@ -80,6 +83,7 @@ const Menu = () => {
                             type={locationDropdown.districts}
                             style={{ marginBottom: "7px" }}
                             onSelect={onSelectDistrict}
+                            className={styles.customDropdown}
                           />
                           <div className={styles.inputButtonContainer}>
                             <InputUI
