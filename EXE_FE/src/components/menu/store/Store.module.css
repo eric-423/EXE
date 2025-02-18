@@ -1,4 +1,4 @@
-@import "../../styles/global.css";
+@import "../../../styles/global.css";
 
 .customBg {
   background-color: var(--light-color);

@@ -191,7 +191,7 @@ h6 {
 }
 /* Homepage Search Block */
 .homepage-search-block {
-  background-color: #eef0ef;
+  background-color: none;
 }
 .homepage-search-form .form-control {
   font-size: 15px;

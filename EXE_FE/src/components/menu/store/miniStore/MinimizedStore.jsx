@@ -1,6 +1,6 @@
 import styles from "../Store.module.css";
 import PropTypes from "prop-types";
-import bannerImage from "../../../assets/images/Home - Banner.jpg";
+import bannerImage from "../../../../assets/images/Home - Banner.jpg";
 
 const MinimizedStore = ({ image, store }) => {
   return (
