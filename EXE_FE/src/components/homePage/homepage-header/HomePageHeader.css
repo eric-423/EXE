@@ -1,0 +1,97 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    width: 100%;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+    background: #f9f9f9;
+}
+
+
+.homepage-header {
+    background: url('/images/bg1.png');
+    position: relative;
+    background-position: center;
+    background-size: cover;
+    height: 700px;
+    width: 100%;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+}
+
+.homepage-search-form .form-control {
+    font-size: 15px;
+    height: 50px;
+    padding-right: 106px;
+    border: none;
+}
+
+.homepage-search-form .form-group {
+    position: relative;
+
+}
+
+.homepage-search-form .locate-me {
+    background: #ececec none repeat scroll 0 0;
+    color: #666;
+    font-size: 12px;
+    padding: 7px 10px;
+    border-radius: 6px;
+    position: absolute;
+    right: 14px;
+    top: 9px;
+}
+
+.homepage-search-form .locate-me:hover {
+    background: #666 none repeat scroll 0 0;
+    color: #ffffff;
+}
+
+.homepage-search-form .btn {
+    font-size: 15px;
+    font-weight: 600;
+    height: 50px;
+    padding: 13px 5px;
+}
+
+.homepage-search-form .location-dropdown i {
+    left: 18px;
+    position: absolute;
+    top: 20px;
+    z-index: 9;
+}
+
+.homepage-search-form .select2-selection {
+    border-color: #ced4da !important;
+    border-radius: 6px !important;
+    height: 50px !important;
+    outline: none !important;
+    border: none !important;
+}
+
+.homepage-search-form .select2-selection__rendered {
+    font-size: 15px;
+    line-height: 50px !important;
+    padding: 0 28px 0 31px !important;
+}
+
+.homepage-search-form .select2-selection__arrow {
+    right: 9px !important;
+    top: 13px !important;
+}
+
+.smallTitle {
+    color: rgb(239, 230, 219)
+}
+
+.title {
+    color: rgb(239, 230, 219)
+}

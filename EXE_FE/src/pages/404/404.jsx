@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Row, Col, Container, Image } from "react-bootstrap";
+import { Row, Col, Container } from "react-bootstrap";
 
 const NotFound = () => {
   return (
