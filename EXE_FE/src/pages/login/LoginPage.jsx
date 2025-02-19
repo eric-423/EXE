@@ -1,7 +1,6 @@
 import { useState, useRef } from "react";
 import styles from "./LoginPage.module.css";
 import bannerImage from "/images/bg1.png";
-import Footer from "../../components/homePage/Footer/Footer";
 
 const LoginPage = () => {
     // State to manage which view to show
@@ -312,7 +311,6 @@ const LoginPage = () => {
                     </div>
                 </div>
             </div>
-            <Footer />
         </>
     );
 };
