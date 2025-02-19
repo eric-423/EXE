@@ -6,7 +6,7 @@ const CuisineGallery = () => {
 
     return (
         <div>
-            <section className="section pt-5 pb-5 bg-white homepage-add-section">
+            <section className="section pt-5 pb-5  homepage-add-section" style={{ backgroundColor: 'rgb(239, 230, 219)' }} >
                 <Container className="container">
                     <Row className='d-flex justify-content-center'>
                         <Col className="col-3 me-4 ms-4">

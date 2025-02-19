@@ -1,6 +1,6 @@
 import styles from "./LoginLayout.module.css";
 import bannerImage from "../../assets/images/Home - Banner.jpg";
-import Footer from "../footer/Footer";
+import Footer from "../../components/homePage/Footer/Footer";
 import PropTypes from "prop-types";
 
 const LoginLayout = ({ children, subtitle }) => {

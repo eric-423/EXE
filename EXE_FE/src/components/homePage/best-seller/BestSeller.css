@@ -1,5 +1,5 @@
 body {
-    background-color: rgb(235, 209, 135);
+    background-color: rgb(235, 209, 135) !important;
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
     line-height: 1.5;

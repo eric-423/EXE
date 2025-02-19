@@ -3,7 +3,7 @@ import UserLayout from "../layouts/UserLayout";
 import NotFound from "../pages/404";
 import Home from "../pages/home";
 import Menu from "../pages/menu/Menu";
-import Login from "../pages/login";
+import Login from "../pages/login/LoginPage";
 
 //* ====================  Authorization for PUBLIC ==================== */
 const MainRouter = () => {

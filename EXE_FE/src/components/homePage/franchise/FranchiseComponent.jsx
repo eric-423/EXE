@@ -14,9 +14,9 @@ const MenuItem = ({ image, location, phoneNumber }) => (
                     </Col>
                     <Col className="col-md-8 col-8">
                         <CardBody className='pt-4'>
-                            <CardTitle className='title'>Tấm Tắc Làng Đại Học</CardTitle>
-                            <CardText className='subTitle'>{location}</CardText>
-                            <CardText className='subTitle'>{phoneNumber}</CardText>
+                            <h5 className='title'>Tấm Tắc Làng Đại Học</h5>
+                            <p className='subTitle'>{location}</p>
+                            <p className='phoneNumber '>{phoneNumber}</p>
                         </CardBody>
                     </Col>
                 </Row>

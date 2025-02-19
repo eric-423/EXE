@@ -1,10 +1,10 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './BestSeller.css';
+import '../best-seller/BestSeller.css';
 import { Col, Container, Row } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
 
 const MenuItem = ({ image, title, description, price, oldPrice }) => (
-    <Col className="col-3 ">
+    <Col className="col-3 " >
         <div className=" item">
             <div className="list-card-image">
                 <div className="favourite-heart text-danger position-absolute">
@@ -24,7 +24,9 @@ const MenuItem = ({ image, title, description, price, oldPrice }) => (
                 <div className='d-flex justify-content-between '>
                     {
                         oldPrice ? (<div className="list-card-badge">
-                            <span className="badge badge-success">{price}</span>
+                            <span className="badge " style={
+                                { borderRadius: '5px', alignItems: 'center', textAlign: 'center' }
+                            }>{price}</span>
                             <small className='ml-2'>{oldPrice}</small>
                         </div>) : (
                             <div className="list-card-badge">

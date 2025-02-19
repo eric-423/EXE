@@ -20,8 +20,8 @@
 }
 
 .footer-info h4 {
+    color: white;
     border-bottom: 1px solid rgba(255, 255, 255, 0.821);
-    ;
     padding-bottom: 15px;
     font-size: 25px;
     font-weight: 600;
@@ -32,7 +32,7 @@
     font-family: 'Times New Roman', Times, serif;
     text-decoration: none;
     color: rgba(255, 255, 255, 0.821);
-    font-size: 19px;
+    font-size: 15px;
     display: block;
     margin-bottom: 10px;
 }

@@ -22,7 +22,7 @@ const Footer = () => {
                 <h4>Liên Hệ</h4>
                 <Link className='footer-address' to="">
                     <img className='pr-2' src="/icons/location.svg" alt="asd" />
-                    <p className=''>
+                    <p className='footerLink'>
                         Lô E2a-7, Đường D1, Long Thạnh Mỹ, Thành Phố Thủ Đức, Hồ Chí Minh
                     </p>
                 </Link>

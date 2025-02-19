@@ -21,12 +21,12 @@ const HomePageHeader = () => {
                         <div className="homepage-search-title text-center">
 
                             <h1 className="mb-2 display-4 text-shadow font-weight-normal">
-                                <span className="font-weight-bold title">
+                                <span className="font-weight-bold " style={{ color: "white" }}>
                                     Cơm Tấm Tắc <br /> Tấm Ngon, Tắc Nhớ
                                 </span>
                             </h1>
 
-                            <h5 className="mb-5 font-weight-normal smallTitle">
+                            <h5 className="mb-5 mt-3 font-weight-normal smallTitle">
                                 Thương hiệu cơm tấm hàng đầu dành cho sinh viên
                             </h5>
 

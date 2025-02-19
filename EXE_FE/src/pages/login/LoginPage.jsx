@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import styles from "./LoginPage.module.css";
-import bannerImage from "../../assets/images/Home - Banner.jpg";
-import Footer from "../../components/footer/Footer";
+import bannerImage from "/images/bg1.png";
+import Footer from "../../components/homePage/Footer/Footer";
 
 const LoginPage = () => {
     // State to manage which view to show
@@ -139,8 +139,7 @@ const LoginPage = () => {
                                         if (e.target.value && index < 5) {
                                             const nextInput =
                                                 document.querySelector(
-                                                    `input[name=otp-${
-                                                        index + 1
+                                                    `input[name=otp-${index + 1
                                                     }]`
                                                 );
                                             if (nextInput) nextInput.focus();
@@ -207,13 +206,12 @@ const LoginPage = () => {
                                 <div className={styles.otpContainer}>
                                     {password2.map((data, index) => (
                                         <input
-                                            className={`${styles.otpInput} ${
-                                                password1.join("") !==
-                                                    password2.join("") &&
+                                            className={`${styles.otpInput} ${password1.join("") !==
+                                                password2.join("") &&
                                                 password2.join("").length === 6
-                                                    ? styles.errorInput
-                                                    : ""
-                                            }`}
+                                                ? styles.errorInput
+                                                : ""
+                                                }`}
                                             type="text"
                                             maxLength="1"
                                             key={index}

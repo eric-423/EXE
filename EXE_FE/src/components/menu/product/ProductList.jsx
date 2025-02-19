@@ -1,7 +1,7 @@
 import { Row, Container } from "react-bootstrap";
 import Product from "./Product";
 import "./Product.css";
-import bannerImage from "../../../assets/images/Home - Banner.jpg";
+import bannerImage from "/images/bg1.png";
 
 const ProductList = () => {
   const menuItems = [
