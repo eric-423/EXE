@@ -2,6 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './Header.css';
 import { Col, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import Cart from '../../cart/Cart';
 
 const Header = () => {
     return (
@@ -19,7 +20,7 @@ const Header = () => {
                 <div className="header-right">
                     <img src="/icons/notification-3.svg" alt="" />
                     <img src="/icons/account.svg" alt="" />
-                    <img src="/icons/shopping-cart-outline-badged.svg" alt="" />
+                    <Cart />
                 </div>
             </Col>
 
