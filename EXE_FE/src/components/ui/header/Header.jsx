@@ -7,7 +7,7 @@ import Cart from '../../cart/Cart';
 const Header = () => {
     return (
         <Row className="header">
-            <Col className='col-md-9 header-left'>
+            <Col className='header-left' md={10}>
                 <img src="/images/logo.png" alt="" />
                 <Link className='redirect' to="/">Về tấm tắc</Link>
                 <Link className='redirect' to="/">Chuyện cơm tấm</Link>
@@ -16,7 +16,7 @@ const Header = () => {
                 <Link className='redirect' to="/">Cửa hàng</Link>
                 <Link className='redirect' to="/">Tuyển dụng</Link>
             </Col>
-            <Col>
+            <Col className='' md={2}>
                 <div className="header-right">
                     <img src="/icons/notification-3.svg" alt="" />
                     <img src="/icons/account.svg" alt="" />
