@@ -18,6 +18,7 @@ module.exports = {
       },
       roleId: {
         type: Sequelize.INTEGER,
+        required: true,
         references: {
           model: "Roles",
           key: "id"
