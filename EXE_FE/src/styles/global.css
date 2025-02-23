@@ -9,6 +9,7 @@
   --dark-color: #2d1e1a;
   --input-padding-x: 1.5rem;
   --input-padding-y: 0.75rem;
+  overflow-x: hidden;
 }
 
 /* Global Reset */
@@ -70,8 +71,8 @@ h6 {
   border-radius: 100px;
 }
 
-.form-label-group > input,
-.form-label-group > label {
+.form-label-group>input,
+.form-label-group>label {
   padding: 15px 0;
   height: 51px;
   background: transparent !important;
@@ -110,6 +111,7 @@ h6 {
 .card {
   border-radius: 2px;
 }
+
 /* Navbar */
 .osahan-nav {
   background: #fff !important;

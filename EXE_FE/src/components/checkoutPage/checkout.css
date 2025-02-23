@@ -1,0 +1,99 @@
+.info-input {
+    padding-left: 25px;
+}
+
+body {
+    background-color: rgb(239, 230, 219);
+}
+
+.PaymentMethod {
+    border-top: 1px solid black;
+    padding-top: 30px;
+}
+
+.PaymentMethod h5 {
+    font-size: 25px;
+    font-weight: 600;
+    padding-bottom: 20px;
+}
+
+.PaymentMethod label {
+    font-size: 15px;
+    font-weight: 600;
+    padding-top: 2px;
+    margin-bottom: 10px;
+}
+
+.comfirm-order {
+    border: 1px solid black;
+    padding: 30px;
+    border-radius: 20px;
+    min-height: 300px;
+}
+
+.comfirm-order h5 {
+    font-size: 25px;
+    font-weight: 600;
+}
+
+.comfirm-order p {
+    font-size: 20px;
+    font-weight: 200;
+}
+
+.confirm-order-item {
+    display: flex;
+    justify-content: space-between;
+    height: 30px;
+    align-items: start;
+
+}
+
+.confirm-order-item h6 {
+    font-size: 23px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 58%;
+    margin-bottom: 0;
+}
+
+.confirm-order-item p {
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.promotion-code {
+    background-color: white;
+    border-radius: 20px;
+    margin: 0 auto;
+    width: 100%;
+    margin-top: 20px;
+    padding: 20px 30px;
+}
+
+.promotion-code input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 8px;
+}
+
+.promotion-code button {
+    background-color: #F58220;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.promotion-code textarea {
+    width: 100%;
+    min-height: 80px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}

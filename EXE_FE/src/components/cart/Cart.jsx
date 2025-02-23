@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { PropTypes } from 'prop-types';
 import { useEffect, useRef, useState } from 'react';
 import { BsFillTrashFill } from 'react-icons/bs';
+import { Link } from 'react-router-dom';
 
 const CartHeader = ({ branch, address }) => {
     return (
@@ -41,7 +42,13 @@ const CartFooter = ({ totalAmount }) => {
                 <p>Tạm Tính</p>
                 <p style={{ color: 'rgb(218, 115, 50)' }}> {totalAmount}.000 đ</p>
             </div>
-            <button>Xác nhận đơn hàng </button>
+            <div className='checkoutBtn' >
+                <Link to={'/checkout '}
+                    className='linkCheckout'
+                >
+                    Xác nhận đơn hàng
+                </Link>
+            </div>
         </div>
     )
 }

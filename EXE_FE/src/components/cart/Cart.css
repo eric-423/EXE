@@ -85,7 +85,7 @@
     font-weight: 600;
 }
 
-.cart-footer button {
+.checkoutBtn {
     background-color: rgb(120, 162, 67);
     color: white;
     border: 1px solid #9c9c9c;
@@ -99,4 +99,13 @@
     height: 40px;
     text-align: center;
     padding: 0;
+    align-items: center;
+}
+
+.linkCheckout {
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+    font-family: 'Times New Roman', Times, serif;
+    margin-top: 10px;
 }

@@ -14,6 +14,7 @@ const routes = {
     hiring: "/hiring",
     menu: "/menu",
     best: "/best",
+    checkout: "/checkout",
   },
   api: {
     loginGoogle: "/api/auth/callback/google/redirect",
