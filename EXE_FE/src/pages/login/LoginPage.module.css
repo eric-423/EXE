@@ -125,28 +125,51 @@
   opacity: 0.9;
 }
 
+.dividerLine {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 2rem 0;
+    color: #6B8E23;
+}
+
+.dividerLine::before,
+.dividerLine::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #6B8E23;
+}
+
+.dividerLine span {
+    padding: 0 10px;
+    color: #6B8E23;
+    font-size: 1rem;
+}
+
 .divider {
-  margin-top: 2rem;
-  text-align: center;
-  position: relative;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 1rem 0;
 }
 
 .divider::before,
 .divider::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  width: 25%;
-  height: 1px;
-  background-color: var(--secondary-color);
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #6B8E23; /* Changed to match green color */
 }
 
-.divider::before {
-  left: 0;
+.dividerText {
+    padding: 0 10px;
+    color: #6B8E23; /* Changed to match green color */
+    font-size: 0.9rem;
+    cursor: pointer;
 }
 
-.divider::after {
-  right: 0;
+/* Add spacing between dividers */
+.divider:not(:last-child) {
+    margin-bottom: 0.5rem;
 }
 
 .registerLink {
@@ -418,4 +441,15 @@ body {
         height: 50px;
         font-size: 1.2rem;
     }
+}
+
+.secondaryButton {
+    background-color: transparent;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    margin-top: 8px;
+}
+
+.secondaryButton:hover {
+    background-color: rgba(201, 125, 84, 0.1);
 }
