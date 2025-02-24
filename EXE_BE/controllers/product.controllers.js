@@ -1,4 +1,4 @@
-const Product = require('../models')
+const { Product } = require('../models')
 
 const createProduct = async (req, res) => {
     try {
@@ -12,13 +12,40 @@ const createProduct = async (req, res) => {
 
 const findAllProduct = async (req, res) => {
     try {
-        const products = await Product.findAll()
-        return res.status(200).send(products)
+        const { sort, page = 1, limit = 10 } = req.query;
+
+        const options = {
+            order: [],
+            limit: parseInt(limit, 10),
+            offset: (page - 1) * limit,
+        };
+
+        if (sort) {
+            const sortFields = sort.split('-').map(field => field.trim());
+            const field = sortFields[0];
+            const order = sortFields[1] === 'desc' ? 'DESC' : 'ASC';
+            options.order.push([field, order]);
+        }
+
+        const products = await Product.findAll(options);
+        const totalProducts = await Product.count();
+        const totalPages = Math.ceil(totalProducts / limit);
+
+        return res.status(200).send({
+            products,
+            pagination: {
+                totalProducts,
+                totalPages,
+                currentPage: page,
+                limit: limit,
+            },
+        });
 
     } catch (error) {
         return res.status(500).send({ message: "Internal server error", error: error.message });
     }
 }
+
 
 const findProductById = async (req, res) => {
     try {
@@ -77,4 +104,8 @@ const deleteMaterial = async (req, res) => {
     } catch (error) {
         return res.status(500).send({ message: "Internal server error", error: error.message });
     }
+}
+
+module.exports = {
+    findAllProduct
 }

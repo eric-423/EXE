@@ -1,7 +1,6 @@
 import { useState } from "react";
 import styles from "./LoginPage.module.css";
 import bannerImage from "../../assets/images/Home - Banner.jpg";
-import Footer from "../../components/footer/Footer";
 import { useDocumentTitle } from "../../hooks";
 
 const LoginPage = () => {
@@ -205,7 +204,7 @@ const LoginPage = () => {
                                             maxLength="1"
                                             key={index}
                                             value={data}
-                                            ref={inputRefs2[index]}
+                                            ref={[index]}
                                             onChange={(e) =>
                                                 handleChange(
                                                     e.target,
@@ -298,7 +297,6 @@ const LoginPage = () => {
                     </div>
                 </div>
             </div>
-            <Footer />
         </>
     );
 };
