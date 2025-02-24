@@ -27,6 +27,18 @@ module.exports = {
       note: {
         type: Sequelize.STRING
       },
+      feedback: {
+        type: Sequelize.STRING,
+      },
+      isFeedback: {
+        type: Sequelize.BOOLEAN
+      },
+      feedbackPoint: {
+        type: Sequelize.INTEGER
+      },
+      experiedFeedbackTime: {
+        type: Sequelize.DATE
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
