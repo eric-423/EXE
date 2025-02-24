@@ -60,6 +60,31 @@ const LoginPage = () => {
         }
     };
 
+    // Add this function to handle backspace
+    const handleKeyDown = (e, index) => {
+        if (e.key === "Backspace") {
+            e.preventDefault(); // Prevent default backspace behavior
+
+            // Find the rightmost filled input
+            let lastFilledIndex = 5;
+            while (lastFilledIndex >= 0 && !otp[lastFilledIndex]) {
+                lastFilledIndex--;
+            }
+
+            if (lastFilledIndex >= 0) {
+                const newOtp = [...otp];
+                newOtp[lastFilledIndex] = "";
+                setOtp(newOtp);
+
+                // Focus on the cleared input
+                const currentInput = document.querySelector(
+                    `input[name=otp-${lastFilledIndex}]`
+                );
+                if (currentInput) currentInput.focus();
+            }
+        }
+    };
+
     // Render different form content based on currentView
     const renderFormContent = () => {
         switch (currentView) {
@@ -136,6 +161,7 @@ const LoginPage = () => {
                                             if (nextInput) nextInput.focus();
                                         }
                                     }}
+                                    onKeyDown={(e) => handleKeyDown(e, index)}
                                     name={`otp-${index}`}
                                 />
                             ))}

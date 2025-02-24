@@ -419,35 +419,3 @@ body {
         font-size: 1.2rem;
     }
 }
-
-.passwordInput {
-    width: 100%;
-    height: 50px;
-    border: 1px solid var(--dark-color);
-    border-radius: 8px;
-    padding: 0 15px;
-    font-size: 1rem;
-    color: var(--dark-color);
-    background: transparent;
-}
-
-.passwordInput:focus {
-    outline: none;
-    border-color: var(--primary-color);
-}
-
-.inputGroup {
-    width: 100%;
-    margin-bottom: 1rem;
-}
-
-.errorInput {
-    border-color: #dc3545;
-}
-
-.errorText {
-    color: #dc3545;
-    font-size: 0.875rem;
-    margin-top: 0.5rem;
-    text-align: left;
-}
