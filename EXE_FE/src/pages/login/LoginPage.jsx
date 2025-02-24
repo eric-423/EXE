@@ -1,17 +1,18 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import styles from "./LoginPage.module.css";
 import bannerImage from "../../assets/images/Home - Banner.jpg";
 import Footer from "../../components/footer/Footer";
+import { useDocumentTitle } from "../../hooks";
 
 const LoginPage = () => {
     // State to manage which view to show
     const [currentView, setCurrentView] = useState("customer"); // 'customer', 'employee', 'otp', 'password'
     const [phoneNumber, setPhoneNumber] = useState("");
     const [otp, setOtp] = useState(["", "", "", "", "", ""]);
-    const [password1, setPassword1] = useState(["", "", "", "", "", ""]);
-    const [password2, setPassword2] = useState(["", "", "", "", "", ""]);
-    const inputRefs1 = [...Array(6)].map(() => useRef(null));
-    const inputRefs2 = [...Array(6)].map(() => useRef(null));
+    const [password1, setPassword1] = useState("");
+    const [password2, setPassword2] = useState("");
+
+    useDocumentTitle("Đăng nhập Tấm Tắc");
 
     const handleCustomerSubmit = (e) => {
         e.preventDefault();
@@ -25,18 +26,21 @@ const LoginPage = () => {
         setCurrentView("password");
     };
 
-    const handlePasswordSubmit = (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        // Handle password submission
-        const pass1 = password1.join("");
-        const pass2 = password2.join("");
-        if (pass1 === pass2) {
-            // Passwords match - proceed with registration
-            console.log("Passwords match!");
-        } else {
-            // Passwords don't match - show error
-            console.log("Passwords do not match!");
+
+        if (!password1 || !password2) {
+            // Handle empty password
+            return;
         }
+
+        if (password1 !== password2) {
+            // Handle password mismatch
+            return;
+        }
+
+        // Proceed with form submission
+        // ...
     };
 
     const handleChange = (element, index, isFirstPassword) => {
@@ -48,25 +52,12 @@ const LoginPage = () => {
                     idx === index ? element.value : d
                 ),
             ]);
-            if (element.value !== "" && index < 5) {
-                inputRefs1[index + 1].current.focus();
-            }
         } else {
             setPassword2([
                 ...password2.map((d, idx) =>
                     idx === index ? element.value : d
                 ),
             ]);
-            if (element.value !== "" && index < 5) {
-                inputRefs2[index + 1].current.focus();
-            }
-        }
-    };
-
-    const handleBackspace = (e, index, isFirstPassword) => {
-        const refs = isFirstPassword ? inputRefs1 : inputRefs2;
-        if (e.key === "Backspace" && index > 0) {
-            refs[index - 1].current.focus();
         }
     };
 
@@ -184,16 +175,12 @@ const LoginPage = () => {
                                             maxLength="1"
                                             key={index}
                                             value={data}
-                                            ref={inputRefs1[index]}
                                             onChange={(e) =>
                                                 handleChange(
                                                     e.target,
                                                     index,
                                                     true
                                                 )
-                                            }
-                                            onKeyDown={(e) =>
-                                                handleBackspace(e, index, true)
                                             }
                                         />
                                     ))}
@@ -226,9 +213,6 @@ const LoginPage = () => {
                                                     false
                                                 )
                                             }
-                                            onKeyDown={(e) =>
-                                                handleBackspace(e, index, false)
-                                            }
                                         />
                                     ))}
                                 </div>
@@ -243,7 +227,7 @@ const LoginPage = () => {
                         <button
                             type="submit"
                             className={styles.loginButton}
-                            onClick={handlePasswordSubmit}
+                            onClick={handleSubmit}
                             disabled={
                                 password1.join("") !== password2.join("") ||
                                 password1.join("").length !== 6 ||
