@@ -2,10 +2,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./Product.css";
 import { Col } from "react-bootstrap";
 import { PropTypes } from "prop-types";
+import AddToCart from "../../modal/addToCart/AddToCart";
 
 const Product = ({ image, title, description, price, oldPrice }) => (
-  <Col className="col-4 mb-3 ">
-    <div className=" item">
+  <Col xs={12} sm={6} md={4} className="mb-3">
+    {" "}
+    {/* Adjust column sizes based on screen size */}
+    <div className="item">
       <div className="list-card-image">
         <div className="favourite-heart text-danger position-absolute">
           <a href="detail.html">
@@ -27,7 +30,7 @@ const Product = ({ image, title, description, price, oldPrice }) => (
           <p className="text-gray mb-2 mh-25 restrict-height">{description}</p>
         </div>
 
-        <div className="d-flex justify-content-between ">
+        <div className="d-flex justify-content-between">
           {oldPrice ? (
             <div className="list-card-badge">
               <span className="badge badge-success">{price}</span>
@@ -43,13 +46,12 @@ const Product = ({ image, title, description, price, oldPrice }) => (
               <span className="noDiscount">{price}</span>
             </div>
           )}
-          <div>
-            <a
+          <div className="add-to-cart">
+            <AddToCart
               href="detail.html"
               className="btn btn-outline-dark btn-sm pl-3 pr-3"
-            >
-              Thêm
-            </a>
+              label="Thêm"
+            />
           </div>
         </div>
       </div>
@@ -61,7 +63,6 @@ Product.propTypes = {
   image: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  time: PropTypes.string.isRequired,
   price: PropTypes.string.isRequired,
   oldPrice: PropTypes.string,
 };

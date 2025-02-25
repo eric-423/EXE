@@ -9,6 +9,7 @@ import MinimizedStoreList from "../../components/menu/store/miniStore/MinimizedS
 import InputUI from "../../components/ui/input/InputUI";
 import ButtonUI from "../../components/ui/button/ButtonUI";
 import { FaSearch } from "react-icons/fa";
+import QuantityButton from "../../components/ui/quantityButton";
 
 const Menu = () => {
   const [onStoresShow, setOnStoresShow] = useState(false);
@@ -20,17 +21,17 @@ const Menu = () => {
     { id: 2, label: "Món gọi thêm" },
     { id: 3, label: "Nước giải khát" },
   ];
-
   useDocumentTitle("Thực đơn Tấm Tắc");
 
   return (
-    <>
+    <div className={styles.bgColor}>
       <h1 className="text-center">Thực đơn Tấm Tắc</h1>
       <p className="text-center w-50 m-auto">
         Tấm Tắc là chuỗi hệ thống cửa hàng cơm tấm với mong muốn mang đến cho
         sinh viên những bữa cơm tấm chất lượng với giá cả hợp lý, đảm bảo vệ
         sinh an toàn thực phẩm
       </p>
+      <QuantityButton />
       <Tab.Container defaultActiveKey="first">
         <section className="pt-2 pb-2 mt-4 mb-4">
           <Container>
@@ -113,7 +114,7 @@ const Menu = () => {
           </Container>
         </section>
       </Tab.Container>
-    </>
+    </div>
   );
 };
 
