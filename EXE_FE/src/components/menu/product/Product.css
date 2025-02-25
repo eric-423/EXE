@@ -71,17 +71,22 @@ h1 {
 
 .badge {
   background-color: var(--primary-color) !important;
-  border-radius: 3px !important;
+  font-family: "Playfair Display", serif;
+  border-radius: 5px !important;
   padding: 5px 8px !important;
   font-size: 1rem !important;
 }
 
-.noDiscount {
-  border: 1px solid black;
+.product-price {
+  font-family: "Playfair Display", serif;
+  font-size: 1.3em;
+}
+
+.no-discount-product {
+  border: 1px solid var(--dark-color);
   border-radius: 5px;
-  font-size: 13px;
+  font-size: 1em;
   box-sizing: border-box;
-  padding: 2px 5px;
 }
 
 .item {

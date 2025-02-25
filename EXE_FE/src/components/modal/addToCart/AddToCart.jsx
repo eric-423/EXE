@@ -17,7 +17,7 @@ const foodInfo = {
 - Canh tự chọn
 - Nước ngọt tự chọn`,
   price: 25000,
-  oldPrice: 35000,
+  oldPrice: 30000,
   quantity: 1,
 };
 
@@ -123,21 +123,25 @@ function AddToCart({ label, buttonClassName }) {
 
                   <div className="d-flex justify-content-between ">
                     {foodInfo.oldPrice ? (
-                      <div className="d-flex align-items-center">
+                      <div
+                        className={`d-flex align-items-center ${styles.offerPrice}`}
+                      >
                         <span className="badge badge-success">
-                          {foodInfo.price}{" "}
+                          {foodInfo.price.toLocaleString()}{" "}
                           <c style={{ textDecoration: "underline" }}>đ</c>
                         </span>
                         <p
                           className="ml-2"
                           style={{ textDecoration: "line-through" }}
                         >
-                          {foodInfo.oldPrice} đ
+                          {foodInfo.oldPrice.toLocaleString()} đ
                         </p>
                       </div>
                     ) : (
-                      <div className="list-card-badge">
-                        <span className="noDiscount">{foodInfo.price}</span>
+                      <div className="list-card-badge mt-2">
+                        <span className="noDiscount px-2">
+                          {foodInfo.price.toLocaleString()}
+                        </span>
                       </div>
                     )}
                     <div className="mr-3">
@@ -167,10 +171,10 @@ function AddToCart({ label, buttonClassName }) {
                           <span className="mr-2">
                             <GoDotFill />
                           </span>
-                          <div className="">
-                            <span>{option.label}</span>
+                          <div className={styles.modalContent}>
+                            <p>{option.label}</p>
                             <p>
-                              + {option.price}
+                              + {option.price.toLocaleString()}
                               <span
                                 style={{
                                   textDecoration: "underline",
