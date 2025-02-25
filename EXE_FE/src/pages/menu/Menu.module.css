@@ -9,6 +9,10 @@ p {
   text-align: center;
 }
 
+.bgColor {
+  background-color: var(--light-color) !important;
+}
+
 .custom-width-50 {
   width: 50%;
 }

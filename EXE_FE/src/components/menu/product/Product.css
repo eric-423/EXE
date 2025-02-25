@@ -1,3 +1,4 @@
+@import "../../../styles/global.css";
 .owl-carousel-four .item {
   padding: 6px 7px;
 }
@@ -15,6 +16,10 @@
   /* border: 1px solid #fff; */
 }
 
+.btn {
+  border-radius: 5px;
+  padding: 2px 5px;
+}
 .osahan-category-item h6 {
   margin: 0px;
   font-size: 12px;
@@ -65,7 +70,10 @@ h1 {
 }
 
 .badge {
-  background-color: rgb(238, 129, 70);
+  background-color: var(--primary-color) !important;
+  border-radius: 3px !important;
+  padding: 5px 8px !important;
+  font-size: 1rem !important;
 }
 
 .noDiscount {
@@ -98,4 +106,17 @@ img {
 .restrict-height {
   height: 60px;
   overflow: auto;
+}
+
+.add-to-cart .btn {
+  border-radius: 5px;
+  padding: 2px 7px;
+  background-color: var(--light-color) !important;
+  font-family: "Playfair Display", serif;
+  color: var(--dark-color);
+}
+
+.add-to-cart .btn:hover {
+  background-color: var(--secondary-color) !important;
+  color: var(--light-color) !important;
 }

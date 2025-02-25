@@ -20,11 +20,10 @@ const Menu = () => {
     { id: 2, label: "Món gọi thêm" },
     { id: 3, label: "Nước giải khát" },
   ];
-
   useDocumentTitle("Thực đơn Tấm Tắc");
 
   return (
-    <>
+    <div className={styles.bgColor}>
       <h1 className="text-center">Thực đơn Tấm Tắc</h1>
       <p className="text-center w-50 m-auto">
         Tấm Tắc là chuỗi hệ thống cửa hàng cơm tấm với mong muốn mang đến cho
@@ -113,7 +112,7 @@ const Menu = () => {
           </Container>
         </section>
       </Tab.Container>
-    </>
+    </div>
   );
 };
 

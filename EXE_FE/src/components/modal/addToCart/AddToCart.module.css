@@ -1,0 +1,73 @@
+@import "../../../styles/global.css";
+
+:global(.customModal) .modal-content {
+  .modal-content {
+    border-radius: 15px;
+    background-color: var(--light-color);
+    .modal-header {
+      border-bottom: 1px solid var(--dark-color);
+      justify-items: center;
+      .close {
+        color: var(--dark-color);
+      }
+    }
+    .modal-body {
+      padding: 20px;
+    }
+    .modal-footer {
+      border-top: 1px solid var(--dark-color);
+      .btn {
+        border-radius: 2px;
+        padding: 10px 15px;
+      }
+    }
+  }
+}
+
+.foodInfo {
+  padding: 10px 20px;
+  margin-bottom: 20px;
+}
+
+.borderTop {
+  border-top: 1px solid var(--dark-color);
+}
+
+.modalPhoto {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 15px;
+}
+
+.modalContent h5 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--dark-color);
+}
+.modalContent h6 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--dark-color);
+}
+
+.modalContent p,
+span {
+  font-family: "Playfair Display", serif;
+  font-size: 1rem;
+  color: var(--dark-color);
+  margin: 0;
+}
+
+.modalButton {
+  font-family: "Playfair Display", serif;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  border-radius: 5px !important;
+  background-color: var(--secondary-color) !important;
+  padding: 10px 25px !important;
+}
+
+.modalButton:hover {
+  background-color: var(--primary-color) !important;
+}

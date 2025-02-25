@@ -15,7 +15,7 @@ body {
 button,
 a {
   outline: none !important;
-  color: #ff3008;
+  color: var(--primary-color);
   text-decoration: none !important;
   font-family: "Playfair Display", serif;
 }
@@ -70,7 +70,7 @@ h6 {
 }
 
 .dropdown-cart-top {
-  border-top: 2px solid #ff3008;
+  border-top: 2px solid var(--primary-color);
   min-width: 340px;
 }
 
@@ -154,8 +154,8 @@ h6 {
   margin-bottom: 1rem;
 }
 
-.form-label-group>input,
-.form-label-group>label {
+.form-label-group > input,
+.form-label-group > label {
   padding: 15px 0;
   border-radius: 0px;
   height: 51px;
@@ -165,7 +165,7 @@ h6 {
   box-shadow: none !important;
 }
 
-.form-label-group>label {
+.form-label-group > label {
   position: absolute;
   top: 0;
   left: 0;
@@ -207,7 +207,7 @@ h6 {
   padding-bottom: calc(var(--input-padding-y) / 3);
 }
 
-.form-label-group input:not(:placeholder-shown)~label {
+.form-label-group input:not(:placeholder-shown) ~ label {
   padding-top: calc(var(--input-padding-y) / 3);
   padding-bottom: calc(var(--input-padding-y) / 3);
   font-size: 12px;
@@ -323,13 +323,13 @@ h6 {
 }
 
 .osahan-category-item:hover {
-  border: 1px solid #ff3008;
+  border: 1px solid var(--primary-color);
 }
 
 .osahan-category-item h6 {
   margin: 0px;
   font-size: 13px;
-  color: #ff3008;
+  color: var(--primary-color);
 }
 
 .osahan-category-item p {
@@ -367,7 +367,10 @@ small {
   width: 100% !important;
 }
 
-.select2-container--default .select2-selection--single .select2-selection__arrow b {
+.select2-container--default
+  .select2-selection--single
+  .select2-selection__arrow
+  b {
   left: 96%;
 }
 
@@ -434,30 +437,30 @@ small {
 
 .btn-primary,
 .badge-danger {
-  background-color: #ff3008 !important;
-  border-color: #ff3008 !important;
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
 }
 
 .btn-outline-primary {
-  color: #ff3008 !important;
-  border-color: #ff3008 !important;
+  color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
 }
 
 .btn-outline-primary:hover,
 .btn-outline-primary:not(:disabled):not(.disabled).active,
 .btn-outline-primary:not(:disabled):not(.disabled):active,
-.show>.btn-outline-primary.dropdown-toggle {
+.show > .btn-outline-primary.dropdown-toggle {
   color: #ffffff !important;
-  border-color: #ff3008 !important;
-  background-color: #ff3008 !important;
+  border-color: var(--primary-color) !important;
+  background-color: var(--primary-color) !important;
 }
 
 .text-primary {
-  color: #ff3008 !important;
+  color: var(--primary-color) !important;
 }
 
 .border-primary {
-  border-color: #ff3008 !important;
+  border-color: var(--primary-color) !important;
 }
 
 .btn-lg {
@@ -465,11 +468,6 @@ small {
   font-weight: bold;
   padding: 14px 35px;
   letter-spacing: 1px;
-}
-
-.modal-content {
-  border: none;
-  border-radius: 2px;
 }
 
 .btn {
@@ -508,12 +506,12 @@ small {
   border-radius: 2px;
 }
 
-.input-group-sm>.custom-select,
-.input-group-sm>.form-control,
-.input-group-sm>.input-group-append>.btn,
-.input-group-sm>.input-group-append>.input-group-text,
-.input-group-sm>.input-group-prepend>.btn,
-.input-group-sm>.input-group-prepend>.input-group-text {
+.input-group-sm > .custom-select,
+.input-group-sm > .form-control,
+.input-group-sm > .input-group-append > .btn,
+.input-group-sm > .input-group-append > .input-group-text,
+.input-group-sm > .input-group-prepend > .btn,
+.input-group-sm > .input-group-prepend > .input-group-text {
   border-radius: 2px;
 }
 
@@ -543,7 +541,7 @@ small {
 }
 
 .dropdown-item:focus {
-  background-color: #ff3008;
+  background-color: var(--primary-color);
   color: #fff;
 }
 
@@ -658,22 +656,24 @@ small {
 }
 
 .generator-bg {
-  /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#ff3008+1,fe792b+100 */
-  background: #ff3008;
+  /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/var(--primary-color)+1,fe792b+100 */
+  background: var(--primary-color);
   /* Old browsers */
-  background: -moz-linear-gradient(-45deg,
-      #ff3008 1%,
-      #fe792b 100%);
+  background: -moz-linear-gradient(
+    -45deg,
+    var(--primary-color) 1%,
+    #fe792b 100%
+  );
   /* FF3.6-15 */
-  background: -webkit-linear-gradient(-45deg,
-      #ff3008 1%,
-      #fe792b 100%);
+  background: -webkit-linear-gradient(
+    -45deg,
+    var(--primary-color) 1%,
+    #fe792b 100%
+  );
   /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(135deg,
-      #ff3008 1%,
-      #fe792b 100%);
+  background: linear-gradient(135deg, var(--primary-color) 1%, #fe792b 100%);
   /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff3008', endColorstr='#fe792b', GradientType=1);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='var(--primary-color)', endColorstr='#fe792b', GradientType=1);
   /* IE6-9 fallback on horizontal gradient */
 }
 
@@ -692,15 +692,21 @@ small {
   padding: 65px 0 17px;
   position: absolute;
   right: 0;
-  background: -moz-linear-gradient(top,
-      rgba(0, 0, 0, 0) 0%,
-      rgba(0, 0, 0, 0.83) 100%);
-  background: -webkit-linear-gradient(top,
-      rgba(0, 0, 0, 0) 0%,
-      rgba(0, 0, 0, 0.83) 100%);
-  background: linear-gradient(to bottom,
-      rgba(0, 0, 0, 0) 0%,
-      rgba(0, 0, 0, 0.83) 100%);
+  background: -moz-linear-gradient(
+    top,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.83) 100%
+  );
+  background: -webkit-linear-gradient(
+    top,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.83) 100%
+  );
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.83) 100%
+  );
   filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#d4000000', GradientType=0);
 }
 
@@ -1152,7 +1158,7 @@ small {
   padding-bottom: 50%;
   pointer-events: none;
   background-color: rgba(225, 48, 8, 0.2);
-  border: 1px solid #ff3008;
+  border: 1px solid var(--primary-color);
 }
 
 /* Footer */
@@ -1794,4 +1800,5 @@ footer {
 }
 
 /* Extra large devices (large desktops, 1200px and up) */
-@media (min-width: 1200px) {}
+@media (min-width: 1200px) {
+}
