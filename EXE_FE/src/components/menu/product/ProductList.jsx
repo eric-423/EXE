@@ -10,16 +10,15 @@ const ProductList = () => {
       title: "World Famous",
       description: "North Indian • American • Pure veg",
       time: "20–25 min",
-      price: "$250",
-      oldPrice: "$350",
+      price: 30000,
+      oldPrice: 40000,
     },
     {
       image: bannerImage,
       title: "World Famous",
       description: "North Indian • American • Pure veg",
       time: "20–25 min",
-      price: "$250",
-      oldPrice: "",
+      price: 25000,
     },
     {
       image: bannerImage,
@@ -28,16 +27,15 @@ const ProductList = () => {
 - Canh tự chọn
 - Nước ngọt tự chọn`,
       time: "20–25 min",
-      price: "$250",
-      oldPrice: "$350",
+      price: 25000,
+      oldPrice: 30000,
     },
     {
       image: bannerImage,
       title: "World Famous",
       description: "North Indian • American • Pure veg",
       time: "20–25 min",
-      price: "$250",
-      oldPrice: "",
+      price: 25000,
     },
     {
       image: bannerImage,
@@ -46,8 +44,8 @@ const ProductList = () => {
 - Canh tự chọn
 - Nước ngọt tự chọn`,
       time: "20–25 min",
-      price: "$250",
-      oldPrice: "$350",
+      price: 25000,
+      oldPrice: 30000,
     },
   ];
   return (

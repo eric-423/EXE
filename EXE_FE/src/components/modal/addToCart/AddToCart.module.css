@@ -31,6 +31,7 @@
 
 .borderTop {
   border-top: 1px solid var(--dark-color);
+  margin-top: 10px;
 }
 
 .modalPhoto {
@@ -52,11 +53,15 @@
 }
 
 .modalContent p,
-span {
+.modalContent span {
   font-family: "Playfair Display", serif;
   font-size: 1rem;
   color: var(--dark-color);
   margin: 0;
+}
+
+.offerPrice span {
+  color: var(--light-color) !important;
 }
 
 .modalButton {

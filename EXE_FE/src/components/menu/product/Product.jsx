@@ -32,18 +32,23 @@ const Product = ({ image, title, description, price, oldPrice }) => (
 
         <div className="d-flex justify-content-between">
           {oldPrice ? (
-            <div className="list-card-badge">
-              <span className="badge badge-success">{price}</span>
+            <div className="list-card-badge product-price">
+              <span className="badge badge-success">
+                {price.toLocaleString()}
+                <u>đ</u>
+              </span>
               <small
                 className="ml-2"
                 style={{ textDecoration: "line-through" }}
               >
-                {oldPrice}
+                {oldPrice} <u>đ</u>
               </small>
             </div>
           ) : (
-            <div className="list-card-badge">
-              <span className="noDiscount">{price}</span>
+            <div className="list-card-badge product-price">
+              <span className="no-discount-product px-3 py-1 ">
+                {price.toLocaleString()}
+              </span>
             </div>
           )}
           <div className="add-to-cart">
@@ -63,7 +68,7 @@ Product.propTypes = {
   image: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  price: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
   oldPrice: PropTypes.string,
 };
 
