@@ -76,10 +76,8 @@ function AddToCart({ label, buttonClassName }) {
   useEffect(() => {
     const calculatePrice = () => {
       let totalPrice = foodInfo.price * foodQuantity;
-      console.log(totalPrice);
 
       sideQuantity.forEach((fields) => {
-        console.log(fields);
         fields.forEach((option) => {
           totalPrice += option.quantity * option.price;
         });

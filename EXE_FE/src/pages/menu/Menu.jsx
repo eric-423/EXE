@@ -9,7 +9,6 @@ import MinimizedStoreList from "../../components/menu/store/miniStore/MinimizedS
 import InputUI from "../../components/ui/input/InputUI";
 import ButtonUI from "../../components/ui/button/ButtonUI";
 import { FaSearch } from "react-icons/fa";
-import QuantityButton from "../../components/ui/quantityButton";
 
 const Menu = () => {
   const [onStoresShow, setOnStoresShow] = useState(false);
@@ -31,7 +30,6 @@ const Menu = () => {
         sinh viên những bữa cơm tấm chất lượng với giá cả hợp lý, đảm bảo vệ
         sinh an toàn thực phẩm
       </p>
-      <QuantityButton />
       <Tab.Container defaultActiveKey="first">
         <section className="pt-2 pb-2 mt-4 mb-4">
           <Container>
