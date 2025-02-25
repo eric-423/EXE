@@ -250,9 +250,9 @@ const LoginPage = () => {
             case "customer":
                 return (
                     <>
-                        <div className={styles.dividerLine}>
+                        {/* <div className={styles.dividerLine}>
                             <span>Bạn là khách hàng của Tấm Tắc?</span>
-                        </div>
+                        </div> */}
                         <form onSubmit={handleCustomerSubmit}>
                             <div className={styles.inputGroup}>
                                 <input
@@ -323,11 +323,11 @@ const LoginPage = () => {
             case "otp":
                 return (
                     <form onSubmit={handleOTPSubmit}>
-                        <div className={styles.dividerLine}>
+                        {/* <div className={styles.dividerLine}>
                             <span>
                                 Nhập mã OTP được gửi đến số điện thoại của bạn
                             </span>
-                        </div>
+                        </div> */}
                         <div className={styles.otpContainer}>
                             {otp.map((digit, index) => (
                                 <input
@@ -371,9 +371,9 @@ const LoginPage = () => {
             case "registerPassword":
                 return (
                     <form onSubmit={handlePasswordSubmit}>
-                        <div className={styles.dividerLine}>
+                        {/* <div className={styles.dividerLine}>
                             <span>Đăng ký mật khẩu</span>
-                        </div>
+                        </div> */}
                         <div className={styles.inputGroup}>
                             <input
                                 type="password"
