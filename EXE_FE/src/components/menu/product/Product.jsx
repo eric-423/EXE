@@ -27,7 +27,12 @@ const Product = ({ image, title, description, price, oldPrice }) => (
               {title}
             </a>
           </h6>
-          <p className="text-gray mb-2 mh-25 restrict-height">{description}</p>
+          <p
+            className="text-gray mb-2 mh-25 restrict-height"
+            style={{ fontSize: "1rem" }}
+          >
+            {description}
+          </p>
         </div>
 
         <div className="d-flex justify-content-between">
@@ -41,7 +46,7 @@ const Product = ({ image, title, description, price, oldPrice }) => (
                 className="ml-2"
                 style={{ textDecoration: "line-through" }}
               >
-                {oldPrice} <u>đ</u>
+                {oldPrice.toLocaleString()} <u>đ</u>
               </small>
             </div>
           ) : (

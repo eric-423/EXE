@@ -24,8 +24,8 @@ const Menu = () => {
 
   return (
     <div className={styles.bgColor}>
-      <h1 className="text-center">Thực đơn Tấm Tắc</h1>
-      <p className="text-center w-50 m-auto">
+      <h1 className="text-center mb-3">Thực đơn Tấm Tắc</h1>
+      <p className="text-center w-50 m-auto" style={{ fontSize: "1.2rem" }}>
         Tấm Tắc là chuỗi hệ thống cửa hàng cơm tấm với mong muốn mang đến cho
         sinh viên những bữa cơm tấm chất lượng với giá cả hợp lý, đảm bảo vệ
         sinh an toàn thực phẩm
@@ -36,7 +36,9 @@ const Menu = () => {
             <Row>
               <Col md={4}>
                 <div className={`mb-1 p-3`}>
-                  <div className={`${styles.rounded} p-2 ${styles.customBg}`}>
+                  <div
+                    className={`${styles.rounded} p-2 menu-filter ${styles.customBg}`}
+                  >
                     <h6 className="pt-0 ml-1 my-auto font-weight-bold">
                       Thực đơn
                     </h6>
@@ -45,7 +47,11 @@ const Menu = () => {
                     className={`${styles.hoverEffect} ${styles.rounded} p-2`}
                   >
                     {category.map((item) => (
-                      <p className="ml-3 my-2 font-weight-bold" key={item.id}>
+                      <p
+                        className="ml-3 my-2 font-weight-bold"
+                        style={{ fontSize: "1rem" }}
+                        key={item.id}
+                      >
                         {item.label}
                       </p>
                     ))}
@@ -74,7 +80,6 @@ const Menu = () => {
                             type={locationDropdown.cities}
                             style={{ marginBottom: "7px" }}
                             onSelect={onSelectCity}
-                            className={styles.customDropdown}
                           />
                           <DropdownLocation
                             items={districts}
@@ -101,7 +106,7 @@ const Menu = () => {
                     )}
                   </div>
                 </div>
-                <div className=" mb-4 p-3">
+                <div className=" mb-4 p-3 pt-0">
                   <MinimizedStoreList />
                 </div>
               </Col>

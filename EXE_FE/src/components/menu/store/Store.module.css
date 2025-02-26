@@ -23,7 +23,7 @@
 }
 
 .content {
-  font-size: 10px;
+  font-size: 0.8rem;
   color: var(--dark-color);
   font-family: "Playfair Display", serif;
 }
