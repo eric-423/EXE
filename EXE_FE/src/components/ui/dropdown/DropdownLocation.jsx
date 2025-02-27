@@ -59,7 +59,7 @@ DropdownLocation.propTypes = {
 DropdownLocation.defaultProps = {
   type: locationDropdown.cities,
   items: [],
-  onSelect: () => {},
+  onSelect: () => { },
   defaultSelected: null,
   className: "",
   style: {},

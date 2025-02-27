@@ -2,6 +2,7 @@ import { Col } from "react-bootstrap"
 import './checkout.css'
 import { useState } from "react"
 import PropTypes from 'prop-types'
+import DropdownLocation from './../ui/dropdown/DropdownLocation';
 
 
 
@@ -107,7 +108,6 @@ const CheckoutLeft = ({ place, city }) => {
                         </div>
                     </div>
 
-                    {/* dlsjakkkkkkkkkkkkkkkkkkkk */}
                     <input
                         type="text"
                         className="form-control mb-2 info-input"
@@ -146,6 +146,8 @@ const CheckoutLeft = ({ place, city }) => {
                             }
                         </select>
                     </div>
+
+                    {/* <DropdownLocation /> */}
 
                     <input
                         type="text"
