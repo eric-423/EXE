@@ -5,11 +5,11 @@ const { Role } = require('../models')
 require('dotenv').config();
 
 const registerCustomer = async (req, res) => {
-    const { fullName, email, password, dateOfBirth, note } = req.body
+    const { phoneNumber } = req.body
     try {
         const salt = bcrypt.genSaltSync(10);
         const hashPassword = bcrypt.hashSync(password, salt)
-        const newUser = await User.create({ fullName, email, password: hashPassword, status: true, dateOfBirth, note, isBan: false, roleId: 6 })
+        const newUser = await User.create({ phoneNumber, note: "", isBan: false, roleId: 6 })
         res.status(201).send(newUser)
     } catch (error) {
         console.log(error);

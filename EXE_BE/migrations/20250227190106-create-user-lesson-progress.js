@@ -2,29 +2,36 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Recipes', {
+    await queryInterface.createTable('UserLessonProgresses', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      product: {
+      lesson: {
         type: Sequelize.INTEGER,
         references: {
-          model: "Products",
+          model: "Lessons",
           key: "id"
         }
-      }
-      ,
-      name: {
-        type: Sequelize.STRING
       },
-      ingredients: {
-        type: Sequelize.STRING
+      userTraining: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "UserTrainings",
+          key: "id"
+        }
       },
-      instructions: {
-        type: Sequelize.STRING
+      point: {
+        type: Sequelize.INTEGER
+      },
+      isPassed: {
+        type: Sequelize.BOOLEAN
+      },
+      startAt: {
+        allowNull: false,
+        type: Sequelize.DATE
       },
       createdAt: {
         allowNull: false,
@@ -37,6 +44,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Recipes');
+    await queryInterface.dropTable('UserLessonProgresses');
   }
 };

@@ -9,14 +9,14 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({ MemberAssociation, Role, Branch, Contract, Information, Order, MarketingCampaign, Schedule, Blog, Recipe, Notification, UserLesson }) {
+    static associate({ MemberAssociation, Contract, Information, Order, MarketingCampaign, Schedule, Blog, Recipe, Notification, UserLesson, UserTraining, UserRoleHistory }) {
       // define association here
       this.belongsTo(MemberAssociation, { foreignKey: "memberRank" })
-      this.belongsTo(Role, { foreignKey: "roleId", as: "role" })
-      this.belongsTo(Branch, { foreignKey: "branchId" })
+      this.hasMany(UserRoleHistory, { foreignKey: "user" })
       this.hasMany(Contract, { foreignKey: "userId" })
       this.hasMany(Information, { foreignKey: "userId" })
-      this.hasMany(Order, { foreignKey: "userId" })
+      this.hasMany(Order, { foreignKey: "customer" })
+      this.hasMany(Order, { foreignKey: "worker" })
       this.hasMany(MarketingCampaign, { foreignKey: "createdBy" })
       this.hasMany(Schedule, { foreignKey: "userId" })
       this.hasMany(Blog, { foreignKey: "author" })
@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(Notification, { foreignKey: "receiver" })
       this.hasMany(UserLesson, { foreignKey: "mentor" })
       this.hasMany(UserLesson, { foreignKey: "learner" })
+      this.hasMany(UserTraining, { foreignKey: "user" })
     }
   }
   User.init({
@@ -32,6 +33,7 @@ module.exports = (sequelize, DataTypes) => {
     email: DataTypes.STRING,
     status: DataTypes.BOOLEAN,
     dateOfBirth: DataTypes.DATE,
+    phoneNumber: DataTypes.STRING,
     note: DataTypes.STRING,
     isBan: DataTypes.BOOLEAN
   }, {
