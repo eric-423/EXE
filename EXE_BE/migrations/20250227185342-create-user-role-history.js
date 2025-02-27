@@ -2,48 +2,39 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('UserLessons', {
+    await queryInterface.createTable('UserRoleHistories', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      mentor: {
+      role: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Roles",
+          key: "id"
+        }
+      },
+      user: {
         type: Sequelize.INTEGER,
         references: {
           model: "Users",
           key: "id"
         }
       },
-      learner: {
+      branch: {
         type: Sequelize.INTEGER,
         references: {
-          model: "Users",
+          model: "Branches",
           key: "id"
         }
-      },
-      lesson: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: "Lessons",
-          key: "id"
-        }
-      },
-      point: {
-        type: Sequelize.INTEGER
-      },
-      startDate: {
-        type: Sequelize.DATE
       },
       endDate: {
         type: Sequelize.DATE
       },
-      isPassed: {
+      isActive: {
         type: Sequelize.BOOLEAN
-      },
-      comment: {
-        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
@@ -56,6 +47,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('UserLessons');
+    await queryInterface.dropTable('UserRoleHistories');
   }
 };
