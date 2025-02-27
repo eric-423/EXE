@@ -3,28 +3,24 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class UserLesson extends Model {
+  class UserLessonProgress extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({ Lesson, User }) {
+    static associate({ UserTraining, Lesson }) {
       // define association here
+      this.belongsTo(UserTraining, { foreignKey: "userTraining" })
       this.belongsTo(Lesson, { foreignKey: "lesson" })
-      this.belongsTo(User, { foreignKey: "learner" })
-      this.belongsTo(User, { foreignKey: "mentor" })
     }
   }
-  UserLesson.init({
+  UserLessonProgress.init({
     point: DataTypes.INTEGER,
-    startDate: DataTypes.DATE,
-    endDate: DataTypes.DATE,
-    isPassed: DataTypes.BOOLEAN,
-    comment: DataTypes.STRING
+    isPassed: DataTypes.BOOLEAN
   }, {
     sequelize,
-    modelName: 'UserLesson',
+    modelName: 'UserLessonProgress',
   });
-  return UserLesson;
+  return UserLessonProgress;
 };
