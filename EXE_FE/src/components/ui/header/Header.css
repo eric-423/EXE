@@ -7,6 +7,9 @@
     justify-content: space-between;
     align-items: center;
     padding: 10px 0;
+    position: relative;
+    box-shadow: 0 10px 20px -4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
 }
 
 .redirect {
@@ -40,9 +43,11 @@
 }
 
 .header img {
-    width: 70px;
+    width: 55px;
 }
-
+.header img .logo{
+    width: 100px;
+}
 .header-right {
     display: flex;
     justify-content: flex-end;
@@ -50,7 +55,9 @@
     padding-right: 30px;
     gap: 30px;
 }
-
+.header-left img {
+    width: 90px; /* Specific size for the logo */
+}
 .header-icon {
     width: 16px;
     margin: 0 10px;
@@ -72,6 +79,8 @@
     cursor: pointer;
     filter: drop-shadow(0px 0px 8px #DA7339);
 }
+
+
 
 /* Responsive styles */
 @media (max-width: 1200px) {
