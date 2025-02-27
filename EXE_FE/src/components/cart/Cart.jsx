@@ -44,7 +44,8 @@ const CartFooter = ({ totalAmount }) => {
             </div>
             <div className='checkoutBtn' >
                 <Link to={'/checkout '}
-                    className='linkCheckout'
+                    className='linkCheckout '
+                    style={{ textDecoration: 'none' }}
                 >
                     Xác nhận đơn hàng
                 </Link>

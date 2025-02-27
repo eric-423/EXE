@@ -1,12 +1,20 @@
 import { Col } from "react-bootstrap"
 import './checkout.css'
+import { useState } from "react"
+import PropTypes from 'prop-types'
 
 
 
-const checkoutLeft = ({ place, city }) => {
+const CheckoutLeft = ({ place, city }) => {
+    const [isBuyFor, setIsBuyFor] = useState(false)
+    const [name, setName] = useState('')
+    const [phone, setPhone] = useState('')
+    const [email, setEmail] = useState('')
+    const [nameBuyFor, setNameBuyFor] = useState('')
+    const [phoneBuyFor, setPhoneBuyFor] = useState('')
     return (
-        <>
-            <Col md={5}>
+        <  >
+            <Col md={5} style={{ fontFamily: 'Playfair Display, serif' }}>
                 <div className="mb-3 d-flex justify-content-around">
                     <h5 style={{ fontWeight: '700' }}>Hình thức</h5>
                     <div className="form-check form-check-inline ">
@@ -15,7 +23,7 @@ const checkoutLeft = ({ place, city }) => {
                             type="radio"
                             name="deliveryType"
                             id="radioGiaoHang"
-                            style={{ width: 20, height: 20, backgroundColor: 'red' }}
+                            style={{ width: 20, height: 20, backgroundColor: 'rgb(235, 209, 135)' }}
                         />
                         <label className="form-check-label " htmlFor="radioGiaoHang">
                             Giao hàng
@@ -27,9 +35,12 @@ const checkoutLeft = ({ place, city }) => {
                             type="radio"
                             name="deliveryType"
                             id="radioDenTaiQuan"
-                            style={{ width: 20, height: 20, backgroundColor: 'red' }}
+                            style={{ width: 20, height: 20, backgroundColor: 'rgb(235, 209, 135)' }}
                         />
-                        <label className="form-check-label" htmlFor="radioDenTaiQuan">
+                        <label
+                            className="form-check-label"
+                            htmlFor="radioDenTaiQuan"
+                        >
                             Đến tại quán
                         </label>
                     </div>
@@ -50,18 +61,24 @@ const checkoutLeft = ({ place, city }) => {
                         type="text"
                         className="form-control mb-2 "
                         placeholder="Tên khách hàng"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
                         style={{ backgroundColor: 'transparent', border: '1px solid black', color: 'black', }}
                     />
                     <input
                         type="text"
                         className="form-control mb-2 "
                         placeholder="Số điện thoại"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
                         style={{ backgroundColor: 'transparent', border: '1px solid black', color: 'black', }}
                     />
                     <input
                         type="email"
                         className="form-control mb-2 "
                         placeholder="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                         style={{ backgroundColor: 'transparent', border: '1px solid black', color: 'black', }}
 
                     />
@@ -77,24 +94,36 @@ const checkoutLeft = ({ place, city }) => {
                                 type="checkbox"
                                 name="isBuyFor"
                                 id="checkboxBuyFor"
-                                style={{ width: 20, height: 20, padding: 0, backgroundColor: 'red' }}
+                                value={isBuyFor}
+                                onClick={() => setIsBuyFor(!isBuyFor)}
+                                style={{ width: 20, height: 20, padding: 0, backgroundColor: 'rgb(235, 209, 135)' }}
                             />
-                            <label className="form-check-label" htmlFor="checkboxBuyFor">
-                                Đến tại quán
+                            <label
+                                className="form-check-label"
+                                htmlFor="checkboxBuyFor"
+                            >
+                                Đặt Hộ
                             </label>
                         </div>
                     </div>
 
-
+                    {/* dlsjakkkkkkkkkkkkkkkkkkkk */}
                     <input
                         type="text"
                         className="form-control mb-2 info-input"
                         placeholder="Tên người nhận"
+                        disabled={isBuyFor ? false : true}
+                        value={isBuyFor ? nameBuyFor : name}
+                        onChange={(e) => setNameBuyFor(e.target.value)}
+                    // value={isBuyFor ?  : ''}
                     />
                     <input
                         type="text"
                         className="form-control mb-2 info-input"
                         placeholder="Số điện thoại người nhận"
+                        disabled={isBuyFor ? false : true}
+                        value={isBuyFor ? phoneBuyFor : phone}
+                        onChange={(e) => setPhoneBuyFor(e.target.value)}
                     />
 
                     <div className='d-flex justify-content-between'>
@@ -131,7 +160,7 @@ const checkoutLeft = ({ place, city }) => {
                             type="radio"
                             name="deliveryType"
                             id="radioGiaoHang"
-                            style={{ width: 25, height: 25, backgroundColor: 'red' }}
+                            style={{ width: 25, height: 25, backgroundColor: 'rgb(235, 209, 135)' }}
                         />
                         <label className="form-check-label ml-2 " style={{ fontSize: '15px' }} htmlFor="radioGiaoHang">
                             Giao ngay
@@ -145,7 +174,7 @@ const checkoutLeft = ({ place, city }) => {
                             type="radio"
                             name="deliveryType"
                             id="radioGiaoHang"
-                            style={{ width: 25, height: 25, backgroundColor: 'red' }}
+                            style={{ width: 25, height: 25, backgroundColor: 'rgb(235, 209, 135)' }}
                         />
 
                         <label
@@ -176,31 +205,7 @@ const checkoutLeft = ({ place, city }) => {
                     <h5>Phương thức thanh toán</h5>
                     <div className="form-check">
                         <input
-                            style={{ width: 25, height: 25, backgroundColor: 'red' }}
-                            className="form-check-input"
-                            type="radio"
-                            name="paymentMethod"
-                            id="payMomo"
-                        />
-                        <label className="form-check-label ml-3" htmlFor="payMomo">
-                            Ví Momo
-                        </label>
-                    </div>
-                    <div className="form-check">
-                        <input
-                            style={{ width: 25, height: 25, backgroundColor: 'red' }}
-                            className="form-check-input"
-                            type="radio"
-                            name="paymentMethod"
-                            id="payVNPay"
-                        />
-                        <label className="form-check-label ml-3" htmlFor="payVNPay">
-                            VNPay
-                        </label>
-                    </div>
-                    <div className="form-check">
-                        <input
-                            style={{ width: 25, height: 25, backgroundColor: 'red' }}
+                            style={{ width: 25, height: 25, backgroundColor: 'rgb(235, 209, 135)' }}
                             className="form-check-input"
                             type="radio"
                             name="paymentMethod"
@@ -212,7 +217,7 @@ const checkoutLeft = ({ place, city }) => {
                     </div>
                     <div className="form-check">
                         <input
-                            style={{ width: 25, height: 25, backgroundColor: 'red' }}
+                            style={{ width: 25, height: 25, backgroundColor: 'rgb(235, 209, 135)' }}
                             className="form-check-input"
                             type="radio"
                             name="paymentMethod"
@@ -228,4 +233,9 @@ const checkoutLeft = ({ place, city }) => {
     )
 }
 
-export default checkoutLeft
+CheckoutLeft.propTypes = {
+    place: PropTypes.array.isRequired,
+    city: PropTypes.array.isRequired
+}
+
+export default CheckoutLeft

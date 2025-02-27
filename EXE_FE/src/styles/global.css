@@ -20,7 +20,7 @@
 }
 
 body {
-  background: var(--light-color);
+  background: var(--light-color) !important;
   font-size: 13px;
   font-weight: 500;
 }

@@ -1,4 +1,4 @@
-import { Card, CardText, CardTitle, Col, Form } from 'react-bootstrap'
+import { Col, Form } from 'react-bootstrap'
 import { useEffect, useState } from 'react';
 
 const CheckoutRight = () => {
@@ -53,7 +53,7 @@ const CheckoutRight = () => {
     ]
 
     return (
-        <Col md={5} >
+        <Col md={5} style={{ fontFamily: 'Playfair Display, serif' }} >
             <div className='comfirm-order rounded-4'>
                 <div className='mb-4 '
                     style={{ backgroundColor: 'transparent', borderBottom: '1px solid black' }}
@@ -112,7 +112,7 @@ const CheckoutRight = () => {
             </div>
 
 
-            <Form className=' mt-5 rounded-4 card-total-price p-3'>
+            <Form className='rounded-4 card-total-price p-3'>
                 <div>
                     <div className='d-flex justify-content-between pl-3 pr-3'>
                         <h5>Giá gốc</h5>

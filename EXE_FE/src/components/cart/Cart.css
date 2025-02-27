@@ -105,7 +105,13 @@
 .linkCheckout {
     text-decoration: none;
     color: white;
-    font-size: 20px;
+    font-size: 23px;
     font-family: 'Times New Roman', Times, serif;
     margin-top: 10px;
+    padding: 10px 20px
+}
+
+.linkCheckout:hover {
+
+    color: white;
 }
