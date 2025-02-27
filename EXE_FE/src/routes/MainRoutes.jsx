@@ -9,7 +9,7 @@ import Checkout from './../components/checkoutPage/checkout';
 
 //* ====================  Authorization for PUBLIC ==================== */
 const MainRouter = () => {
-    return <UserLayout />;
+  return <UserLayout />;
 };
 
 //* ==================== Define children routes ==================== */
@@ -26,9 +26,9 @@ const notFoundRoutes = { path: "*", element: <NotFound /> };
 
 //* ==================== Define main routes ==================== */
 const MainRoutes = {
-    path: "/",
-    element: <MainRouter />,
-    children: [publicRoutes, notFoundRoutes],
+  path: "/",
+  element: <MainRouter />,
+  children: [publicRoutes, notFoundRoutes],
 };
 
 export default MainRoutes;
