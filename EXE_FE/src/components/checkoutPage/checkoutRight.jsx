@@ -65,23 +65,25 @@ const CheckoutRight = () => {
                 {
                     combo.map((item, index) => (
                         <div key={index} className="mb-3">
-                            <div className="confirm-order-item">
-                                <h6> {item.name}</h6>
+                            <div className="confirm-order-item mb-4">
 
+                                <h6 > {item.name}</h6>
                                 <div className="d-flex justify-content-end gap-3">
                                     <p style={{ color: 'rgb(218, 115, 50)' }}>{item.price}</p>
                                     <p> x {item.quantity}</p>
                                 </div>
-
                             </div>
 
-                            {item.additionalItems &&
-                                item.additionalItems.map((item, index) => (
-                                    <div key={index} className="additional-items" style={{ fontWeight: 'normal', fontSize: '18px' }}>
-                                        <li>{item.name}</li>
-                                    </div>
-                                ))
-                            }
+                            <div >
+                                {item.additionalItems &&
+                                    item.additionalItems.map((item, index) => (
+                                        <div key={index} className="additional-items" style={{ fontWeight: 'normal', fontSize: '18px' }}>
+                                            <li>{item.name}</li>
+                                        </div>
+                                    ))
+                                }
+                            </div>
+
                         </div>
                     ))
                 }
