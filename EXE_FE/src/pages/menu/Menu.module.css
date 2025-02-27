@@ -1,12 +1,17 @@
 @import "../../styles/global.css"; /* Import shared styles */
 /* Menu.module.css */
-p {
-  font-size: 13px;
+.menu-filter p,
+.menu-filter span {
+  font-size: 1rem;
   color: var(--dark-color);
   font-family: "Playfair Display", serif;
 }
 .custom-text-center {
   text-align: center;
+}
+
+.bgColor {
+  background-color: var(--light-color) !important;
 }
 
 .custom-width-50 {

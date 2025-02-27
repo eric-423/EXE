@@ -5,10 +5,12 @@ import Home from "../pages/home";
 import Menu from "../pages/menu/Menu";
 import Login from "../pages/login/LoginPage";
 import Checkout from './../components/checkoutPage/checkout';
+import Login from "../pages/login";
+
 
 //* ====================  Authorization for PUBLIC ==================== */
 const MainRouter = () => {
-  return <UserLayout />;
+    return <UserLayout />;
 };
 
 //* ==================== Define children routes ==================== */
@@ -25,9 +27,9 @@ const notFoundRoutes = { path: "*", element: <NotFound /> };
 
 //* ==================== Define main routes ==================== */
 const MainRoutes = {
-  path: "/",
-  element: <MainRouter />,
-  children: [publicRoutes, notFoundRoutes],
+    path: "/",
+    element: <MainRouter />,
+    children: [publicRoutes, notFoundRoutes],
 };
 
 export default MainRoutes;
