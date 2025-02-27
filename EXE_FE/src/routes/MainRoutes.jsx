@@ -5,7 +5,6 @@ import Home from "../pages/home";
 import Menu from "../pages/menu/Menu";
 import Login from "../pages/login/LoginPage";
 import Checkout from './../components/checkoutPage/checkout';
-import Login from "../pages/login";
 
 
 //* ====================  Authorization for PUBLIC ==================== */
