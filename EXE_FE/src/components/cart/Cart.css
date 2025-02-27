@@ -1,0 +1,117 @@
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 200%;
+    right: 0px;
+    background-color: #f9f9f9;
+    min-width: 450px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 10px;
+    padding: 40px;
+    background-color: rgb(245, 236, 225);
+    transition: opacity 0.3s ease;
+    opacity: 0;
+}
+
+.dropdown-content.show {
+    display: block;
+    opacity: 1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.cart-header {
+    font-family: 'Times New Roman', Times, serif;
+    border-bottom: 1px solid #9c9c9c;
+    margin-bottom: 20px;
+}
+
+.cart-header h6 {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.cart-header p {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.5;
+}
+
+.cart-body {
+    display: flex;
+    justify-content: space-between;
+    height: 30px;
+    align-items: start;
+
+}
+
+.cart-body h6 {
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 58%;
+    margin-bottom: 0;
+}
+
+.cart-body p {
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.additional-items {
+    width: 100%;
+    font-size: 15px;
+    color: black;
+    padding-left: 7%;
+}
+
+.cart-footer {
+    padding-top: 30px;
+    border-top: 1px solid #9c9c9c;
+}
+
+.cart-footer p {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.checkoutBtn {
+    background-color: rgb(120, 162, 67);
+    color: white;
+    border: 1px solid #9c9c9c;
+    padding: 10px 20px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    width: 100%;
+    border-radius: 10px;
+    margin-top: 20px;
+    height: 40px;
+    text-align: center;
+    padding: 0;
+    align-items: center;
+}
+
+.linkCheckout {
+    text-decoration: none;
+    color: white;
+    font-size: 23px;
+    font-family: 'Times New Roman', Times, serif;
+    margin-top: 10px;
+    padding: 10px 20px
+}
+
+.linkCheckout:hover {
+
+    color: white;
+}

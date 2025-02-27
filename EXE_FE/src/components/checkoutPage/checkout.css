@@ -1,0 +1,137 @@
+@import "../../styles/global.css";
+
+.info-input {
+    padding-left: 25px;
+}
+
+
+.PaymentMethod {
+    border-top: 1px solid black;
+    padding-top: 30px;
+}
+
+.PaymentMethod h5 {
+    font-size: 25px;
+    font-weight: 600;
+    padding-bottom: 20px;
+}
+
+.PaymentMethod label {
+    font-size: 15px;
+    font-weight: 600;
+    padding-top: 2px;
+    margin-bottom: 10px;
+}
+
+.comfirm-order {
+    padding: 30px;
+    border-radius: 20px;
+    min-height: 300px;
+    background-color: var(--tertiary-color);
+
+}
+
+.comfirm-order h5 {
+    font-size: 25px;
+    font-weight: 600;
+}
+
+.comfirm-order p {
+    font-size: 20px;
+    font-weight: 200;
+}
+
+.confirm-order-item {
+    display: flex;
+    justify-content: space-between;
+    height: 30px;
+    align-items: start;
+
+}
+
+.confirm-order-item h6 {
+    font-size: 23px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 58%;
+    margin-bottom: 0;
+}
+
+.confirm-order-item p {
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.promotion-code {
+    background-color: var(--tertiary-color);
+    border-radius: 20px;
+    margin: 0 auto;
+    width: 100%;
+    margin-top: 10px;
+    padding: 20px 30px;
+}
+
+.promotion-code input {
+    font-family: "Playfair Display", serif;
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 8px;
+    font-size: 17px;
+    padding-left: 20px;
+    background-color: var(--light-color);
+}
+
+.promotion-code button {
+    background-color: #F58220;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.promotion-code textarea {
+    font-family: "Playfair Display", serif;
+    width: 100%;
+    min-height: 80px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 17px;
+    padding-left: 20px;
+    background-color: var(--light-color);
+}
+
+.card-total-price p {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.card-total-price h5 {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.card-total-price {
+    font-family: "Playfair Display", serif;
+    background-color: var(--tertiary-color);
+    margin-top: 10px;
+}
+
+.card-total-price button {
+    background-color: var(--secondary-color);
+    color: white;
+    height: 40px;
+    font-size: 17px;
+    font-weight: 600;
+    border: none
+}
+
+.card-total-price button:hover {
+    background-color: var(--secondary-color);
+    color: white;
+}
