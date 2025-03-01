@@ -1,4 +1,4 @@
-const { User } = require('../models')
+const { User, UserRoleHistory, VerifyCode } = require('../models')
 const bcrypt = require("bcryptjs")
 const jwt = require('jsonwebtoken')
 const { Role } = require('../models')
@@ -7,16 +7,42 @@ require('dotenv').config();
 const registerCustomer = async (req, res) => {
     const { phoneNumber } = req.body
     try {
-        const salt = bcrypt.genSaltSync(10);
-        const hashPassword = bcrypt.hashSync(password, salt)
-        const newUser = await User.create({ phoneNumber, note: "", isBan: false, roleId: 6 })
+        const newUser = await User.create({ phoneNumber, note: "", isBan: false, roleId: 6, emailVerify: false, phoneVerify: false })
+        const userRoleHistory = await UserRoleHistory.create({
+            role: 6,
+            user: newUser.id,
+            isActive: true,
+        })
         res.status(201).send(newUser)
     } catch (error) {
-        console.log(error);
 
-        res.status(500).send(error)
-        console.log(error.body);
+        return res.status(500).send(error)
     }
+}
+
+const changeCustomerPassword = async (req, res) => {
+    try {
+        console.log(req);
+
+        const { password } = req.body
+        const { id } = req.user
+        console.log(id);
+
+        const user = await User.findOne({
+            where: {
+                id
+            }
+        })
+
+        const salt = bcrypt.genSaltSync(10);
+        const hashPassword = bcrypt.hashSync(password, salt)
+        user.password = hashPassword
+        user.save()
+        return res.status(200).send("Success")
+    } catch (error) {
+        return res.status(500).send({ message: "Internal server error", error: error.message });
+    }
+
 }
 
 const registerWorker = async (req, res) => {
@@ -34,6 +60,13 @@ const registerWorker = async (req, res) => {
     }
 }
 
+const loginCustomer = async (req, res) => {
+    try {
+
+    } catch (error) {
+        return res.status(500).send({ message: "Internal server error", error: error.message });
+    }
+}
 const login = async (req, res) => {
     const { email, password } = req.body
     const key = process.env.SECURITY_KEY
@@ -146,5 +179,5 @@ const deleteUser = async (req, res) => {
 }
 
 module.exports = {
-    registerWorker, registerCustomer, login
+    registerWorker, registerCustomer, login, changeCustomerPassword
 }

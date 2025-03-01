@@ -2,8 +2,6 @@ const Order = require('../models')
 
 const createOrder = async (req, res) => {
     try {
-        const order = await Order.create(req.body)
-        return res.status(201).send(order)
 
     } catch (error) {
         return res.status(500).send({ message: "Internal server error", error: error.message });
