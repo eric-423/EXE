@@ -5,8 +5,6 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert('Users', [
       {
-        branchId: 1,
-        roleId: 1,
         memberRank: 1,
         fullName: "Alice Smith",
         password: "123",
@@ -19,8 +17,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        branchId: 2,
-        roleId: 2,
         memberRank: 2,
         fullName: "Bob Johnson",
         password: "123",
@@ -33,8 +29,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        branchId: 3,
-        roleId: 3,
         memberRank: 3,
         fullName: "Charlie Brown",
         password: "123",
@@ -47,8 +41,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        branchId: 4,
-        roleId: 4,
         memberRank: 4,
         fullName: "Diana Prince",
         password: "123",
@@ -61,8 +53,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        branchId: 5,
-        roleId: 5,
         memberRank: 5,
         fullName: "Edward Elric",
         password: "123",
@@ -75,8 +65,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        branchId: 6,
-        roleId: 6,
         memberRank: 6,
         fullName: "Fiona Gallagher",
         password: "123",
@@ -89,8 +77,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        branchId: 7,
-        roleId: 7,
         memberRank: 7,
         fullName: "George Washington",
         password: "123",
@@ -103,8 +89,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        branchId: 8,
-        roleId: 1,
         memberRank: 8,
         fullName: "Hannah Montana",
         password: "123",
@@ -117,36 +101,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        branchId: 1,
-        roleId: 5,
-        memberRank: 5,
-        fullName: "Trinh Dinh Ngoc An",
-        password: "123123123",
-        email: "ericAnticode@gmail.com",
-        status: true,
-        dateOfBirth: "2003-04-02",
-        note: "An san so rich franchise owner.",
-        isBan: false,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      {
-        branchId: 3,
-        roleId: 5,
-        memberRank: 5,
-        fullName: "Trương Quang Hiếu Trung",
-        password: "123123123",
-        email: "trungtruong@gmail.com",
-        status: true,
-        dateOfBirth: "2003-03-03",
-        note: "nhà quận 1 đẹp trai rich-franchise owner.",
-        isBan: false,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      {
-        branchId: 9,
-        roleId: 2,
         memberRank: 9,
         fullName: "Ian Malcolm",
         password: "123",
@@ -159,8 +113,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        branchId: 10,
-        roleId: 3,
         memberRank: 10,
         fullName: "Jack Sparrow",
         password: "123",
@@ -173,8 +125,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        branchId: 1,
-        roleId: 4,
         memberRank: 11,
         fullName: "Katherine Johnson",
         password: "123",
@@ -187,8 +137,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        branchId: 2,
-        roleId: 5,
         memberRank: 12,
         fullName: "Liam Neeson",
         password: "123",
@@ -201,8 +149,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        branchId: 3,
-        roleId: 6,
         memberRank: 13,
         fullName: "Mia Wallace",
         password: "123",
@@ -215,8 +161,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        branchId: 4,
-        roleId: 7,
         memberRank: 14,
         fullName: "Nina Simone",
         password: "123",
@@ -229,8 +173,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        branchId: 5,
-        roleId: 1,
         memberRank: 15,
         fullName: "Oliver Twist",
         password: "123",
@@ -243,8 +185,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        branchId: 6,
-        roleId: 2,
         memberRank: 16,
         fullName: "Pamela Anderson",
         password: "123",
@@ -257,8 +197,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        branchId: 7,
-        roleId: 3,
         memberRank: 17,
         fullName: "Quentin Tarantino",
         password: "123",
@@ -271,8 +209,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        branchId: 8,
-        roleId: 4,
         memberRank: 18,
         fullName: "Rachel Green",
         password: "123",
@@ -285,8 +221,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        branchId: 9,
-        roleId: 5,
         memberRank: 19,
         fullName: "Steve Jobs",
         password: "123",
@@ -299,8 +233,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        branchId: 10,
-        roleId: 6,
         memberRank: 20,
         fullName: "Tina Fey",
         password: "123",
@@ -313,8 +245,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        branchId: 1,
-        roleId: 7,
         memberRank: 21,
         fullName: "Uma Thurman",
         password: "123",
@@ -322,6 +252,43 @@ module.exports = {
         status: true,
         dateOfBirth: "1970-07-20",
         note: "Uma is a skilled actress.",
+        isBan: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      // Các hàng khác với memberRank hợp lệ
+      {
+        memberRank: 1,
+        fullName: "batman",
+        password: "bat123",
+        email: "bruce@gmail.com",
+        status: false,
+        dateOfBirth: "1980-03-25",
+        note: "Prefers working at night.",
+        isBan: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        memberRank: 3,
+        fullName: "superman",
+        password: "krypton",
+        email: "clark@gmail.com",
+        status: true,
+        dateOfBirth: "1978-06-18",
+        note: "Flies faster than a speeding bullet.",
+        isBan: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        memberRank: 4,
+        fullName: "flash",
+        password: "speedster",
+        email: "barry@gmail.com",
+        status: true,
+        dateOfBirth: "1992-11-30",
+        note: "Fastest man alive.",
         isBan: false,
         createdAt: new Date(),
         updatedAt: new Date()

@@ -40,6 +40,12 @@ module.exports = {
       isBan: {
         type: Sequelize.BOOLEAN
       },
+      emailVerify: {
+        type: Sequelize.BOOLEAN
+      },
+      phoneVerify: {
+        type: Sequelize.BOOLEAN
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
