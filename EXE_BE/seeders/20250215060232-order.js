@@ -5,7 +5,9 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert('Orders', [
       {
-        userId: 1, // Alice Smith
+        customer: 1, // Alice Smith
+        worker: 2, // John Doe
+        branch: 3, // Random branch
         status: 1, // Pending
         paymentMethod: 1, // Credit Card
         quantity: 3,
@@ -24,7 +26,9 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        userId: 2, // Bob Johnson
+        customer: 2, // Bob Johnson
+        worker: 19, // John Doe
+        branch: 7, // Random branch
         status: 2, // Processing
         paymentMethod: 2, // Debit Card
         quantity: 1,
@@ -43,7 +47,9 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        userId: 3, // Charlie Brown
+        customer: 3, // Charlie Brown
+        worker: 5, // John Doe
+        branch: 1, // Random branch
         status: 3, // Shipped
         paymentMethod: 3, // PayPal
         quantity: 2,
@@ -62,7 +68,9 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        userId: 4, // Diana Prince
+        customer: 4, // Diana Prince
+        worker: 7, // John Doe
+        branch: 5, // Random branch
         status: 4, // Delivered
         paymentMethod: 4, // Bank Transfer
         quantity: 4,
@@ -81,7 +89,9 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        userId: 5, // Edward Elric
+        customer: 5, // Edward Elric
+        worker: 5, // John Doe
+        branch: 9, // Random branch
         status: 5, // Cancelled
         paymentMethod: 5, // Cash on Delivery
         quantity: 1,
@@ -100,7 +110,9 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        userId: 6, // Fiona Gallagher
+        customer: 6, // Fiona Gallagher
+        worker: 4, // John Doe
+        branch: 6, // Random branch
         status: 6, // Returned
         paymentMethod: 6, // Mobile Payment
         quantity: 2,
@@ -119,7 +131,9 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        userId: 7, // George Washington
+        customer: 7, // George Washington
+        worker: 6, // John Doe
+        branch: 10, // Random branch
         status: 7, // Refunded
         paymentMethod: 7, // Cryptocurrency
         quantity: 3,
@@ -138,7 +152,9 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        userId: 8, // Hannah Montana
+        customer: 8, // Hannah Montana
+        worker: 8, // John Doe
+        branch: 2, // Random branch
         status: 1, // Pending
         paymentMethod: 1, // Credit Card
         quantity: 1,
@@ -157,7 +173,9 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        userId: 9, // Trinh Dinh Ngoc An
+        customer: 9, // Trinh Dinh Ngoc An
+        worker: 8, // John Doe
+        branch: 4, // Random branch
         status: 2, // Processing
         paymentMethod: 2, // Debit Card
         quantity: 5,
@@ -176,7 +194,9 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        userId: 10, // Trương Quang Hiếu Trung
+        customer: 10, // Trương Quang Hiếu Trung
+        worker: 5, // John Doe
+        branch: 8, // Random branch
         status: 3, // Shipped
         paymentMethod: 3, // PayPal
         quantity: 2,
@@ -195,7 +215,9 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        userId: 11, // Ian Malcolm
+        customer: 11, // Ian Malcolm
+        worker: 6, // John Doe
+        branch: 1, // Random branch
         status: 4, // Delivered
         paymentMethod: 4, // Bank Transfer
         quantity: 3,
@@ -214,7 +236,9 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        userId: 12, // Jack Sparrow
+        customer: 12, // Jack Sparrow
+        worker: 4, // John Doe
+        branch: 10, // Random branch
         status: 5, // Cancelled
         paymentMethod: 5, // Cash on Delivery
         quantity: 1,
@@ -233,7 +257,9 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        userId: 13, // Katherine Johnson
+        customer: 13, // Katherine Johnson
+        worker: 7, // John Doe
+        branch: 6, // Random branch
         status: 6, // Returned
         paymentMethod: 6, // Mobile Payment
         quantity: 2,
@@ -252,7 +278,9 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        userId: 14, // Liam Neeson
+        customer: 14, // Liam Neeson
+        worker: 5, // John Doe
+        branch: 4, // Random branch
         status: 7, // Refunded
         paymentMethod: 7, // Cryptocurrency
         quantity: 4,
@@ -271,7 +299,9 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        userId: 15, // Mia Wallace
+        customer: 15, // Mia Wallace
+        worker: 7, // John Doe
+        branch: 8, // Random branch
         status: 1, // Pending
         paymentMethod: 1, // Credit Card
         quantity: 1,
@@ -290,7 +320,9 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        userId: 16, // Nina Simone
+        customer: 16, // Nina Simone
+        worker: 6, // John Doe
+        branch: 3, // Random branch
         status: 2, // Processing
         paymentMethod: 2, // Debit Card
         quantity: 5,
@@ -309,7 +341,9 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        userId: 17, // Oliver Twist
+        customer: 17, // Oliver Twist
+        worker: 8, // John Doe
+        branch: 5, // Random branch
         status: 3, // Shipped
         paymentMethod: 3, // PayPal
         quantity: 2,
@@ -328,7 +362,9 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        userId: 18, // Pamela Anderson
+        customer: 18, // Pamela Anderson
+        worker: 8, // John Doe
+        branch: 2, // Random branch
         status: 4, // Delivered
         paymentMethod: 4, // Bank Transfer
         quantity: 3,
@@ -347,7 +383,9 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        userId: 19, // Steve Jobs
+        customer: 19, // Steve Jobs
+        worker: 9, // John Doe
+        branch: 1, // Random branch
         status: 1, // Pending
         paymentMethod: 5, // Cash on Delivery
         quantity: 1,
@@ -366,7 +404,9 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        userId: 20, // Tina Fey
+        customer: 20, // Tina Fey
+        worker: 2, // John Doe
+        branch: 9, // Random branch
         status: 2, // Processing
         paymentMethod: 6, // Mobile Payment
         quantity: 5,
