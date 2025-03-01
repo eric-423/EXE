@@ -636,7 +636,7 @@ module.exports = {
       {
         type: 4,
         name: "Chè đậu đỏ",
-        branchL: 1,
+        branch: 1,
         description: "Chè đậu đỏ sau khi ăn ngon ơi là ngon",
         price: 20000,
         stockQuantity: 1,
@@ -647,7 +647,7 @@ module.exports = {
       {
         type: 4,
         name: "Chè đậu đỏ",
-        branchL: 2,
+        branch: 2,
         description: "Chè đậu đỏ sau khi ăn ngon ơi là ngon",
         price: 20000,
         stockQuantity: 1,
@@ -658,7 +658,7 @@ module.exports = {
       {
         type: 4,
         name: "Chè đậu đỏ",
-        branchL: 3,
+        branch: 3,
         description: "Chè đậu đỏ sau khi ăn ngon ơi là ngon",
         price: 20000,
         stockQuantity: 1,
@@ -669,7 +669,7 @@ module.exports = {
       {
         type: 4,
         name: "Chè đậu đỏ",
-        branchL: 4,
+        branch: 4,
         description: "Chè đậu đỏ sau khi ăn ngon ơi là ngon",
         price: 20000,
         stockQuantity: 1,
@@ -680,7 +680,7 @@ module.exports = {
       {
         type: 4,
         name: "Chè đậu đỏ",
-        branchL: 5,
+        branch: 5,
         description: "Chè đậu đỏ sau khi ăn ngon ơi là ngon",
         price: 20000,
         stockQuantity: 1,
