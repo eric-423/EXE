@@ -82,7 +82,7 @@ const BestSeller = () => {
 
     return (
         <div>
-            <section className="section pt-5 pb-5 products-section">
+            <section className="section pt-5 pb-5 products-section" style={{ backgroundColor: 'rgb(235, 209, 135)' }}>
                 <Container>
                     <h1>BEST SELLER</h1>
                     <Row className="justify-content-center">

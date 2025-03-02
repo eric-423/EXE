@@ -65,10 +65,10 @@ const CheckoutRight = () => {
                 {
                     combo.map((item, index) => (
                         <div key={index} className="mb-3">
-                            <div className="confirm-order-item mb-4">
+                            <div className="confirm-order-item">
 
                                 <h6 > {item.name}</h6>
-                                <div className="d-flex justify-content-end gap-3">
+                                <div className="d-flex justify-content-center  gap-3">
                                     <p style={{ color: 'rgb(218, 115, 50)' }}>{item.price}</p>
                                     <p> x {item.quantity}</p>
                                 </div>
@@ -77,7 +77,7 @@ const CheckoutRight = () => {
                             <div >
                                 {item.additionalItems &&
                                     item.additionalItems.map((item, index) => (
-                                        <div key={index} className="additional-items" style={{ fontWeight: 'normal', fontSize: '18px' }}>
+                                        <div key={index} className="additional-items" style={{ fontWeight: 'normal' }}>
                                             <li>{item.name}</li>
                                         </div>
                                     ))
@@ -143,7 +143,7 @@ const CheckoutRight = () => {
                 <div>
                     <div className='d-flex justify-content-between pl-3 pr-3'>
                         <h5>Tổng cộng</h5>
-                        <p>{totalPrice - discountValue + shippingFee - discountOnItem} đ</p>
+                        <p>{totalPrice - discountValue + shippingFee - discountOnItem}.000 đ</p>
                     </div>
                 </div>
 

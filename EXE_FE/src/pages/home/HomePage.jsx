@@ -5,13 +5,15 @@ import Blogs from '../../components/homePage/blog/Blogs';
 import Franchise from '../../components/homePage/franchise/FranchiseComponent';
 
 const HomePage = () => {
-  return <div>
-    <HomePageHeader />
-    <CuisineGallery />
-    <BestSeller />
-    <Blogs />
-    <Franchise />
-  </div>;
+  return (
+    < div >
+      <HomePageHeader />
+      <CuisineGallery />
+      <BestSeller />
+      <Blogs />
+      <Franchise />
+    </div >
+  )
 };
 
 export default HomePage;
