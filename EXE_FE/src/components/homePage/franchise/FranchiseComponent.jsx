@@ -58,7 +58,7 @@ const FranchiseComponent = () => {
     const [districList, setDistricList] = useState(["Quận/ Huyện ", "Quận 1", "Quận 2", "Quận 3", "Quận 4"]);
 
     return (
-        <Row className="">
+        <Row className="pb-5" style={{ backgroundColor: 'rgb(235, 209, 135)' }}>
             <Col className='col-md-12'>
                 <h1 className='mt-5'>Hệ thống nhượng quyền</h1>
             </Col>
@@ -111,7 +111,7 @@ const FranchiseComponent = () => {
                             </select>
                         </div>
                         <textarea className='franchise-textarea' placeholder='GHI CHÚ'></textarea>
-                        <button className='franchise-button'>Gửi thông tin</button>
+                        <button className='franchise-button '>Gửi thông tin</button>
                     </div>
                 </div>
 

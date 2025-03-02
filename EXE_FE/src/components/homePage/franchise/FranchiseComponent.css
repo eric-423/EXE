@@ -1,14 +1,3 @@
-body {
-    background-color: rgb(235, 209, 135);
-    font-family: 'Times New Roman', sans-serif;
-    font-size: 16px;
-    line-height: 1.5;
-    color: #333;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 .franchiescontent {
     height: 200px !important;
     background-color: rgb(239, 230, 219) !important;
@@ -16,14 +5,15 @@ body {
     border-radius: 20px !important;
 }
 
+
 .images {
-    padding-top: 31px !important;
-    padding-left: 25px !important;
+    padding-top: 31px;
+    padding-left: 25px;
 }
 
 .franchiescontent img {
     width: 81%;
-    height: 100%;
+    height: auto;
 }
 
 .title {
@@ -60,14 +50,15 @@ body {
     width: 70%;
     height: 650px;
     border-radius: 20px;
-
 }
 
 .franchise-form-title {
     border: 4px solid rgb(218, 115, 57);
     border-radius: 20px;
     width: 85%;
-    height: 90%
+    height: 90%;
+    display: grid;
+    place-items: center;
 }
 
 .franchise-title {
@@ -98,16 +89,13 @@ body {
     padding-left: 10px;
     font-size: 18px;
     box-sizing: border-box;
-    margin-left: 37px;
     margin-bottom: 10px;
     border: 1px solid black;
 }
 
 .infomationInput {
-    width: 82%;
+    width: 80%;
     display: flex;
-    margin-left: 37px;
-
 }
 
 .infomationInput input {
@@ -118,15 +106,13 @@ body {
     font-size: 18px;
     box-sizing: border-box;
     margin-bottom: 10px;
-    margin-right: 10px;
     border: 1px solid black !important;
     background-color: rgb(239, 230, 219);
 }
 
 .infomationSelect {
-    width: 82%;
+    width: 80%;
     display: flex;
-    margin-left: 37px;
 }
 
 .infomationSelect select {
@@ -137,7 +123,6 @@ body {
     font-size: 18px;
     box-sizing: border-box;
     margin-bottom: 20px;
-    margin-right: 10px;
     border: 1px solid black;
     background-color: rgb(239, 230, 219);
 }
@@ -150,7 +135,6 @@ body {
     padding-top: 10px;
     font-size: 18px;
     box-sizing: border-box;
-    margin-left: 37px;
     margin-bottom: 10px;
     border: 1px solid black;
     background-color: rgb(239, 230, 219);
@@ -164,7 +148,6 @@ body {
     font-size: 18px;
     box-sizing: border-box;
     border: none;
-    margin-left: 105px;
     margin-bottom: 10px;
     margin-top: 15px;
     background-color: rgb(218, 115, 57);
@@ -205,4 +188,208 @@ body {
     background-color: rgb(239, 230, 219);
     margin-left: 10px;
     margin-right: 10px;
+}
+
+
+
+@media (max-width: 1400px) {
+
+    .franchiescontent {
+        width: 400px !important;
+        height: auto !important;
+        align-items: center !important;
+    }
+
+
+    .franchiescontent img {
+        width: 100%;
+        height: auto;
+    }
+
+    .images {
+        padding-top: 0;
+        padding-left: 25px;
+    }
+
+    .title {
+        font-size: 17px;
+        font-weight: 600;
+        color: black;
+        font-family: 'Times New Roman', Times, serif;
+        box-sizing: border-box;
+        margin-top: 10px;
+    }
+
+    .subTitle {
+        font-size: 14px;
+        color: black;
+        box-sizing: border-box;
+        margin-top: 10px;
+    }
+
+    .phoneNumber {
+        font-size: 13px;
+        color: black;
+        box-sizing: border-box;
+    }
+
+
+    .franchise-form {
+        background-color: rgb(239, 230, 219);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        margin-top: 20px;
+        box-sizing: border-box;
+        width: 70%;
+        height: auto;
+        border-radius: 20px;
+        padding: 20px 0;
+
+    }
+
+    .franchise-form-title {
+        border: 4px solid rgb(218, 115, 57);
+        border-radius: 20px;
+        width: 85%;
+        height: 90%;
+        display: grid;
+        place-items: center;
+    }
+
+    .franchise-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: black;
+        text-align: center;
+        padding-top: 10px;
+        font-family: 'Times New Roman', Times, serif;
+        box-sizing: border-box;
+        margin-top: 25px;
+    }
+
+    .frachise-content {
+        align-items: center;
+        box-sizing: border-box;
+        width: 100%;
+        font-size: 14px;
+        padding: 20px 20px 0 20px;
+        text-align: center;
+    }
+
+    .InputName {
+        background-color: rgb(239, 230, 219);
+        width: 80%;
+        height: 40px;
+        border-radius: 8px;
+        padding-left: 10px;
+        font-size: 13px;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+        border: 1px solid black;
+    }
+
+    .infomationInput {
+        width: 80%;
+        display: flex;
+
+    }
+
+    .infomationInput input {
+        width: 100%;
+        height: 40px;
+        border-radius: 8px;
+        padding-left: 10px;
+        font-size: 13px;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+        border: 1px solid black !important;
+        background-color: rgb(239, 230, 219);
+    }
+
+    .infomationSelect {
+        width: 80%;
+        display: flex;
+    }
+
+    .infomationSelect select {
+        width: 100%;
+        height: 40px;
+        border-radius: 8px;
+        padding-left: 10px;
+        font-size: 13px;
+        box-sizing: border-box;
+        margin-bottom: 20px;
+        border: 1px solid black;
+        background-color: rgb(239, 230, 219);
+    }
+
+    .franchise-form-title textarea {
+        width: 80%;
+        height: 80px;
+        border-radius: 8px;
+        padding-left: 10px;
+        padding-top: 10px;
+        font-size: 13px;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+        border: 1px solid black;
+        background-color: rgb(239, 230, 219);
+    }
+
+    .franchise-form-title button {
+        width: 50%;
+        height: 30px;
+        border-radius: 8px;
+        font-size: 15px;
+        box-sizing: border-box;
+        border: none;
+        margin-top: 15px;
+        background-color: rgb(218, 115, 57);
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+
+    .cityDropdown {
+        border-radius: 5px;
+        padding-left: 10px;
+        font-size: 13px;
+        box-sizing: border-box;
+        border: 1px solid black;
+        height: 40px;
+        width: 120px;
+        margin-left: 80px;
+        background-color: rgb(239, 230, 219);
+    }
+
+    .districtDropdown {
+        border-radius: 5px;
+        padding-left: 10px;
+        font-size: 13px;
+        box-sizing: border-box;
+        border: 1px solid black;
+        height: 40px;
+        width: 120px;
+        background-color: rgb(239, 230, 219);
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    .Search {
+        border-radius: 5px;
+        padding-left: 10px;
+        font-size: 13px;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+        border: 1px solid black;
+        height: 40px;
+        width: 130px;
+        background-color: rgb(239, 230, 219);
+    }
+
+
 }

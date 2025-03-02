@@ -19,6 +19,7 @@ const CartBody = ({ name, price, quantity, additionalItems }) => {
         <div className="mb-3">
             <div className="cart-body">
                 <h6> <BsFillTrashFill size={15} /> {name}</h6>
+
                 <div className="d-flex justify-content-end gap-3">
                     <p style={{ color: 'rgb(218, 115, 50)' }}>{price}</p>
                     <p>{quantity}</p>
