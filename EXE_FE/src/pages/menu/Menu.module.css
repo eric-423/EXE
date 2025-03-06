@@ -1,0 +1,102 @@
+@import "../../styles/global.css"; /* Import shared styles */
+/* Menu.module.css */
+.menu-filter p,
+.menu-filter span {
+  font-size: 1rem;
+  color: var(--dark-color);
+  font-family: "Playfair Display", serif;
+}
+.custom-text-center {
+  text-align: center;
+}
+
+.bgColor {
+  background-color: var(--light-color) !important;
+}
+
+.custom-width-50 {
+  width: 50%;
+}
+.hoverEffect {
+  transition: 0.3s;
+  :hover {
+    color: var(--primary-color);
+    cursor: pointer;
+  }
+}
+.smoothTransition {
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.4s ease-out, opacity 0.3s ease-out;
+}
+.customDropdown {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  color: var(--dark-color) !important;
+  :hover .dropdown-content {
+    display: block;
+  }
+}
+.show {
+  max-height: 800px; /* Adjust based on content height */
+  opacity: 1;
+}
+.clickable {
+  cursor: pointer;
+  :hover {
+    color: var(--primary-color);
+  }
+}
+
+.custom-margin-auto {
+  margin: auto;
+}
+
+.offer-dedicated-body {
+  padding: 20px 0;
+  margin: 30px 0;
+}
+
+.customBg {
+  background-color: var(--tertiary-color);
+}
+
+.rounded {
+  border-radius: 5px;
+}
+
+.restaurantDetailedEarnPts {
+  color: white;
+  padding: 20px;
+  position: relative;
+}
+
+.generator-bg {
+  background: linear-gradient(135deg, #ff3008 1%, #fe792b 100%);
+}
+
+.icon-overlap {
+  position: absolute;
+  bottom: -10px;
+  right: -10px;
+}
+
+.customInput {
+  width: 70%;
+  flex: 1; /* Allow the input to take up remaining space */
+}
+.inputButtonContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Adjust the gap as needed */
+}
+.customButton {
+  height: 100%;
+  width: auto;
+  padding: 0; /* Match the padding of the input */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box; /* Ensure padding is included in the height */
+}

@@ -1,0 +1,12 @@
+/* @import "./styles/global.css"; /* Import shared styles */
+
+.osahan-nav .nav-link {
+  font-weight: 600;
+  padding: 28px 0px !important;
+  margin: 0 0 0 31px;
+}
+
+.dropdown-cart-top {
+  border-top: 2px solid #ff3008;
+  min-width: 340px;
+}

@@ -1,0 +1,66 @@
+@import "../../../styles/global.css";
+
+.customBg {
+  background-color: var(--light-color);
+  stroke: var(--dark-color) !important;
+  stroke-width: 2px;
+  display: flex;
+  /* Changed from flexbox to flex */
+  flex-direction: row;
+}
+
+.listContainer {
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
+  border-radius: 5px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.rowGap {
+  margin-bottom: 10px;
+}
+
+.content {
+  font-size: 0.8rem;
+  color: var(--dark-color);
+  font-family: "Playfair Display", serif;
+}
+
+.imgContainer {
+  display: flex;
+  flex: 0 0 auto;
+  /* Flex-grow, flex-shrink, and flex-basis for responsiveness */
+  max-width: 35%;
+  padding: 5px;
+}
+
+.imgContainer img {
+  object-fit: cover;
+  /* Added to prevent image distortion */
+  width: 100%;
+  height: 100%;
+}
+
+.contentContainer {
+  display: flex;
+  flex: 1 1 70%;
+  /* Flex-grow, flex-shrink, and flex-basis for responsiveness */
+  flex-direction: column;
+  padding: 7px 2px;
+  max-width: 65%;
+}
+
+.rounded {
+  border-radius: 5px;
+}
+
+.hoverEffect {
+  transition: 0.3s;
+
+  :hover {
+    color: var(--primary-color);
+    cursor: pointer;
+  }
+}

@@ -1,0 +1,101 @@
+.blogsItem {
+    background-color: rgb(239, 230, 219);
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+.owl-carousel-four {
+    padding: 6px 7px;
+}
+
+
+.osahan-category-item {
+    background: rgb(255 255 255);
+    margin: 5px 3px;
+    border-radius: 5px;
+    overflow: hidden;
+    text-align: center;
+    padding: 0px;
+    box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;
+    -webkit-backdrop-filter: saturate(180%) blur(5px);
+    backdrop-filter: saturate(180%) blur(5px);
+}
+
+.osahan-category-item h6 {
+    margin: 0px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #dd646e;
+}
+
+.osahan-category-item p {
+    margin: 0 0 4px 0;
+    font-size: 10px;
+}
+
+.osahan-category-item img {
+    width: 100%;
+    height: 54px;
+    object-fit: cover;
+    box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;
+    transition: transform .7s ease;
+    margin: 0px 0 7px 0;
+}
+
+.osahan-category-item img:hover {
+    transform: scale(1.1);
+}
+
+.line {
+    background-color: #5e5e5e;
+    border-radius: 12px;
+    display: inline-table;
+    height: 4px;
+    margin: 0 0 51px;
+    width: 50px;
+}
+
+h1 {
+    text-align: center;
+    font-size: 45px;
+    margin-bottom: 40px;
+}
+
+
+
+.text-black {
+    text-decoration: none;
+}
+
+.badge {
+    background-color: rgb(238, 129, 70);
+}
+
+.noDiscount {
+    border: 1px solid black;
+    border-radius: 5px;
+    font-size: 13px;
+    box-sizing: border-box;
+    padding: 2px 5px;
+
+}
+
+.item {
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+.content {
+    background-color: rgb(238, 229, 219);
+    border-radius: 10px;
+}
+
+img {
+    border-radius: 10px;
+}
