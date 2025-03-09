@@ -16,6 +16,13 @@ module.exports = {
           key: "id"
         }
       },
+      branch: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Branches",
+          key: "id"
+        }
+      },
       name: {
         type: Sequelize.STRING
       },

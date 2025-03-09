@@ -12,7 +12,7 @@ const CustomMenu = forwardRef(
       <div
         ref={ref}
         style={{ ...style, maxHeight: "200px", overflowY: "auto" }}
-        className={className}
+        className={`${className} ${styles.customMenu}`}
         aria-labelledby={labeledBy}
       >
         <Form.Control

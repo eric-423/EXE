@@ -16,7 +16,7 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        userId: "9",
+        userId: 9,
         branchId: 1,
         startDate: new Date("2023-02-01"),
         endDate: new Date("2023-11-30"),
@@ -27,7 +27,7 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        userId: "10",
+        userId: 10,
         branchId: 3,
         startDate: new Date("2023-03-01"),
         endDate: new Date("2023-10-31"),
@@ -38,7 +38,7 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        userId: "14",
+        userId: 14,
         branchId: 2,
         startDate: new Date("2023-04-01"),
         endDate: new Date("2023-09-30"),
@@ -49,7 +49,7 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        userId: "21",
+        userId: 1,
         branchId: 9,
         startDate: new Date("2023-05-01"),
         endDate: new Date("2023-08-31"),
@@ -72,3 +72,4 @@ module.exports = {
      */
   }
 };
+

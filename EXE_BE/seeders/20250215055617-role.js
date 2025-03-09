@@ -38,7 +38,12 @@ module.exports = {
         name: 'SHIPPER',
         createdAt: new Date(),
         updatedAt: new Date()
-      }
+      },
+      {
+        name: 'WORKER',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
 
     ], {});
   },

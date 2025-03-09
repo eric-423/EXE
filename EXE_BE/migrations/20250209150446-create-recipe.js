@@ -9,13 +9,14 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      createdBy: {
+      product: {
         type: Sequelize.INTEGER,
         references: {
-          model: "Users",
+          model: "Products",
           key: "id"
         }
-      },
+      }
+      ,
       name: {
         type: Sequelize.STRING
       },

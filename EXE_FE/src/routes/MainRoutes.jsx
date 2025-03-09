@@ -5,10 +5,12 @@ import Home from "../pages/home";
 import Menu from "../pages/menu/Menu";
 import Login from "../pages/login";
 import PaymentSuccessPage from "../pages/paymentsuccess";
+import Checkout from './../components/checkoutPage/checkout';
+// import Login from "../pages/login/LoginPage";
 
 //* ====================  Authorization for PUBLIC ==================== */
 const MainRouter = () => {
-    return <UserLayout />;
+  return <UserLayout />;
 };
 
 //* ==================== Define children routes ==================== */
@@ -21,6 +23,7 @@ const publicRoutes = {
             path: config.routes.public.paymentSuccess,
             element: <PaymentSuccessPage />,
         },
+      { path: config.routes.public.checkout, element: <Checkout /> },
     ],
 };
 
@@ -28,9 +31,9 @@ const notFoundRoutes = { path: "*", element: <NotFound /> };
 
 //* ==================== Define main routes ==================== */
 const MainRoutes = {
-    path: "/",
-    element: <MainRouter />,
-    children: [publicRoutes, notFoundRoutes],
+  path: "/",
+  element: <MainRouter />,
+  children: [publicRoutes, notFoundRoutes],
 };
 
 export default MainRoutes;

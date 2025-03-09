@@ -213,7 +213,7 @@ function AddToCart({ label, buttonClassName }) {
             className={styles.modalButton}
             onClick={() => setModalShow(false)}
           >
-            {total} - Thêm vào giỏ
+            {total.toLocaleString()} - Thêm vào giỏ
           </Button>
         </Modal.Footer>
       </Modal>

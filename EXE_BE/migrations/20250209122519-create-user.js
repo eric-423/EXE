@@ -9,21 +9,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      branchId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: "Branches",
-          key: "id"
-        }
-      },
-      roleId: {
-        type: Sequelize.INTEGER,
-        required: true,
-        references: {
-          model: "Roles",
-          key: "id"
-        }
-      },
       memberRank: {
         type: Sequelize.INTEGER,
         references: {
@@ -35,6 +20,9 @@ module.exports = {
         type: Sequelize.STRING
       },
       password: {
+        type: Sequelize.STRING
+      },
+      phoneNumber: {
         type: Sequelize.STRING
       },
       email: {
@@ -50,6 +38,12 @@ module.exports = {
         type: Sequelize.STRING
       },
       isBan: {
+        type: Sequelize.BOOLEAN
+      },
+      emailVerify: {
+        type: Sequelize.BOOLEAN
+      },
+      phoneVerify: {
         type: Sequelize.BOOLEAN
       },
       createdAt: {
