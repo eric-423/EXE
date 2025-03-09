@@ -5,6 +5,7 @@ import bannerImage from "../../assets/images/Home - Banner.jpg";
 import { useDocumentTitle } from "../../hooks";
 import LoginLayout from "../../components/login/LoginLayout";
 import { BASE_URL, API_ROUTES } from "../../config/api";
+import axios from 'axios';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -105,15 +106,40 @@ const LoginPage = () => {
       setPhoneError("Số điện thoại không hợp lệ");
       return;
     }
+
     try {
-      // Store the current state before navigation
-      sessionStorage.setItem("loginView", "otp");
-      sessionStorage.setItem("phoneNumber", phoneNumber);
-      setCurrentView("otp");
-      // Update browser history
-      window.history.pushState({ view: "otp" }, "", location.pathname);
+      // Call the sign-up API
+      const response = await axios.post(`${BASE_URL}/api/v1/users/sign-up/customer`, {
+        phoneNumber: phoneNumber
+      });
+
+      if (response.status === 201 || response.status === 200) {
+        // Store the current state before navigation
+        sessionStorage.setItem("loginView", "otp");
+        sessionStorage.setItem("phoneNumber", phoneNumber);
+        setCurrentView("otp");
+        // Update browser history
+        window.history.pushState({ view: "otp" }, "", location.pathname);
+      } else {
+        setPhoneError("Có lỗi xảy ra khi đăng ký. Vui lòng thử lại.");
+      }
     } catch (error) {
-      console.error("Navigation error:", error);
+      console.error("Sign up error:", error);
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        if (error.response.status === 409) {
+          setPhoneError("Số điện thoại đã được đăng ký");
+        } else {
+          setPhoneError(error.response.data.message || "Có lỗi xảy ra khi đăng ký");
+        }
+      } else if (error.request) {
+        // The request was made but no response was received
+        setPhoneError("Không thể kết nối đến server. Vui lòng thử lại sau.");
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        setPhoneError("Có lỗi xảy ra. Vui lòng thử lại.");
+      }
     }
   };
 
