@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { View, Text, StyleSheet, Keyboard } from "react-native";
 import OTPTextView from "react-native-otp-textinput";
 import Toast from "react-native-root-toast";
-
+import { BASE_URL } from "@/utils/constant";
 const styles = StyleSheet.create({
   container: {
     paddingVertical: 30,
@@ -28,10 +28,7 @@ const VerifyPage = () => {
   const verifyCode = async () => {
     Keyboard.dismiss();
     setIsSubmit(true);
-    const BASE_URL: string = "https://tamtac-6548a8185ba9.herokuapp.com";
-
     try {
-      console.log(code);
       const res = await axios.post(
         `${BASE_URL}/api/v1/verify-code/verify-phone-code`,
         {
@@ -40,9 +37,10 @@ const VerifyPage = () => {
         }
       );
       setIsSubmit(false);
-      console.log("res: ", res);
+      console.log(res.data);
 
       if (res.data) {
+        const token = res.data;
         otpRef?.current?.clear();
         Toast.show("Kích hoạt tài khoản thành công", {
           duration: Toast.durations.LONG,
@@ -54,7 +52,10 @@ const VerifyPage = () => {
         if (isLogin) {
           router.replace("/(tabs)");
         } else {
-          router.replace("/(auth)/login");
+          router.replace({
+            pathname: "/(auth)/customer.changepassword",
+            params: { token },
+          });
         }
       } else {
         Toast.show(res.message as string, {

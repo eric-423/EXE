@@ -34,8 +34,10 @@ const handleSignUp = async (phoneNumber: string) => {
         `${BASE_URL}/api/v1/verify-code/generate-code`,
         {
           phoneNumber: phoneNumber,
+          mode: "dev",
         }
       );
+      console.log(generateCodeResponse.data);
 
       if (generateCodeResponse.data) {
         router.replace({
@@ -103,6 +105,7 @@ const CustomerSignUpPage = () => {
             />
             <ShareInput
               title="Số điện thoại"
+              keyboardType="number-pad"
               onChangeText={handleChange("phoneNumber")}
               onBlur={handleBlur("phoneNumber")}
               value={values.phoneNumber}
