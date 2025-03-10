@@ -37,7 +37,7 @@ const HomePage = () => {
       selectedTextColor?: string;
     };
   }>({});
-
+  const [selectedDate, setSelectedDate] = useState("");
   const initializeMarkedDates = () => {
     const initialMarkedDates = test.reduce<{ [key: string]: taskDate }>(
       (acc, date) => {
@@ -54,7 +54,7 @@ const HomePage = () => {
 
   const markedSelectDate = (day: any) => {
     const selectedDay = day.dateString;
-
+    setSelectedDate(selectedDay);
     const newMarkedDates = {
       ...initializeMarkedDates(),
       [selectedDay]: {
@@ -74,8 +74,11 @@ const HomePage = () => {
   const sortedDates = Object.keys(combinedMarkedDates).sort(
     (a, b) => new Date(a).getTime() - new Date(b).getTime()
   );
+  const selectedDates = Object.keys(combinedMarkedDates).filter(
+    (day) => combinedMarkedDates[day].selected === true
+  );
   const firstDate = sortedDates[2];
-  console.log(firstDate);
+  console.log(selectedDate);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
