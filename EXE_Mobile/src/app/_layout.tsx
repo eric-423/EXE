@@ -129,6 +129,14 @@ const RootLayout = () => {
                 options={{ headerShown: false }}
               ></Stack.Screen>
               <Stack.Screen
+                name="(auth)/customer.changepassword"
+                options={{ headerShown: false }}
+              ></Stack.Screen>
+              <Stack.Screen
+                name="(auth)/customer.login"
+                options={{ headerShown: false }}
+              ></Stack.Screen>
+              <Stack.Screen
                 name="(employee)"
                 options={{ headerShown: false }}
               />
