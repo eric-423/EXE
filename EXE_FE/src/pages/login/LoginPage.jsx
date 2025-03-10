@@ -15,9 +15,7 @@ const LoginPage = () => {
         // Initialize from sessionStorage or default to "customer"
         return sessionStorage.getItem("loginView") || "customer";
     });
-    const [phoneNumber, setPhoneNumber] = useState(() => {
-        return sessionStorage.getItem("phoneNumber") || "";
-    });
+    const [phoneNumber, setPhoneNumber] = useState();
     const [phoneError, setPhoneError] = useState("");
     const [otp, setOtp] = useState(["", "", "", "", "", ""]);
     const [password1, setPassword1] = useState("");
@@ -27,6 +25,7 @@ const LoginPage = () => {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [passwordError, setPasswordError] = useState("");
+    const [otpError, setOtpError] = useState("");
 
     useDocumentTitle("Đăng nhập Tấm Tắc");
 
@@ -73,13 +72,13 @@ const LoginPage = () => {
             case "employee":
                 return "Đăng nhập dành cho nhân viên";
             case "otp":
-                return "";
+                return "Hãy kiểm tra Zalo của bạn để nhận mã OTP";
             case "password":
                 return "Đăng ký mật khẩu để đăng nhập lần sau";
             case "existingUser":
                 return "Chào mừng bạn quay lại";
             case "registerPassword":
-                return "";
+                return "Đăng ký mật khẩu để đăng nhập lần sau";
             default:
                 return "";
         }
@@ -99,7 +98,6 @@ const LoginPage = () => {
     const handleCustomerSubmit = async (e) => {
         e.preventDefault();
 
-        // Validate phone number
         if (!phoneNumber) {
             setPhoneError("Vui lòng nhập số điện thoại");
             return;
@@ -110,55 +108,47 @@ const LoginPage = () => {
         }
 
         try {
-            const response = await axios.post(
-                `https://tamtac-6548a8185ba9.herokuapp.com/api/v1/users/sign-up/customer`,
+            // First API: Sign up
+            const signUpResponse = await axios.post(
+                "https://tamtac-6548a8185ba9.herokuapp.com/api/v1/users/sign-up/customer",
                 {
                     phoneNumber: phoneNumber,
                 }
             );
 
-            if (response.status === 200 || response.status === 201) {
-                // Store the current state before navigation
-                sessionStorage.setItem("loginView", "otp");
-                sessionStorage.setItem("phoneNumber", phoneNumber);
-                setCurrentView("otp");
-                // Update browser history
-                window.history.pushState(
-                    { view: "otp" },
-                    "",
-                    location.pathname
+            if (signUpResponse.status === 201) {
+                // Store user data
+                sessionStorage.setItem(
+                    "userData",
+                    JSON.stringify(signUpResponse.data)
                 );
+                sessionStorage.setItem("phoneNumber", phoneNumber);
+
+                // Change view to OTP screen
+                setCurrentView("otp");
+                setPhoneError("");
+
+                // Second API: Generate OTP code
+                try {
+                    await axios.post(
+                        "https://tamtac-6548a8185ba9.herokuapp.com/api/v1/verify-code/generate-code",
+                        {
+                            phoneNumber: phoneNumber,
+                            mode: "dev",
+                        }
+                    );
+                } catch (otpError) {
+                    console.error("Generate OTP error:", otpError);
+                    setPhoneError("Không thể tạo mã OTP. Vui lòng thử lại.");
+                }
             }
         } catch (error) {
-            console.error("Sign up error:", error);
-
-            // Handle SequelizeUniqueConstraintError
             if (
-                error.response?.data?.name ===
-                    "SequelizeUniqueConstraintError" ||
-                error.response?.data?.parent?.code === "ER_DUP_ENTRY"
+                error.response?.data?.name === "SequelizeUniqueConstraintError"
             ) {
-                setPhoneError(
-                    "Số điện thoại này đã được đăng ký. Vui lòng đăng nhập."
-                );
-                // Optionally, you could redirect to login view
-                // setCurrentView("login");
-                return;
-            }
-
-            // Handle other errors
-            setPhoneError("Có lỗi xảy ra. Vui lòng thử lại sau.");
-            if (error.response) {
-                // Handle specific error cases
-                if (error.response.status === 409) {
-                    setPhoneError("Số điện thoại đã được đăng ký");
-                } else {
-                    setPhoneError("Có lỗi xảy ra. Vui lòng thử lại sau.");
-                }
+                setPhoneError("Số điện thoại này đã được đăng ký");
             } else {
-                setPhoneError(
-                    "Không thể kết nối đến server. Vui lòng thử lại sau."
-                );
+                setPhoneError("Có lỗi xảy ra. Vui lòng thử lại sau.");
             }
         }
     };
@@ -192,12 +182,31 @@ const LoginPage = () => {
         }
     };
 
-    const handleOTPSubmit = (e) => {
+    const handleOTPSubmit = async (e) => {
         e.preventDefault();
         const otpValue = otp.join("");
         if (otpValue.length === 6) {
-            // After OTP verification, move to password registration
-            setCurrentView("registerPassword");
+            try {
+                const response = await axios.post(
+                    "https://tamtac-6548a8185ba9.herokuapp.com/api/v1/verify-code/verify-phone-code",
+                    {
+                        code: otpValue,
+                        phoneNumber: phoneNumber,
+                    }
+                );
+
+                if (response.data.status === "success") {
+                    // Store token in localStorage
+                    localStorage.setItem("token", response.data.token);
+
+                    // Move to password screen
+                    setCurrentView("password");
+                    setOtpError("");
+                }
+            } catch (error) {
+                console.error("Verify OTP error:", error);
+                setOtpError("Mã OTP không đúng. Vui lòng thử lại.");
+            }
         }
     };
 
@@ -521,6 +530,8 @@ const LoginPage = () => {
                 return null;
         }
     };
+
+    const token = localStorage.getItem("token");
 
     return <LoginLayout subtitle={getSubtitle()}>{renderForm()}</LoginLayout>;
 };
