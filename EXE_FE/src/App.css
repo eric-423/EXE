@@ -2,12 +2,12 @@
   --primary-color: #da7339;
   --secondary-color: #78a243;
   --tertiary-color: #ebd187;
-  --light-color: #efe6db;
+  --light-color: rgb(239, 230, 219);
   --dark-color: #2d1e1a;
 }
 
 body {
-  background: var(--light-color) !important;
+  background: rgb(239, 230, 219) !important;
   font-size: 13px;
   font-weight: 500;
 }
@@ -1801,5 +1801,12 @@ footer {
 
 /* Extra large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
+}
+
+/* Make sure no other elements are using the yellow background */
+.container,
+.splitLayout,
+.formSection {
+  background-color: rgb(239, 230, 219);
 }
 
