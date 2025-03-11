@@ -74,9 +74,6 @@ const HomePage = () => {
   const sortedDates = Object.keys(combinedMarkedDates).sort(
     (a, b) => new Date(a).getTime() - new Date(b).getTime()
   );
-  const selectedDates = Object.keys(combinedMarkedDates).filter(
-    (day) => combinedMarkedDates[day].selected === true
-  );
   const firstDate = sortedDates[2];
   console.log(selectedDate);
 

@@ -115,7 +115,7 @@ const WelcomePage = () => {
                 <ShareButton
                   title="Số điện thoại"
                   onPress={() => {
-                    router.navigate("/(tabs)");
+                    router.navigate("/(auth)/customer.login");
                   }}
                   textStyle={styles.loginBtnText}
                   btnStyle={styles.loginBtn}

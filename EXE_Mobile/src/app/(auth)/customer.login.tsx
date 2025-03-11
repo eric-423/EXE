@@ -26,7 +26,11 @@ const CustomerLoginPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const { setAppState } = useCurrentApp();
 
-  const handleLogin = async (phoneNumber: string, password: string) => {
+  const handleLogin = async (
+    phoneNumber: string,
+    password: string,
+    resetForm: any
+  ) => {
     try {
       setLoading(true);
       const res = await axios.post(
@@ -42,9 +46,12 @@ const CustomerLoginPage = () => {
       if (res.data) {
         await AsyncStorage.setItem("access_token", res.data);
         setAppState(res.data);
-        router.replace("/(tabs)");
+        router.replace({
+          pathname: "/(tabs)",
+          params: { token: res.data, isLogin: 1 },
+        });
       } else {
-        Toast.show("Đăng nhập thành công", {
+        Toast.show("Đăng nhập không thành công", {
           duration: Toast.durations.LONG,
           textColor: "white",
           backgroundColor: APP_COLOR.ORANGE,
@@ -60,6 +67,14 @@ const CustomerLoginPage = () => {
       }
     } catch (error) {
       console.log(">>> check error: ", error);
+      Toast.show("Lỗi khi đăng nhập. Vui lòng thử lại.", {
+        duration: Toast.durations.LONG,
+        textColor: "white",
+        backgroundColor: APP_COLOR.ORANGE,
+        opacity: 1,
+      });
+      resetForm();
+      setLoading(false);
     }
   };
 
@@ -68,12 +83,15 @@ const CustomerLoginPage = () => {
       <Formik
         validationSchema={CustomerSignInSchema}
         initialValues={{ phoneNumber: "", password: "" }}
-        onSubmit={(values) => handleLogin(values.phoneNumber, values.password)}
+        onSubmit={(values, { resetForm }) =>
+          handleLogin(values.phoneNumber, values.password, resetForm)
+        }
       >
         {({
           handleChange,
           handleBlur,
           handleSubmit,
+          resetForm,
           values,
           errors,
           touched,
@@ -156,7 +174,7 @@ const CustomerLoginPage = () => {
               >
                 Chưa có tài khoản?
               </Text>
-              <Link href={"/(auth)/signup"}>
+              <Link href={"/(auth)/customer.signup"}>
                 <Text
                   style={{
                     color: APP_COLOR.ORANGE,
