@@ -43,12 +43,20 @@
 }
 
 .header img {
-    width: 5vh;
+    width: 6vh;
+    min-width: 5vh;
 }
 
 .header .logo {
-    width: 10vh;
+    min-width: 10vh;
+    max-width: 10vh;
 }
+
+.header .icon {
+    width: 6vh;
+    min-width: 5vh;
+}
+
 
 .header-right {
     display: flex;
@@ -64,7 +72,7 @@
 }
 
 .header-icon {
-    margin: 0 10px;
+    margin: 0 1vh;
     transition: all 0.3s ease;
     filter: invert(55%) sepia(19%) saturate(1111%) hue-rotate(346deg) brightness(92%) contrast(86%);
 }
