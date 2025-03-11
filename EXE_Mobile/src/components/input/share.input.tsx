@@ -1,5 +1,5 @@
 import { APP_COLOR } from "@/utils/constant";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -44,6 +44,7 @@ interface IProps {
   error?: any;
   touched?: any;
   editable?: boolean;
+  resetForm?: boolean;
 }
 const ShareInput = (props: IProps) => {
   const [isFocus, setIsFocus] = useState<boolean>(false);
@@ -59,8 +60,13 @@ const ShareInput = (props: IProps) => {
     error,
     touched,
     editable = true,
+    resetForm = false,
   } = props;
-
+  useEffect(() => {
+    if (resetForm && setValue) {
+      setValue("");
+    }
+  }, [resetForm, setValue]);
   return (
     <View style={styles.inputGroup}>
       {title && <Text style={styles.text}>{title}</Text>}
