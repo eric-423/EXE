@@ -43,11 +43,13 @@
 }
 
 .header img {
-    width: 55px;
+    width: 5vh;
 }
-.header img .logo{
-    width: 100px;
+
+.header .logo {
+    width: 10vh;
 }
+
 .header-right {
     display: flex;
     justify-content: flex-end;
@@ -55,11 +57,13 @@
     padding-right: 30px;
     gap: 30px;
 }
+
 .header-left img {
-    width: 90px; /* Specific size for the logo */
+    width: 90px;
+    /* Specific size for the logo */
 }
+
 .header-icon {
-    width: 16px;
     margin: 0 10px;
     transition: all 0.3s ease;
     filter: invert(55%) sepia(19%) saturate(1111%) hue-rotate(346deg) brightness(92%) contrast(86%);
@@ -70,7 +74,6 @@
 }
 
 .logo {
-    width: 90px;
     transition: all 0.2s ease;
 }
 
@@ -101,11 +104,11 @@
     }
 
     .header img {
-        width: 70px;
+        width: 6vh;
     }
 
     .header-icon {
-        width: 14px;
+        width: 10vh;
         margin: 0 8px;
     }
 
