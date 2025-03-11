@@ -1,3 +1,4 @@
+import { useLocalSearchParams } from "expo-router";
 import React from "react";
 import { View, Text, FlatList, StyleSheet, TextInput } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -9,6 +10,8 @@ interface Message {
 }
 
 const ChatPage = () => {
+  const { id } = useLocalSearchParams();
+  console.log(id);
   const messages: Message[] = [
     { id: "1", text: "Chào bạn!", sender: "user" },
     { id: "2", text: "Chào bạn, bạn khỏe không?", sender: "other" },

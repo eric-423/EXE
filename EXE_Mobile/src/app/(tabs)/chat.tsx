@@ -70,13 +70,13 @@ const users: User[] = [
     time: "1 ngày",
   },
 ];
-const handleSubmit = () => {
-  router.navigate("/chat/[id]");
+const handleSubmit = (id: string) => {
+  router.navigate({ pathname: "/chat/[id]", params: { id: id } });
 };
 const ChatList = () => {
   const renderItem = ({ item }: { item: User }) => {
     return (
-      <Pressable onPress={handleSubmit}>
+      <Pressable onPress={() => handleSubmit(item.id)}>
         <View style={styles.userContainer}>
           <Image source={{ uri: item.avatar }} style={styles.avatar} />
           <View style={styles.textContainer}>
