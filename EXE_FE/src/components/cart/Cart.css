@@ -115,3 +115,122 @@
 
     color: white;
 }
+
+
+@media (max-width:1400px) {
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 200%;
+        right: 0px;
+        background-color: #f9f9f9;
+        min-width: 350px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        border-radius: 10px;
+        padding: 30px;
+        background-color: rgb(245, 236, 225);
+        transition: opacity 0.3s ease;
+        opacity: 0;
+    }
+
+    .dropdown-content.show {
+        display: block;
+        opacity: 1;
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    .cart-header {
+        font-family: 'Times New Roman', Times, serif;
+        border-bottom: 1px solid #9c9c9c;
+        margin-bottom: 15px;
+    }
+
+    .cart-header h6 {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 18px;
+    }
+
+    .cart-header p {
+        font-size: 15px;
+        font-weight: 500;
+        line-height: 1.5;
+    }
+
+    .cart-body {
+        display: flex;
+        justify-content: space-between;
+        height: 30px;
+        align-items: center;
+
+    }
+
+    .cart-body h6 {
+        font-size: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 58%;
+        margin-bottom: 0;
+    }
+
+    .cart-body p {
+        font-size: 15px;
+        display: flex;
+        align-items: center;
+        margin: 0;
+    }
+
+    .additional-items {
+        width: 100%;
+        font-size: 10px;
+        color: black;
+        padding-left: 7%;
+        font-size: 12px;
+    }
+
+    .cart-footer {
+        padding-top: 20px;
+        border-top: 1px solid #9c9c9c;
+    }
+
+    .cart-footer p {
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .checkoutBtn {
+        background-color: rgb(120, 162, 67);
+        color: white;
+        border: 1px solid #9c9c9c;
+        padding: 8px 0px;
+        font-weight: 500;
+        cursor: pointer;
+        width: 100%;
+        border-radius: 10px;
+        margin-top: 10px;
+        height: 40px;
+    }
+
+    .linkCheckout {
+        text-decoration: none;
+        color: white;
+        font-size: 17px;
+        font-family: 'Times New Roman', Times, serif;
+
+    }
+
+    .linkCheckout:hover {
+
+        color: white;
+    }
+}
