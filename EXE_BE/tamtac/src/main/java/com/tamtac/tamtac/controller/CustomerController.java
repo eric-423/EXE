@@ -39,4 +39,11 @@ public class CustomerController {
         return ResponseEntity.ok(responseData);
     }
 
+    @GetMapping("/profile/{id}")
+    public ResponseEntity<?> getProfile(@PathVariable int id, @RequestHeader("Authorization") String token){
+        ResponseData responseData = new ResponseData();
+        responseData.setData(customerServiceImp.getProfile(id, token));
+        return ResponseEntity.ok(responseData);
+    }
+
 }

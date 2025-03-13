@@ -10,4 +10,5 @@ public interface CustomerServiceImp {
     CustomerDTO createCustomer(LoginCustomerRequest loginCustomerRequest);
     boolean changePassword(CustomerRequest customerRequest, String token);
     public Map<String, Object> loginCustomer(LoginCustomerRequest loginCustomerRequest);
+    CustomerDTO getProfile(int id, String token);
 }

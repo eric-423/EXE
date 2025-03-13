@@ -34,16 +34,16 @@ public class Order {
     private double amount;
 
     @Column(name = "order_shiping_free")
-    private double shipping_fee;
+    private double shippingFee;
 
     @Column(name = "order_delivery_at")
-    private Date delivery_at;
+    private Date deliveryAtt;
 
     @Column(name = "order_note")
-    private Date note;
+    private String note;
 
     @Column(name = "order_payment_code")
-    private String payment_code;
+    private String paymentCode;
 
     @Column(name = "order_address")
     private String address;
@@ -59,6 +59,9 @@ public class Order {
 
     @Column(name = "order_created_at")
     private Date createdAt;
+
+    @Column(name = "is_pick_up")
+    private boolean isPickUp;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "customer_id")

@@ -4,6 +4,7 @@ import com.tamtac.tamtac.dto.CustomerDTO;
 import com.tamtac.tamtac.entity.Role;
 import com.tamtac.tamtac.entity.RoleHistory;
 import com.tamtac.tamtac.entity.User;
+import com.tamtac.tamtac.exception.ResourceNotFoundException;
 import com.tamtac.tamtac.payload.request.CustomerRequest;
 import com.tamtac.tamtac.payload.request.LoginCustomerRequest;
 import com.tamtac.tamtac.repository.RoleHistoryRepository;
@@ -63,16 +64,12 @@ public class CustomerService implements CustomerServiceImp {
         roleHistoryRepository.save(roleHistory);
 
         CustomerDTO customerDTO = new CustomerDTO();
-        customerDTO.setPhoneNumber(user.getPhone());
+        customerDTO.setPhone(user.getPhone());
         return customerDTO;
     }
 
-    @Override
-    public boolean changePassword(CustomerRequest customerRequest, String token) {
-        User user = userRepository.findByPhone(customerRequest.getPhoneNumber());
-        if (user == null) {
-            throw new RuntimeException("Phone number is not exist");
-        }
+    private void checkValidCustomer(String token, int customerId) {
+        User user = userRepository.findById(customerId).orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
 
         String tokenFinal = token.replace("Bearer ", "");
         Claims claims;
@@ -89,6 +86,12 @@ public class CustomerService implements CustomerServiceImp {
         } catch (Exception e) {
             throw new RuntimeException("Token is invalid");
         }
+    }
+
+    @Override
+    public boolean changePassword(CustomerRequest customerRequest, String token) {
+        User user = userRepository.findByPhone(customerRequest.getPhoneNumber());
+        checkValidCustomer(token, user.getId());
 
         user.setPassword(passwordEncoder.encode(customerRequest.getPassword()));
         userRepository.save(user);
@@ -101,16 +104,37 @@ public class CustomerService implements CustomerServiceImp {
         if (user == null) {
             throw new RuntimeException("Phone number is not exist");
         }
-        if(!passwordEncoder.matches(loginCustomerRequest.getPassword(), user.getPassword())){
+        if (!passwordEncoder.matches(loginCustomerRequest.getPassword(), user.getPassword())) {
             throw new RuntimeException("Password is incorrect");
         }
 
-        Map<String, Object>result = new HashMap<>();
-        String accessToken = jwtTokenHelper.generateToken(user,300000);
-        String refreshToken = jwtTokenHelper.generateToken(user,864000000);
+        Map<String, Object> result = new HashMap<>();
+        String accessToken = jwtTokenHelper.generateToken(user, 300000);
+        String refreshToken = jwtTokenHelper.generateToken(user, 864000000);
         result.put("access_token", accessToken);
-        result.put("refresh_token", refreshToken );
+        result.put("refresh_token", refreshToken);
 
         return result;
+    }
+
+    @Override
+    public CustomerDTO getProfile(int id, String token) {
+
+        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
+        checkValidCustomer(token, user.getId());
+
+        CustomerDTO customerDTO = new CustomerDTO();
+        customerDTO.setId(user.getId());
+        customerDTO.setFullName(user.getFullName());
+        customerDTO.setEmail(user.getEmail());
+        customerDTO.setPhone(user.getPhone());
+        customerDTO.setAddress(user.getAddress());
+        customerDTO.setDateOfBirth(user.getDateOfBirth());
+        customerDTO.setCreatedAt(user.getCreatedAt());
+        customerDTO.setMemberPoint(user.getMemberPoint());
+        customerDTO.setMemberRank(user.getMemberAssociation().getName());
+
+
+        return customerDTO;
     }
 }

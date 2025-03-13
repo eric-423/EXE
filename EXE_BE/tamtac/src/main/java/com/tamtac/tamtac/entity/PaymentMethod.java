@@ -18,7 +18,7 @@ public class PaymentMethod {
     private int id;
 
     @Column(name = "payment_method_name")
-    private int name;
+    private String name;
 
     @OneToMany(mappedBy = "paymentMethod", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     private List<Order> orderList;

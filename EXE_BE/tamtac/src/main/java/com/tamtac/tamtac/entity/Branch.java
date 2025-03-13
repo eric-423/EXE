@@ -30,6 +30,9 @@ public class Branch {
     private boolean isActive;
 
     @OneToMany(mappedBy = "branch", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    private List<BranchProduct> branchProducts;
+
+    @OneToMany(mappedBy = "branch", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private List<Warehouse> warehouseList;
 
     @OneToMany(mappedBy = "branch", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
