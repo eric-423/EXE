@@ -12,7 +12,7 @@ const Header = () => {
                     <img
                         src="/images/logo.png"
                         alt="logo"
-                        className="logo  "
+                        className="logo"
                     />
                 </Link>
             </Col>
@@ -49,7 +49,7 @@ const Header = () => {
                             className="header-icon"
                         />
                     </Link>
-                    <Link to="/login" className="icon-link">
+                    <Link to="/user" className="icon-link">
                         <img
                             src="/icons/account.svg"
                             alt="account"
