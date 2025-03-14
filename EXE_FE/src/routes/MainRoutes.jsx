@@ -7,6 +7,7 @@ import Login from "../pages/login";
 import PaymentSuccessPage from "../pages/paymentsuccess";
 import Checkout from './../components/checkoutPage/checkout';
 import MemberInfo from "../pages/user/MemberInfo";
+import Admin from "../pages/admin/AdminLayout";
 // import Login from "../pages/login/LoginPage";
 
 //* ====================  Authorization for PUBLIC ==================== */
@@ -40,6 +41,10 @@ const publicRoutes = {
     {
       path: config.routes.public.user,
       element: <MemberInfo />,
+    },
+    {
+      path: config.routes.public.admin,
+      element: <Admin />,
     }
   ],
 };
