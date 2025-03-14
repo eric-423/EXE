@@ -16,6 +16,7 @@ const routes = {
         best: "/best",
         paymentSuccess: "/payment-success",
         checkout: "/checkout",
+        user: "/user",
     },
     api: {
         loginGoogle: "/api/auth/callback/google/redirect",
