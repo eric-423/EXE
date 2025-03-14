@@ -1,0 +1,345 @@
+@import url('../../App.css');
+
+.nav-menu-admin {
+    width: 50px;
+    height: 50px;
+    transition: 'all 0.3s ease';
+    cursor: 'pointer';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.nav-menu-admin:hover {
+    background-color: rgba(124, 124, 124, 0.30);
+    border-radius: 50%;
+}
+
+.nav-menu-admin:active {
+    background-color: rgba(124, 124, 124, 0.60);
+    border-radius: 50%;
+}
+
+.nav-admin {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    z-index: 10;
+}
+
+.formsearch {
+    min-width: 300px;
+    max-width: 500px;
+}
+
+.tongquan {
+    background-color: var(--tertiary-color);
+    padding: 25px;
+    border-radius: 10px;
+}
+
+.revenue {
+    background-color: var(--tertiary-color);
+    padding: 25px;
+    border-radius: 10px;
+    width: 590px;
+}
+
+.distribution {
+    background-color: var(--tertiary-color);
+    padding: 25px;
+    border-radius: 10px;
+}
+
+.branchPerformance {
+    background-color: var(--tertiary-color);
+    padding: 25px;
+    border-radius: 10px;
+}
+
+/* Dashboard Section */
+.dashboard-section {
+    background-color: #fff;
+    /* Nền trắng cho từng khối */
+    border: 1px solid var(--gold-border);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Header Filter Button */
+header button {
+    border: 1px solid var(--gray-dark);
+    background-color: var(--cream);
+    color: var(--gray-dark);
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    transition: background-color 0.2s ease;
+}
+
+header button:hover {
+    background-color: #e7d9c8;
+    /* nhạt hơn chút khi hover */
+}
+
+/* TabGroup */
+.tab-button {
+    background-color: #fff;
+    border: 1px solid var(--gold-border);
+    border-radius: 9999px;
+    color: var(--gray-dark);
+    padding: 0.25rem 0.75rem;
+    font-size: 0.875rem;
+    transition: background-color 0.2s ease;
+}
+
+.tab-button.active {
+    background-color: var(--gold-border);
+    color: #fff;
+    border-color: var(--gold-border);
+}
+
+.tab-button.inactive:hover {
+    background-color: var(--gold-border);
+    color: #fff;
+}
+
+/* StatCard */
+.stat-card {
+    background-color: #fff;
+    border: 1px solid var(--gold-border);
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Gạch ngang mờ */
+.stat-card .w-full.h-px.bg-gray-light {
+    background-color: var(--gray-light);
+}
+
+/* LocationStatCard */
+.status-tag {
+    color: #fff;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    display: inline-block;
+    margin-left: 0.5rem;
+}
+
+.bg-green {
+    background-color: var(--green) !important;
+}
+
+.bg-blue {
+    background-color: var(--blue) !important;
+}
+
+.bg-orange {
+    background-color: var(--orange) !important;
+}
+
+/* ProgressBar */
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background-color: #eee;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+.progress-bar-fill.bg-amber {
+    background-color: var(--amber);
+}
+
+/* Animation (fade-in, slide-up) */
+.animate-fade-in {
+    animation: fadeIn 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.animate-slide-up {
+    animation: slideUp 0.4s ease forwards;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.branchInfo a {
+    font-size: 16px;
+}
+
+.branchInfo ul {
+    border-bottom: 1px solid var(--primary-color);
+}
+
+.branch-content {
+    background-color: var(--tertiary-color);
+    padding: 25px;
+    margin-top: 20px;
+    border-radius: 10px;
+    padding-bottom: 0;
+}
+
+.branch-detail {
+    display: grid;
+    grid-template-columns: 3fr 3fr;
+    width: 400px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+
+.branch-detail strong {
+    text-align: left;
+}
+
+.branch-detail p {
+    margin-top: 10px;
+    grid-column: 2;
+    text-align: left;
+    width: 200px;
+}
+
+.branch-manager {
+    background-color: var(--light-color);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.ship-tracking {
+    background-color: var(--tertiary-color);
+    padding: 25px;
+    margin-top: 20px;
+    border-radius: 10px;
+}
+
+.branch-members {
+    background-color: var(--tertiary-color);
+    padding: 25px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    border-radius: 10px;
+}
+
+
+.row-doc {
+    gap: 5rem;
+    margin-left: 8rem;
+}
+
+
+.document-card {
+    background-color: var(--tertiary-color);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    height: 25rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-radius: 10px;
+    width: 20rem;
+    gap: 5rem;
+}
+
+.document-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+.document-preview {
+    background-color: var(--light-color);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    text-align: center;
+    line-height: 1.5;
+}
+
+.document-info {
+    padding: 0.5rem 0;
+}
+
+.document-title {
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    font-size: 1.2rem;
+}
+
+.document-type,
+.document-description {
+    font-size: 0.8rem;
+    color: rgba(0, 0, 0, 0.75);
+}
+
+.edit-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0.5rem;
+}
+
+.listbranch {
+    background-color: var(--tertiary-color);
+}
+
+
+
+.list-detail {
+    display: grid;
+    grid-template-columns: 3fr 3fr;
+    width: 400px;
+    align-items: center;
+}
+
+.list-detail span {
+    width: fit-content;
+    padding: 7px;
+    padding-bottom: 0.6rem;
+    background-color: rgb(67, 216, 67);
+    border-radius: 10px;
+    align-items: center;
+}
+
+.listbranch button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+}
