@@ -4,6 +4,7 @@ import { Filter } from "lucide-react";
 import BranchInfo from "./BranchInfo";
 import DocumentCard from "./DocumentCard";
 import RequestTable from "./RequestTable";
+import ListBranch from "./listBranch";
 
 function Branches() {
     const [activeMenu, setActiveMenu] = useState('thongtin');
@@ -171,6 +172,65 @@ function Branches() {
     ];
 
 
+    const branches = [
+        {
+            id: 1,
+            name: "Chi nhánh Nguyễn Văn Linh",
+            address: "123 Nguyễn Văn Linh, Quận 7, TP.HCM",
+            phone: "028 12345",
+            district: "7",
+            staff: "Trần Thị B",
+            director: "Nguyễn Văn A",
+            status: "Đang hoạt động",
+            requests: 2,
+        },
+        {
+            id: 2,
+            name: "Chi nhánh Nguyễn Văn Linh",
+            address: "123 Nguyễn Văn Linh, Quận 7, TP.HCM",
+            phone: "028 12345",
+            district: "7",
+            staff: "Trần Thị B",
+            director: "Nguyễn Văn A",
+            status: "Đang hoạt động",
+            requests: 0,
+        },
+        {
+            id: 3,
+            name: "Chi nhánh Nguyễn Văn Linh",
+            address: "123 Nguyễn Văn Linh, Quận 7, TP.HCM",
+            phone: "028 12345",
+            district: "7",
+            staff: "Trần Thị B",
+            director: "Nguyễn Văn A",
+            status: "Đang hoạt động",
+            requests: 0,
+        },
+        {
+            id: 4,
+            name: "Chi nhánh Nguyễn Văn Linh",
+            address: "123 Nguyễn Văn Linh, Quận 7, TP.HCM",
+            phone: "028 12345",
+            district: "7",
+            staff: "Trần Thị B",
+            director: "Nguyễn Văn A",
+            status: "Đang hoạt động",
+            requests: 0,
+        },
+        {
+            id: 5,
+            name: "Chi nhánh Nguyễn Văn Linh",
+            address: "123 Nguyễn Văn Linh, Quận 7, TP.HCM",
+            phone: "028 12345",
+            district: "7",
+            staff: "Trần Thị B",
+            director: "Nguyễn Văn A",
+            status: "Đang hoạt động",
+            requests: 0,
+        },
+    ];
+
+
     const renderContent = () => {
         switch (activeMenu) {
             case 'thongtin':
@@ -185,6 +245,8 @@ function Branches() {
                 return <div>solieu</div>;
             case 'yeucau':
                 return <RequestTable requests={requests} />;
+            case 'branchList':
+                return <ListBranch branches={branches} />;
             default:
                 return null;
         }
@@ -242,7 +304,7 @@ function Branches() {
                             </li>
                             <li className="nav-item">
                                 <a
-                                    className={`nav-link ${activeMenu === 'vanchuyen' ? 'active' : ''}`}
+                                    className={`nav-link ${activeMenu === 'yeucau' ? 'active' : ''}`}
                                     href="#!"
                                     onClick={(e) => {
                                         e.preventDefault();
@@ -250,6 +312,18 @@ function Branches() {
                                     }}
                                 >
                                     Yêu Cầu
+                                </a>
+                            </li>
+                            <li className="nav-item">
+                                <a
+                                    className={`nav-link ${activeMenu === 'branchList' ? 'active' : ''}`}
+                                    href="#!"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setActiveMenu('branchList')
+                                    }}
+                                >
+                                    Danh sách chi nhánh
                                 </a>
                             </li>
                         </ul>
