@@ -25,6 +25,7 @@ const CustomerChangePassword = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const { setAppState } = useCurrentApp();
   const { token } = useLocalSearchParams();
+  console.log(token);
   const handleChangePassword = async (
     password: string,
     confirmPassword: string
@@ -33,13 +34,13 @@ const CustomerChangePassword = () => {
       console.log(password);
       setLoading(true);
       const res = await axios.post(
-        `${BASE_URL}/api/v1/users/change-pass`,
+        `${BASE_URL}/customer/change-password`,
         {
           password: password,
         },
         {
           headers: {
-            token: `${token}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -58,8 +59,8 @@ const CustomerChangePassword = () => {
           router.replace("/(auth)/login");
         }
       }
-    } catch (error) {
-      console.log(">>> check error: ", error);
+    } catch (error: any) {
+      console.log(">>> check error: ", error.message);
     }
   };
 

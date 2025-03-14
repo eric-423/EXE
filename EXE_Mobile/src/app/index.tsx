@@ -41,7 +41,7 @@ const RootPage = () => {
     prepare();
   }, []);
   if (true) {
-    return <Redirect href={"/(tabs)"} />;
+    return <Redirect href={"/(auth)/welcome"} />;
   }
   return <></>;
 };

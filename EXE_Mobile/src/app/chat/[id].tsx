@@ -48,14 +48,16 @@ const ChatPage = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <FlatList
-        data={messages}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        inverted
-        contentContainerStyle={styles.chatContainer}
-      />
-      <View style={styles.inputContainer}>
+      <View style={styles.message}>
+        <FlatList
+          data={messages}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+          inverted
+          contentContainerStyle={styles.chatContainer}
+        />
+      </View>
+      <View>
         <TextInput
           placeholder="Nhập tin nhắn..."
           onChangeText={(text: string) => handleChat(text)}
@@ -71,9 +73,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#f4f4f4",
   },
+  message: {
+    marginBottom: 40,
+  },
   chatContainer: {
     padding: 10,
     paddingBottom: 80,
+    marginBottom: 30,
   },
   messageContainer: {
     maxWidth: "80%",

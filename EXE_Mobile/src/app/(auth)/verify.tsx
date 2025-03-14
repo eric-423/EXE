@@ -30,17 +30,14 @@ const VerifyPage = () => {
     setIsSubmit(true);
     try {
       const res = await axios.post(
-        `${BASE_URL}/api/v1/verify-code/verify-phone-code`,
-        {
-          code: code,
-          phoneNumber: phoneNumber,
-        }
+        `${BASE_URL}/verify-code/verify?phoneNumber=${phoneNumber}&code=${code}`
       );
       setIsSubmit(false);
-      console.log(res.data);
-
       if (res.data) {
-        const token = res.data;
+        const token = res.data.access_token;
+        const refresh_token = res.data.refresh_token;
+        console.log(token);
+        console.log(phoneNumber);
         otpRef?.current?.clear();
         Toast.show("Kích hoạt tài khoản thành công", {
           duration: Toast.durations.LONG,
@@ -54,7 +51,7 @@ const VerifyPage = () => {
         } else {
           router.replace({
             pathname: "/(auth)/customer.changepassword",
-            params: { token },
+            params: { token, refresh_token },
           });
         }
       } else {

@@ -9,7 +9,7 @@ import { router } from "expo-router";
 import { useEffect, useState } from "react";
 import { StyleSheet, Pressable, Text, View, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { APP_COLOR } from "@/utils/constant";
+import { APP_COLOR, BASE_URL } from "@/utils/constant";
 import { currencyFormatter } from "@/utils/api";
 import Animated, {
   FadeIn,
@@ -17,34 +17,27 @@ import Animated, {
   FadeOut,
 } from "react-native-reanimated";
 import AntDesign from "@expo/vector-icons/AntDesign";
-
-const data = [
-  {
-    key: 1,
-    name: "Top Quán Rating 5* tuần này",
-    description: "Gợi ý quán được tín đồ ẩm thực đánh giá 5*",
-    refAPI: "top-rating",
-  },
-  {
-    key: 2,
-    name: "Quán Mới Lên Sàn",
-    description: "Khám phá ngay hàng loạt quán mới cực ngon",
-    refAPI: "newcomer",
-  },
-  {
-    key: 3,
-    name: "Ăn Thỏa Thích, Freeship 0Đ",
-    description: "Bánh ngọt, chân gà, bánh tráng trộn... Freeship.",
-    refAPI: "top-freeship",
-  },
-];
-
+import axios from "axios";
 const HomeTab = () => {
   const [mounted, setMounted] = useState(false);
   const [showCart, setShowCart] = useState(false);
   const [showPriceUpdate, setShowPriceUpdate] = useState(false);
   const [priceUpdateAmount, setPriceUpdateAmount] = useState(0);
   const { restaurant, cart } = useCurrentApp();
+  const [collectionData, setCollectionData] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(`${BASE_URL}/product-type`);
+        console.log(res.data);
+        setCollectionData(res.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
     setMounted(true);
@@ -89,14 +82,10 @@ const HomeTab = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <CustomFlatList
-        data={data}
+        data={collectionData}
         style={styles.list}
         renderItem={({ item }) => (
-          <CollectionHome
-            name={item.name}
-            description={item.description}
-            refAPI={item.refAPI}
-          />
+          <CollectionHome name={item.name} id={item.id} />
         )}
         HeaderComponent={<HeaderHome />}
         StickyElementComponent={<SearchHome />}

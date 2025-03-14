@@ -22,19 +22,15 @@ const styles = StyleSheet.create({
 
 const handleSignUp = async (phoneNumber: string) => {
   try {
-    const signUpResponse = await axios.post(
-      `${BASE_URL}/api/v1/users/sign-up/customer`,
-      {
-        phoneNumber: phoneNumber,
-      }
-    );
+    const signUpResponse = await axios.post(`${BASE_URL}/customer/sign-up`, {
+      phoneNumber: phoneNumber,
+    });
 
     if (signUpResponse.data) {
       const generateCodeResponse = await axios.post(
-        `${BASE_URL}/api/v1/verify-code/generate-code`,
+        `${BASE_URL}/verify-code/send?mode=dev`,
         {
           phoneNumber: phoneNumber,
-          mode: "dev",
         }
       );
       console.log(generateCodeResponse.data);

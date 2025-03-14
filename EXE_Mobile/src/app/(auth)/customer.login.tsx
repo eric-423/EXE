@@ -2,6 +2,7 @@ import ShareButton from "@/components/button/share.button";
 import SocialButton from "@/components/button/social.button";
 import ShareInput from "@/components/input/share.input";
 import { useCurrentApp } from "@/context/app.context";
+import { FONTS } from "@/theme/typography";
 import { loginAPI } from "@/utils/api";
 import { APP_COLOR, BASE_URL } from "@/utils/constant";
 import { CustomerSignInSchema } from "@/utils/validate.schema";
@@ -33,18 +34,19 @@ const CustomerLoginPage = () => {
   ) => {
     try {
       setLoading(true);
-      const res = await axios.post(
-        `${BASE_URL}/api/v1/users/sign-in/customer`,
-        {
-          phoneNumber: phoneNumber,
-          password: password,
-        }
-      );
+      const res = await axios.post(`${BASE_URL}/customer/sign-in`, {
+        phoneNumber: phoneNumber,
+        password: password,
+      });
       setLoading(false);
-      console.log(res.data);
+      console.log(res.data.data);
 
       if (res.data) {
-        await AsyncStorage.setItem("access_token", res.data);
+        await AsyncStorage.setItem("access_token", res.data.data.access_token);
+        await AsyncStorage.setItem(
+          "refresh_token",
+          res.data.data.refresh_token
+        );
         setAppState(res.data);
         router.replace({
           pathname: "/(tabs)",
@@ -103,9 +105,10 @@ const CustomerLoginPage = () => {
                   fontSize: 25,
                   fontWeight: 600,
                   marginVertical: 30,
+                  fontFamily: FONTS.bold,
                 }}
               >
-                Đăng nhập
+                Thay đổi mật khẩu
               </Text>
             </View>
 
@@ -128,18 +131,6 @@ const CustomerLoginPage = () => {
               error={errors.password}
               touched={touched.password}
             />
-
-            <View style={{ marginVertical: 10 }}>
-              <Text
-                onPress={() => router.navigate("/(auth)/request.password")}
-                style={{
-                  textAlign: "center",
-                  color: APP_COLOR.ORANGE,
-                }}
-              >
-                Quên mật khẩu ?
-              </Text>
-            </View>
             <ShareButton
               loading={loading}
               title="Đăng Nhập"
@@ -158,35 +149,6 @@ const CustomerLoginPage = () => {
               }}
               pressStyle={{ alignSelf: "stretch" }}
             />
-
-            <View
-              style={{
-                marginVertical: 15,
-                flexDirection: "row",
-                gap: 10,
-                justifyContent: "center",
-              }}
-            >
-              <Text
-                style={{
-                  color: APP_COLOR.BLACK,
-                }}
-              >
-                Chưa có tài khoản?
-              </Text>
-              <Link href={"/(auth)/customer.signup"}>
-                <Text
-                  style={{
-                    color: APP_COLOR.ORANGE,
-                    textDecorationLine: "underline",
-                  }}
-                >
-                  Đăng ký.
-                </Text>
-              </Link>
-            </View>
-
-            <SocialButton title="Đăng nhập với" />
           </View>
         )}
       </Formik>

@@ -10,7 +10,7 @@ import {
   Pressable,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
+import demo from "@/assets/demo.jpg";
 interface User {
   id: string;
   name: string;
@@ -24,49 +24,49 @@ const users: User[] = [
     id: "1",
     name: "An đẹp chai",
     status: "Chiều mới lên",
-    avatar: "@/assets/demo.jpg",
+    avatar: demo,
     time: "5 giờ",
   },
   {
     id: "2",
     name: "An And The Besties",
     status: "Thư đã bình chọn cho 'Cố'...",
-    avatar: "@/assets/demo.jpg",
+    avatar: demo,
     time: "16 phút",
   },
   {
     id: "3",
     name: "An SanSan",
     status: "Đã bày tỏ cảm xúc 😆 về tin nhắn...",
-    avatar: "@/assets/demo.jpg",
+    avatar: demo,
     time: "20 phút",
   },
   {
     id: "4",
     name: "An BE",
     status: "Bạn đã gửi một video.",
-    avatar: "@/assets/demo.jpg",
+    avatar: demo,
     time: "21 phút",
   },
   {
     id: "5",
     name: "...",
     status: "Đã bày tỏ cảm xúc ❤️ về tin nhắn...",
-    avatar: "@/assets/demo.jpg",
+    avatar: demo,
     time: "22 phút",
   },
   {
     id: "6",
     name: "SWD",
     status: "Phúc: 🤘",
-    avatar: "@/assets/demo.jpg",
+    avatar: demo,
     time: "23 phút",
   },
   {
     id: "7",
     name: "Trung Trương",
     status: "Đơnn =>> : 1 ngày",
-    avatar: "@/assets/demo.jpg",
+    avatar: demo,
     time: "1 ngày",
   },
 ];
@@ -78,7 +78,7 @@ const ChatList = () => {
     return (
       <Pressable onPress={() => handleSubmit(item.id)}>
         <View style={styles.userContainer}>
-          <Image source={{ uri: item.avatar }} style={styles.avatar} />
+          <Image source={item.avatar} style={styles.avatar} />
           <View style={styles.textContainer}>
             <Text style={styles.name}>{item.name}</Text>
             <Text style={styles.status}>{item.status}</Text>

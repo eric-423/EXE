@@ -8,7 +8,7 @@ import {
   Pressable,
   Dimensions,
 } from "react-native";
-import { APP_COLOR } from "@/utils/constant";
+import { APP_COLOR, BASE_URL } from "@/utils/constant";
 import { useEffect, useState } from "react";
 import { router } from "expo-router";
 import ContentLoader, { Rect } from "react-content-loader/native";
@@ -19,13 +19,13 @@ import { currencyFormatter } from "@/utils/api";
 import React from "react";
 import Popup from "./popup.home";
 import { FONTS } from "@/theme/typography";
+import axios from "axios";
 
 const { height: sHeight, width: sWidth } = Dimensions.get("window");
 
 interface IProps {
   name: string;
-  description: string;
-  refAPI: string;
+  id: number;
 }
 
 const styles = StyleSheet.create({
@@ -44,9 +44,9 @@ const styles = StyleSheet.create({
 });
 
 const CollectionHome = (props: IProps) => {
-  const { name, description, refAPI } = props;
+  const { name, id } = props;
   const { cart, setCart, restaurant, setRestaurant } = useCurrentApp();
-
+  const [collectionData, setCollectionData] = useState([]);
   const mockRestaurant = {
     _id: "mock_restaurant_1",
     name: "Số món đã đặt",
@@ -54,50 +54,31 @@ const CollectionHome = (props: IProps) => {
   };
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(
+          `${BASE_URL}/products?page=0&size=5&typeId=${id}`
+        );
+        setRestaurants(res.data.data.content);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
     if (!restaurant) {
       setRestaurant(mockRestaurant);
     }
   }, []);
 
-  const mockRestaurants = [
-    {
-      _id: "1",
-      name: "Pizza Margherita",
-      price: 150000,
-      image: "demo.jpg",
-      description:
-        "Một chiếc pizza truyền thống với sốt cà chua, phô mai mozzarella và lá húng quế tươi.",
-    },
-    {
-      _id: "2",
-      name: "Burger Classic",
-      price: 80000,
-      image: "demo.jpg",
-      description:
-        "Burger với thịt bò tươi ngon, phô mai cheddar, rau xà lách và sốt đặc biệt.",
-    },
-    {
-      _id: "3",
-      name: "Sushi Rolls",
-      price: 120000,
-      image: "demo.jpg",
-      description:
-        "Sushi cuộn tươi ngon với cá hồi, cơm, và rau cuốn bên ngoài.",
-    },
-    {
-      _id: "4",
-      name: "Pasta Carbonara",
-      price: 130000,
-      image: "demo.jpg",
-      description:
-        "Mì pasta với sốt carbonara mịn màng, được làm từ trứng, phô mai parmesan và thịt xông khói.",
-    },
-  ];
-
-  const [restaurants, setRestaurants] = useState(mockRestaurants);
+  const [restaurants, setRestaurants] = useState([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+
   const handlePressItem = (item: any) => {
     setSelectedItem(item);
     setModalVisible(true);
@@ -107,11 +88,12 @@ const CollectionHome = (props: IProps) => {
     setModalVisible(false);
     setSelectedItem(null);
   };
+
   const handleQuantityChange = (item: any, action: "MINUS" | "PLUS") => {
     if (!restaurant?._id) return;
 
     const total = action === "MINUS" ? -1 : 1;
-    const priceChange = total * item.price;
+    const priceChange = total * item.productPrice;
 
     const newCart = { ...cart };
     if (!newCart[restaurant._id]) {
@@ -127,31 +109,31 @@ const CollectionHome = (props: IProps) => {
     newCart[restaurant._id].quantity =
       (newCart[restaurant._id].quantity || 0) + total;
 
-    if (!newCart[restaurant._id].items[item._id]) {
-      newCart[restaurant._id].items[item._id] = {
+    if (!newCart[restaurant._id].items[item.productId]) {
+      newCart[restaurant._id].items[item.productId] = {
         data: {
           ...item,
-          basePrice: item.price,
-          title: item.name,
+          basePrice: item.productPrice,
+          title: item.productName,
         },
         quantity: 0,
       };
     }
 
     const currentQuantity =
-      (newCart[restaurant._id].items[item._id].quantity || 0) + total;
+      (newCart[restaurant._id].items[item.productId].quantity || 0) + total;
 
     if (currentQuantity <= 0) {
-      delete newCart[restaurant._id].items[item._id];
+      delete newCart[restaurant._id].items[item.productId];
       if (Object.keys(newCart[restaurant._id].items).length === 0) {
         delete newCart[restaurant._id];
       }
     } else {
-      newCart[restaurant._id].items[item._id] = {
+      newCart[restaurant._id].items[item.productId] = {
         data: {
           ...item,
-          basePrice: item.price,
-          title: item.name,
+          basePrice: item.productPrice,
+          title: item.productName,
         },
         quantity: currentQuantity,
       };
@@ -195,7 +177,12 @@ const CollectionHome = (props: IProps) => {
               {name}
             </Text>
             <Pressable
-              onPress={() => router.navigate("/(auth)/restaurants")}
+              onPress={() =>
+                router.navigate({
+                  pathname: "/(auth)/restaurants",
+                  params: { id },
+                })
+              }
               style={{
                 flexDirection: "row",
                 alignItems: "center",
@@ -219,18 +206,6 @@ const CollectionHome = (props: IProps) => {
             </Pressable>
           </View>
 
-          <View style={{ marginVertical: 5 }}>
-            <Text
-              style={{
-                color: "#5a5a5a",
-                fontFamily: FONTS.medium,
-                fontSize: 17,
-              }}
-            >
-              {description}
-            </Text>
-          </View>
-
           <FlatList
             data={restaurants}
             horizontal
@@ -238,7 +213,7 @@ const CollectionHome = (props: IProps) => {
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
             renderItem={({ item }) => {
-              const quantity = getItemQuantity(item._id);
+              const quantity = getItemQuantity(item.productId);
               return (
                 <Pressable onPress={() => handlePressItem(item)}>
                   <View
@@ -263,7 +238,7 @@ const CollectionHome = (props: IProps) => {
                           fontSize: 17,
                         }}
                       >
-                        {item.name}
+                        {item.productName}
                       </Text>
                       <Text
                         style={{
@@ -272,7 +247,7 @@ const CollectionHome = (props: IProps) => {
                           fontSize: 17,
                         }}
                       >
-                        {currencyFormatter(item.price)}
+                        {currencyFormatter(item.productPrice)}
                       </Text>
                     </View>
                     <View
