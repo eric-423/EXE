@@ -110,7 +110,7 @@ const LoginPage = () => {
         try {
             // First API: Sign up
             const signUpResponse = await axios.post(
-                "https://tamtac-6548a8185ba9.herokuapp.com/api/v1/users/sign-up/customer",
+                `${BASE_URL}${API_ROUTES.SIGN_UP}`,
                 {
                     phoneNumber: phoneNumber,
                 }
