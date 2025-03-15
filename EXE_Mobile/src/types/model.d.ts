@@ -83,6 +83,7 @@ declare global {
 
   interface IMenuItem {
     productImage: any;
+    productId: number;
     _id: string;
     menu: string;
     title: string;

@@ -1,6 +1,6 @@
 import { useCurrentApp } from "@/context/app.context";
 import { FONTS } from "@/theme/typography";
-
+import { jwtDecode } from "jwt-decode";
 import { currencyFormatter, placeOrderAPI } from "@/utils/api";
 import { APP_COLOR, BASE_URL } from "@/utils/constant";
 import { router } from "expo-router";
@@ -13,19 +13,18 @@ import {
   View,
   StyleSheet,
   Modal,
-  TextInput,
 } from "react-native";
 import Toast from "react-native-root-toast";
 import Entypo from "@expo/vector-icons/Entypo";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-
 interface IOrderItem {
   image: string;
   title: string;
   option: string;
   price: number;
   quantity: number;
+  productId: number;
 }
 interface ICusInfor {
   address: string;
@@ -58,8 +57,49 @@ const PlaceOrderPage = () => {
       phone: "0889679561",
     },
   ]);
-  const [selectedAddress, setSelectedAddress] = useState<any>(null); // Updated to hold full address data
+  const [selectedAddress, setSelectedAddress] = useState<any>(null);
+  const [orderDetails, setOrderDetails] = useState<
+    { productId: number; quantity: number }[]
+  >([]);
+  useEffect(() => {
+    const getAccessToken = async () => {
+      try {
+        const token = await AsyncStorage.getItem("access_token");
+        setDecodeToken(token);
+        if (token) {
+          const decoded = jwtDecode(token);
+          setDecodeToken(decoded.id);
+        } else {
+          console.log("No access token found.");
+        }
+      } catch (error) {
+        console.error("Error retrieving access token:", error);
+      }
+    };
+    getAccessToken();
+  }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const resDefault = await axios.get(
+          `${BASE_URL}/information/default?customerId=${decodeToken}`
+        );
+        setSelectedAddress(resDefault.data.data);
+        const resAddresses = await axios.get(
+          `${BASE_URL}/information/${decodeToken}`
+        );
+        if (resAddresses.data.data) {
+          setAddresses(resAddresses.data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
+    if (decodeToken) {
+      fetchData();
+    }
+  }, [decodeToken]);
   const styles = StyleSheet.create({
     container: {
       paddingTop: 5,
@@ -108,37 +148,12 @@ const PlaceOrderPage = () => {
       fontSize: 17,
     },
   });
-  useEffect(() => {
-    const fetchAddressCustomer = async () => {
-      const res = await axios.get(`${BASE_URL}/information/15`);
-      if (res.data.data) {
-        console.log(res.data.data);
-
-        setAddresses(res.data.data);
-      }
-    };
-    fetchAddressCustomer();
-  }, []);
-  useEffect(() => {
-    const getAccessToken = async () => {
-      try {
-        const token = await AsyncStorage.getItem("access_token");
-        setDecodeToken(token);
-        if (token) {
-          console.log("Access token retrieved:", token);
-        } else {
-          console.log("No access token found.");
-        }
-      } catch (error) {
-        console.error("Error retrieving access token:", error);
-      }
-    };
-    getAccessToken();
-  }, []);
 
   useEffect(() => {
     if (cart && restaurant && restaurant._id) {
       const result = [];
+      const details: OrderDetail[] = [];
+
       for (const [menuItemId, currentItems] of Object.entries(
         cart[restaurant._id].items
       )) {
@@ -154,6 +169,7 @@ const PlaceOrderPage = () => {
               option: key,
               price: currentItems.data.basePrice + addPrice,
               quantity: value,
+              productId: currentItems.data.productId,
             });
           }
         } else {
@@ -163,12 +179,17 @@ const PlaceOrderPage = () => {
             option: "",
             price: currentItems.data.basePrice,
             quantity: currentItems.quantity,
+            productId: currentItems.data.productId,
           });
         }
-        console.log("ok", result);
 
-        setOrderItems(result);
+        details.push({
+          productId: currentItems.data.productId,
+          quantity: currentItems.quantity,
+        });
       }
+      setOrderItems(result);
+      setOrderDetails(details);
     }
   }, [restaurant]);
 

@@ -25,6 +25,7 @@ const { height: sHeight, width: sWidth } = Dimensions.get("window");
 interface IProps {
   name: string;
   id: number;
+  branchId: string | null;
 }
 interface IPropsProduct {
   productId: string;
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
   },
 });
 const CollectionHome = (props: IProps) => {
-  const { name, id } = props;
+  const { name, id, branchId } = props;
   const { cart, setCart, restaurant, setRestaurant } = useCurrentApp();
   const mockRestaurant = {
     _id: "mock_restaurant_1",
@@ -59,7 +60,7 @@ const CollectionHome = (props: IProps) => {
     const fetchData = async () => {
       try {
         const res = await axios.get(
-          `${BASE_URL}/products?page=0&size=5&typeId=${id}`
+          `${BASE_URL}/products/branch/${branchId}?page=0&size=10&typeId=${id}&quantityStart=0&quantityEnd=9999999`
         );
         setRestaurants(res.data.data.content);
       } catch (error) {
@@ -68,7 +69,7 @@ const CollectionHome = (props: IProps) => {
     };
 
     fetchData();
-  }, []);
+  }, [id, branchId]);
 
   useEffect(() => {
     if (!restaurant) {

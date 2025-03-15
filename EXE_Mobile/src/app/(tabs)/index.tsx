@@ -26,12 +26,15 @@ const HomeTab = () => {
   const [priceUpdateAmount, setPriceUpdateAmount] = useState(0);
   const { restaurant, cart } = useCurrentApp();
   const [collectionData, setCollectionData] = useState([]);
+  const [branchId, setBranchId] = useState(null);
   const { access_token } = useLocalSearchParams();
+  const { refresh_token } = useLocalSearchParams();
   useEffect(() => {
     const storeAccessToken = async () => {
       try {
         if (access_token) {
           await AsyncStorage.setItem("access_token", access_token as string);
+          await AsyncStorage.setItem("refresh_token", refresh_token as string);
         }
       } catch (error) {
         console.error("Error saving access token:", error);
@@ -39,6 +42,10 @@ const HomeTab = () => {
     };
     storeAccessToken();
   }, [access_token]);
+  const handleBranchSelect = (id: any) => {
+    console.log(id);
+    setBranchId(id);
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -73,7 +80,6 @@ const HomeTab = () => {
       });
     }
   };
-
   const handleQuantityChange = (amount: number) => {
     setPriceUpdateAmount(amount);
     setShowPriceUpdate(true);
@@ -100,9 +106,9 @@ const HomeTab = () => {
         data={collectionData}
         style={styles.list}
         renderItem={({ item }: { item: ITem }) => (
-          <CollectionHome name={item.name} id={item.id} />
+          <CollectionHome name={item.name} id={item.id} branchId={branchId} />
         )}
-        HeaderComponent={<HeaderHome />}
+        HeaderComponent={<HeaderHome onBranchSelect={handleBranchSelect} />}
         StickyElementComponent={<SearchHome />}
         TopListElementComponent={<TopListHome />}
       />

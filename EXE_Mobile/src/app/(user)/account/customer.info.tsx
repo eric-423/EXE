@@ -1,16 +1,21 @@
+import React, { useEffect, useState } from "react";
+import { StyleSheet, View } from "react-native";
+import { Formik } from "formik";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { jwtDecode } from "jwt-decode";
+import axios from "axios";
 import ShareButton from "@/components/button/share.button";
 import CustomerInforInput from "@/components/input/customerInfo.input";
 import { FONTS } from "@/theme/typography";
-import { APP_COLOR } from "@/utils/constant";
+import { APP_COLOR, BASE_URL } from "@/utils/constant";
 import { ChangePasswordSchema } from "@/utils/validate.schema";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Formik } from "formik";
-import { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { router } from "expo-router";
+
 const CustomerInfoPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [decodeToken, setDecodeToken] = useState<any>(null);
+  const [userId, setUserId] = useState<string | null>(null);
+
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -24,7 +29,8 @@ const CustomerInfoPage = () => {
       try {
         const token = await AsyncStorage.getItem("access_token");
         if (token) {
-          console.log(token);
+          const decoded = jwtDecode(token);
+          setUserId(decoded.id);
         } else {
           console.log("No access token found.");
         }
@@ -35,13 +41,33 @@ const CustomerInfoPage = () => {
     getAccessToken();
   }, []);
 
-  const handleImportInfo = (
-    password: string,
-    cofirmPassword: string,
+  const handleImportInfo = async (
+    fullName: string,
+    address: string,
     phone: string,
-    isDefault: boolean
+    isDefault: boolean,
+    userId: string | null
   ) => {
-    console.log(password, cofirmPassword, phone, isDefault);
+    try {
+      setLoading(true);
+      const response = await axios.post(`${BASE_URL}/information/${userId}`, {
+        userId: userId,
+        fullName: fullName,
+        address: address,
+        phone: phone,
+        isDefault: isDefault,
+      });
+
+      if (response.data) {
+        router.replace("/(user)/product/place.order");
+      } else {
+        console.log("Error in API response:", response.status);
+      }
+    } catch (error) {
+      console.error("Error in API call:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -53,15 +79,17 @@ const CustomerInfoPage = () => {
           address: "",
           phone: "",
           isDefault: false,
+          userId: userId || "",
         }}
-        onSubmit={(values) =>
+        onSubmit={(values) => {
           handleImportInfo(
             values.fullName,
             values.address,
             values.phone,
-            values.isDefault
-          )
-        }
+            values.isDefault,
+            values.userId
+          );
+        }}
       >
         {({
           handleChange,
@@ -71,60 +99,77 @@ const CustomerInfoPage = () => {
           errors,
           touched,
           setFieldValue,
-        }) => (
-          <View style={styles.container}>
-            <CustomerInforInput
-              title="Họ và Tên"
-              onChangeText={handleChange("fullName")}
-              onBlur={handleBlur("fullName")}
-              value={values.fullName}
-              error={errors.fullName}
-              touched={touched.fullName}
-            />
-            <CustomerInforInput
-              title="Địa chỉ"
-              onChangeText={handleChange("address")}
-              onBlur={handleBlur("address")}
-              value={values.address}
-              error={errors.address}
-              touched={touched.address}
-            />
-            <CustomerInforInput
-              title="Số điện thoại"
-              onChangeText={handleChange("phone")}
-              onBlur={handleBlur("phone")}
-              value={values.phone}
-              error={errors.phone}
-              touched={touched.phone}
-            />
-            <CustomerInforInput
-              title="Đặt làm mặc định"
-              value={values.isDefault}
-              setValue={(v) => setFieldValue("isDefault", v)}
-              isBoolean={true}
-            />
-            <ShareButton
-              loading={loading}
-              title="Tạo địa chỉ mới"
-              onPress={handleSubmit as any}
-              textStyle={{
-                textTransform: "uppercase",
-                color: "#fff",
-                paddingVertical: 5,
-                fontFamily: FONTS.regular,
-                fontSize: 20,
-              }}
-              btnStyle={{
-                justifyContent: "center",
-                borderRadius: 30,
-                marginHorizontal: 50,
-                paddingVertical: 10,
-                backgroundColor: APP_COLOR.ORANGE,
-              }}
-              pressStyle={{ alignSelf: "stretch" }}
-            />
-          </View>
-        )}
+        }) => {
+          useEffect(() => {
+            if (userId) {
+              setFieldValue("userId", userId);
+            }
+          }, [userId]);
+
+          return (
+            <View style={styles.container}>
+              <CustomerInforInput
+                title="Họ và Tên"
+                onChangeText={handleChange("fullName")}
+                onBlur={handleBlur("fullName")}
+                value={values.fullName}
+                error={errors.fullName}
+                touched={touched.fullName}
+              />
+              <CustomerInforInput
+                title="Địa chỉ"
+                onChangeText={handleChange("address")}
+                onBlur={handleBlur("address")}
+                value={values.address}
+                error={errors.address}
+                touched={touched.address}
+              />
+              <CustomerInforInput
+                title="Số điện thoại"
+                onChangeText={handleChange("phone")}
+                onBlur={handleBlur("phone")}
+                value={values.phone}
+                error={errors.phone}
+                touched={touched.phone}
+              />
+              <CustomerInforInput
+                title="Đặt làm mặc định"
+                value={values.isDefault}
+                setValue={(v) => setFieldValue("isDefault", v)}
+                isBoolean={true}
+              />
+              <ShareButton
+                loading={loading}
+                title="Tạo địa chỉ mới"
+                onPress={() => {
+                  handleImportInfo(
+                    values.fullName,
+                    values.address,
+                    values.phone,
+                    values.isDefault,
+                    values.userId
+                  );
+                  console.log(values);
+                }}
+                textStyle={{
+                  textTransform: "uppercase",
+                  color: "#fff",
+                  paddingVertical: 5,
+                  fontFamily: FONTS.regular,
+                  fontSize: 20,
+                }}
+                btnStyle={{
+                  justifyContent: "center",
+                  borderRadius: 30,
+                  marginHorizontal: 50,
+                  paddingVertical: 10,
+                  backgroundColor: APP_COLOR.ORANGE,
+                }}
+                pressStyle={{ alignSelf: "stretch" }}
+              />
+            </View>
+          );
+        }}
       </Formik>
     </SafeAreaView>
   );
