@@ -4,27 +4,73 @@ import ProductList from "../../components/menu/product/ProductList";
 import DropdownLocation from "../../components/ui/dropdown/DropdownLocation";
 import { locationDropdown } from "../../config/constant";
 import { useDocumentTitle, useSelectLocation } from "../../hooks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MinimizedStoreList from "../../components/menu/store/miniStore/MinimizedStoreList";
 import InputUI from "../../components/ui/input/InputUI";
 import ButtonUI from "../../components/ui/button/ButtonUI";
 import { FaSearch } from "react-icons/fa";
+import { BASE_URL } from "../../config/api";
 
 const Menu = () => {
   const [onStoresShow, setOnStoresShow] = useState(false);
   const { cities, city, districts, district, onSelectCity, onSelectDistrict } =
     useSelectLocation();
 
-  const category = [
-    { id: 1, label: "Cơm tấm" },
-    { id: 2, label: "Món gọi thêm" },
-    { id: 3, label: "Nước giải khát" },
-  ];
+  const [productType, setProductType] = useState([]);
+  const [page, setPage] = useState(0);
+  const [size, setSize] = useState(10);
+  const [typeId, setTypeId] = useState(1);
+  const [products, setProducts] = useState([]);
+  const [refeshData, setRefeshData] = useState(true);
+
+  useEffect(() => {
+    fetchProductType();
+  }, []);
+
+
+  useEffect(() => {
+    if (refeshData) {
+      fetchProduct();
+      setRefeshData(false);
+    }
+  }, [products, page, size, typeId]);
+
+
+  const fetchProductType = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/product-type`);
+      const data = await response.json();
+      setProductType(data);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const fetchProduct = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/products?page=${page}&size=${size}&typeId=${typeId}`);
+      const data = await response.json();
+      if (data && data.data && data.data.content) {
+        setProducts(data.data.content);
+      } else {
+        console.error("Dữ liệu không hợp lệ:", data);
+      }
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const setTypeProduct = (id) => {
+    setTypeId(id);
+    setRefeshData(true);
+  }
+
   useDocumentTitle("Thực đơn Tấm Tắc");
 
   return (
     <div className={styles.bgColor}>
-      <h1 className="text-center mb-3">Thực đơn Tấm Tắc</h1>
+      <h1 className="text-center mb-3 mt-4">Thực đơn Tấm Tắc</h1>
       <p className="text-center w-50 m-auto" style={{ fontSize: "1.2rem" }}>
         Tấm Tắc là chuỗi hệ thống cửa hàng cơm tấm với mong muốn mang đến cho
         sinh viên những bữa cơm tấm chất lượng với giá cả hợp lý, đảm bảo vệ
@@ -46,13 +92,16 @@ const Menu = () => {
                   <div
                     className={`${styles.hoverEffect} ${styles.rounded} p-2`}
                   >
-                    {category.map((item) => (
+                    {productType.map((item) => (
                       <p
                         className="ml-3 my-2 font-weight-bold"
-                        style={{ fontSize: "1rem" }}
+                        style={{ fontSize: "1rem", }}
                         key={item.id}
+                        onClick={() => setTypeProduct(item.id)}
+
                       >
-                        {item.label}
+                        {item.id === typeId ? <span className="text-danger">•</span> : null}
+                        {item.name}
                       </p>
                     ))}
                   </div>
@@ -67,9 +116,8 @@ const Menu = () => {
                     </h6>
                   </div>
                   <div
-                    className={`${styles.smoothTransition} ${
-                      onStoresShow ? styles.show : ""
-                    } ${styles.rounded} p-2`}
+                    className={`${styles.smoothTransition} ${onStoresShow ? styles.show : ""
+                      } ${styles.rounded} p-2`}
                   >
                     {onStoresShow && (
                       <Form>
@@ -111,13 +159,13 @@ const Menu = () => {
                 </div>
               </Col>
               <Col md={8}>
-                <ProductList />
+                {products ? <ProductList products={products} typeId={typeId} /> : null}
               </Col>
             </Row>
           </Container>
         </section>
       </Tab.Container>
-    </div>
+    </div >
   );
 };
 

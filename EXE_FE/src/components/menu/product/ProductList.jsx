@@ -1,53 +1,9 @@
 import { Row, Container } from "react-bootstrap";
+import PropTypes from 'prop-types';
 import Product from "./Product";
 import "./Product.css";
-import bannerImage from "/images/bg1.png";
 
-const ProductList = () => {
-  const menuItems = [
-    {
-      image: bannerImage,
-      title: "World Famous",
-      description: "North Indian • American • Pure veg",
-      time: "20–25 min",
-      price: 30000,
-      oldPrice: 40000,
-    },
-    {
-      image: bannerImage,
-      title: "World Famous",
-      description: "North Indian • American • Pure veg",
-      time: "20–25 min",
-      price: 25000,
-    },
-    {
-      image: bannerImage,
-      title: "World Famous",
-      description: `- Cơm: sườn nướng, bì, chả trứng
-- Canh tự chọn
-- Nước ngọt tự chọn`,
-      time: "20–25 min",
-      price: 25000,
-      oldPrice: 30000,
-    },
-    {
-      image: bannerImage,
-      title: "World Famous",
-      description: "North Indian • American • Pure veg",
-      time: "20–25 min",
-      price: 25000,
-    },
-    {
-      image: bannerImage,
-      title: "World Famous",
-      description: `- Cơm: sườn nướng, bì, chả trứng
-- Canh tự chọn
-- Nước ngọt tự chọn`,
-      time: "20–25 min",
-      price: 25000,
-      oldPrice: 30000,
-    },
-  ];
+const ProductList = ({ products, typeId }) => {
   return (
     <>
       {/* <Col md={8}>
@@ -81,19 +37,19 @@ const ProductList = () => {
       <section className="section pt-3 pb-5 products-section">
         <Container>
           <Row className="justify-content-start">
-            {menuItems.map((item, index) => (
+            {products.map((item) => (
               <Product
-                key={index}
-                image={item.image}
-                title={item.title}
-                description={
+                key={item.productId}
+                productId={item.productId}
+                productImage={item.productImage}
+                productName={item.productName}
+                productDescription={
                   <span className="product-description">
-                    {item.description}
+                    {item.productDescription}
                   </span>
                 }
-                time={item.time}
-                price={item.price}
-                oldPrice={item.oldPrice}
+                productPrice={item.productPrice}
+                typeId={typeId}
               />
             ))}
           </Row>
@@ -101,6 +57,21 @@ const ProductList = () => {
       </section>
     </>
   );
+};
+
+ProductList.propTypes = {
+  products: PropTypes.arrayOf(
+    PropTypes.shape({
+      product: PropTypes.shape({
+        productId: PropTypes.number.isRequired,
+      }).isRequired,
+      image: PropTypes.string.isRequired,
+      productName: PropTypes.string.isRequired,
+      productDescription: PropTypes.string.isRequired,
+      productPrice: PropTypes.number.isRequired,
+    })
+  ).isRequired,
+  typeId: PropTypes.number.isRequired,
 };
 
 export default ProductList;

@@ -1,4 +1,5 @@
 @import "../../../styles/global.css";
+
 .owl-carousel-four .item {
   padding: 6px 7px;
 }
@@ -20,6 +21,7 @@
   border-radius: 5px;
   padding: 2px 5px;
 }
+
 .osahan-category-item h6 {
   margin: 0px;
   font-size: 12px;
@@ -98,7 +100,7 @@ h1 {
 .content {
   background-color: rgb(238, 229, 219);
   border-radius: 10px;
-  height: 150px;
+  height: 10rem;
 }
 
 img {
@@ -108,8 +110,9 @@ img {
 .product-description {
   white-space: pre-line;
 }
+
 .restrict-height {
-  height: 60px;
+  height: 5rem;
   overflow: auto;
 }
 

@@ -25,7 +25,7 @@ const Header = () => {
                     <Link className="redirect" to="/">
                         Chuyện cơm tấm
                     </Link>
-                    <Link className="redirect" to="/">
+                    <Link className="redirect" to="/menu">
                         Đặt hàng
                     </Link>
                     <Link className="redirect" to="/">

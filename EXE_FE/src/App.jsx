@@ -13,7 +13,7 @@ function App() {
         const role = localStorage.getItem('token')
         const decode = JSON.parse(role);
         // setRole(decode.role)
-        setRole("admin")
+        setRole("asdasd")
     }
 
     useEffect(() => {

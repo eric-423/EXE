@@ -4,53 +4,41 @@ import { useEffect, useState } from 'react';
 const CheckoutRight = () => {
     const [promoCode, setPromoCode] = useState('');
     const [note, setNote] = useState('');
-    const [totalPrice, setTotalPrice] = useState(0);
+
     const [discountValue, setDiscountValue] = useState(0);
     const [discountOnItem, setDiscountOnItem] = useState(0);
     const [shippingFee, setShippingFee] = useState(0);
+
+
+    const [cartItems, setCartItems] = useState([]);
+    const [totalAmount, setTotalAmount] = useState(0);
+    const [refreshData, setRefreshData] = useState(true);
 
     const handleApplyPromo = () => {
         console.log('Mã khuyến mãi:', promoCode);
         setDiscountValue(0)
     };
 
-    const setTotalAmount = () => {
-        let price = 0;
-        combo.forEach(item => {
-            price += parseInt(item.price) * parseInt(item.quantity);
-        });
-        setTotalPrice(price);
+    const getCartItems = () => {
+        try {
+            const cartData = localStorage.getItem("cartItems");
+            const cart = cartData ? JSON.parse(cartData) : [];
+            setCartItems(cart);
+            const total = cart.reduce((sum, item) => sum + Number(item.price) * Number(item.quantity), 0);
+            setTotalAmount(total);
+        } catch (e) {
+            console.error("Error loading cart items:", e);
+        }
     };
 
     useEffect(() => {
-        setTotalAmount();
-    })
-
-    const combo = [
-        {
-            name: "Cơm tấm sườn bì chả",
-            price: "35.000đ",
-            quantity: "1",
-            additionalItems: [
-                { name: "Chả" },
-                { name: "Trứng" }
-            ]
-        },
-        {
-            name: "Cơm tấm sườn bì chả",
-            price: "35.000đ",
-            quantity: "1",
-            additionalItems: [
-                { name: "Chả" },
-                { name: "Trứng" }
-            ]
-        },
-        {
-            name: "Canh chua cá",
-            price: "20.000đ",
-            quantity: "1",
+        if (refreshData) {
+            getCartItems();
+            setRefreshData(false);
         }
-    ]
+    }, [refreshData]);
+
+
 
     return (
         <Col md={5} style={{ fontFamily: 'Playfair Display, serif' }} >
@@ -63,27 +51,16 @@ const CheckoutRight = () => {
                 </div>
 
                 {
-                    combo.map((item, index) => (
-                        <div key={index} className="mb-3">
+                    cartItems.map((item) => (
+                        <div key={item.productId} className="mb-3">
                             <div className="confirm-order-item">
 
-                                <h6 > {item.name}</h6>
+                                <h6 > {item.productName}</h6>
                                 <div className="d-flex justify-content-center  gap-3">
-                                    <p style={{ color: 'rgb(218, 115, 50)' }}>{item.price}</p>
+                                    <p style={{ color: 'rgb(218, 115, 50)' }}>{item.price.toLocaleString()}</p>
                                     <p> x {item.quantity}</p>
                                 </div>
                             </div>
-
-                            <div >
-                                {item.additionalItems &&
-                                    item.additionalItems.map((item, index) => (
-                                        <div key={index} className="additional-items" style={{ fontWeight: 'normal' }}>
-                                            <li>{item.name}</li>
-                                        </div>
-                                    ))
-                                }
-                            </div>
-
                         </div>
                     ))
                 }
@@ -118,32 +95,32 @@ const CheckoutRight = () => {
                 <div>
                     <div className='d-flex justify-content-between pl-3 pr-3'>
                         <h5>Giá gốc</h5>
-                        <p>{totalPrice}.000 đ</p>
+                        <p>{totalAmount.toLocaleString()} đ</p>
                     </div>
                 </div>
                 <div >
                     <div className='d-flex justify-content-between pl-3 pr-3'>
                         <h5>Giảm giá trên món</h5>
-                        <p>{discountOnItem} đ</p>
+                        <p>{discountOnItem.toLocaleString()} đ</p>
                     </div>
                 </div>
                 <div>
                     <div className='d-flex justify-content-between pl-3 pr-3'>
                         <h5>Giảm giá khuyến mãi</h5>
-                        <p>{discountValue} đ</p>
+                        <p>{discountValue.toLocaleString()} đ</p>
                     </div>
                 </div>
                 <div style={{ borderBottom: '1px solid black' }} className='mb-3'>
                     <div className='d-flex justify-content-between pl-3 pr-3'>
                         <h5>Phí giao hàng</h5>
-                        <p>{shippingFee} đ</p>
+                        <p>{shippingFee.toLocaleString()} đ</p>
                     </div>
                 </div>
 
                 <div>
                     <div className='d-flex justify-content-between pl-3 pr-3'>
                         <h5>Tổng cộng</h5>
-                        <p>{totalPrice - discountValue + shippingFee - discountOnItem}.000 đ</p>
+                        <p>{(totalAmount - discountValue + shippingFee - discountOnItem).toLocaleString()} đ</p>
                     </div>
                 </div>
 
