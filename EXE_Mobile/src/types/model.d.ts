@@ -47,7 +47,15 @@ declare global {
     createdAt: Date;
     updatedAt: Date;
   }
-
+  interface IRestaurants {
+    productId: string;
+    productName: string;
+    productDescription: string;
+    productImage: string;
+    productPrice: number;
+    productType: string;
+    productQuantity: number;
+  }
   interface IRestaurant {
     _id: string;
     name: string;
@@ -74,6 +82,7 @@ declare global {
   }
 
   interface IMenuItem {
+    productImage: any;
     _id: string;
     menu: string;
     title: string;

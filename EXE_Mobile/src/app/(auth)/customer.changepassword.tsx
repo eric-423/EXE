@@ -25,7 +25,6 @@ const CustomerChangePassword = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const { setAppState } = useCurrentApp();
   const { token } = useLocalSearchParams();
-  console.log(token);
   const handleChangePassword = async (
     password: string,
     confirmPassword: string

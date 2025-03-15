@@ -5,7 +5,7 @@ import SearchHome from "@/components/home/search.home";
 import TopListHome from "@/components/home/top.list.home";
 import ItemQuantity from "@/components/example/restaurant/order/item.quantity";
 import { useCurrentApp } from "@/context/app.context";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { StyleSheet, Pressable, Text, View, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -18,6 +18,7 @@ import Animated, {
 } from "react-native-reanimated";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const HomeTab = () => {
   const [mounted, setMounted] = useState(false);
   const [showCart, setShowCart] = useState(false);
@@ -25,11 +26,23 @@ const HomeTab = () => {
   const [priceUpdateAmount, setPriceUpdateAmount] = useState(0);
   const { restaurant, cart } = useCurrentApp();
   const [collectionData, setCollectionData] = useState([]);
+  const { access_token } = useLocalSearchParams();
+  useEffect(() => {
+    const storeAccessToken = async () => {
+      try {
+        if (access_token) {
+          await AsyncStorage.setItem("access_token", access_token as string);
+        }
+      } catch (error) {
+        console.error("Error saving access token:", error);
+      }
+    };
+    storeAccessToken();
+  }, [access_token]);
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await axios.get(`${BASE_URL}/product-type`);
-        console.log(res.data);
         setCollectionData(res.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -38,7 +51,6 @@ const HomeTab = () => {
 
     fetchData();
   }, []);
-
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -78,13 +90,16 @@ const HomeTab = () => {
   const cartItems = restaurant?._id
     ? Object.values(cart[restaurant._id]?.items || {})
     : [];
-
+  interface ITem {
+    name: string;
+    id: number;
+  }
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <CustomFlatList
         data={collectionData}
         style={styles.list}
-        renderItem={({ item }) => (
+        renderItem={({ item }: { item: ITem }) => (
           <CollectionHome name={item.name} id={item.id} />
         )}
         HeaderComponent={<HeaderHome />}

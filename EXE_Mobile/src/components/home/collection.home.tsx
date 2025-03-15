@@ -22,12 +22,16 @@ import { FONTS } from "@/theme/typography";
 import axios from "axios";
 
 const { height: sHeight, width: sWidth } = Dimensions.get("window");
-
 interface IProps {
   name: string;
   id: number;
 }
-
+interface IPropsProduct {
+  productId: string;
+  productImage: string;
+  productName: string;
+  productPrice: number;
+}
 const styles = StyleSheet.create({
   container: {
     padding: 10,
@@ -42,11 +46,9 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
   },
 });
-
 const CollectionHome = (props: IProps) => {
   const { name, id } = props;
   const { cart, setCart, restaurant, setRestaurant } = useCurrentApp();
-  const [collectionData, setCollectionData] = useState([]);
   const mockRestaurant = {
     _id: "mock_restaurant_1",
     name: "Số món đã đặt",
@@ -152,8 +154,6 @@ const CollectionHome = (props: IProps) => {
       ? process.env.EXPO_PUBLIC_ANDROID_API_URL
       : process.env.EXPO_PUBLIC_IOS_API_URL;
 
-  const baseImage = `${backend}/images/restaurant`;
-
   return (
     <>
       <View style={{ height: 10, backgroundColor: APP_COLOR.YELLOW }}></View>
@@ -212,7 +212,7 @@ const CollectionHome = (props: IProps) => {
             contentContainerStyle={{ gap: 7 }}
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
-            renderItem={({ item }) => {
+            renderItem={({ item }: { item: IPropsProduct }) => {
               const quantity = getItemQuantity(item.productId);
               return (
                 <Pressable onPress={() => handlePressItem(item)}>
@@ -225,7 +225,7 @@ const CollectionHome = (props: IProps) => {
                   >
                     <Image
                       style={{ height: 130, width: 130, borderRadius: 10 }}
-                      source={require("@/assets/demo.jpg")}
+                      source={{ uri: item.productImage }}
                     />
                     <View style={{ padding: 5 }}>
                       <Text

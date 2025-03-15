@@ -171,6 +171,10 @@ const RootLayout = () => {
                 name="(user)/account/password"
                 options={{ headerTitle: "Cập nhật mật khẩu" }}
               />
+              <Stack.Screen
+                name="(user)/account/customer.info"
+                options={{ headerTitle: "Nhập thông tin người dùng" }}
+              />
             </Stack>
           </ThemeProvider>
         </AppProvider>

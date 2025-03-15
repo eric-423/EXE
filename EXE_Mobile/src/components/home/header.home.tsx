@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import Entypo from "@expo/vector-icons/Entypo";
 import * as Location from "expo-location";
-import { APP_COLOR, APP_FONT } from "@/utils/constant";
+import { APP_COLOR } from "@/utils/constant";
 import logo from "@/assets/logo.png";
 import { FONTS } from "@/theme/typography";
 const styles = StyleSheet.create({
@@ -33,9 +33,13 @@ const HeaderHome = () => {
         });
 
         if (address.length > 0) {
-          const { city, region } = address[0];
-          const fullAddress = `${city ? city : ""}, ${region ? region : ""}`;
-          setLocation(fullAddress);
+          const { city, region, subregion, district } = address[0];
+          const parts = [];
+          if (city) parts.push(city);
+          if (region) parts.push(region);
+          if (subregion || district) parts.push(district || subregion);
+          const fullAddress = parts.join(", ");
+          setLocation(fullAddress || "Không tìm thấy địa chỉ");
         } else {
           setLocation("Không tìm thấy địa chỉ");
         }
