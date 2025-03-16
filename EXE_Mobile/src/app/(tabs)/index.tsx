@@ -27,7 +27,7 @@ const HomeTab = () => {
   const [priceUpdateAmount, setPriceUpdateAmount] = useState(0);
   const { restaurant, cart } = useCurrentApp();
   const [collectionData, setCollectionData] = useState([]);
-  const [branchId, setBranchId] = useState(null);
+  const [branchId, setBranchId] = useState(1);
   const { access_token } = useLocalSearchParams();
   const { refresh_token } = useLocalSearchParams();
   useEffect(() => {

@@ -139,10 +139,8 @@ const PlaceOrderPage = () => {
           opacity: 1,
         });
         if (paymentMethodId === 2) {
-          router.push({
-            pathname: "/payment/vnpay" as any,
-            params: { orderId: response.data.id },
-          });
+          const link = response.data.data.payment_url;
+          router.navigate(link);
         } else {
           setCart(0);
           router.push("/(tabs)");

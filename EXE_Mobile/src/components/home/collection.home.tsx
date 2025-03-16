@@ -25,7 +25,7 @@ const { height: sHeight, width: sWidth } = Dimensions.get("window");
 interface IProps {
   name: string;
   id: number;
-  branchId: string | null;
+  branchId: number | null;
 }
 interface IPropsProduct {
   productId: string;
