@@ -1,32 +1,310 @@
-import HeaderHome from "@/components/home/header.home";
 import { useCurrentApp } from "@/context/app.context";
 import { FONTS } from "@/theme/typography";
-import {
-  currencyFormatter,
-  getURLBaseBackend,
-  placeOrderAPI,
-} from "@/utils/api";
-import { APP_COLOR } from "@/utils/constant";
-import { router } from "expo-router";
+import { jwtDecode } from "jwt-decode";
+import { currencyFormatter, placeOrderAPI } from "@/utils/api";
+import { APP_COLOR, BASE_URL } from "@/utils/constant";
+import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { Image, Pressable, ScrollView, Text, View } from "react-native";
+import {
+  Image,
+  Pressable,
+  ScrollView,
+  Text,
+  View,
+  StyleSheet,
+  Modal,
+} from "react-native";
 import Toast from "react-native-root-toast";
-
+import Entypo from "@expo/vector-icons/Entypo";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import { Formik } from "formik";
+import { ChangePasswordSchema } from "@/utils/validate.schema";
+import CustomerInforInput from "@/components/input/customerInfo.input";
+import ShareButton from "@/components/button/share.button";
 interface IOrderItem {
   image: string;
   title: string;
   option: string;
   price: number;
   quantity: number;
+  productId: number;
 }
-
+interface ICusInfor {
+  address: string;
+  phone: string;
+  fullName: string;
+  userId: number;
+}
+interface IDetails {
+  productId: number;
+  quantity: number;
+}
 const PlaceOrderPage = () => {
   const { restaurant, cart, setCart } = useCurrentApp();
   const [orderItems, setOrderItems] = useState<IOrderItem[]>([]);
+  const [decodeToken, setDecodeToken] = useState<any>("");
+  const [modalVisible, setModalVisible] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [cusAddress, setCusAddress] = useState();
+  const [cusPhone, setCusPhone] = useState();
+  const { id } = useLocalSearchParams();
+  const branchId = id ? parseInt(id as string) : 0;
+  const [total, setTotal] = useState();
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const dropdownItems = [
+    { id: "1", title: "Tiền mặt" },
+    { id: "2", title: "VNPay" },
+  ];
+  const [addresses, setAddresses] = useState<ICusInfor[]>([
+    {
+      userId: 1,
+      fullName: "Home",
+      address: "Hồ Chí Minh, Việt Nam",
+      phone: "0889679561",
+    },
+    {
+      userId: 2,
+      fullName: "Office",
+      address: "Hà Nội, Việt Nam",
+      phone: "0889679561",
+    },
+    {
+      userId: 3,
+      fullName: "Friend's Place",
+      address: "Đà Nẵng, Việt Nam",
+      phone: "0889679561",
+    },
+  ]);
+  const [selectedAddress, setSelectedAddress] = useState<any>(null);
+  const [orderDetails, setOrderDetails] = useState<
+    { productId: number; quantity: number }[]
+  >([]);
+  const handleCreateOrder = async (
+    promotionCode: string,
+    note: string,
+    address: string,
+    phoneNumber: string,
+    branchId: number,
+    pointUsed: number,
+    pointEarned: number,
+    paymentMethodId: number,
+    orderItems: any,
+    pickUp: boolean
+  ) => {
+    try {
+      if (!decodeToken) {
+        Toast.show("Vui lòng đăng nhập để đặt hàng!", {
+          duration: Toast.durations.LONG,
+          textColor: "white",
+          backgroundColor: "red",
+          opacity: 1,
+        });
+        return;
+      }
+      const numericPointUsed = Number(pointUsed) || 0;
+      console.log("Creating order with data:", {
+        customerId: decodeToken,
+        promotionCode,
+        note,
+        address,
+        phoneNumber,
+        branchId: Number(branchId),
+        pointUsed: numericPointUsed,
+        pointEarned,
+        paymentMethodId,
+        orderItems,
+        pickUp,
+      });
+
+      const response = await axios.post(`${BASE_URL}/orders/`, {
+        customerId: decodeToken,
+        promotionCode,
+        note,
+        address,
+        phoneNumber,
+        branchId: Number(branchId),
+        pointUsed: numericPointUsed,
+        pointEarned,
+        paymentMethodId,
+        orderItems,
+        pickUp,
+      });
+
+      if (response.data) {
+        Toast.show("Đặt hàng thành công!", {
+          duration: Toast.durations.LONG,
+          textColor: "white",
+          backgroundColor: APP_COLOR.ORANGE,
+          opacity: 1,
+        });
+        if (paymentMethodId === 2) {
+          const link = response.data.data.payment_url;
+          router.navigate(link);
+        } else {
+          setCart(0);
+          router.push("/(tabs)");
+        }
+      }
+    } catch (error) {
+      console.error("Error creating order:", error);
+
+      if (axios.isAxiosError(error) && error.response) {
+        const errorMessage =
+          error.response.data.message || "Có lỗi xảy ra khi đặt hàng!";
+        Toast.show(errorMessage, {
+          duration: Toast.durations.LONG,
+          textColor: "white",
+          backgroundColor: "red",
+          opacity: 1,
+        });
+      } else {
+        Toast.show("Có lỗi xảy ra khi đặt hàng!", {
+          duration: Toast.durations.LONG,
+          textColor: "white",
+          backgroundColor: "red",
+          opacity: 1,
+        });
+      }
+    }
+  };
+
+  useEffect(() => {
+    const getAccessToken = async () => {
+      try {
+        const token = await AsyncStorage.getItem("access_token");
+        if (token) {
+          const decoded = jwtDecode(token);
+          setDecodeToken(decoded.id);
+          console.log("Customer ID:", decoded.id);
+        } else {
+          console.log("No access token found.");
+        }
+      } catch (error) {
+        console.error("Error retrieving access token:", error);
+      }
+    };
+    getAccessToken();
+  }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const resDefault = await axios.get(
+          `${BASE_URL}/information/default?customerId=${decodeToken}`
+        );
+        setSelectedAddress(resDefault.data.data);
+        setCusAddress(resDefault.data.data.address);
+        setCusPhone(resDefault.data.data.phone);
+        const resAddresses = await axios.get(
+          `${BASE_URL}/information/${decodeToken}`
+        );
+        if (resAddresses.data.data) {
+          setAddresses(resAddresses.data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    if (decodeToken) {
+      fetchData();
+    }
+  }, [decodeToken]);
+  const styles = StyleSheet.create({
+    container: {
+      paddingTop: 5,
+      gap: 3,
+      marginBottom: 30,
+    },
+    headerContainer: {
+      paddingTop: 5,
+      gap: 3,
+      height: 50,
+    },
+    location: {
+      flexDirection: "row",
+      alignItems: "flex-end",
+    },
+    modalContainer: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "rgba(0,0,0,0.5)",
+    },
+    modalContent: {
+      backgroundColor: "white",
+      padding: 20,
+      borderRadius: 10,
+      width: "80%",
+    },
+    modalButton: {
+      marginTop: 20,
+      backgroundColor: APP_COLOR.ORANGE,
+      padding: 10,
+      borderRadius: 10,
+      alignItems: "center",
+      width: 120,
+      marginHorizontal: 3,
+    },
+    addressItem: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      padding: 10,
+      borderBottomColor: "#eee",
+      borderBottomWidth: 1,
+    },
+    textInfor: {
+      color: APP_COLOR.GREY,
+      fontFamily: FONTS.regular,
+      fontSize: 17,
+    },
+    textNameInfor: {
+      fontFamily: FONTS.regular,
+      fontSize: 17,
+    },
+    dropdownContainer: {
+      marginBottom: 15,
+    },
+    dropdownLabel: {
+      fontFamily: FONTS.regular,
+      fontSize: 17,
+      marginBottom: 8,
+      color: APP_COLOR.GREY,
+    },
+    dropdown: {
+      flexDirection: "row",
+      gap: 10,
+    },
+    dropdownItem: {
+      flex: 1,
+      padding: 10,
+      borderRadius: 8,
+      borderWidth: 1,
+      borderColor: APP_COLOR.ORANGE,
+      alignItems: "center",
+    },
+    selectedDropdownItem: {
+      backgroundColor: APP_COLOR.ORANGE,
+    },
+    dropdownText: {
+      fontFamily: FONTS.regular,
+      fontSize: 16,
+      color: APP_COLOR.ORANGE,
+    },
+    selectedDropdownText: {
+      color: "white",
+    },
+    errorText: {
+      color: "red",
+      fontSize: 12,
+      marginTop: 4,
+    },
+  });
 
   useEffect(() => {
     if (cart && restaurant && restaurant._id) {
       const result = [];
+      const details: IDetails[] = [];
       for (const [menuItemId, currentItems] of Object.entries(
         cart[restaurant._id].items
       )) {
@@ -35,77 +313,119 @@ const PlaceOrderPage = () => {
             const option = currentItems.data.options?.find(
               (item) => `${item.title}-${item.description}` === key
             );
-
             const addPrice = option?.additionalPrice ?? 0;
-
             result.push({
-              image: currentItems.data.image,
+              image: currentItems.data.productImage,
               title: currentItems.data.title,
               option: key,
               price: currentItems.data.basePrice + addPrice,
               quantity: value,
+              productId: currentItems.data.productId,
             });
           }
         } else {
           result.push({
-            image: currentItems.data.image,
+            image: currentItems.data.productImage,
             title: currentItems.data.title,
             option: "",
             price: currentItems.data.basePrice,
             quantity: currentItems.quantity,
+            productId: currentItems.data.productId,
           });
         }
 
-        setOrderItems(result);
+        details.push({
+          productId: currentItems.data.productId,
+          quantity: currentItems.quantity,
+        });
       }
+      setOrderItems(result);
+      setOrderDetails(details);
     }
   }, [restaurant]);
 
-  const handlePlaceOrder = async () => {
-    const data = {
-      restaurant: restaurant?._id,
-      totalPrice: cart?.[restaurant!._id].sum,
-      totalQuantity: cart?.[restaurant!._id].quantity,
-      detail: orderItems,
-    };
-
-    const res = await placeOrderAPI(data);
-    if (res.data) {
-      Toast.show("Đặt hàng thành công", {
-        duration: Toast.durations.LONG,
-        textColor: "white",
-        backgroundColor: APP_COLOR.ORANGE,
-        opacity: 1,
-      });
-
-      if (restaurant) {
-        delete cart[restaurant._id];
-        setCart((prevCart: any) => ({ ...prevCart, ...cart }));
-      }
-
-      router.navigate("/");
-    } else {
-      const m = Array.isArray(res.message) ? res.message[0] : res.message;
-
-      Toast.show(m, {
-        duration: Toast.durations.LONG,
-        textColor: "white",
-        backgroundColor: APP_COLOR.ORANGE,
-        opacity: 1,
-      });
-    }
+  const handleSelectAddress = (address: any) => {
+    setSelectedAddress(address);
+    setModalVisible(false);
+    Toast.show(`Selected Address: ${address.name}`, {
+      duration: Toast.durations.LONG,
+      textColor: "white",
+      backgroundColor: APP_COLOR.ORANGE,
+      opacity: 1,
+    });
   };
+
+  const handleCreateNewAddress = () => {
+    router.navigate("/(user)/account/customer.info");
+  };
+
+  const handlePaymentMethodChange = (
+    value: string,
+    setFieldValue: (field: string, value: any) => void
+  ) => {
+    setSelectedOption(value);
+    setFieldValue("paymentMethodId", Number(value));
+  };
+
   return (
     <View style={{ flex: 1 }}>
-      <View
-        style={{
-          borderBottomColor: "#eee",
-          borderBottomWidth: 1,
-          padding: 10,
-        }}
-      >
-        <HeaderHome />
-      </View>
+      <Pressable onPress={() => setModalVisible(true)}>
+        <View
+          style={{
+            borderBottomColor: "#eee",
+            borderBottomWidth: 1,
+            padding: 10,
+            flexDirection: "row",
+          }}
+        >
+          <View style={styles.headerContainer}>
+            <View style={styles.location}>
+              <Entypo
+                name="location-pin"
+                size={20}
+                color={APP_COLOR.ORANGE}
+                style={{
+                  marginRight: 10,
+                }}
+              />
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Text
+                  style={{
+                    fontFamily: FONTS.medium,
+                    fontSize: 17,
+                  }}
+                >
+                  {selectedAddress ? selectedAddress.fullName : "Minh Duy"}
+                </Text>
+                <Text
+                  style={{
+                    fontFamily: FONTS.medium,
+                    fontSize: 17,
+                    color: APP_COLOR.GREY,
+                    marginLeft: 30,
+                  }}
+                >
+                  {selectedAddress ? selectedAddress.phone : "0889679561"}
+                </Text>
+              </View>
+            </View>
+            <View style={{ marginTop: 10, marginLeft: 10 }}>
+              <Text
+                style={{
+                  fontFamily: FONTS.regular,
+                  fontSize: 17,
+                  marginLeft: 20,
+                }}
+              >
+                {selectedAddress
+                  ? selectedAddress.address
+                  : "Hồ Chí Minh, Việt Nam"}
+              </Text>
+            </View>
+          </View>
+        </View>
+      </Pressable>
+
       <View style={{ padding: 10 }}>
         <Text
           style={{
@@ -117,6 +437,7 @@ const PlaceOrderPage = () => {
           {restaurant?.name}
         </Text>
       </View>
+
       <ScrollView style={{ flex: 1, padding: 10 }}>
         {orderItems?.map((item, index) => {
           return (
@@ -127,13 +448,12 @@ const PlaceOrderPage = () => {
                 flexDirection: "row",
                 borderBottomColor: "#eee",
                 borderBottomWidth: 1,
-                paddingVertical: 10,
               }}
             >
               <Image
                 style={{ height: 50, width: 50 }}
                 source={{
-                  uri: `${getURLBaseBackend()}/images/menu-item/${item?.image}`,
+                  uri: item.image,
                 }}
               />
               <View>
@@ -142,13 +462,20 @@ const PlaceOrderPage = () => {
                     fontWeight: "600",
                     fontFamily: FONTS.regular,
                     fontSize: 20,
+                    paddingVertical: 10,
                   }}
                 >
                   {item.quantity} x
                 </Text>
               </View>
               <View style={{ gap: 10 }}>
-                <Text style={{ fontFamily: FONTS.regular, fontSize: 20 }}>
+                <Text
+                  style={{
+                    fontFamily: FONTS.regular,
+                    fontSize: 20,
+                    paddingVertical: 10,
+                  }}
+                >
                   {item.title}
                 </Text>
                 <Text style={{ fontSize: 12, color: APP_COLOR.GREY }}>
@@ -189,90 +516,252 @@ const PlaceOrderPage = () => {
             </View>
           </View>
         )}
-      </ScrollView>
-      <View
-        style={{
-          gap: 20,
-          marginBottom: 15,
-          padding: 10,
-        }}
-      >
-        <View
-          style={{
-            flexDirection: "row",
-            gap: 10,
+        <Formik
+          validationSchema={ChangePasswordSchema}
+          initialValues={{
+            promotionCode: "",
+            note: "",
+            address: "",
+            phoneNumber: "",
+            branchId: 0,
+            pointUsed: 0,
+            pointEarned: 0,
+            paymentMethodId: 0,
+            orderItems: [
+              {
+                productId: 0,
+                quantity: 0,
+              },
+            ],
+            pickUp: false,
+          }}
+          onSubmit={(values) => {
+            const numericPointUsed = Number(values.pointUsed) || 0;
+            if (numericPointUsed < 0) {
+              Toast.show("Điểm sử dụng không thể là số âm!", {
+                duration: Toast.durations.LONG,
+                textColor: "white",
+                backgroundColor: "red",
+                opacity: 1,
+              });
+              return;
+            }
+
+            handleCreateOrder(
+              values.promotionCode,
+              values.note,
+              values.address,
+              values.phoneNumber,
+              values.branchId,
+              numericPointUsed,
+              values.pointEarned,
+              values.paymentMethodId,
+              values.orderItems,
+              values.pickUp
+            );
           }}
         >
-          <Pressable
-            style={{
-              borderWidth: 1,
-              borderColor: APP_COLOR.ORANGE,
-              flex: 1,
-              padding: 7,
-              borderRadius: 10,
-            }}
-          >
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            values,
+            errors,
+            touched,
+            setFieldValue,
+          }) => {
+            useEffect(() => {
+              if (cusAddress || cusPhone) {
+                setFieldValue("address", cusAddress);
+                setFieldValue("phoneNumber", cusPhone);
+              }
+              if (orderDetails) {
+                setFieldValue("orderItems", orderDetails);
+              }
+              if (branchId) {
+                setFieldValue("branchId", branchId);
+              }
+              if (restaurant && cart?.[restaurant._id]) {
+                const totalAmount = cart[restaurant._id].sum;
+                const earnedPoints = Math.floor(totalAmount / 1000);
+                setFieldValue("pointEarned", earnedPoints);
+                const currentPointUsed = Number(values.pointUsed) || 0;
+                setFieldValue("pointUsed", currentPointUsed);
+              }
+            }, [
+              cusAddress,
+              cusPhone,
+              orderDetails,
+              restaurant,
+              cart,
+              branchId,
+            ]);
+            return (
+              <View style={styles.container}>
+                <CustomerInforInput
+                  title="Mã khuyến mãi"
+                  onChangeText={handleChange("promotionCode")}
+                  onBlur={handleBlur("promotionCode")}
+                  value={values.promotionCode}
+                  error={errors.promotionCode}
+                  touched={touched.promotionCode}
+                />
+                <CustomerInforInput
+                  title="Ghi chú"
+                  onChangeText={handleChange("note")}
+                  onBlur={handleBlur("note")}
+                  value={values.note}
+                  error={errors.note}
+                  touched={touched.note}
+                />
+                <CustomerInforInput
+                  title="Sử dụng điểm"
+                  onChangeText={(text: any) => {
+                    const numericValue = Number(text) || 0;
+                    if (numericValue >= 0) {
+                      setFieldValue("pointUsed", numericValue);
+                    }
+                  }}
+                  onBlur={handleBlur("pointUsed")}
+                  value={String(values.pointUsed)}
+                  error={errors.pointUsed}
+                  touched={touched.pointUsed}
+                  keyboardType="numeric"
+                />
+                <View style={styles.dropdownContainer}>
+                  <Text style={styles.dropdownLabel}>
+                    Phương thức thanh toán
+                  </Text>
+                  <View style={styles.dropdown}>
+                    {dropdownItems.map((item) => (
+                      <Pressable
+                        key={item.id}
+                        style={[
+                          styles.dropdownItem,
+                          selectedOption === item.id &&
+                            styles.selectedDropdownItem,
+                        ]}
+                        onPress={() =>
+                          handlePaymentMethodChange(item.id, setFieldValue)
+                        }
+                      >
+                        <Text
+                          style={[
+                            styles.dropdownText,
+                            selectedOption === item.id &&
+                              styles.selectedDropdownText,
+                          ]}
+                        >
+                          {item.title}
+                        </Text>
+                      </Pressable>
+                    ))}
+                  </View>
+                  {errors.paymentMethodId && touched.paymentMethodId && (
+                    <Text style={styles.errorText}>
+                      {errors.paymentMethodId}
+                    </Text>
+                  )}
+                </View>
+                <CustomerInforInput
+                  title="Mang đi"
+                  value={values.pickUp}
+                  setValue={(v) => setFieldValue("pickUp", v)}
+                  isBoolean={true}
+                />
+                <ShareButton
+                  loading={loading}
+                  title="Tạo đơn hàng"
+                  onPress={() => {
+                    handleCreateOrder(
+                      values.promotionCode,
+                      values.note,
+                      values.address,
+                      values.phoneNumber,
+                      values.branchId,
+                      values.pointUsed,
+                      values.pointEarned,
+                      values.paymentMethodId,
+                      values.orderItems,
+                      values.pickUp
+                    );
+                  }}
+                  textStyle={{
+                    textTransform: "uppercase",
+                    color: "#fff",
+                    paddingVertical: 5,
+                    fontFamily: FONTS.regular,
+                    fontSize: 20,
+                  }}
+                  btnStyle={{
+                    justifyContent: "center",
+                    borderRadius: 10,
+                    paddingVertical: 10,
+                    backgroundColor: APP_COLOR.ORANGE,
+                    width: "100%",
+                  }}
+                  pressStyle={{ alignSelf: "stretch" }}
+                />
+              </View>
+            );
+          }}
+        </Formik>
+      </ScrollView>
+      <Modal
+        visible={modalVisible}
+        animationType="fade"
+        transparent={true}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
             <Text
               style={{
-                color: APP_COLOR.ORANGE,
-                textAlign: "center",
                 fontFamily: FONTS.regular,
                 fontSize: 20,
+                marginBottom: 10,
               }}
             >
-              Ví VNPay
+              Chọn địa chỉ giao hàng
             </Text>
-          </Pressable>
-          <Pressable
-            style={{
-              borderWidth: 1,
-              borderColor: APP_COLOR.ORANGE,
-              flex: 1,
-              padding: 7,
-              borderRadius: 10,
-            }}
-          >
-            <Text
-              style={{
-                color: APP_COLOR.ORANGE,
-                textAlign: "center",
-                fontFamily: FONTS.regular,
-                fontSize: 20,
-              }}
-            >
-              COD
-            </Text>
-          </Pressable>
+            <ScrollView>
+              {addresses.map((address) => (
+                <Pressable
+                  key={address.userId}
+                  onPress={() => handleSelectAddress(address)}
+                  style={styles.addressItem}
+                >
+                  <View>
+                    <Text style={styles.textNameInfor}>{address.fullName}</Text>
+                    <Text style={styles.textNameInfor}>{address.address}</Text>
+                  </View>
+                  <Text style={styles.textInfor}>{address.phone}</Text>
+                </Pressable>
+              ))}
+            </ScrollView>
+
+            <View style={{ flexDirection: "row" }}>
+              <Pressable
+                onPress={handleCreateNewAddress}
+                style={styles.modalButton}
+              >
+                <Text style={{ color: "white", fontFamily: FONTS.regular }}>
+                  Tạo địa chỉ mới
+                </Text>
+              </Pressable>
+
+              <Pressable
+                onPress={() => setModalVisible(false)}
+                style={styles.modalButton}
+              >
+                <Text style={{ color: "white", fontFamily: FONTS.regular }}>
+                  Đóng
+                </Text>
+              </Pressable>
+            </View>
+          </View>
         </View>
-        <View>
-          <Pressable
-            onPress={handlePlaceOrder}
-            style={({ pressed }) => ({
-              opacity: pressed === true ? 0.5 : 1,
-              padding: 10,
-              backgroundColor: APP_COLOR.ORANGE,
-              borderRadius: 10,
-            })}
-          >
-            <Text
-              style={{
-                color: "white",
-                textAlign: "center",
-                fontFamily: FONTS.regular,
-                fontSize: 20,
-              }}
-            >
-              Đặt đơn - {``}
-              {currencyFormatter(
-                cart &&
-                  restaurant &&
-                  cart?.[restaurant._id] &&
-                  cart?.[restaurant!._id].sum
-              )}
-            </Text>
-          </Pressable>
-        </View>
-      </View>
+      </Modal>
     </View>
   );
 };

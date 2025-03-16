@@ -40,17 +40,16 @@ const CustomerLoginPage = () => {
       });
       setLoading(false);
       console.log(res.data.data);
-
-      if (res.data) {
+      if (res.data.data) {
         await AsyncStorage.setItem("access_token", res.data.data.access_token);
         await AsyncStorage.setItem(
           "refresh_token",
           res.data.data.refresh_token
         );
-        setAppState(res.data);
+        setAppState(res.data.data);
         router.replace({
           pathname: "/(tabs)",
-          params: { token: res.data, isLogin: 1 },
+          params: { access_token: res.data.data.access_token, isLogin: 1 },
         });
       } else {
         Toast.show("Đăng nhập không thành công", {
@@ -108,7 +107,7 @@ const CustomerLoginPage = () => {
                   fontFamily: FONTS.bold,
                 }}
               >
-                Thay đổi mật khẩu
+                Đăng nhập
               </Text>
             </View>
 
@@ -139,6 +138,7 @@ const CustomerLoginPage = () => {
                 textTransform: "uppercase",
                 color: "#fff",
                 paddingVertical: 5,
+                fontFamily: FONTS.medium,
               }}
               btnStyle={{
                 justifyContent: "center",

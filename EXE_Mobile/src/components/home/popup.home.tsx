@@ -43,7 +43,7 @@ const Popup: React.FC<PopupProps> = ({ visible, onClose, item }) => {
                 onPress={onClose}
               />
               <Image
-                source={require("@/assets/demo.jpg")}
+                source={{ uri: item.productImage }}
                 style={styles.modalImage}
               />
               <Text style={styles.modalText}>{item.productName}</Text>

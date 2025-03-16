@@ -5,7 +5,7 @@ import SearchHome from "@/components/home/search.home";
 import TopListHome from "@/components/home/top.list.home";
 import ItemQuantity from "@/components/example/restaurant/order/item.quantity";
 import { useCurrentApp } from "@/context/app.context";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { StyleSheet, Pressable, Text, View, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -18,6 +18,8 @@ import Animated, {
 } from "react-native-reanimated";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Toast from "react-native-root-toast";
 const HomeTab = () => {
   const [mounted, setMounted] = useState(false);
   const [showCart, setShowCart] = useState(false);
@@ -25,11 +27,29 @@ const HomeTab = () => {
   const [priceUpdateAmount, setPriceUpdateAmount] = useState(0);
   const { restaurant, cart } = useCurrentApp();
   const [collectionData, setCollectionData] = useState([]);
+  const [branchId, setBranchId] = useState(1);
+  const { access_token } = useLocalSearchParams();
+  const { refresh_token } = useLocalSearchParams();
+  useEffect(() => {
+    const storeAccessToken = async () => {
+      try {
+        if (access_token) {
+          await AsyncStorage.setItem("access_token", access_token as string);
+          await AsyncStorage.setItem("refresh_token", refresh_token as string);
+        }
+      } catch (error) {
+        console.error("Error saving access token:", error);
+      }
+    };
+    storeAccessToken();
+  }, [access_token]);
+  const handleBranchSelect = (id: any) => {
+    setBranchId(id);
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await axios.get(`${BASE_URL}/product-type`);
-        console.log(res.data);
         setCollectionData(res.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -38,7 +58,6 @@ const HomeTab = () => {
 
     fetchData();
   }, []);
-
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -61,7 +80,6 @@ const HomeTab = () => {
       });
     }
   };
-
   const handleQuantityChange = (amount: number) => {
     setPriceUpdateAmount(amount);
     setShowPriceUpdate(true);
@@ -78,16 +96,19 @@ const HomeTab = () => {
   const cartItems = restaurant?._id
     ? Object.values(cart[restaurant._id]?.items || {})
     : [];
-
+  interface ITem {
+    name: string;
+    id: number;
+  }
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <CustomFlatList
         data={collectionData}
         style={styles.list}
-        renderItem={({ item }) => (
-          <CollectionHome name={item.name} id={item.id} />
+        renderItem={({ item }: { item: ITem }) => (
+          <CollectionHome name={item.name} id={item.id} branchId={branchId} />
         )}
-        HeaderComponent={<HeaderHome />}
+        HeaderComponent={<HeaderHome onBranchSelect={handleBranchSelect} />}
         StickyElementComponent={<SearchHome />}
         TopListElementComponent={<TopListHome />}
       />
@@ -177,7 +198,19 @@ const HomeTab = () => {
                 ]}
                 onPress={() => {
                   setShowCart(false);
-                  router.push("/(user)/product/place.order");
+                  if (!branchId) {
+                    Toast.show("Vui lòng chọn chi nhánh trước khi đặt hàng", {
+                      duration: Toast.durations.LONG,
+                      textColor: "white",
+                      backgroundColor: APP_COLOR.ORANGE,
+                      opacity: 1,
+                    });
+                    return;
+                  }
+                  router.replace({
+                    pathname: "/(user)/product/place.order",
+                    params: { id: branchId },
+                  });
                 }}
               >
                 <Text style={styles.orderButtonText}>

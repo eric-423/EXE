@@ -161,7 +161,6 @@ const RootLayout = () => {
                 name="(user)/product/place.order"
                 options={{ headerTitle: "Xác nhận đơn hàng" }}
               />
-
               <Stack.Screen
                 name="(user)/account/info"
                 options={{ headerTitle: "Cập nhật thông tin" }}
@@ -170,6 +169,10 @@ const RootLayout = () => {
               <Stack.Screen
                 name="(user)/account/password"
                 options={{ headerTitle: "Cập nhật mật khẩu" }}
+              />
+              <Stack.Screen
+                name="(user)/account/customer.info"
+                options={{ headerTitle: "Nhập thông tin người dùng" }}
               />
             </Stack>
           </ThemeProvider>
