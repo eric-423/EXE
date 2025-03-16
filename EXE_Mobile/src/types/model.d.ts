@@ -166,6 +166,7 @@ declare global {
     phone: number;
     pointUsed: number;
     pointEarned: number;
+    orderStatus: string;
     createdAt: string;
     orderItems: [
       {
@@ -180,5 +181,37 @@ declare global {
         feedBackYet: boolean;
       }
     ];
+  }
+  interface IOrderDetails {
+    id: number;
+    subTotal: number;
+    promotionCode: string | null;
+    discountValue: number;
+    discountPercent: number;
+    amount: number;
+    shipping_fee: number | null;
+    isPickUp: boolean;
+    delivery_at: string | null;
+    orderStatus: string;
+    note: string;
+    payment_code: string | null;
+    address: string;
+    phone: string;
+    pointUsed: number;
+    pointEarned: number;
+    createdAt: string;
+    orderItems: {
+      productName: string;
+      productImg: string;
+      productId: number;
+      orderId: number;
+      quantity: number;
+      price: number;
+      note: string;
+      feedback: string | null;
+      feedbackPoint: number;
+      expiredFeedbackTime: string | null;
+      feedBackYet: boolean;
+    }[];
   }
 }

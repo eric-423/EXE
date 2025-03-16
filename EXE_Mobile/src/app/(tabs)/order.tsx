@@ -22,8 +22,10 @@ import { FONTS } from "@/theme/typography";
 import demo from "@/assets/demo.jpg";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { router } from "expo-router";
 const OrderPage = () => {
   const [orderHistory, setOrderHistory] = useState<IOrderHistoryCus[]>([]);
+  const [orderId, setOrderid] = useState();
   const styles = StyleSheet.create({
     text: {
       fontFamily: FONTS.regular,
@@ -55,6 +57,7 @@ const OrderPage = () => {
       color: APP_COLOR.ORANGE,
       fontSize: 15,
       fontFamily: FONTS.regular,
+      marginHorizontal: "auto",
     },
   });
   function formatDateToDDMMYYYY(isoDate: string): string {
@@ -65,7 +68,12 @@ const OrderPage = () => {
 
     return `${day}-${month}-${year}`;
   }
-
+  const handleViewDetails = (id: number) => {
+    router.navigate({
+      pathname: "/(user)/order/[id]",
+      params: { id: id },
+    });
+  };
   const [decodeToken, setDecodeToken] = useState<any>("");
   useEffect(() => {
     const fetchOrderHistoryWithToken = async () => {
@@ -74,9 +82,11 @@ const OrderPage = () => {
         if (token) {
           const decoded = jwtDecode(token);
           setDecodeToken(decoded.id);
+
           const res = await axios.get(
-            `${BASE_URL}/orders/customer/${decodeToken}?page=0&size=10`
+            `${BASE_URL}/orders/customer/${decoded.id}?page=0&size=10`
           );
+
           if (res.data.data.content) {
             setOrderHistory(res.data.data.content);
           }
@@ -149,23 +159,41 @@ const OrderPage = () => {
                       <Text style={styles.text}>
                         Trạng thái:{" "}
                         {(() => {
-                          switch (item.status) {
-                            case "Đã hoàn thành":
+                          switch (item.orderStatus) {
+                            case "Đang chuẩn bị":
                               return (
-                                <Text style={{ color: "green" }}>
-                                  {item.status}
+                                <Text style={{ color: APP_COLOR.ORANGE }}>
+                                  {item.orderStatus}
                                 </Text>
                               );
                             case "Đang giao":
                               return (
                                 <Text style={{ color: APP_COLOR.YELLOW }}>
-                                  {item.status}
+                                  {item.orderStatus}
+                                </Text>
+                              );
+                            case "Đã giao":
+                              return (
+                                <Text style={{ color: "green" }}>
+                                  {item.orderStatus}
                                 </Text>
                               );
                             case "Đã hủy":
                               return (
                                 <Text style={{ color: "red" }}>
-                                  {item.status}
+                                  {item.orderStatus}
+                                </Text>
+                              );
+                            case "Đặt hàng thành công":
+                              return (
+                                <Text style={{ color: "blue" }}>
+                                  {item.orderStatus}
+                                </Text>
+                              );
+                            case "Chờ thanh toán":
+                              return (
+                                <Text style={{ color: APP_COLOR.YELLOW }}>
+                                  {item.orderStatus}
                                 </Text>
                               );
                             default:
@@ -176,7 +204,7 @@ const OrderPage = () => {
                       <View style={styles.container}>
                         <TouchableOpacity
                           style={styles.button}
-                          onPress={() => alert("Đang phát triển!")}
+                          onPress={() => handleViewDetails(item.id)}
                         >
                           <Text style={styles.buttonText}>Xem chi tiết</Text>
                         </TouchableOpacity>
