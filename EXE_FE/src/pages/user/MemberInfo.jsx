@@ -7,6 +7,7 @@ import { Col } from "react-bootstrap";
 import Infomation from "../../components/user/Infomation.jsx";
 import { BASE_URL } from "../../config/api.js";
 import { jwtDecode } from "jwt-decode";
+import { Link } from "react-router-dom";
 
 const MemberInfo = () => {
     const [userData, setUserData] = useState([]);
@@ -34,6 +35,10 @@ const MemberInfo = () => {
 
     useEffect(() => {
         const access = localStorage.getItem('_acc');
+        if (!access) {
+            console.error('Access token not found');
+            return;
+        }
         try {
             const decode = jwtDecode(access);
             if (decode.exp < Date.now() / 1000) {
@@ -43,6 +48,8 @@ const MemberInfo = () => {
             }
         } catch (error) {
             console.error('Lỗi khi decode token:', error);
+            localStorage.removeItem('_acc');
+            localStorage.removeItem('_ref');
         }
     }, []);
 
@@ -53,13 +60,13 @@ const MemberInfo = () => {
     }, [userId]);
 
     const fetchNewToken = async () => {
-        const refresh = localStorage.getItem('_ref');
-        if (!refresh) {
-            console.error('refresh = null');
+        const refesh = localStorage.getItem('_ref');
+        if (!refesh) {
+            console.error('refesh =null');
             return;
         }
         try {
-            const response = await fetch(`${BASE_URL}/token/refresh?token=${refresh}`, {
+            const response = await fetch(`${BASE_URL}/token/refresh?token=${refesh}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -79,7 +86,6 @@ const MemberInfo = () => {
             console.error('Lỗi khi thực hiện fetch:', error);
         }
     }
-
     const fetchUserData = async () => {
         try {
             const response = await fetch(`${BASE_URL}/customer/profile/${userId}`, {
@@ -90,7 +96,6 @@ const MemberInfo = () => {
             if (response.ok) {
                 const data = await response.json();
                 setUserData(data.data)
-                console.log(data.data)
             } else {
                 console.error('Không thể lấy dữ liệu người dùng:', response.statusText);
             }
@@ -113,22 +118,27 @@ const MemberInfo = () => {
                 return null;
         }
     };
-
     return (
         <div className="container py-4 mt-5 mb-5">
-            <div className="row g-4 pb-5 pt-5">
-                <Col md={4}>
-                    <SideBar
-                        userData={userData}
-                        setShowModal={setShowModal}
-                        activeMenu={activeMenu}
-                        onMenuClick={handleMenuClick}
-                    />
-                </Col>
-                <Col md={8} className="col-md-7">
-                    {renderContent()}
-                </Col>
-            </div>
+            {
+                userData ? (
+                    <div className="row g-4 pb-5 pt-5">
+                        <Col md={4}>
+                            <SideBar
+                                userData={userData}
+                                setShowModal={setShowModal}
+                                activeMenu={activeMenu}
+                                onMenuClick={handleMenuClick}
+                            />
+                        </Col>
+                        <Col md={8} className="col-md-7">
+                            {renderContent()}
+                        </Col>
+                    </div>
+                ) : (
+                    <Link to={"/login"} className="btn btn-primary">Đăng nhập</Link>
+                )
+            }
 
             {showModal && (
                 <EditMemberModal

@@ -12,7 +12,7 @@ function App() {
     const [role, setRole] = useState("")
 
     const getRoleUser = () => {
-        const access = localStorage.getItem('__acc')
+        const access = localStorage.getItem('_acc')
         try {
             const decode = jwtDecode(access);
             if (decode.exp < Date.now() / 1000) {
@@ -60,6 +60,7 @@ function App() {
                 const data = await response.json();
                 localStorage.setItem('_acc', data.access);
                 localStorage.setItem('_ref', data.refresh);
+                getRoleUser();
             } else {
                 console.error('Không thể làm mới token:', response.statusText);
                 localStorage.removeItem('_acc');
