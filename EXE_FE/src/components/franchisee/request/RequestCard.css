@@ -1,0 +1,78 @@
+@import "../../../styles/global.css";
+
+* {
+  font-family: "Playfair Display", serif;
+}
+.request-card {
+  animation: fadeIn 0.3s ease-in;
+}
+
+.request-title h3 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.request-meta,
+.request-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.request-info {
+  justify-content: space-between;
+}
+
+.request-sender,
+.request-date,
+.request-category {
+  font-size: 1rem;
+  color: var(--dark-color);
+}
+.request-category {
+  margin-right: 5rem;
+}
+.label {
+  font-weight: 700;
+}
+
+.content-label {
+  font-size: 1rem;
+  color: var(--dark-color);
+  font-weight: 700;
+}
+
+.content-text {
+  font-size: 1rem;
+  color: var(--dark-color);
+}
+
+.request-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.75rem;
+}
+
+.detail-button {
+  font-size: 0.75rem !important;
+  padding: 0.25rem 1.25rem !important;
+  height: auto !important;
+  border-radius: 10px !important;
+}
+
+/* Request Card */
+.request-card {
+  background-color: var(--tertiary-color);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.request-card:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
