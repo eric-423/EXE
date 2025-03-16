@@ -49,7 +49,7 @@ const OrderTracking = ({ orderData }) => {
                 </div>
 
                 <div className="progress-container">
-                    <div className="progress">
+                    <div className="progress" style={{ height: '6px' }}>
                         <div
                             className="progress-bar bg-success"
                             role="progressbar"
