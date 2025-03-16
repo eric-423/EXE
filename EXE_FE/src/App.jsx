@@ -6,7 +6,7 @@ import Header from "./components/ui/header/Header";
 import Footer from "./components/ui/footer/Footer";
 import { useEffect, useState } from "react";
 import FranchiseeLayout from "./layouts/FranchiseeLayout";
-import RequestList from "./pages/franchisee/request/RequestList";
+import RequestDashboard from "./pages/franchisee/request/RequestDashboard";
 
 function App() {
   // const [role, setRole] = useState('')
@@ -36,7 +36,7 @@ function App() {
 
   return (
     <FranchiseeLayout>
-      <RequestList />
+      <RequestDashboard />
     </FranchiseeLayout>
   );
 }

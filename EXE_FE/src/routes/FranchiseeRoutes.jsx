@@ -1,6 +1,6 @@
 import FranchiseeLayout from "../layouts/FranchiseeLayout";
 import config from "../config";
-import RequestList from "../pages/franchisee/request/RequestDashboard";
+import RequestDashboard from "../pages/franchisee/request/RequestDashboard";
 
 const FranchiseeRouter = () => {
   return <FranchiseeLayout />;
@@ -12,7 +12,7 @@ const FranchiseeRoutes = {
   children: [
     {
       path: config.routes.franchisee.request,
-      element: <RequestList />,
+      element: <RequestDashboard />,
     },
   ],
 };

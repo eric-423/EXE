@@ -1,19 +1,17 @@
+/* eslint-disable react/prop-types */
 import { Button } from "react-bootstrap";
 import "./RequestCard.css";
+import { statusMap } from "../../../config/constant";
 
-// eslint-disable-next-line react/prop-types
-const RequestCard = ({ title, sender, date, category, content, status }) => {
-  // Map status to display text and style
-  const statusMap = {
-    pending: { text: "Đang thảo luận", className: "status-badge-pending" },
-    processing: {
-      text: "Đang thực hiện",
-      className: "status-badge-processing",
-    },
-    completed: { text: "Đã giải quyết", className: "status-badge-completed" },
-    resolved: { text: "Đã xử lý", className: "status-badge-resolved" },
-  };
-
+const RequestCard = ({
+  title,
+  sender,
+  date,
+  category,
+  content,
+  status,
+  onClick,
+}) => {
   const statusInfo = statusMap[status];
 
   return (
@@ -47,7 +45,12 @@ const RequestCard = ({ title, sender, date, category, content, status }) => {
           {statusInfo.text}
         </span>
 
-        <Button variant="dark" size="sm" className="detail-button">
+        <Button
+          variant="dark"
+          size="sm"
+          className="detail-button"
+          onClick={() => onClick && onClick()}
+        >
           Chi tiết
         </Button>
       </div>

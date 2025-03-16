@@ -4,6 +4,7 @@ import { Button, Container, Row, Col } from "react-bootstrap";
 // import { Filter, Plus } from "react-bootstrap-icons";
 import RequestCard from "../../../components/franchisee/request";
 import "./RequestDashboard.css";
+import RequestDetails from "../../../components/modal/request";
 
 const TAB_DATA = [
   { id: "all", label: "Tất cả" },
@@ -14,6 +15,8 @@ const TAB_DATA = [
 
 const RequestDashboard = () => {
   const [activeTab, setActiveTab] = useState("all");
+  const [showModal, setShowModal] = useState(false);
+  const [selectedRequest, setSelectedRequest] = useState(null);
 
   const filteredRequests =
     activeTab === "all"
@@ -28,6 +31,12 @@ const RequestDashboard = () => {
             );
           return true;
         });
+
+  const handleRequestClick = (request) => {
+    setSelectedRequest(request);
+    setShowModal(true);
+  };
+
   return (
     <div className="request-dashboard">
       <Container fluid>
@@ -67,11 +76,18 @@ const RequestDashboard = () => {
                 category={request.category}
                 content={request.content}
                 status={request.status}
+                onClick={() => handleRequestClick(request)}
               />
             </Col>
           ))}
         </Row>
       </Container>
+
+      <RequestDetails
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        requestData={selectedRequest}
+      />
     </div>
   );
 };
