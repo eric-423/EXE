@@ -96,3 +96,16 @@ body {
 .title {
     color: rgb(239, 230, 219)
 }
+
+.custom-select {
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Poppins', sans-serif;
+}
+
+.shipping-address {
+    font-size: 18px;
+    font-family: 'Poppins', sans-serif;
+}

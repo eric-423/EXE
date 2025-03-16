@@ -1,0 +1,240 @@
+/* Custom styling for member card */
+.member-card {
+    background-color: #f3d68c;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+    padding-bottom: 10vh;
+    padding-top: 2vh;
+    padding-left: 2vh;
+    padding-right: 2vh;
+
+}
+
+.member-card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+.bg-light-yellow {
+    background-color: #f3d68c;
+}
+
+.bg-light-green {
+    background-color: #c1e1a7;
+}
+
+.hover-effect:hover {
+    background-color: #f8e4a8;
+    transition: background-color 0.3s ease;
+}
+
+.page-bg {
+    background-color: #f5efe6;
+    min-height: 100vh;
+}
+
+.qr-code-container {
+    width: 128px;
+    height: 128px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.qr-code-container img {
+    width: 100%;
+    height: auto;
+}
+
+.menu-item {
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    height: 7vh;
+    font-size: 1.1rem;
+}
+
+.menu-item svg {
+    margin-right: 15px;
+}
+
+.active-menu-item {
+    background-color: #c1e1a7;
+}
+
+.modal {
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.modal.fade {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+.modal.show {
+    opacity: 1;
+    transform: translateY(0);
+    animation: bounce 0.5s;
+    /* Thêm hiệu ứng bounce */
+}
+
+
+
+.order-tracking-container {
+    background-color: #f0daa4;
+    font-family: 'Roboto', sans-serif;
+    color: #33281e;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.order-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.order-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.order-info-item {
+    font-size: 14px;
+}
+
+.progress-container {
+    margin: 20px 0;
+}
+
+.progress {
+    height: 10px;
+    background-color: #f3f3f3;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    transition: width 0.5s ease;
+}
+
+.progress-steps {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.progress-step {
+    text-align: center;
+    flex: 1;
+    position: relative;
+}
+
+.step-icon {
+    font-size: 24px;
+    color: #ccc;
+    /* Màu mặc định */
+}
+
+.progress-step.active .step-icon {
+    color: #28a745;
+}
+
+.step-icon.current {
+    border-color: #d9534f;
+    background-color: #fff;
+    color: #d9534f;
+}
+
+.step-label {
+    margin-top: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.step-label.current {
+    color: #d9534f;
+    font-weight: bold;
+}
+
+.order-status {
+    text-align: center;
+    font-weight: bold;
+}
+
+.order-status.preparing {
+    color: #d9534f;
+}
+
+.section-title {
+    font-weight: bold;
+    margin: 30px 0 15px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+.item-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    align-items: center;
+}
+
+.item-name {
+    font-weight: 500;
+}
+
+.item-description {
+    font-size: 14px;
+    color: #666;
+    margin-left: 20px;
+}
+
+.item-price {
+    font-weight: 500;
+    text-align: right;
+}
+
+.total-section {
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+.total-price {
+    font-weight: bold;
+    font-size: 18px;
+    color: #d9534f;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.btn-cancel {
+    background-color: #eee;
+    color: #33281e;
+    border: none;
+}
+
+.btn-continue {
+    background-color: #33281e;
+    color: white;
+    border: none;
+}
+
+.note {
+    font-size: 13px;
+    color: #666;
+}

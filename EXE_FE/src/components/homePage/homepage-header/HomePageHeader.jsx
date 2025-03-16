@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./HomePageHeader.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Row } from "react-bootstrap";
 const HomePageHeader = () => {
     const [location, setLocation] = useState("Chọn cửa hàng");
     const [address, setAddress] = useState("");
@@ -15,8 +16,10 @@ const HomePageHeader = () => {
     return <div className="homepage-header" >
         <div className="overlay"></div>
         <section className="pt-5 pb-5 homepage-search-block position-relative">
-            <div className="container">
-                <div className="row d-flex align-items-center py-lg-4 mt-5" >
+            <div className="container" style={{ backgroundColor: "transparent" }}>
+                <Row
+                    className=" d-flex align-items-center py-lg-4 mt-5"
+                >
                     <div className="col-lg-8 mx-auto">
                         <div className="homepage-search-title text-center">
 
@@ -35,7 +38,7 @@ const HomePageHeader = () => {
                         <div className="homepage-search-form">
                             <form className="form-noborder">
                                 <div className="form-row">
-                                    <div className="col-lg-3 col-md-3 col-sm-12 form-group">
+                                    <div className="col-lg-3 col-md-3 col-sm-12 form-group ">
                                         <div className="location-dropdown">
                                             <i className="icofont-location-arrow" />
                                             <select value={location} onChange={handleChangeLocation} className="custom-select form-control-lg text-center ">
@@ -47,17 +50,17 @@ const HomePageHeader = () => {
                                         </div>
                                     </div>
                                     <div className="col-lg-7 col-md-7 col-sm-12 form-group ">
-                                        <input type="text" value={address} onChange={handleChangeAdress} placeholder="Địa chỉ giao hàng" className="form-control form-control-lg" />
+                                        <input type="text" value={address} onChange={handleChangeAdress} placeholder="Địa chỉ giao hàng" className="shipping-address form-control form-control-lg" />
                                         <a className="locate-me" href="#"><i className="icofont-ui-pointer" /> Vị trí hiện tại</a>
                                     </div>
-                                    <div className="col-lg-2 col-md-2 col-sm-12 form-group text-center">
-                                        <a href=" ..." className="btn btn-primary btn-block btn-lg btn-gradient">Xác nhận</a>
+                                    <div className="col-lg-2 col-md-2 col-sm-12 form-group text-center" >
+                                        <a href=" ..." className="btn btn-primary btn-block btn-lg btn-gradient" style={{ border: "none" }}>Xác nhận</a>
                                     </div>
                                 </div>
                             </form>
                         </div>
                     </div>
-                </div>
+                </Row>
             </div >
         </section >
     </div >;
