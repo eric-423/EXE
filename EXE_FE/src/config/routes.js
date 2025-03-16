@@ -22,6 +22,7 @@ const routes = {
   franchisee: {
     home: "/franchisee",
     request: "/franchisee/request",
+    requestForm: "/franchisee/request-form",
   },
   api: {
     loginGoogle: "/api/auth/callback/google/redirect",

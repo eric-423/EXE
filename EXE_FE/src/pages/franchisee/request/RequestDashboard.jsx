@@ -5,6 +5,7 @@ import { Button, Container, Row, Col } from "react-bootstrap";
 import RequestCard from "../../../components/franchisee/request";
 import "./RequestDashboard.css";
 import RequestDetails from "../../../components/modal/request";
+import { Link } from "react-router-dom";
 
 const TAB_DATA = [
   { id: "all", label: "Tất cả" },
@@ -40,14 +41,11 @@ const RequestDashboard = () => {
   return (
     <div className="request-dashboard">
       <Container fluid>
-        <div className="dashboard-header mb-4">
-          <h1 className="dashboard-title">Branch Name - Request</h1>
-
-          <Button variant="light" className="new-request-btn">
-            <span className="me-1">Send new Request</span>
-            <span className="mx-1">+</span>
-            <span>Filter</span>
-          </Button>
+        <div className="dashboard-header mb-4 d-flex justify-content-between align-items-center">
+          <h2 className="dashboard-title">Yêu cầu của tôi</h2>
+          <Link to="/request/new">
+            <Button className="new-request-btn">+ Tạo yêu cầu mới</Button>
+          </Link>
         </div>
 
         <div className="dashboard-tabs mb-4">
