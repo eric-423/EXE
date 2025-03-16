@@ -35,7 +35,7 @@ const ProductList = ({ products, typeId }) => {
         </div>
       </Col> */}
       <section className="section pt-3 pb-5 products-section">
-        <Container>
+        <Container className="px-0">
           <Row className="justify-content-start">
             {products.map((item) => (
               <Product

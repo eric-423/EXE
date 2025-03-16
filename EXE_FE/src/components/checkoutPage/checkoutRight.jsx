@@ -1,9 +1,10 @@
 import { Col, Form } from 'react-bootstrap'
 import { useEffect, useState } from 'react';
+import { PropTypes } from 'prop-types';
 
-const CheckoutRight = () => {
+const CheckoutRight = ({ handleSubmit, setPromotionCode, setNote, setPointUsed, setPointEarned }) => {
     const [promoCode, setPromoCode] = useState('');
-    const [note, setNote] = useState('');
+    const [CheckOutnote, setCheckOutNote] = useState('');
 
     const [discountValue, setDiscountValue] = useState(0);
     const [discountOnItem, setDiscountOnItem] = useState(0);
@@ -17,6 +18,8 @@ const CheckoutRight = () => {
     const handleApplyPromo = () => {
         console.log('Mã khuyến mãi:', promoCode);
         setDiscountValue(0)
+
+        setPromotionCode(promoCode)
     };
 
     const getCartItems = () => {
@@ -76,7 +79,7 @@ const CheckoutRight = () => {
 
                     />
                     <button
-                        onClick={handleApplyPromo}
+                        onClick={() => { handleApplyPromo(); }}
                     >
                         Áp dụng
                     </button>
@@ -85,8 +88,8 @@ const CheckoutRight = () => {
                 {/* Vùng ghi chú cho cửa hàng */}
                 <textarea
                     placeholder="Ghi chú cho cửa hàng"
-                    value={note}
-                    onChange={(e) => setNote(e.target.value)}
+                    value={CheckOutnote}
+                    onChange={(e) => { setNote(e.target.value); setCheckOutNote(e.target.value) }}
                 />
             </div>
 
@@ -124,7 +127,7 @@ const CheckoutRight = () => {
                     </div>
                 </div>
 
-                <button className='w-100 mt-3 rounded-3'>
+                <button className='w-100 mt-3 rounded-3' onClick={handleSubmit}>
                     Đặt hàng
                 </button>
             </Form>
@@ -132,5 +135,13 @@ const CheckoutRight = () => {
         </Col>
     )
 }
+
+CheckoutRight.propTypes = {
+    handleSubmit: PropTypes.func.isRequired,
+    setPromotionCode: PropTypes.func.isRequired,
+    setNote: PropTypes.func.isRequired,
+    setPointUsed: PropTypes.func.isRequired,
+    setPointEarned: PropTypes.func.isRequired,
+};
 
 export default CheckoutRight
