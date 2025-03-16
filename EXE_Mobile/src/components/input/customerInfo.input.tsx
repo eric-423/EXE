@@ -7,6 +7,7 @@ import {
   TextInput,
   KeyboardTypeOptions,
   TouchableOpacity,
+  FlatList,
 } from "react-native";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { FONTS } from "@/theme/typography";
@@ -51,6 +52,20 @@ const styles = StyleSheet.create({
   checkboxChecked: {
     backgroundColor: APP_COLOR.ORANGE,
   },
+  dropdown: {
+    borderWidth: 1,
+    borderColor: APP_COLOR.GREY,
+    borderRadius: 10,
+    padding: 10,
+    marginTop: 5,
+    backgroundColor: "white",
+  },
+  dropdownItem: {
+    padding: 10,
+  },
+  dropdownItemText: {
+    fontSize: 16,
+  },
 });
 
 interface IProps {
@@ -66,11 +81,13 @@ interface IProps {
   editable?: boolean;
   resetForm?: boolean;
   isBoolean?: boolean;
+  dropdownItems?: { id: string; title: string }[]; // New prop for dropdown items
 }
 
 const CustomerInforInput = (props: IProps) => {
   const [isFocus, setIsFocus] = useState<boolean>(false);
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const {
     title,
     keyboardType,
@@ -84,6 +101,7 @@ const CustomerInforInput = (props: IProps) => {
     editable = true,
     resetForm = false,
     isBoolean = false,
+    dropdownItems, // Destructure new dropdownItems prop
   } = props;
 
   useEffect(() => {
@@ -91,6 +109,11 @@ const CustomerInforInput = (props: IProps) => {
       setValue(isBoolean ? false : "");
     }
   }, [resetForm, setValue, isBoolean]);
+
+  const handleSelectItem = (item: { id: string; title: string }) => {
+    setValue && setValue(item);
+    setIsDropdownOpen(false);
+  };
 
   if (isBoolean) {
     return (
@@ -117,36 +140,63 @@ const CustomerInforInput = (props: IProps) => {
   return (
     <View style={styles.inputGroup}>
       {title && <Text style={styles.text}>{title}</Text>}
-      <View>
-        <TextInput
-          editable={editable}
-          value={value}
-          onChangeText={onChangeText}
-          onFocus={() => setIsFocus(true)}
-          onBlur={(e) => {
-            if (onBlur) onBlur(e);
-            setIsFocus(false);
-          }}
-          keyboardType={keyboardType}
-          style={[
-            styles.input,
-            { borderColor: isFocus ? APP_COLOR.ORANGE : APP_COLOR.GREY },
-          ]}
-          secureTextEntry={secureTextEntry && !isShowPassword}
-        />
-        {error && touched && (
-          <Text style={{ color: "red", marginTop: 5 }}>{error}</Text>
-        )}
-        {secureTextEntry && (
-          <FontAwesome5
-            style={styles.eye}
-            name={isShowPassword ? "eye" : "eye-slash"}
-            size={15}
-            color="black"
-            onPress={() => setIsShowPassword(!isShowPassword)}
+      {dropdownItems ? (
+        <>
+          <TouchableOpacity
+            onPress={() => setIsDropdownOpen(!isDropdownOpen)}
+            style={styles.dropdown}
+          >
+            <Text style={{ fontFamily: FONTS.regular, fontSize: 16 }}>
+              {value ? value.title : "Select an option"}
+            </Text>
+          </TouchableOpacity>
+          {isDropdownOpen && (
+            <FlatList
+              data={dropdownItems}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  onPress={() => handleSelectItem(item)}
+                  style={styles.dropdownItem}
+                >
+                  <Text style={styles.dropdownItemText}>{item.title}</Text>
+                </TouchableOpacity>
+              )}
+            />
+          )}
+        </>
+      ) : (
+        <View>
+          <TextInput
+            editable={editable}
+            value={value}
+            onChangeText={onChangeText}
+            onFocus={() => setIsFocus(true)}
+            onBlur={(e) => {
+              if (onBlur) onBlur(e);
+              setIsFocus(false);
+            }}
+            keyboardType={keyboardType}
+            style={[
+              styles.input,
+              { borderColor: isFocus ? APP_COLOR.ORANGE : APP_COLOR.GREY },
+            ]}
+            secureTextEntry={secureTextEntry && !isShowPassword}
           />
-        )}
-      </View>
+          {error && touched && (
+            <Text style={{ color: "red", marginTop: 5 }}>{error}</Text>
+          )}
+          {secureTextEntry && (
+            <FontAwesome5
+              style={styles.eye}
+              name={isShowPassword ? "eye" : "eye-slash"}
+              size={15}
+              color="black"
+              onPress={() => setIsShowPassword(!isShowPassword)}
+            />
+          )}
+        </View>
+      )}
     </View>
   );
 };
