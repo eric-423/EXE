@@ -232,11 +232,11 @@ const LoginPage = () => {
                     phoneNumber: phoneNumber,
                     password: password1,
                 }),
-                credentials: "include",
             });
 
             const data = await response.json();
             if (response.ok) {
+                console.log(response)
                 localStorage.setItem("_acc", data.data.access_token);
                 localStorage.setItem("_ref", data.data.refresh_token);
                 navigate("/");
