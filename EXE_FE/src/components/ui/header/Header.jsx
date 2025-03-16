@@ -56,9 +56,9 @@ const Header = () => {
                             className="header-icon"
                         />
                     </Link>
-                    <Link to="/login" className="icon-link">
+                    <div to="/" className="icon-link">
                         <Cart />
-                    </Link>
+                    </div>
                 </div>
             </Col>
         </Row>
