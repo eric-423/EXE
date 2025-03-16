@@ -19,6 +19,7 @@ import Animated, {
 import AntDesign from "@expo/vector-icons/AntDesign";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Toast from "react-native-root-toast";
 const HomeTab = () => {
   const [mounted, setMounted] = useState(false);
   const [showCart, setShowCart] = useState(false);
@@ -26,7 +27,7 @@ const HomeTab = () => {
   const [priceUpdateAmount, setPriceUpdateAmount] = useState(0);
   const { restaurant, cart } = useCurrentApp();
   const [collectionData, setCollectionData] = useState([]);
-  const [branchId, setBranchId] = useState(null);
+  const [branchId, setBranchId] = useState(1);
   const { access_token } = useLocalSearchParams();
   const { refresh_token } = useLocalSearchParams();
   useEffect(() => {
@@ -43,7 +44,6 @@ const HomeTab = () => {
     storeAccessToken();
   }, [access_token]);
   const handleBranchSelect = (id: any) => {
-    console.log(id);
     setBranchId(id);
   };
   useEffect(() => {
@@ -198,7 +198,19 @@ const HomeTab = () => {
                 ]}
                 onPress={() => {
                   setShowCart(false);
-                  router.push("/(user)/product/place.order");
+                  if (!branchId) {
+                    Toast.show("Vui lòng chọn chi nhánh trước khi đặt hàng", {
+                      duration: Toast.durations.LONG,
+                      textColor: "white",
+                      backgroundColor: APP_COLOR.ORANGE,
+                      opacity: 1,
+                    });
+                    return;
+                  }
+                  router.replace({
+                    pathname: "/(user)/product/place.order",
+                    params: { id: branchId },
+                  });
                 }}
               >
                 <Text style={styles.orderButtonText}>

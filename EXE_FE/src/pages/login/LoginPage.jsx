@@ -15,7 +15,9 @@ const LoginPage = () => {
         // Initialize from sessionStorage or default to "customer"
         return sessionStorage.getItem("loginView") || "customer";
     });
-    const [phoneNumber, setPhoneNumber] = useState();
+    const [phoneNumber, setPhoneNumber] = useState(() => {
+        return sessionStorage.getItem("phoneNumber") || "";
+    });
     const [phoneError, setPhoneError] = useState("");
     const [otp, setOtp] = useState(["", "", "", "", "", ""]);
     const [password1, setPassword1] = useState("");
@@ -25,7 +27,6 @@ const LoginPage = () => {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [passwordError, setPasswordError] = useState("");
-    const [otpError, setOtpError] = useState("");
 
     useDocumentTitle("Đăng nhập Tấm Tắc");
 
@@ -72,13 +73,13 @@ const LoginPage = () => {
             case "employee":
                 return "Đăng nhập dành cho nhân viên";
             case "otp":
-                return "Hãy kiểm tra Zalo của bạn để nhận mã OTP";
+                return "";
             case "password":
                 return "Đăng ký mật khẩu để đăng nhập lần sau";
             case "existingUser":
                 return "Chào mừng bạn quay lại";
             case "registerPassword":
-                return "Đăng ký mật khẩu để đăng nhập lần sau";
+                return "";
             default:
                 return "";
         }
@@ -97,7 +98,6 @@ const LoginPage = () => {
 
     const handleCustomerSubmit = async (e) => {
         e.preventDefault();
-
         if (!phoneNumber) {
             setPhoneError("Vui lòng nhập số điện thoại");
             return;
@@ -108,48 +108,144 @@ const LoginPage = () => {
         }
 
         try {
-            // First API: Sign up
-            const signUpResponse = await axios.post(
-                `${BASE_URL}${API_ROUTES.SIGN_UP}`,
-                {
+            const response = await fetch(`${BASE_URL}/customer/sign-up`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
                     phoneNumber: phoneNumber,
-                }
-            );
+                }),
+            });
 
-            if (signUpResponse.status === 201) {
-                // Store user data
-                sessionStorage.setItem(
-                    "userData",
-                    JSON.stringify(signUpResponse.data)
-                );
+            if (response.ok) {
+                sessionStorage.setItem("loginView", "otp");
                 sessionStorage.setItem("phoneNumber", phoneNumber);
+                handleSendOTP();
+            }
+            if (response.status === 400) {
+                setPhoneError(
+                    "Số điện thoại này đã được đăng ký. Vui lòng đăng nhập."
+                );
+                return;
+            }
 
-                // Change view to OTP screen
+        } catch (error) {
+            console.error("Sign up error:", error);
+        };
+    }
+
+    const handleSendOTP = async () => {
+        try {
+            const response = await fetch(`${BASE_URL}/verify-code/send?mode=dev`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    phoneNumber: phoneNumber,
+                }),
+            });
+            const data = await response.json();
+            console.log(data)
+            if (response.ok) {
+                sessionStorage.setItem("loginView", "otp");
+                sessionStorage.setItem("phoneNumber", phoneNumber);
                 setCurrentView("otp");
-                setPhoneError("");
-
-                // Second API: Generate OTP code
-                try {
-                    await axios.post(
-                        "https://tamtac-6548a8185ba9.herokuapp.com/api/v1/verify-code/generate-code",
-                        {
-                            phoneNumber: phoneNumber,
-                            mode: "dev",
-                        }
-                    );
-                } catch (otpError) {
-                    console.error("Generate OTP error:", otpError);
-                    setPhoneError("Không thể tạo mã OTP. Vui lòng thử lại.");
-                }
+                window.history.pushState(
+                    { view: "otp" },
+                    "",
+                    location.pathname
+                );
             }
         } catch (error) {
-            if (
-                error.response?.data?.name === "SequelizeUniqueConstraintError"
-            ) {
-                setPhoneError("Số điện thoại này đã được đăng ký");
-            } else {
-                setPhoneError("Có lỗi xảy ra. Vui lòng thử lại sau.");
+            console.error("Error sending OTP:", error);
+        }
+    };
+
+    const handleOTPSubmit = async (e) => {
+        e.preventDefault();
+        const otpValue = otp.join("");
+        if (otpValue.length === 6) {
+            setCurrentView("registerPassword");
+        }
+        try {
+            const response = await fetch(`${BASE_URL}/verify-code/verify?phoneNumber=${phoneNumber}&code=${otpValue}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            if (response.ok) {
+                const data = await response.json();
+
+                localStorage.setItem("_acc", data.access_token);
+                localStorage.setItem("_ref", data.refresh_token);
+
+                sessionStorage.setItem("loginView", "registerPassword");
+                setCurrentView("registerPassword");
             }
+        } catch (error) {
+            console.error("Error checking user:", error);
+        }
+    };
+
+    const handlePasswordSubmit = async (e) => {
+        e.preventDefault();
+        if (password !== confirmPassword) {
+            setPasswordError("Mật khẩu không khớp");
+            return;
+        } else {
+            const acc = localStorage.getItem("_acc");
+            try {
+                const response = await fetch(`${BASE_URL}/customer/change-password`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${acc}`,
+                    },
+                    body: JSON.stringify({
+                        phoneNumber: phoneNumber,
+                        password: password,
+                    })
+                })
+                if (response.ok) {
+                    navigate("/");
+                    setCurrentView("existingUser");
+                }
+            } catch (error) {
+                console.error("Error changing password:", error);
+            }
+        }
+    }
+
+    const handleExistingUserSubmit = async (e) => {
+        e.preventDefault();
+        setLoginError("");
+        try {
+            const response = await fetch(`${BASE_URL}/customer/sign-in`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    phoneNumber: phoneNumber,
+                    password: password1,
+                }),
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                console.log(response)
+                localStorage.setItem("_acc", data.data.access_token);
+                localStorage.setItem("_ref", data.data.refresh_token);
+                navigate("/");
+            } else {
+                setLoginError(data.message || "Đăng nhập không thành công");
+            }
+        } catch (error) {
+            console.error("Login error:", error);
+            setLoginError("Có lỗi xảy ra, vui lòng thử lại sau");
         }
     };
 
@@ -182,43 +278,8 @@ const LoginPage = () => {
         }
     };
 
-    const handleOTPSubmit = async (e) => {
-        e.preventDefault();
-        const otpValue = otp.join("");
-        if (otpValue.length === 6) {
-            try {
-                const response = await axios.post(
-                    "https://tamtac-6548a8185ba9.herokuapp.com/api/v1/verify-code/verify-phone-code",
-                    {
-                        code: otpValue,
-                        phoneNumber: phoneNumber,
-                    }
-                );
 
-                if (response.data.status === "success") {
-                    // Store token in localStorage
-                    localStorage.setItem("token", response.data.token);
 
-                    // Move to password screen
-                    setCurrentView("password");
-                    setOtpError("");
-                }
-            } catch (error) {
-                console.error("Verify OTP error:", error);
-                setOtpError("Mã OTP không đúng. Vui lòng thử lại.");
-            }
-        }
-    };
-
-    const handlePasswordSubmit = (e) => {
-        e.preventDefault();
-        if (password !== confirmPassword) {
-            setPasswordError("Mật khẩu không khớp");
-            return;
-        }
-        // Here you can add your password registration API call
-        // Then navigate to success or home page
-    };
 
     const handleChange = (element, index, isFirstPassword) => {
         if (isNaN(element.value)) return false;
@@ -258,38 +319,7 @@ const LoginPage = () => {
         }
     };
 
-    const handleExistingUserSubmit = async (e) => {
-        e.preventDefault();
-        setLoginError("");
-        try {
-            const response = await fetch(`${BASE_URL}${API_ROUTES.SIGN_IN}`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    email: `${phoneNumber}@gmail.com`,
-                    password: password1,
-                }),
-                credentials: "include", // Important for cookies
-            });
 
-            const data = await response.json();
-
-            if (response.ok) {
-                localStorage.setItem("token", data.token);
-                // Clear session storage before navigating home
-                sessionStorage.removeItem("loginView");
-                sessionStorage.removeItem("phoneNumber");
-                navigate("/");
-            } else {
-                setLoginError(data.message || "Đăng nhập không thành công");
-            }
-        } catch (error) {
-            console.error("Login error:", error);
-            setLoginError("Có lỗi xảy ra, vui lòng thử lại sau");
-        }
-    };
 
     const handleBackToRegistration = () => {
         setCurrentView("customer");
@@ -305,9 +335,6 @@ const LoginPage = () => {
             case "customer":
                 return (
                     <>
-                        {/* <div className={styles.dividerLine}>
-                            <span>Bạn là khách hàng của Tấm Tắc?</span>
-                        </div> */}
                         <form onSubmit={handleCustomerSubmit}>
                             <div className={styles.inputGroup}>
                                 <input
@@ -329,6 +356,7 @@ const LoginPage = () => {
                             <button
                                 type="submit"
                                 className={styles.loginButton}
+                                onClick={handleCustomerSubmit}
                             >
                                 Đăng ký
                             </button>
@@ -398,8 +426,7 @@ const LoginPage = () => {
                                         if (e.target.value && index < 5) {
                                             const nextInput =
                                                 document.querySelector(
-                                                    `input[name=otp-${
-                                                        index + 1
+                                                    `input[name=otp-${index + 1
                                                     }]`
                                                 );
                                             if (nextInput) nextInput.focus();
@@ -410,7 +437,7 @@ const LoginPage = () => {
                                 />
                             ))}
                         </div>
-                        <button type="submit" className={styles.loginButton}>
+                        <button type="submit" onClick={handleOTPSubmit} className={styles.loginButton}>
                             Xác nhận
                         </button>
                         <button
@@ -426,9 +453,6 @@ const LoginPage = () => {
             case "registerPassword":
                 return (
                     <form onSubmit={handlePasswordSubmit}>
-                        {/* <div className={styles.dividerLine}>
-                            <span>Đăng ký mật khẩu</span>
-                        </div> */}
                         <div className={styles.inputGroup}>
                             <input
                                 type="password"
@@ -500,15 +524,14 @@ const LoginPage = () => {
                                     setPassword1(e.target.value);
                                     setLoginError("");
                                 }}
-                                className={`${styles.passwordInput} ${
-                                    loginError ? styles.errorInput : ""
-                                }`}
+                                className={`${styles.passwordInput} ${loginError ? styles.errorInput : ""
+                                    }`}
                             />
                             {loginError && (
                                 <p className={styles.errorText}>{loginError}</p>
                             )}
                         </div>
-                        <button type="submit" className={styles.loginButton}>
+                        <button type="submit" onClick={handleExistingUserSubmit} className={styles.loginButton}>
                             Đăng nhập
                         </button>
                         <div className={styles.divider}>
@@ -530,8 +553,6 @@ const LoginPage = () => {
                 return null;
         }
     };
-
-    const token = localStorage.getItem("token");
 
     return <LoginLayout subtitle={getSubtitle()}>{renderForm()}</LoginLayout>;
 };
