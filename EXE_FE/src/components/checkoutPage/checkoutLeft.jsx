@@ -14,6 +14,7 @@ const CheckoutLeft = ({ setUserName, setUserAddress, setPhoneNumber, IsPickup, s
     const [address, setAddress] = useState('')
     const [isNewAddress, setIsNewAddress] = useState('default');
     const [isPickup, setIsPickup] = useState(false)
+    setPaymentMethodId(1);
     return (
         <>
             <Col md={5} style={{ fontFamily: 'Playfair Display, serif' }}>
@@ -26,6 +27,7 @@ const CheckoutLeft = ({ setUserName, setUserAddress, setPhoneNumber, IsPickup, s
                             name="deliveryType"
                             id="radioGiaoHang"
                             value={isPickup}
+                            checked
                             onClick={() => { setIsPickup(!isPickup); IsPickup(!isPickup) }}
                             style={{ width: 20, height: 20, backgroundColor: 'rgb(235, 209, 135)' }}
                         />
@@ -254,6 +256,7 @@ const CheckoutLeft = ({ setUserName, setUserAddress, setPhoneNumber, IsPickup, s
                             type="radio"
                             name="paymentMethod"
                             id="payCOD"
+                            checked
                             onClick={() => setPaymentMethodId(1)}
                         />
                         <label className="form-check-label ml-3" htmlFor="payCOD">

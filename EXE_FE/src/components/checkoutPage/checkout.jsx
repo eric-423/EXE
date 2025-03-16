@@ -85,10 +85,7 @@ const Checkout = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const cartItems = JSON.parse(localStorage.getItem('cartItems'));
-        const items = cartItems.map(item => ({
-            productId: item.productId,
-            quantity: item.quantity
-        }));
+
         const body = {
             customerId: auth.id,
             promotionCode: promotionCode,
@@ -106,7 +103,6 @@ const Checkout = () => {
                     note: ""
                 })),
             isPickup: isPickup
-
         }
 
         console.log(body)
@@ -127,6 +123,9 @@ const Checkout = () => {
             if (response.ok) {
                 const data = await response.json();
                 console.log(data);
+            } else {
+                fetchNewToken();
+                handleSubmit(e);
             }
         } catch (error) {
             console.log(error);

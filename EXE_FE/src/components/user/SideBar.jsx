@@ -2,11 +2,12 @@ import { User, Search, ShoppingBag, Gift, Home } from "lucide-react";
 import PropTypes from 'prop-types';
 
 const SideBar = ({ userData, setShowModal, activeMenu, onMenuClick }) => {
+    console.log(userData)
     return (
         <div className="member-card h-100">
             <div className="p-3 border-bottom border-warning text-center">
-                <h4 className="fw-medium">{userData.name}</h4>
-                <p className="mb-1 small">{userData.phone}</p>
+                <h5 className="fw-semibold">{userData.fullName}</h5>
+                <p className="mb-1 " style={{ fontSize: 20 }}>{userData.phone}</p>
                 <p className="mb-1 small">{userData.email}</p>
 
                 <div className="mt-3">
@@ -48,7 +49,7 @@ const SideBar = ({ userData, setShowModal, activeMenu, onMenuClick }) => {
 
 SideBar.propTypes = {
     userData: PropTypes.shape({
-        name: PropTypes.string.isRequired,
+        fullName: PropTypes.string.isRequired,
         phone: PropTypes.string.isRequired,
         email: PropTypes.string.isRequired,
     }).isRequired,
