@@ -16,7 +16,14 @@ const CartBody = ({ id, name, price, quantity, deleteCartItem }) => (
     <div className="mb-3">
         <div className="cart-body mb-5">
             <h6 className="justify-content-start">
-                <BsFillTrashFill onClick={() => deleteCartItem(id)} size={15} style={{ cursor: "pointer", marginRight: 10 }} /> {name}
+                <BsFillTrashFill
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        deleteCartItem(id);
+                    }}
+                    size={15}
+                    style={{ cursor: "pointer", marginRight: 10 }}
+                /> {name}
             </h6>
             <div className="d-flex justify-content-end gap-3">
                 <p style={{ color: "rgb(218, 115, 50)" }}>{price.toLocaleString()} đ</p>

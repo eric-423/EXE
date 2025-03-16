@@ -3,24 +3,27 @@ import PropTypes from 'prop-types';
 import { Home, Share2, User, Package, ChefHat } from 'lucide-react';
 import Dashboard from '../../components/admin/Dashboard';
 import Branches from './Branches';
+import { InfoCircle } from 'react-bootstrap-icons';
+import Infomation from './Infomation';
 
 const Sidebar = ({ onMenuClick }) => {
     return (
         <div className=" sidebar-admin d-flex flex-column h-100 position-fixed start-0 top-0 shadow"
             style={{ width: '70px', zIndex: 50, backgroundColor: "rgb(218, 115, 57)" }}
         >
-            <div className="d-flex align-items-center justify-content-center h-4 pt-4 mb-2">
+            <div className="d-flex align-items-center justify-content-center h-4 pt-4 mb-4">
                 <div className="rounded-circle d-flex align-items-center justify-content-center bg-light text-success" style={{ width: '40px', height: '40px' }}>
                     <span className="fw-bold small">Zuy</span>
                 </div>
             </div>
 
-            <div className="d-flex flex-column align-items-center mt-4" style={{ gap: '2.5rem' }}>
+            <div className="d-flex flex-column align-items-center " style={{ gap: '1rem' }}>
                 <NavItem icon={<Home size={20} />} menu="home" onMenuClick={onMenuClick} />
                 <NavItem icon={<Share2 size={20} />} menu="share" onMenuClick={onMenuClick} />
                 <NavItem icon={<User size={20} />} menu="profile" onMenuClick={onMenuClick} />
                 <NavItem icon={<Package size={20} />} menu="packages" onMenuClick={onMenuClick} />
                 <NavItem icon={<ChefHat size={20} />} menu="recipes" onMenuClick={onMenuClick} />
+                <NavItem icon={<InfoCircle size={20} />} menu="infomation" onMenuClick={onMenuClick} />
             </div>
         </div>
     );
@@ -36,7 +39,6 @@ const NavItem = ({ icon, menu, onMenuClick }) => {
         </div>
     );
 };
-
 
 
 const MainComponent = () => {
@@ -58,6 +60,8 @@ const MainComponent = () => {
                 return <div>Packages Content</div>;
             case 'recipes':
                 return <div>Recipes Content</div>;
+            case 'infomation':
+                return <Infomation />
             default:
                 return null;
         }
