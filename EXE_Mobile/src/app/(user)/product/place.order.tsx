@@ -106,19 +106,6 @@ const PlaceOrderPage = () => {
         return;
       }
       const numericPointUsed = Number(pointUsed) || 0;
-      console.log("Creating order with data:", {
-        customerId: decodeToken,
-        promotionCode,
-        note,
-        address,
-        phoneNumber,
-        branchId: Number(branchId),
-        pointUsed: numericPointUsed,
-        pointEarned,
-        paymentMethodId,
-        orderItems,
-        pickUp,
-      });
 
       const response = await axios.post(`${BASE_URL}/orders/`, {
         customerId: decodeToken,
@@ -189,7 +176,6 @@ const PlaceOrderPage = () => {
         if (token) {
           const decoded = jwtDecode(token);
           setDecodeToken(decoded.id);
-          console.log("Customer ID:", decoded.id);
         } else {
           console.log("No access token found.");
         }

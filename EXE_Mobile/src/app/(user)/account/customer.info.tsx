@@ -149,7 +149,6 @@ const CustomerInfoPage = () => {
                     values.isDefault,
                     values.userId
                   );
-                  console.log(values);
                 }}
                 textStyle={{
                   textTransform: "uppercase",

@@ -24,7 +24,6 @@ const AccountPage = () => {
         if (token) {
           const decoded = jwtDecode(token);
           setDecodeToken(decoded);
-          console.log("decode:", decodeToken);
         } else {
           console.log("No access token found.");
         }
