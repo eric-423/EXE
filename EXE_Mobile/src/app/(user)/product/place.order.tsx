@@ -22,6 +22,9 @@ import { Formik } from "formik";
 import { ChangePasswordSchema } from "@/utils/validate.schema";
 import CustomerInforInput from "@/components/input/customerInfo.input";
 import ShareButton from "@/components/button/share.button";
+import * as Linking from "expo-linking";
+import * as WebBrowser from "expo-web-browser";
+
 interface IOrderItem {
   image: string;
   title: string;
@@ -132,18 +135,28 @@ const PlaceOrderPage = () => {
       });
 
       if (response.data) {
-        Toast.show("Đặt hàng thành công!", {
-          duration: Toast.durations.LONG,
-          textColor: "white",
-          backgroundColor: APP_COLOR.ORANGE,
-          opacity: 1,
-        });
         if (paymentMethodId === 2) {
           const link = response.data.data.payment_url;
-          router.navigate(link);
+          try {
+            await WebBrowser.openBrowserAsync(link);
+          } catch (error) {
+            console.error("Error opening payment URL:", error);
+            Toast.show("Không thể mở trang thanh toán!", {
+              duration: Toast.durations.LONG,
+              textColor: "white",
+              backgroundColor: "red",
+              opacity: 1,
+            });
+          }
         } else {
+          Toast.show("Đặt hàng thành công!", {
+            duration: Toast.durations.LONG,
+            textColor: "white",
+            backgroundColor: APP_COLOR.ORANGE,
+            opacity: 1,
+          });
           setCart(0);
-          router.push("/(tabs)");
+          router.replace("/(tabs)/");
         }
       }
     } catch (error) {
@@ -343,6 +356,43 @@ const PlaceOrderPage = () => {
       setOrderDetails(details);
     }
   }, [restaurant]);
+
+  useEffect(() => {
+    // Xử lý deep link khi app được mở lại
+    const handleDeepLink = (event: { url: string }) => {
+      if (event.url.includes("order-success")) {
+        Toast.show("Thanh toán thành công!", {
+          duration: Toast.durations.LONG,
+          textColor: "white",
+          backgroundColor: APP_COLOR.ORANGE,
+          opacity: 1,
+        });
+        setCart(0);
+        router.replace("/(tabs)/");
+      }
+    };
+
+    // Đăng ký listener cho deep link
+    const subscription = Linking.addEventListener("url", handleDeepLink);
+
+    // Kiểm tra nếu app được mở bằng deep link
+    Linking.getInitialURL().then((url) => {
+      if (url && url.includes("order-success")) {
+        Toast.show("Thanh toán thành công!", {
+          duration: Toast.durations.LONG,
+          textColor: "white",
+          backgroundColor: APP_COLOR.ORANGE,
+          opacity: 1,
+        });
+        setCart(0);
+        router.replace("/(tabs)/");
+      }
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
 
   const handleSelectAddress = (address: any) => {
     setSelectedAddress(address);

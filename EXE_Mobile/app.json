@@ -12,13 +12,17 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "scheme": "hoidanit-app",
+      "bundleIdentifier": "com.hoidanit.app"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "scheme": "hoidanit-app",
+      "package": "com.hoidanit.app"
     },
     "web": {
       "favicon": "./src/assets/favicon.png"

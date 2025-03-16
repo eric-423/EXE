@@ -150,4 +150,35 @@ declare global {
     createdAt: Date;
     updatedAt: Date;
   }
+  interface IOrderHistoryCus {
+    id: number;
+    subTotal: number;
+    promotionCode: string;
+    discountValue: number;
+    discountPercent: number;
+    amount: number;
+    shipping_fee: number;
+    isPickUp: boolean;
+    delivery_at: string;
+    note: string;
+    payment_code: string;
+    address: string;
+    phone: number;
+    pointUsed: number;
+    pointEarned: number;
+    createdAt: string;
+    orderItems: [
+      {
+        productId: number;
+        orderId: number;
+        quantity: number;
+        price: number;
+        note: string;
+        feedback: string | null;
+        feedbackPoint: number;
+        expiredFeedbackTime: string | null;
+        feedBackYet: boolean;
+      }
+    ];
+  }
 }
