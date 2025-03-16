@@ -19,7 +19,7 @@ const Infomation = ({ userData }) => {
                             {userData.membershipLevel}
                         </p>
                     </div>
-                    <div className="mb-3">
+                    {/* <div className="mb-3">
                         <p className="mb-2">
                             <span className="fw-medium">Điểm tích lũy: </span>
                             {userData.totalPoints.toLocaleString()} điểm
@@ -28,15 +28,15 @@ const Infomation = ({ userData }) => {
                     <div className="mb-3">
                         <p className="mb-2">
                             <span className="fw-medium">Điểm đã sử dụng: </span>
-                            {userData.usedPoints.toLocaleString()} điểm
+                            {userData.usedPoints?.toLocaleString()} điểm
                         </p>
                     </div>
                     <div className="mb-3">
                         <p className="mb-2">
                             <span className="fw-medium">Điểm còn lại: </span>
-                            {userData.remainingPoints.toLocaleString()} điểm
+                            {userData?.remainingPoints.toLocaleString()} điểm
                         </p>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>

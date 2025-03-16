@@ -31,9 +31,9 @@ function App() {
 
 
     useEffect(() => {
-        const refesh = localStorage.getItem('_ref')
+        const access = localStorage.getItem('_acc')
         try {
-            const decode = jwtDecode(refesh)
+            const decode = jwtDecode(access)
             if (decode.exp < Date.now() / 1000) {
                 fetchNewToken();
             }
