@@ -161,7 +161,6 @@ const RootLayout = () => {
                 name="(user)/product/place.order"
                 options={{ headerTitle: "Xác nhận đơn hàng" }}
               />
-
               <Stack.Screen
                 name="(user)/account/info"
                 options={{ headerTitle: "Cập nhật thông tin" }}

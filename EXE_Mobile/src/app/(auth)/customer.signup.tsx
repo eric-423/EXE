@@ -28,13 +28,11 @@ const handleSignUp = async (phoneNumber: string) => {
 
     if (signUpResponse.data) {
       const generateCodeResponse = await axios.post(
-        `${BASE_URL}/verify-code/send?mode=dev`,
+        `${BASE_URL}/verify-code/send?mode=${phoneNumber}`,
         {
           phoneNumber: phoneNumber,
         }
       );
-      console.log(generateCodeResponse.data);
-
       if (generateCodeResponse.data) {
         router.replace({
           pathname: "/(auth)/verify",

@@ -72,8 +72,8 @@ h6 {
   border-radius: 100px;
 }
 
-.form-label-group > input,
-.form-label-group > label {
+.form-label-group>input,
+.form-label-group>label {
   padding: 15px 0;
   height: 51px;
   background: transparent !important;
