@@ -1,0 +1,65 @@
+@import "../../../styles/global.css";
+.app-header {
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.header-left .menu-button {
+  background: none;
+  border: none;
+  color: #6c757d;
+  cursor: pointer;
+  padding: 0.25rem;
+}
+
+.search-container {
+  position: relative;
+  max-width: 400px;
+  flex: 1;
+  margin: 0 auto;
+}
+
+.search-icon {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  color: var(--dark-color) !important;
+}
+
+.search-input {
+  border-radius: 50rem !important;
+  background-color: transparent !important;
+  border-color: var(--dark-color) !important;
+  padding-left: 2.5rem;
+  transition: all 0.3s;
+}
+
+.search-input:focus {
+  border-color: #dee2e6 !important;
+  box-shadow: none !important;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.header-action-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: #6c757d;
+  transition: background-color 0.3s;
+}
+
+.header-action-btn:hover {
+  background-color: #f8f9fa;
+}

@@ -4,6 +4,7 @@ export const APP_COLOR = {
   GREY: "#808080",
   BLACK: "#000000",
   WHITE: "#FFFFFF",
+  WHEAT: "EFE6DB",
 };
 
 export const APP_FONT = {

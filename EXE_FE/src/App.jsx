@@ -2,14 +2,14 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import { Navigate, BrowserRouter as Router } from "react-router-dom";
 import RoutesComponent from "./routes";
-import Header from './components/ui/header/Header';
-import Footer from './components/ui/footer/Footer';
+import Header from "./components/ui/header/Header";
+import Footer from "./components/ui/footer/Footer";
 import { useEffect, useState } from "react";
-import { jwtDecode } from 'jwt-decode';
+import { jwtDecode } from "jwt-decode";
 import { BASE_URL } from "./config/api";
 
 function App() {
-    const [role, setRole] = useState("")
+  const [role, setRole] = useState("");
 
     const getRoleUser = () => {
         const access = localStorage.getItem('_acc')
@@ -23,7 +23,9 @@ function App() {
         } catch (error) {
             console.error('Lỗi khi decode token:', error);
         }
+
     }
+  };
 
     useEffect(() => {
         getRoleUser()
@@ -56,7 +58,9 @@ function App() {
         } catch (error) {
             console.error('Lỗi khi thực hiện fetch:', error);
         }
+
     }
+  };
 
     useEffect(() => {
         const checkAndRefreshToken = () => {
@@ -125,6 +129,7 @@ function App() {
             )}
         </Router>
     );
+
 }
 
 export default App;

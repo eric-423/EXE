@@ -1,116 +1,88 @@
-import { Col, Form } from 'react-bootstrap'
-import { useEffect, useState } from 'react';
-import { PropTypes } from 'prop-types';
+import { Col, Form } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { PropTypes } from "prop-types";
 
-const CheckoutRight = ({ handleSubmit, setPromotionCode, setNote, memberPoint, setPointUsed }) => {
-    const [promoCode, setPromoCode] = useState('');
-    const [CheckOutnote, setCheckOutNote] = useState('');
-    const [discountValue, setDiscountValue] = useState(0);
-    const [discountOnItem] = useState(0);
-    const [shippingFee] = useState(50000);
-    const [cartItems, setCartItems] = useState([]);
-    const [totalAmount, setTotalAmount] = useState(0);
-    const [refreshData, setRefreshData] = useState(true);
-    const [usePoint, setUsePoint] = useState(0);
-    const [pointUserError, setPointUserError] = useState('');
+const CheckoutRight = ({
+  handleSubmit,
+  setPromotionCode,
+  setNote,
+  memberPoint,
+  setPointUsed,
+}) => {
+  const [promoCode, setPromoCode] = useState("");
+  const [CheckOutnote, setCheckOutNote] = useState("");
+  const [discountValue, setDiscountValue] = useState(0);
+  const [discountOnItem] = useState(0);
+  const [shippingFee] = useState(50000);
+  const [cartItems, setCartItems] = useState([]);
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [refreshData, setRefreshData] = useState(true);
+  const [usePoint, setUsePoint] = useState(0);
+  const [pointUserError, setPointUserError] = useState("");
 
-    const handleApplyPromo = () => {
-        console.log('Mã khuyến mãi:', promoCode);
-        setDiscountValue(0)
-        setPromotionCode(promoCode)
-    };
+  const handleApplyPromo = () => {
+    console.log("Mã khuyến mãi:", promoCode);
+    setDiscountValue(0);
+    setPromotionCode(promoCode);
+  };
 
-    const getCartItems = () => {
-        try {
-            const cartData = localStorage.getItem("cartItems");
-            const cart = cartData ? JSON.parse(cartData) : [];
-            setCartItems(cart);
-            const total = cart.reduce((sum, item) => sum + Number(item.price) * Number(item.quantity), 0);
-            setTotalAmount(total);
-        } catch (e) {
-            console.error("Error loading cart items:", e);
-        }
-    };
-
-    useEffect(() => {
-        if (refreshData) {
-            getCartItems();
-            setRefreshData(false);
-        }
-    }, [refreshData]);
-
-    const handlePointUsed = (e) => {
-        const points = Number(e.target.value);
-        setUsePoint(points);
-        if (points <= memberPoint) {
-            setPointUsed(points);
-            setPointUserError('');
-        } else {
-            setPointUserError('Số điểm sử dụng không được lớn hơn số điểm có sẵn');
-        }
+  const getCartItems = () => {
+    try {
+      const cartData = localStorage.getItem("cartItems");
+      const cart = cartData ? JSON.parse(cartData) : [];
+      setCartItems(cart);
+      const total = cart.reduce(
+        (sum, item) => sum + Number(item.price) * Number(item.quantity),
+        0
+      );
+      setTotalAmount(total);
+    } catch (e) {
+      console.error("Error loading cart items:", e);
     }
+  };
 
-    return (
-        <Col md={5} style={{ fontFamily: 'Playfair Display, serif' }} >
-            <div className='comfirm-order rounded-4'>
-                <div className='mb-4 '
-                    style={{ backgroundColor: 'transparent', borderBottom: '1px solid black' }}
-                >
-                    <h5>Tấm tắc lành đại học </h5>
-                    <p>Nhà văn hóa sinh viên đại học quốc gia tp.hcm, tp.hcm</p>
-                </div>
+  useEffect(() => {
+    if (refreshData) {
+      getCartItems();
+      setRefreshData(false);
+    }
+  }, [refreshData]);
 
-                {
-                    cartItems.map((item) => (
-                        <div key={item.productId} className="mb-3">
-                            <div className="confirm-order-item">
-                                <h6 > {item.productName}</h6>
-                                <div className="d-flex justify-content-center  gap-3">
-                                    <p style={{ color: 'rgb(218, 115, 50)' }}>{item.price.toLocaleString()}</p>
-                                    <p> x {item.quantity}</p>
-                                </div>
-                            </div>
-                        </div>
-                    ))
-                }
-            </div>
+  const handlePointUsed = (e) => {
+    const points = Number(e.target.value);
+    setUsePoint(points);
+    if (points <= memberPoint) {
+      setPointUsed(points);
+      setPointUserError("");
+    } else {
+      setPointUserError("Số điểm sử dụng không được lớn hơn số điểm có sẵn");
+    }
+  };
 
-            <div className='promotion-code p-4 rounded-4'>
-                <div>
-                    <div style={{ marginBottom: '8px', display: 'grid' }}>
-                        {
-                            <p className='m-0'>Điểm có sẵn: {memberPoint?.toLocaleString()}</p>
-                        }
-                        <p className='m-0'> * 1 đ = 1000 đ</p>
-                    </div>
-                </div>
-                <div style={{ marginBottom: '10px', display: 'grid' }} >
-                    <input
-                        type="number"
-                        min={0}
-                        max={memberPoint}
-                        placeholder="Nhập điểm muốn sử dụng"
-                        onChange={(e) => handlePointUsed(e)}
-                        value={usePoint}
-                    />
-                    {pointUserError !== '' && <p style={{ color: 'red', marginTop: 5 }}>{pointUserError}</p>}
-                </div>
+  return (
+    <Col md={5} style={{ fontFamily: "Playfair Display, serif" }}>
+      <div className="comfirm-order rounded-4">
+        <div
+          className="mb-4 "
+          style={{
+            backgroundColor: "transparent",
+            borderBottom: "1px solid black",
+          }}
+        >
+          <h5>Tấm tắc lành đại học </h5>
+          <p>Nhà văn hóa sinh viên đại học quốc gia tp.hcm, tp.hcm</p>
+        </div>
 
-                <div style={{ marginBottom: '8px', display: 'flex' }}>
-                    <input
-                        type="text"
-                        placeholder="Nhập mã khuyến mãi"
-                        value={promoCode}
-                        onChange={(e) => setPromoCode(e.target.value)}
-                    />
-                    <button onClick={handleApplyPromo}>Áp dụng</button>
-                </div>
-
-                <textarea
-                    placeholder="Ghi chú cho cửa hàng"
-                    value={CheckOutnote}
-                    onChange={(e) => { setNote(e.target.value); setCheckOutNote(e.target.value) }}
-                />
+        {cartItems.map((item) => (
+          <div key={item.productId} className="mb-3">
+            <div className="confirm-order-item">
+              <h6> {item.productName}</h6>
+              <div className="d-flex justify-content-center  gap-3">
+                <p style={{ color: "rgb(218, 115, 50)" }}>
+                  {item.price.toLocaleString()}
+                </p>
+                <p> x {item.quantity}</p>
+              </div>
             </div>
 
             <Form className='rounded-4 card-total-price p-3'>
@@ -159,11 +131,11 @@ const CheckoutRight = ({ handleSubmit, setPromotionCode, setNote, memberPoint, s
 }
 
 CheckoutRight.propTypes = {
-    handleSubmit: PropTypes.func.isRequired,
-    setPromotionCode: PropTypes.func.isRequired,
-    setNote: PropTypes.func.isRequired,
-    memberPoint: PropTypes.number.isRequired,
-    setPointUsed: PropTypes.func.isRequired
+  handleSubmit: PropTypes.func.isRequired,
+  setPromotionCode: PropTypes.func.isRequired,
+  setNote: PropTypes.func.isRequired,
+  memberPoint: PropTypes.number.isRequired,
+  setPointUsed: PropTypes.func.isRequired,
 };
 
-export default CheckoutRight
+export default CheckoutRight;

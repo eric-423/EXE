@@ -3,62 +3,102 @@ import {
   getOrderHistoryAPI,
   getURLBaseBackend,
 } from "@/utils/api";
-import { APP_COLOR } from "@/utils/constant";
+import { jwtDecode } from "jwt-decode";
+import { APP_COLOR, BASE_URL } from "@/utils/constant";
 import { useEffect, useState } from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import {
+  Button,
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import logo from "@/assets/logo.png";
 import { FONTS } from "@/theme/typography";
 import demo from "@/assets/demo.jpg";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { router } from "expo-router";
 const OrderPage = () => {
-  const [orderHistory, setOrderHistory] = useState<IOrderHistory[]>([]);
+  const [orderHistory, setOrderHistory] = useState<IOrderHistoryCus[]>([]);
+  const [orderId, setOrderid] = useState();
   const styles = StyleSheet.create({
     text: {
       fontFamily: FONTS.regular,
       fontSize: 17,
       color: APP_COLOR.ORANGE,
     },
+    earnPoint: {
+      fontFamily: FONTS.regular,
+      fontSize: 17,
+      color: "green",
+    },
+    container: {
+      flex: 1,
+      position: "absolute",
+      bottom: 5,
+      left: 200,
+    },
+    button: {
+      backgroundColor: APP_COLOR.WHITE,
+      borderWidth: 1,
+      borderColor: APP_COLOR.ORANGE,
+      paddingVertical: 12,
+      paddingHorizontal: 20,
+      borderRadius: 8,
+      width: 120,
+      height: 42,
+    },
+    buttonText: {
+      color: APP_COLOR.ORANGE,
+      fontSize: 15,
+      fontFamily: FONTS.regular,
+      marginHorizontal: "auto",
+    },
   });
-  const orderHistoryList = [
-    {
-      restaurant: {
-        name: "Nhà Hàng ABC",
-        address: "123 Đường XYZ, Quận 1, TP.HCM",
-        image: demo,
-      },
-      totalPrice: 350000,
-      totalQuantity: 3,
-      status: "Đã hoàn thành",
-    },
-    {
-      restaurant: {
-        name: "Quán Ăn 123",
-        address: "456 Đường DEF, Quận 3, TP.HCM",
-        image: demo,
-      },
-      totalPrice: 500000,
-      totalQuantity: 4,
-      status: "Đang giao",
-    },
-    {
-      restaurant: {
-        name: "Nhà Hàng XYZ",
-        address: "789 Đường GHI, Quận 7, TP.HCM",
-        image: demo,
-      },
-      totalPrice: 270000,
-      totalQuantity: 2,
-      status: "Đã hủy",
-    },
-  ];
+  function formatDateToDDMMYYYY(isoDate: string): string {
+    const date = new Date(isoDate);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
 
+    return `${day}-${month}-${year}`;
+  }
+  const handleViewDetails = (id: number) => {
+    router.navigate({
+      pathname: "/(user)/order/[id]",
+      params: { id: id },
+    });
+  };
+  const [decodeToken, setDecodeToken] = useState<any>("");
   useEffect(() => {
-    const fetchOrderHistory = async () => {
-      const res = await getOrderHistoryAPI();
-      if (res.data) setOrderHistory(res.data);
+    const fetchOrderHistoryWithToken = async () => {
+      try {
+        const token = await AsyncStorage.getItem("access_token");
+        if (token) {
+          const decoded = jwtDecode(token);
+          setDecodeToken(decoded.id);
+
+          const res = await axios.get(
+            `${BASE_URL}/orders/customer/${decoded.id}?page=0&size=10`
+          );
+
+          if (res.data.data.content) {
+            setOrderHistory(res.data.data.content);
+          }
+        } else {
+          console.log("No access token found.");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
     };
-    fetchOrderHistory();
+
+    fetchOrderHistoryWithToken();
   }, []);
 
   return (
@@ -69,6 +109,7 @@ const OrderPage = () => {
             borderBottomColor: "#eee",
             borderBottomWidth: 1,
             paddingHorizontal: 10,
+            marginBottom: 10,
           }}
         >
           <View style={{ flexDirection: "row" }}>
@@ -89,7 +130,7 @@ const OrderPage = () => {
           </View>
         </View>
         <ScrollView style={{ flex: 1 }}>
-          {orderHistoryList.map((item, index) => {
+          {orderHistory.map((item, index) => {
             return (
               <View key={index}>
                 <View
@@ -97,52 +138,81 @@ const OrderPage = () => {
                     padding: 10,
                     flexDirection: "row",
                     gap: 10,
-                    backgroundColor: "#efefef",
+                    backgroundColor: "rgba(249, 179, 50, 0.26)",
+                    borderRadius: 10,
+                    width: "95%",
+                    marginHorizontal: "auto",
                   }}
                 >
-                  <Image
-                    source={item.restaurant?.image}
-                    style={{ height: 100, width: 100 }}
-                  />
                   <View style={{ gap: 10 }}>
-                    <Text style={styles.text}>{item.restaurant.name}</Text>
-                    <Text style={styles.text}>{item.restaurant.address}</Text>
+                    <Text style={styles.text}>{item.address}</Text>
                     <Text style={styles.text}>
-                      {currencyFormatter(item.totalPrice)} ({item.totalQuantity}{" "}
-                      món)
+                      {formatDateToDDMMYYYY(item.createdAt)}
                     </Text>
                     <Text style={styles.text}>
-                      Trạng thái:{" "}
-                      {(() => {
-                        switch (item.status) {
-                          case "Đã hoàn thành":
-                            return (
-                              <Text style={{ color: "green" }}>
-                                {item.status}
-                              </Text>
-                            );
-                          case "Đang giao":
-                            return (
-                              <Text style={{ color: APP_COLOR.YELLOW }}>
-                                {item.status}
-                              </Text>
-                            );
-                          case "Đã hủy":
-                            return (
-                              <Text style={{ color: "red" }}>
-                                {item.status}
-                              </Text>
-                            );
-                          default:
-                            return null;
-                        }
-                      })()}
+                      {currencyFormatter(item.amount)}{" "}
+                      <Text style={styles.earnPoint}>
+                        (+ {item.pointEarned} điểm)
+                      </Text>
                     </Text>
+                    <View style={{ flexDirection: "row" }}>
+                      <Text style={styles.text}>
+                        Trạng thái:{" "}
+                        {(() => {
+                          switch (item.orderStatus) {
+                            case "Đang chuẩn bị":
+                              return (
+                                <Text style={{ color: APP_COLOR.ORANGE }}>
+                                  {item.orderStatus}
+                                </Text>
+                              );
+                            case "Đang giao":
+                              return (
+                                <Text style={{ color: APP_COLOR.YELLOW }}>
+                                  {item.orderStatus}
+                                </Text>
+                              );
+                            case "Đã giao":
+                              return (
+                                <Text style={{ color: "green" }}>
+                                  {item.orderStatus}
+                                </Text>
+                              );
+                            case "Đã hủy":
+                              return (
+                                <Text style={{ color: "red" }}>
+                                  {item.orderStatus}
+                                </Text>
+                              );
+                            case "Đặt hàng thành công":
+                              return (
+                                <Text style={{ color: "blue" }}>
+                                  {item.orderStatus}
+                                </Text>
+                              );
+                            case "Chờ thanh toán":
+                              return (
+                                <Text style={{ color: APP_COLOR.YELLOW }}>
+                                  {item.orderStatus}
+                                </Text>
+                              );
+                            default:
+                              return null;
+                          }
+                        })()}
+                      </Text>
+                      <View style={styles.container}>
+                        <TouchableOpacity
+                          style={styles.button}
+                          onPress={() => handleViewDetails(item.id)}
+                        >
+                          <Text style={styles.buttonText}>Xem chi tiết</Text>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
                   </View>
                 </View>
-                <View
-                  style={{ height: 10, backgroundColor: APP_COLOR.YELLOW }}
-                ></View>
+                <View style={{ height: 10 }}></View>
               </View>
             );
           })}
