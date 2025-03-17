@@ -8,7 +8,7 @@ import {
   Folder,
   BoxArrowRight,
 } from "react-bootstrap-icons";
-import "./Sidebar.css";
+import "./SideBar.css";
 
 const AppSidebar = () => {
   return (
