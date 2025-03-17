@@ -11,51 +11,52 @@ import { BASE_URL } from "./config/api";
 function App() {
   const [role, setRole] = useState("");
 
-    const getRoleUser = () => {
-        const access = localStorage.getItem('_acc')
-        try {
-            const decode = jwtDecode(access);
-            if (decode.exp < Date.now() / 1000) {
-                console.log("Token expired");
-                return;
-            }
-            setRole((decode.role).toUpperCase())
-        } catch (error) {
-            console.error('Lỗi khi decode token:', error);
-        }
+  const getRoleUser = () => {
+    const access = localStorage.getItem("_acc");
+    try {
+      const decode = jwtDecode(access);
+      if (decode.exp < Date.now() / 1000) {
+        console.log("Token expired");
+        return;
+      }
+      setRole(decode.role.toUpperCase());
+    } catch (error) {
+      console.error("Lỗi khi decode token:", error);
     }
   };
 
-    useEffect(() => {
-        getRoleUser()
-    }, [])
+  useEffect(() => {
+    getRoleUser();
+  }, []);
 
+  useEffect(() => {
+    const access = localStorage.getItem("_acc");
+    try {
+      const decode = jwtDecode(access);
+      if (decode.exp < Date.now() / 1000) {
+        fetchNewToken();
+      }
+    } catch (error) {
+      console.error("Lỗi khi decode token:", error);
+    }
+  }, []);
 
-    useEffect(() => {
-        const access = localStorage.getItem('_acc')
-        try {
-            const decode = jwtDecode(access)
-            if (decode.exp < Date.now() / 1000) {
-                fetchNewToken();
-            }
-        } catch (error) {
-            console.error('Lỗi khi decode token:', error);
+  const fetchNewToken = async () => {
+    const refesh = localStorage.getItem("_ref");
+    if (!refesh) {
+      console.error("refesh =null");
+      return;
+    }
+    try {
+      const response = await fetch(
+        `${BASE_URL}/token/refresh?token=${refesh}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
-    }, [])
-
-    const fetchNewToken = async () => {
-        const refesh = localStorage.getItem('_ref');
-        if (!refesh) {
-            console.error('refesh =null');
-            return;
-        }
-        try {
-            const response = await fetch(`${BASE_URL}/token/refresh?token=${refesh}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
+      );
 
       if (response.ok) {
         const data = await response.json();
@@ -68,19 +69,6 @@ function App() {
       }
     } catch (error) {
       console.error("Lỗi khi thực hiện fetch:", error);
-            if (response.ok) {
-                const data = await response.json();
-                localStorage.setItem('_acc', data.access);
-                localStorage.setItem('_ref', data.refresh);
-                getRoleUser();
-            } else {
-                console.error('Không thể làm mới token:', response.statusText);
-                localStorage.removeItem('_acc');
-                localStorage.removeItem('_ref');
-            }
-        } catch (error) {
-            console.error('Lỗi khi thực hiện fetch:', error);
-        }
     }
   };
 

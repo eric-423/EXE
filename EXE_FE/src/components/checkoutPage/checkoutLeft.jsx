@@ -2,14 +2,7 @@ import { Col } from "react-bootstrap";
 import "./checkout.css";
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
-import {
-  faCheck,
-  faTruck,
-  faShoppingCart,
-  faSpinner,
-  faCheckCircle,
-  faLocationDot,
-} from "@fortawesome/free-solid-svg-icons";
+import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const CheckoutLeft = ({
@@ -23,8 +16,6 @@ const CheckoutLeft = ({
   const [isBuyFor, setIsBuyFor] = useState(false);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [nameBuyFor, setNameBuyFor] = useState("");
-  const [phoneBuyFor, setPhoneBuyFor] = useState("");
   const [address, setAddress] = useState("");
   const [isNewAddress, setIsNewAddress] = useState("default");
   const [isPickup, setIsPickup] = useState(false);

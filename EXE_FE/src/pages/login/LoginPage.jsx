@@ -313,14 +313,6 @@ const LoginPage = () => {
     setPasswordError("");
   };
 
-  const handleBackToRegistration = () => {
-    setCurrentView("customer");
-    setOtp(["", "", "", "", "", ""]);
-    setPassword("");
-    setConfirmPassword("");
-    setPasswordError("");
-  };
-
   // Render different form content based on currentView
   const renderForm = () => {
     switch (currentView) {
