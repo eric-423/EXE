@@ -95,7 +95,50 @@ const OrderDetailsPage = () => {
         </View>
         <View style={styles.detailsContainer}>
           <Text style={styles.label}>Trạng thái</Text>
-          <Text style={styles.value}>{orderDetails.orderStatus}</Text>
+          <Text style={styles.value}>
+            {(() => {
+              switch (orderDetails.orderStatus) {
+                case "Đang Chuẩn Bị":
+                  return (
+                    <Text style={{ color: APP_COLOR.ORANGE }}>
+                      {orderDetails.orderStatus}
+                    </Text>
+                  );
+                case "Đang Giao":
+                  return (
+                    <Text style={{ color: APP_COLOR.YELLOW }}>
+                      {orderDetails.orderStatus}
+                    </Text>
+                  );
+                case "Đã Giao":
+                  return (
+                    <Text style={{ color: "green" }}>
+                      {orderDetails.orderStatus}
+                    </Text>
+                  );
+                case "Đã Hủy":
+                  return (
+                    <Text style={{ color: "red" }}>
+                      {orderDetails.orderStatus}
+                    </Text>
+                  );
+                case "Đặt Hàng Thành Công":
+                  return (
+                    <Text style={{ color: "blue" }}>
+                      {orderDetails.orderStatus}
+                    </Text>
+                  );
+                case "Chờ Thanh Toán":
+                  return (
+                    <Text style={{ color: "orange" }}>
+                      {orderDetails.orderStatus}
+                    </Text>
+                  );
+                default:
+                  return null;
+              }
+            })()}
+          </Text>
         </View>
         <View style={styles.detailsContainer}>
           <Text style={styles.label}>Địa chỉ</Text>
@@ -178,6 +221,7 @@ const styles = StyleSheet.create({
   itemValue: {
     fontSize: 20,
     fontFamily: FONTS.medium,
+    marginBottom: 5,
   },
 });
 

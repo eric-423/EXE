@@ -124,33 +124,10 @@ const AccountPage = () => {
 
         <MaterialIcons name="navigate-next" size={24} color="grey" />
       </Pressable>
-
       <Pressable
-        style={{
-          paddingVertical: 15,
-          paddingHorizontal: 10,
-          borderBottomColor: "#eee",
-          borderBottomWidth: 1,
-          justifyContent: "space-between",
-          flexDirection: "row",
-          alignItems: "center",
-        }}
-      >
-        <View
-          style={{
-            flexDirection: "row",
-            gap: 10,
-            alignItems: "center",
-          }}
-        >
-          <MaterialIcons name="language" size={20} color="green" />
-          <Text>Ngôn ngữ</Text>
-        </View>
-
-        <MaterialIcons name="navigate-next" size={24} color="grey" />
-      </Pressable>
-
-      <Pressable
+        onPress={() =>
+          Alert.alert("Thông tin ứng dụng", "Ứng dụng Cơm Tấm Tắc")
+        }
         style={{
           paddingVertical: 15,
           paddingHorizontal: 10,

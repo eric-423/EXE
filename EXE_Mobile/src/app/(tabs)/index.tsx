@@ -205,7 +205,7 @@ const HomeTab = () => {
                     });
                     return;
                   }
-                  router.replace({
+                  router.push({
                     pathname: "/(user)/product/place.order",
                     params: { id: branchId },
                   });

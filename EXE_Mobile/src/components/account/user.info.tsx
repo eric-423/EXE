@@ -8,13 +8,21 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
   Platform,
   KeyboardAvoidingView,
   ScrollView,
   Pressable,
 } from "react-native";
-import Toast from "react-native-root-toast";
+import { jwtDecode } from "jwt-decode";
+import { useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+interface DecodedToken {
+  id: number;
+  name: string;
+  address: string;
+  phone: string;
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -22,44 +30,63 @@ const styles = StyleSheet.create({
     paddingTop: 50,
   },
 });
-const UserInfo = () => {
-  const { appState, setAppState } = useCurrentApp();
 
-  const backend =
-    Platform.OS === "android"
-      ? process.env.EXPO_PUBLIC_ANDROID_API_URL
-      : process.env.EXPO_PUBLIC_IOS_API_URL;
+const UserInfo = () => {
+  const [decodeToken, setDecodeToken] = useState<DecodedToken | null>(null);
+
+  useEffect(() => {
+    const getAccessToken = async () => {
+      try {
+        const token = await AsyncStorage.getItem("access_token");
+        if (token) {
+          const decoded = jwtDecode(token);
+          setDecodeToken(decoded);
+          console.log(decoded);
+        } else {
+          console.log("No access token found.");
+        }
+      } catch (error) {
+        console.error("Error retrieving access token:", error);
+      }
+    };
+    getAccessToken();
+  }, []);
 
   const handleUpdateUser = async (name: string, phone: string) => {
-    if (appState?.user._id) {
-      const res = await updateUserAPI(appState?.user._id, name, phone);
-      if (res.data) {
-        Toast.show("Cập nhật thông tin user thành công!", {
-          duration: Toast.durations.LONG,
-          textColor: "white",
-          backgroundColor: APP_COLOR.ORANGE,
-          opacity: 1,
-        });
-        setAppState({
-          ...appState,
-          user: {
-            ...appState.user,
-            name: name,
-            phone: phone,
-          },
-        });
-      } else {
-        const m = Array.isArray(res.message) ? res.message[0] : res.message;
-
-        Toast.show(m, {
-          duration: Toast.durations.LONG,
-          textColor: "white",
-          backgroundColor: APP_COLOR.ORANGE,
-          opacity: 1,
-        });
-      }
+    if (decodeToken?.id) {
+      //   const res =
+      //   if (res.data) {
+      //     Toast.show("Cập nhật thông tin user thành công!", {
+      //       duration: Toast.durations.LONG,
+      //       textColor: "white",
+      //       backgroundColor: APP_COLOR.ORANGE,
+      //       opacity: 1,
+      //     });
+      //     setDecodeToken((prev) =>
+      //       prev
+      //         ? {
+      //             ...prev,
+      //             name,
+      //             phone,
+      //           }
+      //         : null
+      //     );
+      //   } else {
+      //     const m = Array.isArray(res.message) ? res.message[0] : res.message;
+      //     Toast.show(m, {
+      //       duration: Toast.durations.LONG,
+      //       textColor: "white",
+      //       backgroundColor: APP_COLOR.ORANGE,
+      //       opacity: 1,
+      //     });
+      //   }
     }
   };
+
+  if (!decodeToken) {
+    return null;
+  }
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : undefined}
@@ -68,14 +95,14 @@ const UserInfo = () => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
           <View style={{ alignItems: "center", gap: 5 }}>
-            <Text>{appState?.user.name}</Text>
+            <Text>{decodeToken.name}</Text>
           </View>
           <Formik
             validationSchema={UpdateUserSchema}
             initialValues={{
-              name: appState?.user.name,
-              email: appState?.user.email,
-              phone: appState?.user.phone,
+              name: decodeToken.name,
+              address: decodeToken.address,
+              phone: decodeToken.phone,
             }}
             onSubmit={(values) =>
               handleUpdateUser(values?.name ?? "", values?.phone ?? "")
@@ -101,10 +128,12 @@ const UserInfo = () => {
                   touched={touched.name}
                 />
                 <ShareInput
-                  editable={false}
-                  title="Email"
-                  keyboardType="email-address"
-                  value={appState?.user.email}
+                  title="Địa chỉ"
+                  onChangeText={handleChange("address")}
+                  onBlur={handleBlur("address")}
+                  value={values.address}
+                  error={errors.address}
+                  touched={touched.address}
                 />
 
                 <ShareInput
@@ -131,7 +160,7 @@ const UserInfo = () => {
                   <Text
                     style={{
                       textAlign: "center",
-                      color: isValid && dirty ? "white" : "grey",
+                      color: isValid && dirty ? "white" : "orange",
                     }}
                   >
                     Lưu thay đổi

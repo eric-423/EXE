@@ -40,7 +40,7 @@ const OrderPage = () => {
     container: {
       flex: 1,
       position: "absolute",
-      bottom: 5,
+      bottom: 25,
       left: 200,
     },
     button: {
@@ -160,39 +160,39 @@ const OrderPage = () => {
                         Trạng thái:{" "}
                         {(() => {
                           switch (item.orderStatus) {
-                            case "Đang chuẩn bị":
+                            case "Đang Chuẩn Bị":
                               return (
                                 <Text style={{ color: APP_COLOR.ORANGE }}>
                                   {item.orderStatus}
                                 </Text>
                               );
-                            case "Đang giao":
+                            case "Đang Giao":
                               return (
                                 <Text style={{ color: APP_COLOR.YELLOW }}>
                                   {item.orderStatus}
                                 </Text>
                               );
-                            case "Đã giao":
+                            case "Đã Giao":
                               return (
                                 <Text style={{ color: "green" }}>
                                   {item.orderStatus}
                                 </Text>
                               );
-                            case "Đã hủy":
+                            case "Đã Hủy":
                               return (
                                 <Text style={{ color: "red" }}>
                                   {item.orderStatus}
                                 </Text>
                               );
-                            case "Đặt hàng thành công":
+                            case "Đặt Hàng Thành Công":
                               return (
                                 <Text style={{ color: "blue" }}>
                                   {item.orderStatus}
                                 </Text>
                               );
-                            case "Chờ thanh toán":
+                            case "Chờ Thanh Toán":
                               return (
-                                <Text style={{ color: APP_COLOR.YELLOW }}>
+                                <Text style={{ color: "orange" }}>
                                   {item.orderStatus}
                                 </Text>
                               );
