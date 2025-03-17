@@ -16,7 +16,7 @@ const FranchiseeLayout = () => {
         </div>
         <div className="flex-grow-1 p-4">
           <main>
-            <RequestForm />
+            <Outlet />
           </main>
         </div>
       </div>

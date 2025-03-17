@@ -43,7 +43,7 @@ const RequestDashboard = () => {
       <Container fluid>
         <div className="dashboard-header mb-4 d-flex justify-content-between align-items-center">
           <h2 className="dashboard-title">Yêu cầu của tôi</h2>
-          <Link to="/request/new">
+          <Link to="/franchisee/request-form">
             <Button className="new-request-btn">+ Tạo yêu cầu mới</Button>
           </Link>
         </div>
