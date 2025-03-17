@@ -84,97 +84,51 @@ const CheckoutRight = ({
                 <p> x {item.quantity}</p>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
 
-      <div className="promotion-code p-4 rounded-4">
-        <div>
-          <div style={{ marginBottom: "8px", display: "grid" }}>
-            {
-              <p className="m-0">
-                Điểm có sẵn: {memberPoint?.toLocaleString()}
-              </p>
-            }
-            <p className="m-0"> * 1 đ = 1000 đ</p>
-          </div>
-        </div>
-        <div style={{ marginBottom: "10px", display: "grid" }}>
-          <input
-            type="number"
-            min={0}
-            max={memberPoint}
-            placeholder="Nhập điểm muốn sử dụng"
-            onChange={(e) => handlePointUsed(e)}
-            value={usePoint}
-          />
-          {pointUserError !== "" && (
-            <p style={{ color: "red", marginTop: 5 }}>{pointUserError}</p>
-          )}
-        </div>
+            <Form className='rounded-4 card-total-price p-3'>
+                <div>
+                    <div className='d-flex justify-content-between pl-3 pr-3'>
+                        <h5>Giá gốc</h5>
+                        <p>{totalAmount.toLocaleString()} đ</p>
+                    </div>
+                </div>
+                <div >
+                    <div className='d-flex justify-content-between pl-3 pr-3'>
+                        <h5>Điểm sử dụng</h5>
+                        <p>{(usePoint * 1000).toLocaleString()} đ</p>
+                    </div>
+                </div>
+                <div>
+                    <div className='d-flex justify-content-between pl-3 pr-3'>
+                        <h5>Giảm giá khuyến mãi</h5>
+                        <p>{discountValue.toLocaleString()} đ</p>
+                    </div>
+                </div>
+                <div style={{ borderBottom: '1px solid black' }} className='mb-3'>
+                    <div className='d-flex justify-content-between pl-3 pr-3'>
+                        <h5>Phí giao hàng</h5>
+                        <p>{shippingFee.toLocaleString()} đ</p>
+                    </div>
+                </div>
 
-        <div style={{ marginBottom: "8px", display: "flex" }}>
-          <input
-            type="text"
-            placeholder="Nhập mã khuyến mãi"
-            value={promoCode}
-            onChange={(e) => setPromoCode(e.target.value)}
-          />
-          <button onClick={handleApplyPromo}>Áp dụng</button>
-        </div>
+                <div>
+                    <div className='d-flex justify-content-between pl-3 pr-3'>
+                        <h5>Tổng cộng</h5>
+                        <p>{(totalAmount + shippingFee - usePoint * 1000).toLocaleString()} đ</p>
+                    </div>
+                </div>
+                <button
+                    disabled={pointUserError != ''}
+                    className='w-100 mt-3 rounded-3'
+                    onClick={handleSubmit}>
 
-        <textarea
-          placeholder="Ghi chú cho cửa hàng"
-          value={CheckOutnote}
-          onChange={(e) => {
-            setNote(e.target.value);
-            setCheckOutNote(e.target.value);
-          }}
-        />
-      </div>
+                    Đặt hàng
+                </button>
+            </Form>
 
-      <Form className="rounded-4 card-total-price p-3">
-        <div>
-          <div className="d-flex justify-content-between pl-3 pr-3">
-            <h5>Giá gốc</h5>
-            <p>{totalAmount.toLocaleString()} đ</p>
-          </div>
-        </div>
-        <div>
-          <div className="d-flex justify-content-between pl-3 pr-3">
-            <h5>Điểm sử dụng</h5>
-            <p>{(usePoint * 1000).toLocaleString()} đ</p>
-          </div>
-        </div>
-        <div>
-          <div className="d-flex justify-content-between pl-3 pr-3">
-            <h5>Giảm giá khuyến mãi</h5>
-            <p>{discountValue.toLocaleString()} đ</p>
-          </div>
-        </div>
-        <div style={{ borderBottom: "1px solid black" }} className="mb-3">
-          <div className="d-flex justify-content-between pl-3 pr-3">
-            <h5>Phí giao hàng</h5>
-            <p>{shippingFee.toLocaleString()} đ</p>
-          </div>
-        </div>
-
-        <div>
-          <div className="d-flex justify-content-between pl-3 pr-3">
-            <h5>Tổng cộng</h5>
-            <p>
-              {(totalAmount + shippingFee - usePoint * 1000).toLocaleString()} đ
-            </p>
-          </div>
-        </div>
-
-        <button className="w-100 mt-3 rounded-3" onClick={handleSubmit}>
-          Đặt hàng
-        </button>
-      </Form>
-    </Col>
-  );
-};
+        </Col>
+    )
+}
 
 CheckoutRight.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
