@@ -145,8 +145,11 @@ const CheckoutRight = ({ handleSubmit, setPromotionCode, setNote, memberPoint, s
                         <p>{(totalAmount + shippingFee - usePoint * 1000).toLocaleString()} đ</p>
                     </div>
                 </div>
+                <button
+                    disabled={pointUserError != ''}
+                    className='w-100 mt-3 rounded-3'
+                    onClick={handleSubmit}>
 
-                <button className='w-100 mt-3 rounded-3' onClick={handleSubmit}>
                     Đặt hàng
                 </button>
             </Form>

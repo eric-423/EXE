@@ -136,8 +136,8 @@ const Checkout = () => {
             if (response.ok) {
                 const data = await response.json();
                 if (data.data.payment_url) {
-                    window.location.href = data.data.payment_url;
                     localStorage.removeItem('cartItems');
+                    window.location.href = data.data.payment_url;
                 } else {
                     localStorage.removeItem('cartItems');
                     navigate('/payment-success');
