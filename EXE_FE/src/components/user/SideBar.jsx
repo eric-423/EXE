@@ -5,10 +5,7 @@ const SideBar = ({ userData, setShowModal, activeMenu, onMenuClick }) => {
     return (
         <div className="member-card h-100">
             <div className="p-3 border-bottom border-warning text-center">
-                <h4 className="fw-medium">{userData.name}</h4>
-                <p className="mb-1 small">{userData.phone}</p>
-                <p className="mb-1 small">{userData.email}</p>
-
+                <h5 className="fw-semibold">{userData.fullName}</h5>
                 <div className="mt-3">
                     <button
                         className="btn btn-link text-danger p-0 small"
@@ -20,7 +17,7 @@ const SideBar = ({ userData, setShowModal, activeMenu, onMenuClick }) => {
             </div>
 
             {/* Menu navigation */}
-            <div className="menu-container">
+            <div className="menu-container ">
                 <div className={`menu-item ${activeMenu === 'memberInfo' ? 'active-menu-item' : ''}`} onClick={() => onMenuClick('memberInfo')}>
                     <User size={20} />
                     <span>Thông tin thành viên</span>
@@ -48,7 +45,7 @@ const SideBar = ({ userData, setShowModal, activeMenu, onMenuClick }) => {
 
 SideBar.propTypes = {
     userData: PropTypes.shape({
-        name: PropTypes.string.isRequired,
+        fullName: PropTypes.string.isRequired,
         phone: PropTypes.string.isRequired,
         email: PropTypes.string.isRequired,
     }).isRequired,

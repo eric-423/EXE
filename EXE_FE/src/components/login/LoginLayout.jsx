@@ -1,5 +1,8 @@
 import styles from "./LoginLayout.module.css";
-import bannerImage from "../../assets/images/Home - Banner.jpg";
+// import bannerImage from "../../assets/images/Home - Banner.jpg";
+import bannerImage from "../../../src/assets/Images/Home - Banner.jpg";
+
+
 // import Footer from "../../components/homePage/Footer/Footer";
 import PropTypes from "prop-types";
 

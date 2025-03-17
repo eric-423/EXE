@@ -1,12 +1,28 @@
-import { Text, View, StyleSheet, ImageBackground, Image } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  ImageBackground,
+  Image,
+  Pressable,
+  Alert,
+} from "react-native";
 import ShareButton from "components/button/share.button";
-import { APP_COLOR } from "utils/constant";
+import { APP_COLOR, BASE_URL } from "utils/constant";
 import bg from "@/assets/auth/welcome-background.jpg";
 import { LinearGradient } from "expo-linear-gradient";
 import TextBetweenLine from "@/components/button/text.between.line";
 import { Link, router } from "expo-router";
 import logo from "@/assets/logo.png";
 import { FONTS, typography } from "@/theme/typography";
+import { useEffect, useState } from "react";
+import {
+  authenticateWithBiometric,
+  checkBiometricAuth,
+} from "@/utils/biometric";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import { useCurrentApp } from "@/context/app.context";
 
 const styles = StyleSheet.create({
   container: {
@@ -71,6 +87,16 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginHorizontal: 5,
   },
+  loginBtnFast: {
+    width: 250,
+    justifyContent: "center",
+    borderRadius: 30,
+    paddingVertical: 10,
+    backgroundColor: "#2c2c2c",
+    borderColor: "#505050",
+    borderWidth: 1,
+    marginHorizontal: "auto",
+  },
   normalText: {
     ...typography.bodyMedium,
     color: "white",
@@ -81,9 +107,70 @@ const styles = StyleSheet.create({
     color: "#fff",
     paddingVertical: 5,
   },
+  quickLoginButton: {
+    backgroundColor: APP_COLOR.ORANGE,
+    padding: 15,
+    borderRadius: 5,
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
+    gap: 10,
+  },
+  quickLoginText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
 });
 
 const WelcomePage = () => {
+  const { setAppState } = useCurrentApp();
+  const [state, setState] = useState<any>();
+  useEffect(() => {
+    async function prepare() {
+      try {
+        const refresh_token = await AsyncStorage.getItem("refresh_token");
+        const res = await axios.post(
+          `${BASE_URL}/token/refresh?token=${refresh_token}`
+        );
+        if (res.data) {
+          await AsyncStorage.setItem("access_token", res.data.access_token);
+          setAppState({
+            access_token: await AsyncStorage.getItem("access_token"),
+          });
+        } else {
+          Alert.alert("Hết hạn đăng nhập", "Hãy đăng nhập lại để sử dụng");
+        }
+      } catch (e) {}
+    }
+    prepare();
+  }, []);
+  const handleQuickLogin = async () => {
+    try {
+      const token = await AsyncStorage.getItem("access_token");
+      if (token) {
+        const isBiometricAuth = await checkBiometricAuth();
+        if (isBiometricAuth) {
+          const authenticated = await authenticateWithBiometric();
+          if (authenticated) {
+            router.replace("/(tabs)");
+          } else {
+            console.log("Xác thực không thành công.");
+          }
+        } else {
+          console.log("Không có phương thức xác thực vân tay.");
+        }
+      } else {
+        Alert.alert(
+          "Đăng nhập quá hạn",
+          "Hãy đăng nhập để sử dụng tính năng này"
+        );
+      }
+    } catch (error) {
+      console.error("Lỗi đăng nhập vân tay:", error);
+    }
+  };
+
   return (
     <ImageBackground style={{ flex: 1 }} source={bg}>
       <LinearGradient
@@ -132,6 +219,13 @@ const WelcomePage = () => {
                 pressStyle={{ alignSelf: "stretch" }}
               />
             </View>
+            <ShareButton
+              title="Đăng nhập nhanh"
+              onPress={handleQuickLogin}
+              textStyle={styles.loginBtnText}
+              btnStyle={styles.loginBtnFast}
+              pressStyle={{ alignSelf: "stretch" }}
+            />
 
             <View
               style={{

@@ -28,4 +28,14 @@ const locationType = {
   }),
 };
 
-export { locationDropdown, locationType };
+const statusMap = {
+  pending: { text: "Đang thảo luận", className: "status-badge-pending" },
+  processing: {
+    text: "Đang thực hiện",
+    className: "status-badge-processing",
+  },
+  completed: { text: "Đã giải quyết", className: "status-badge-completed" },
+  resolved: { text: "Đã xử lý", className: "status-badge-resolved" },
+};
+
+export { locationDropdown, locationType, statusMap };

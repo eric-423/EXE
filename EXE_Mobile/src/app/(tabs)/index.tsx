@@ -27,15 +27,13 @@ const HomeTab = () => {
   const [priceUpdateAmount, setPriceUpdateAmount] = useState(0);
   const { restaurant, cart } = useCurrentApp();
   const [collectionData, setCollectionData] = useState([]);
-  const [branchId, setBranchId] = useState(1);
+  const { branchId, setBranchId } = useCurrentApp();
   const { access_token } = useLocalSearchParams();
-  const { refresh_token } = useLocalSearchParams();
   useEffect(() => {
     const storeAccessToken = async () => {
       try {
         if (access_token) {
           await AsyncStorage.setItem("access_token", access_token as string);
-          await AsyncStorage.setItem("refresh_token", refresh_token as string);
         }
       } catch (error) {
         console.error("Error saving access token:", error);
@@ -207,7 +205,7 @@ const HomeTab = () => {
                     });
                     return;
                   }
-                  router.replace({
+                  router.push({
                     pathname: "/(user)/product/place.order",
                     params: { id: branchId },
                   });
