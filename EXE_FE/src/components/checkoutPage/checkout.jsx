@@ -8,147 +8,102 @@ import { BASE_URL } from "../../config/api";
 import { useNavigate } from "react-router-dom";
 
 const Checkout = () => {
-  const navigate = useNavigate();
-  const [userAddress, setUserAddress] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [auth, setAuth] = useState("");
-  const [isPickup, setIsPickup] = useState(false);
-  const [promotionCode, setPromotionCode] = useState("");
-  const [note, setNote] = useState("");
-  const [pointUsed, setPointUsed] = useState(0);
-  const [memberPoint, setMemberPoint] = useState(0);
-  const [paymentMethodId, setPaymentMethodId] = useState(0);
+    const navigate = useNavigate();
+    const [userAddress, setUserAddress] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
+    const [auth, setAuth] = useState("");
+    const [isPickup, setIsPickup] = useState(false);
+    const [promotionCode, setPromotionCode] = useState("");
+    const [note, setNote] = useState("");
+    const [pointUsed, setPointUsed] = useState(0);
+    const [memberPoint, setMemberPoint] = useState(0);
+    const [paymentMethodId, setPaymentMethodId] = useState(0);
 
-  useEffect(() => {
-    const access = localStorage.getItem("_acc");
-    const refresh = localStorage.getItem("_ref");
-    if (!access || !refresh) {
-      navigate("/login");
-    }
-  }, [navigate]);
-
-  useEffect(() => {
-    const access = localStorage.getItem("_acc");
-    if (access) {
-      try {
-        const decode = jwtDecode(access);
-        if (decode.exp < Date.now() / 1000) {
-          fetchNewToken();
-        } else {
-          setAuth(decode);
+    useEffect(() => {
+        const access = localStorage.getItem("_acc");
+        const refresh = localStorage.getItem("_ref");
+        if (!access || !refresh) {
+            navigate("/login");
         }
-      } catch (error) {
-        console.error("Lỗi khi decode token:", error);
-        navigate("/login");
-      }
-    }
-  }, []);
+    }, [navigate]);
 
-  useEffect(() => {
-    if (auth) {
-      fetchUserDetail();
-    }
-  }, [auth]);
-
-  const fetchNewToken = async () => {
-    const refresh = localStorage.getItem("_ref");
-    try {
-      const response = await fetch(
-        `${BASE_URL}/token/refresh?token=${refresh}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+    useEffect(() => {
+        const access = localStorage.getItem("_acc");
+        if (access) {
+            try {
+                const decode = jwtDecode(access);
+                if (decode.exp < Date.now() / 1000) {
+                    fetchNewToken();
+                } else {
+                    setAuth(decode);
+                }
+            } catch (error) {
+                console.error("Lỗi khi decode token:", error);
+                navigate("/login");
+            }
         }
-      );
-      if (response.ok) {
-        const data = await response.json();
-        localStorage.setItem("_acc", data.access);
-        localStorage.setItem("_ref", data.refresh);
-        setAuth(jwtDecode(data.access));
-      } else {
-        navigate("/login");
-      }
-    } catch (error) {
-      console.error("Lỗi khi làm mới token:", error);
-      navigate("/login");
-    }
-  };
+    }, []);
 
-  const fetchUserDetail = async () => {
-    try {
-      const response = await fetch(`${BASE_URL}/customer/profile/${auth.id}`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("_acc")}`,
-        },
-      });
-      if (response.ok) {
-        const data = await response.json();
-        const user = data.data;
-        setUserAddress(user.address);
-        setPhoneNumber(user.phone);
-        setMemberPoint(user.memberPoint);
-      }
-    } catch (error) {
-      console.error("Lỗi khi fetch user detail:", error);
-    }
-  };
+    useEffect(() => {
+        if (auth) {
+            fetchUserDetail();
+        }
+    }, [auth]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const cartItems = JSON.parse(localStorage.getItem("cartItems"));
-
-    if (!cartItems || cartItems.length === 0) {
-      alert("Giỏ hàng trống");
-      return;
-    }
-
-    const totalAmount = cartItems.reduce(
-      (sum, item) => sum + item.price * item.quantity,
-      0
-    );
-    const calculatedPoints = Math.floor(totalAmount / 10000);
-
-    const body = {
-      customerId: auth.id,
-      promotionCode: promotionCode,
-      note: note,
-      address: userAddress,
-      phoneNumber: phoneNumber,
-      branchId: 1,
-      pointUsed: Number(pointUsed),
-      pointEarned: calculatedPoints,
-      paymentMethodId: paymentMethodId,
-      orderItems: cartItems.map((item) => ({
-        productId: item.productId,
-        quantity: item.quantity,
-        note: "",
-      })),
-      isPickup: isPickup,
+    const fetchNewToken = async () => {
+        const refresh = localStorage.getItem("_ref");
+        try {
+            const response = await fetch(
+                `${BASE_URL}/token/refresh?token=${refresh}`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            if (response.ok) {
+                const data = await response.json();
+                localStorage.setItem("_acc", data.access);
+                localStorage.setItem("_ref", data.refresh);
+                setAuth(jwtDecode(data.access));
+            } else {
+                navigate("/login");
+            }
+        } catch (error) {
+            console.error("Lỗi khi làm mới token:", error);
+            navigate("/login");
+        }
     };
 
-    try {
-      const response = await fetch(`${BASE_URL}/orders/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("_acc")}`,
-        },
-        body: JSON.stringify(body),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        if (data.data.payment_url) {
-          window.location.href = data.data.payment_url;
-          localStorage.removeItem("cartItems");
-        } else {
-          localStorage.removeItem("cartItems");
-          navigate("/payment-success");
+    const fetchUserDetail = async () => {
+        try {
+            const response = await fetch(`${BASE_URL}/customer/profile/${auth.id}`, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("_acc")}`,
+                },
+            });
+            if (response.ok) {
+                const data = await response.json();
+                const user = data.data;
+                setUserAddress(user.address);
+                setPhoneNumber(user.phone);
+                setMemberPoint(user.memberPoint);
+            }
+        } catch (error) {
+            console.error("Lỗi khi fetch user detail:", error);
         }
+    };
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const cartItems = JSON.parse(localStorage.getItem("cartItems"));
+
+        if (!cartItems || cartItems.length === 0) {
+            alert("Giỏ hàng trống");
+            return;
+        }
         const totalAmount = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
         const calculatedPoints = Math.floor(totalAmount / 10000);
 
