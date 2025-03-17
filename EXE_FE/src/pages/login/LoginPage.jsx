@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import styles from "./LoginPage.module.css";
-import bannerImage from "../../assets/images/Home - Banner.jpg";
 import { useDocumentTitle } from "../../hooks";
 import LoginLayout from "../../components/login/LoginLayout";
-import { BASE_URL, API_ROUTES } from "../../config/api";
-import axios from "axios";
+import { BASE_URL } from "../../config/api";
 
 const LoginPage = () => {
   const navigate = useNavigate();

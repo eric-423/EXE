@@ -6,24 +6,23 @@ const CheckoutRight = ({
   handleSubmit,
   setPromotionCode,
   setNote,
+  memberPoint,
   setPointUsed,
-  setPointEarned,
 }) => {
   const [promoCode, setPromoCode] = useState("");
   const [CheckOutnote, setCheckOutNote] = useState("");
-
   const [discountValue, setDiscountValue] = useState(0);
-  const [discountOnItem, setDiscountOnItem] = useState(0);
-  const [shippingFee, setShippingFee] = useState(0);
-
+  const [discountOnItem] = useState(0);
+  const [shippingFee] = useState(50000);
   const [cartItems, setCartItems] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
   const [refreshData, setRefreshData] = useState(true);
+  const [usePoint, setUsePoint] = useState(0);
+  const [pointUserError, setPointUserError] = useState("");
 
   const handleApplyPromo = () => {
     console.log("Mã khuyến mãi:", promoCode);
     setDiscountValue(0);
-
     setPromotionCode(promoCode);
   };
 
@@ -48,6 +47,17 @@ const CheckoutRight = ({
       setRefreshData(false);
     }
   }, [refreshData]);
+
+  const handlePointUsed = (e) => {
+    const points = Number(e.target.value);
+    setUsePoint(points);
+    if (points <= memberPoint) {
+      setPointUsed(points);
+      setPointUserError("");
+    } else {
+      setPointUserError("Số điểm sử dụng không được lớn hơn số điểm có sẵn");
+    }
+  };
 
   return (
     <Col md={5} style={{ fontFamily: "Playfair Display, serif" }}>
@@ -79,6 +89,30 @@ const CheckoutRight = ({
       </div>
 
       <div className="promotion-code p-4 rounded-4">
+        <div>
+          <div style={{ marginBottom: "8px", display: "grid" }}>
+            {
+              <p className="m-0">
+                Điểm có sẵn: {memberPoint?.toLocaleString()}
+              </p>
+            }
+            <p className="m-0"> * 1 đ = 1000 đ</p>
+          </div>
+        </div>
+        <div style={{ marginBottom: "10px", display: "grid" }}>
+          <input
+            type="number"
+            min={0}
+            max={memberPoint}
+            placeholder="Nhập điểm muốn sử dụng"
+            onChange={(e) => handlePointUsed(e)}
+            value={usePoint}
+          />
+          {pointUserError !== "" && (
+            <p style={{ color: "red", marginTop: 5 }}>{pointUserError}</p>
+          )}
+        </div>
+
         <div style={{ marginBottom: "8px", display: "flex" }}>
           <input
             type="text"
@@ -86,16 +120,9 @@ const CheckoutRight = ({
             value={promoCode}
             onChange={(e) => setPromoCode(e.target.value)}
           />
-          <button
-            onClick={() => {
-              handleApplyPromo();
-            }}
-          >
-            Áp dụng
-          </button>
+          <button onClick={handleApplyPromo}>Áp dụng</button>
         </div>
 
-        {/* Vùng ghi chú cho cửa hàng */}
         <textarea
           placeholder="Ghi chú cho cửa hàng"
           value={CheckOutnote}
@@ -115,8 +142,8 @@ const CheckoutRight = ({
         </div>
         <div>
           <div className="d-flex justify-content-between pl-3 pr-3">
-            <h5>Giảm giá trên món</h5>
-            <p>{discountOnItem.toLocaleString()} đ</p>
+            <h5>Điểm sử dụng</h5>
+            <p>{(usePoint * 1000).toLocaleString()} đ</p>
           </div>
         </div>
         <div>
@@ -136,13 +163,7 @@ const CheckoutRight = ({
           <div className="d-flex justify-content-between pl-3 pr-3">
             <h5>Tổng cộng</h5>
             <p>
-              {(
-                totalAmount -
-                discountValue +
-                shippingFee -
-                discountOnItem
-              ).toLocaleString()}{" "}
-              đ
+              {(totalAmount + shippingFee - usePoint * 1000).toLocaleString()} đ
             </p>
           </div>
         </div>
@@ -159,8 +180,8 @@ CheckoutRight.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   setPromotionCode: PropTypes.func.isRequired,
   setNote: PropTypes.func.isRequired,
+  memberPoint: PropTypes.number.isRequired,
   setPointUsed: PropTypes.func.isRequired,
-  setPointEarned: PropTypes.func.isRequired,
 };
 
 export default CheckoutRight;

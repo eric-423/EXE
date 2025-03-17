@@ -30,7 +30,6 @@ const CustomerChangePassword = () => {
     confirmPassword: string
   ) => {
     try {
-      console.log(password);
       setLoading(true);
       const res = await axios.post(
         `${BASE_URL}/customer/change-password`,
@@ -59,7 +58,7 @@ const CustomerChangePassword = () => {
         }
       }
     } catch (error: any) {
-      console.log(">>> check error: ", error.message);
+      console.log(">>> check error login: ", error.message);
     }
   };
 

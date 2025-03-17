@@ -36,8 +36,6 @@ const VerifyPage = () => {
       if (res.data) {
         const token = res.data.access_token;
         const refresh_token = res.data.refresh_token;
-        console.log(token);
-        console.log(phoneNumber);
         otpRef?.current?.clear();
         Toast.show("Kích hoạt tài khoản thành công", {
           duration: Toast.durations.LONG,

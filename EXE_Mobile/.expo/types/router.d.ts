@@ -72,12 +72,16 @@ declare module "expo-router" {
         | `/verify`
         | `/welcome`;
       DynamicRoutes:
+        | `/(user)/order/${Router.SingleRoutePart<T>}`
         | `/(user)/product/${Router.SingleRoutePart<T>}`
         | `/chat/${Router.SingleRoutePart<T>}`
+        | `/order/${Router.SingleRoutePart<T>}`
         | `/product/${Router.SingleRoutePart<T>}`;
       DynamicRouteTemplate:
+        | `/(user)/order/[id]`
         | `/(user)/product/[id]`
         | `/chat/[id]`
+        | `/order/[id]`
         | `/product/[id]`;
     }
   }

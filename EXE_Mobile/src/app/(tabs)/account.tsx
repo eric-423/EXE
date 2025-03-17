@@ -1,19 +1,44 @@
 import { useCurrentApp } from "@/context/app.context";
-import { getURLBaseBackend } from "@/utils/api";
 import { APP_COLOR } from "@/utils/constant";
-import { View, Text, Image, Pressable, Alert } from "react-native";
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
+import { View, Text, Image, Pressable, Alert, StyleSheet } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Feather from "@expo/vector-icons/Feather";
 import { router } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import demo from "@/assets/demo.jpg";
+import { useEffect, useState } from "react";
+import { jwtDecode } from "jwt-decode";
+import { FONTS } from "@/theme/typography";
+import logo from "@/assets/logo.png";
 const AccountPage = () => {
+  const styles = StyleSheet.create({
+    text: { color: APP_COLOR.ORANGE, fontSize: 20, fontFamily: FONTS.regular },
+    img: {
+      height: 100,
+      width: 100,
+      position: "absolute",
+      right: 10,
+    },
+  });
   const insets = useSafeAreaInsets();
+  const [decodeToken, setDecodeToken] = useState<any>("");
   const { appState } = useCurrentApp();
+  useEffect(() => {
+    const getAccessToken = async () => {
+      try {
+        const token = await AsyncStorage.getItem("access_token");
+        if (token) {
+          const decoded = jwtDecode(token);
+          setDecodeToken(decoded);
+        } else {
+          console.log("No access token found.");
+        }
+      } catch (error) {
+        console.error("Error retrieving access token:", error);
+      }
+    };
+    getAccessToken();
+  }, []);
   const handleLogout = () => {
     Alert.alert("Đăng xuất", "Bạn chắc chắn đăng xuất người dùng ?", [
       {
@@ -36,16 +61,16 @@ const AccountPage = () => {
           paddingTop: insets.top,
           paddingHorizontal: 20,
           paddingBottom: 20,
-          backgroundColor: APP_COLOR.ORANGE,
+          backgroundColor: APP_COLOR.YELLOW,
           flexDirection: "row",
-          gap: 20,
-          alignItems: "center",
         }}
       >
-        <Image style={{ height: 60, width: 60 }} source={demo} />
         <View>
-          <Text style={{ color: "white", fontSize: 20 }}>Test</Text>
+          <Text style={styles.text}>{decodeToken.name}</Text>
+          <Text style={styles.text}>{decodeToken.phone}</Text>
+          <Text style={styles.text}>{decodeToken.address}</Text>
         </View>
+        <Image source={logo} style={styles.img} />
       </View>
 
       <Pressable

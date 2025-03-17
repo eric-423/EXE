@@ -11,7 +11,6 @@ interface Message {
 
 const ChatPage = () => {
   const { id } = useLocalSearchParams();
-  console.log(id);
   const messages: Message[] = [
     { id: "1", text: "Chào bạn!", sender: "user" },
     { id: "2", text: "Chào bạn, bạn khỏe không?", sender: "other" },
