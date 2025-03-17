@@ -2,9 +2,16 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./Product.css";
 import { Col } from "react-bootstrap";
 import AddToCart from "../../modal/addToCart/AddToCart";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
-const Product = ({ productId, productImage, productName, productDescription, productPrice, typeId }) => {
+const Product = ({
+  productId,
+  productImage,
+  productName,
+  productDescription,
+  productPrice,
+  typeId,
+}) => {
   return (
     <>
       <Col
@@ -15,16 +22,22 @@ const Product = ({ productId, productImage, productName, productDescription, pro
         className="mb-4 d-flex justify-content-center"
         key={productId}
       >
-        <div className="item pb-3" style={{
-          height: "100%",
-          width: "100%",
-          maxWidth: "300px"
-        }}>
-          <div className="list-card-image" style={{
-            height: "200px",
+        <div
+          className="item pb-3"
+          style={{
+            height: "100%",
             width: "100%",
-            position: "relative"
-          }}>
+            maxWidth: "300px",
+          }}
+        >
+          <div
+            className="list-card-image"
+            style={{
+              height: "200px",
+              width: "100%",
+              position: "relative",
+            }}
+          >
             <div className="favourite-heart text-danger position-absolute">
               <a href="detail.html">
                 <i className="icofont-heart"></i>
@@ -34,7 +47,7 @@ const Product = ({ productId, productImage, productName, productDescription, pro
               <img
                 src={productImage}
                 className="img-fluid item-img w-100 h-100"
-                alt='...'
+                alt="..."
                 style={{ objectFit: "cover" }}
               />
             </a>
@@ -47,7 +60,10 @@ const Product = ({ productId, productImage, productName, productDescription, pro
                   {productName}
                 </a>
               </h6>
-              <p className="text-gray mb-2 mh-25 restrict-height" style={{ fontSize: "1rem" }}>
+              <p
+                className="text-gray mb-2 mh-25 restrict-height"
+                style={{ fontSize: "1rem" }}
+              >
                 {productDescription}
               </p>
             </div>
@@ -69,7 +85,7 @@ const Product = ({ productId, productImage, productName, productDescription, pro
                     productDescription: productDescription,
                     productPrice: productPrice,
                     productImage: productImage,
-                    typeId: typeId
+                    typeId: typeId,
                   }}
                 />
               </div>

@@ -30,7 +30,7 @@ const handleSignUp = async (phoneNumber: string) => {
       const generateCodeResponse = await axios.post(
         `${BASE_URL}/verify-code/send?mode=${phoneNumber}`,
         {
-          phoneNumber: phoneNumber
+          phoneNumber: phoneNumber,
         }
       );
       if (generateCodeResponse.data) {
