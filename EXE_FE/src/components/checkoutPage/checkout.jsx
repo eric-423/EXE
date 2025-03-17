@@ -104,11 +104,7 @@ const Checkout = () => {
             alert("Giỏ hàng trống");
             return;
         }
-
-        const totalAmount = cartItems.reduce(
-            (sum, item) => sum + item.price * item.quantity,
-            0
-        );
+        const totalAmount = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
         const calculatedPoints = Math.floor(totalAmount / 10000);
 
         const body = {
@@ -121,110 +117,69 @@ const Checkout = () => {
             pointUsed: Number(pointUsed),
             pointEarned: calculatedPoints,
             paymentMethodId: paymentMethodId,
-            orderItems: cartItems.map((item) => ({
+            orderItems: cartItems.map(item => ({
                 productId: item.productId,
                 quantity: item.quantity,
-                note: "",
+                note: ""
             })),
-            isPickup: isPickup,
-        };
+            isPickup: isPickup
+        }
 
         try {
             const response = await fetch(`${BASE_URL}/orders/`, {
-                method: "POST",
+                method: 'POST',
                 headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("_acc")}`,
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('_acc')}`
                 },
-                body: JSON.stringify(body),
+                body: JSON.stringify(body)
             });
 
             if (response.ok) {
                 const data = await response.json();
                 if (data.data.payment_url) {
+                    localStorage.removeItem('cartItems');
                     window.location.href = data.data.payment_url;
-                    localStorage.removeItem("cartItems");
                 } else {
-                    localStorage.removeItem("cartItems");
-                    navigate("/payment-success");
+                    localStorage.removeItem('cartItems');
+                    navigate('/payment-success');
                 }
-
-                const totalAmount = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-                const calculatedPoints = Math.floor(totalAmount / 10000);
-
-                const body = {
-                    customerId: auth.id,
-                    promotionCode: promotionCode,
-                    note: note,
-                    address: userAddress,
-                    phoneNumber: phoneNumber,
-                    branchId: 1,
-                    pointUsed: Number(pointUsed),
-                    pointEarned: calculatedPoints,
-                    paymentMethodId: paymentMethodId,
-                    orderItems: cartItems.map(item => ({
-                        productId: item.productId,
-                        quantity: item.quantity,
-                        note: ""
-                    })),
-                    isPickup: isPickup
-                }
-
-                try {
-                    const response = await fetch(`${BASE_URL}/orders/`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${localStorage.getItem('_acc')}`
-                        },
-                        body: JSON.stringify(body)
-                    });
-
-                    if (response.ok) {
-                        const data = await response.json();
-                        if (data.data.payment_url) {
-                            localStorage.removeItem('cartItems');
-                            window.location.href = data.data.payment_url;
-                        } else {
-                            localStorage.removeItem('cartItems');
-                            navigate('/payment-success');
-                        }
-                    } else {
-                        const errorData = await response.json();
-                        alert(errorData.message || 'Có lỗi xảy ra');
-                    }
-                } catch (error) {
-                    console.error('Lỗi khi đặt hàng:', error);
-                    alert('Có lỗi xảy ra khi đặt hàng');
-                }
-            };
-
-            return (
-                <div className="container py-4" >
-                    <h1 className="text-center mb-5 mt-4 ">Xác nhận đơn hàng</h1>
-
-                    <Row className="d-flex justify-content-center">
-                        <CheckoutLeft
-                            userAddress={userAddress}
-                            setUserAddress={setUserAddress}
-                            setPhoneNumber={setPhoneNumber}
-                            IsPickup={setIsPickup}
-                            setPaymentMethodId={setPaymentMethodId}
-                        />
-
-                        <Col md={1}></Col>
-
-                        <CheckoutRight
-                            handleSubmit={handleSubmit}
-                            setPromotionCode={setPromotionCode}
-                            setNote={setNote}
-                            setPointUsed={setPointUsed}
-                            setMemberPoint={setMemberPoint}
-                            memberPoint={memberPoint}
-                        />
-                    </Row>
-                </div>
-            );
+            } else {
+                const errorData = await response.json();
+                alert(errorData.message || 'Có lỗi xảy ra');
+            }
+        } catch (error) {
+            console.error('Lỗi khi đặt hàng:', error);
+            alert('Có lỗi xảy ra khi đặt hàng');
         }
+    };
+
+    return (
+        <div className="container py-4" >
+            <h1 className="text-center mb-5 mt-4 ">Xác nhận đơn hàng</h1>
+
+            <Row className="d-flex justify-content-center">
+                <CheckoutLeft
+                    userAddress={userAddress}
+                    setUserAddress={setUserAddress}
+                    setPhoneNumber={setPhoneNumber}
+                    IsPickup={setIsPickup}
+                    setPaymentMethodId={setPaymentMethodId}
+                />
+
+                <Col md={1}></Col>
+
+                <CheckoutRight
+                    handleSubmit={handleSubmit}
+                    setPromotionCode={setPromotionCode}
+                    setNote={setNote}
+                    setPointUsed={setPointUsed}
+                    setMemberPoint={setMemberPoint}
+                    memberPoint={memberPoint}
+                />
+            </Row>
+        </div>
+    );
+}
 
 export default Checkout
