@@ -5,10 +5,10 @@ import CheckoutRight from './checkoutRight';
 import { useEffect, useState } from 'react';
 import { jwtDecode } from "jwt-decode"
 import { BASE_URL } from '../../config/api';
-
+import { useNavigate } from 'react-router-dom';
 
 const Checkout = () => {
-    const [userName, setUserName] = useState('')
+    const navigate = useNavigate();
     const [userAddress, setUserAddress] = useState('')
     const [phoneNumber, setPhoneNumber] = useState('')
     const [auth, setAuth] = useState("")
@@ -16,8 +16,16 @@ const Checkout = () => {
     const [promotionCode, setPromotionCode] = useState('')
     const [note, setNote] = useState('')
     const [pointUsed, setPointUsed] = useState(0)
-    const [pointEarned, setPointEarned] = useState(0)
+    const [memberPoint, setMemberPoint] = useState(0)
     const [paymentMethodId, setPaymentMethodId] = useState(0)
+
+    useEffect(() => {
+        const access = localStorage.getItem('_acc');
+        const refresh = localStorage.getItem('_ref');
+        if (!access || !refresh) {
+            navigate('/login');
+        }
+    }, [navigate])
 
     useEffect(() => {
         const access = localStorage.getItem('_acc');
@@ -31,6 +39,7 @@ const Checkout = () => {
                 }
             } catch (error) {
                 console.error("Lỗi khi decode token:", error);
+                navigate('/login');
             }
         }
     }, []);
@@ -55,15 +64,18 @@ const Checkout = () => {
                 localStorage.setItem('_acc', data.access);
                 localStorage.setItem('_ref', data.refresh);
                 setAuth(jwtDecode(data.access));
+            } else {
+                navigate('/login');
             }
         } catch (error) {
-            console.log(error);
+            console.error('Lỗi khi làm mới token:', error);
+            navigate('/login');
         }
     };
 
     const fetchUserDetail = async () => {
         try {
-            const response = await fetch(`${BASE_URL}/information/default?customerId=${auth.id}`, {
+            const response = await fetch(`${BASE_URL}/customer/profile/${auth.id}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('_acc')}`
@@ -72,19 +84,26 @@ const Checkout = () => {
             if (response.ok) {
                 const data = await response.json();
                 const user = data.data;
-                setUserName(user.fullName);
                 setUserAddress(user.address);
                 setPhoneNumber(user.phone);
+                setMemberPoint(user.memberPoint);
             }
         } catch (error) {
             console.error("Lỗi khi fetch user detail:", error);
         }
     };
 
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         const cartItems = JSON.parse(localStorage.getItem('cartItems'));
+
+        if (!cartItems || cartItems.length === 0) {
+            alert('Giỏ hàng trống');
+            return;
+        }
+
+        const totalAmount = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const calculatedPoints = Math.floor(totalAmount / 10000);
 
         const body = {
             customerId: auth.id,
@@ -93,42 +112,43 @@ const Checkout = () => {
             address: userAddress,
             phoneNumber: phoneNumber,
             branchId: 1,
-            pointUsed: pointUsed,
-            pointEarned: pointEarned,
+            pointUsed: Number(pointUsed),
+            pointEarned: calculatedPoints,
             paymentMethodId: paymentMethodId,
-            orderItems:
-                cartItems.map(item => ({
-                    productId: item.productId,
-                    quantity: item.quantity,
-                    note: ""
-                })),
+            orderItems: cartItems.map(item => ({
+                productId: item.productId,
+                quantity: item.quantity,
+                note: ""
+            })),
             isPickup: isPickup
         }
 
-        console.log(body)
-
-        if (!auth) {
-            fetchNewToken();
-        }
         try {
             const response = await fetch(`${BASE_URL}/orders/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${auth.access}`
+                    'Authorization': `Bearer ${localStorage.getItem('_acc')}`
                 },
                 body: JSON.stringify(body)
             });
 
             if (response.ok) {
                 const data = await response.json();
-                console.log(data);
+                if (data.data.payment_url) {
+                    window.location.href = data.data.payment_url;
+                    localStorage.removeItem('cartItems');
+                } else {
+                    localStorage.removeItem('cartItems');
+                    navigate('/payment-success');
+                }
             } else {
-                fetchNewToken();
-                handleSubmit(e);
+                const errorData = await response.json();
+                alert(errorData.message || 'Có lỗi xảy ra');
             }
         } catch (error) {
-            console.log(error);
+            console.error('Lỗi khi đặt hàng:', error);
+            alert('Có lỗi xảy ra khi đặt hàng');
         }
     };
 
@@ -137,31 +157,27 @@ const Checkout = () => {
             <h1 className="text-center mb-5 mt-4 ">Xác nhận đơn hàng</h1>
 
             <Row className="d-flex justify-content-center">
-
-                {
-                    <CheckoutLeft
-                        setUserName={setUserName}
-                        setUserAddress={setUserAddress}
-                        setPhoneNumber={setPhoneNumber}
-                        setIsPickup={setIsPickup}
-                        setPaymentMethodId={setPaymentMethodId}
-                    />
-                }
+                <CheckoutLeft
+                    userAddress={userAddress}
+                    setUserAddress={setUserAddress}
+                    setPhoneNumber={setPhoneNumber}
+                    IsPickup={setIsPickup}
+                    setPaymentMethodId={setPaymentMethodId}
+                />
 
                 <Col md={1}></Col>
 
-                <CheckoutRight handleSubmit={handleSubmit}
+                <CheckoutRight
+                    handleSubmit={handleSubmit}
                     setPromotionCode={setPromotionCode}
                     setNote={setNote}
                     setPointUsed={setPointUsed}
-                    setPointEarned={setPointEarned}
+                    setMemberPoint={setMemberPoint}
+                    memberPoint={memberPoint}
                 />
-
             </Row>
         </div>
     );
 }
-
-
 
 export default Checkout

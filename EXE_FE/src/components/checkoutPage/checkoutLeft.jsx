@@ -1,11 +1,18 @@
 import { Col } from "react-bootstrap"
 import './checkout.css'
 import PropTypes from 'prop-types'
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import {
+    faCheck,
+    faTruck,
+    faShoppingCart,
+    faSpinner,
+    faCheckCircle,
+    faLocationDot
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-
-
-const CheckoutLeft = ({ setUserName, setUserAddress, setPhoneNumber, IsPickup, setPaymentMethodId }) => {
+const CheckoutLeft = ({ setUserName, userAddress, setUserAddress, setPhoneNumber, IsPickup, setPaymentMethodId }) => {
     const [isBuyFor, setIsBuyFor] = useState(false)
     const [name, setName] = useState('')
     const [phone, setPhone] = useState('')
@@ -14,7 +21,12 @@ const CheckoutLeft = ({ setUserName, setUserAddress, setPhoneNumber, IsPickup, s
     const [address, setAddress] = useState('')
     const [isNewAddress, setIsNewAddress] = useState('default');
     const [isPickup, setIsPickup] = useState(false)
-    setPaymentMethodId(1);
+    const [isCod, setIsCod] = useState(true)
+
+    useEffect(() => {
+        setPaymentMethodId(1);
+    }, [setPaymentMethodId]);
+
     return (
         <>
             <Col md={5} style={{ fontFamily: 'Playfair Display, serif' }}>
@@ -26,9 +38,11 @@ const CheckoutLeft = ({ setUserName, setUserAddress, setPhoneNumber, IsPickup, s
                             type="radio"
                             name="deliveryType"
                             id="radioGiaoHang"
-                            value={isPickup}
-                            checked
-                            onClick={() => { setIsPickup(!isPickup); IsPickup(!isPickup) }}
+                            checked={!isPickup}
+                            onChange={() => {
+                                setIsPickup(!isPickup);
+                                IsPickup(!isPickup);
+                            }}
                             style={{ width: 20, height: 20, backgroundColor: 'rgb(235, 209, 135)' }}
                         />
                         <label className="form-check-label " htmlFor="radioGiaoHang">
@@ -41,8 +55,11 @@ const CheckoutLeft = ({ setUserName, setUserAddress, setPhoneNumber, IsPickup, s
                             type="radio"
                             name="deliveryType"
                             id="radioDenTaiQuan"
-                            value={isPickup}
-                            onClick={() => setIsPickup(true)}
+                            checked={isPickup}
+                            onChange={() => {
+                                setIsPickup(true);
+                                IsPickup(true);
+                            }}
                             style={{ width: 20, height: 20, backgroundColor: 'rgb(235, 209, 135)' }}
                         />
                         <label
@@ -66,9 +83,19 @@ const CheckoutLeft = ({ setUserName, setUserAddress, setPhoneNumber, IsPickup, s
                                     value={isNewAddress}
                                     onChange={(e) => setIsNewAddress(e.target.value)}
                                 >
-                                    <option value="default">Địa chỉ mặc định</option>
+                                    {/* userAddress */}
+                                    <option value="default" >Địa chỉ mặc định</option>
                                     <option value="new">Tạo địa chỉ mới</option>
                                 </select>
+
+                                <div>
+                                    {userAddress && isNewAddress === 'default' && (
+                                        <div className="d-flex align-items-center mb-4">
+                                            <FontAwesomeIcon icon={faLocationDot} className="me-2" size="lg" />
+                                            <p className="mb-0">{userAddress}</p>
+                                        </div>
+                                    )}
+                                </div>
                                 {
                                     isNewAddress === 'new' && (
                                         <>
@@ -112,9 +139,7 @@ const CheckoutLeft = ({ setUserName, setUserAddress, setPhoneNumber, IsPickup, s
                             </div>
 
                             <div className="mb-3">
-
                                 <div className='d-flex justify-content-start  mb-3 '>
-
                                     <div className="form-check-inline m-0 pt-2">
                                         <input
                                             className="form-check-input"
@@ -133,6 +158,7 @@ const CheckoutLeft = ({ setUserName, setUserAddress, setPhoneNumber, IsPickup, s
                                         </label>
                                     </div>
                                 </div>
+
                                 {
                                     isBuyFor && (
                                         <>
@@ -141,40 +167,23 @@ const CheckoutLeft = ({ setUserName, setUserAddress, setPhoneNumber, IsPickup, s
                                                 className="form-control mb-2 info-input"
                                                 placeholder="Tên người nhận"
                                                 disabled={!isBuyFor}
-                                                value={isBuyFor ? nameBuyFor : name}
-                                                onChange={(e) => setNameBuyFor(e.target.value)}
+                                                value={name}
+                                                onChange={(e) => {
+                                                    setName(e.target.value);
+                                                    setUserName(e.target.value);
+                                                }}
                                             />
                                             <input
                                                 type="text"
                                                 className="form-control mb-2 info-input"
                                                 placeholder="Số điện thoại người nhận"
                                                 disabled={!isBuyFor}
-                                                value={isBuyFor ? phoneBuyFor : phone}
-                                                onChange={(e) => setPhoneBuyFor(e.target.value)}
+                                                value={phone}
+                                                onChange={(e) => {
+                                                    setPhone(e.target.value);
+                                                    setPhoneNumber(e.target.value);
+                                                }}
                                             />
-
-                                            {/* <div className='d-flex justify-content-between'>
-                                                <select className="form-control mb-2">
-                                                    {
-                                                        place.map((item, index) => {
-                                                            return (
-                                                                <option key={index} value={item.name}>{item.name}</option>
-                                                            )
-                                                        })
-                                                    }
-                                                </select>
-                                                <select className="form-control mb-2">
-                                                    {
-                                                        city.map((item, index) => {
-                                                            return (
-                                                                <option key={index} value={item.name}>{item.name}</option>
-                                                            )
-                                                        })
-                                                    }
-                                                </select>
-                                            </div> */}
-
-                                            {/* <DropdownLocation /> */}
 
                                             <input
                                                 type="text"
@@ -185,26 +194,27 @@ const CheckoutLeft = ({ setUserName, setUserAddress, setPhoneNumber, IsPickup, s
                                     )
                                 }
 
-                                <div className="form-check form-check-inline mt-2 mb-3 ">
+                                {/* <div className="form-check form-check-inline mt-2 mb-3 ">
                                     <input
                                         className="form-check-input"
                                         type="radio"
-                                        name="deliveryType"
-                                        id="radioGiaoHang"
+                                        name="deliveryTime"
+                                        id="radioGiaoNgay"
+                                        defaultChecked
                                         style={{ width: 25, height: 25, backgroundColor: 'rgb(235, 209, 135)' }}
                                     />
-                                    <label className="form-check-label ml-2 " style={{ fontSize: '15px' }} htmlFor="radioGiaoHang">
+                                    <label className="form-check-label ml-2 " style={{ fontSize: '15px' }} htmlFor="radioGiaoNgay">
                                         Giao ngay
                                     </label>
-                                </div>
+                                </div> */}
 
 
-                                <div className="d-flex form-check form-check-inline mb-3">
+                                {/* <div className="d-flex form-check form-check-inline mb-3">
                                     <input
                                         className="form-check-input"
                                         type="radio"
-                                        name="deliveryType"
-                                        id="radioGiaoHang"
+                                        name="deliveryTime"
+                                        id="radioHenGio"
                                         style={{ width: 25, height: 25, backgroundColor: 'rgb(235, 209, 135)' }}
                                     />
 
@@ -215,11 +225,11 @@ const CheckoutLeft = ({ setUserName, setUserAddress, setPhoneNumber, IsPickup, s
                                             width: '100%',
                                             backgroundColor: 'transparent',
                                         }}
+                                        htmlFor="radioHenGio"
                                     >
                                         Hẹn lịch giao lúc
                                         <input
                                             type="time"
-
                                             style={{
                                                 width: '80px',
                                                 margin: '0 5px',
@@ -227,7 +237,7 @@ const CheckoutLeft = ({ setUserName, setUserAddress, setPhoneNumber, IsPickup, s
                                         />
                                         Ngày {new Date().getDate()}/{new Date().getMonth() + 1}
                                     </label>
-                                </div>
+                                </div> */}
                             </div>
 
                         </>
@@ -243,7 +253,11 @@ const CheckoutLeft = ({ setUserName, setUserAddress, setPhoneNumber, IsPickup, s
                             type="radio"
                             name="paymentMethod"
                             id="payQRVNPay"
-                            onClick={() => setPaymentMethodId(2)}
+                            checked={!isCod}
+                            onChange={() => {
+                                setPaymentMethodId(2);
+                                setIsCod(false);
+                            }}
                         />
                         <label className="form-check-label ml-3" htmlFor="payQRVNPay">
                             Quét mã QR VNPay
@@ -256,8 +270,11 @@ const CheckoutLeft = ({ setUserName, setUserAddress, setPhoneNumber, IsPickup, s
                             type="radio"
                             name="paymentMethod"
                             id="payCOD"
-                            checked
-                            onClick={() => setPaymentMethodId(1)}
+                            checked={isCod}
+                            onChange={() => {
+                                setPaymentMethodId(1);
+                                setIsCod(true);
+                            }}
                         />
                         <label className="form-check-label ml-3" htmlFor="payCOD">
                             Tiền mặt (COD)
@@ -271,6 +288,7 @@ const CheckoutLeft = ({ setUserName, setUserAddress, setPhoneNumber, IsPickup, s
 
 CheckoutLeft.propTypes = {
     setUserName: PropTypes.func.isRequired,
+    userAddress: PropTypes.string.isRequired,
     setUserAddress: PropTypes.func.isRequired,
     setPhoneNumber: PropTypes.func.isRequired,
     IsPickup: PropTypes.func.isRequired,
