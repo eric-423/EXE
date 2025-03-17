@@ -6,13 +6,19 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Feather from "@expo/vector-icons/Feather";
 import { router } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import demo from "@/assets/demo.jpg";
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import { FONTS } from "@/theme/typography";
+import logo from "@/assets/logo.png";
 const AccountPage = () => {
   const styles = StyleSheet.create({
-    text: { color: "white", fontSize: 25, fontFamily: FONTS.regular },
+    text: { color: APP_COLOR.ORANGE, fontSize: 20, fontFamily: FONTS.regular },
+    img: {
+      height: 100,
+      width: 100,
+      position: "absolute",
+      right: 10,
+    },
   });
   const insets = useSafeAreaInsets();
   const [decodeToken, setDecodeToken] = useState<any>("");
@@ -55,12 +61,16 @@ const AccountPage = () => {
           paddingTop: insets.top,
           paddingHorizontal: 20,
           paddingBottom: 20,
-          backgroundColor: APP_COLOR.ORANGE,
-          alignItems: "center",
+          backgroundColor: APP_COLOR.YELLOW,
+          flexDirection: "row",
         }}
       >
-        <Text style={styles.text}>{decodeToken.name}</Text>
-        <Text style={styles.text}>{decodeToken.phone}</Text>
+        <View>
+          <Text style={styles.text}>{decodeToken.name}</Text>
+          <Text style={styles.text}>{decodeToken.phone}</Text>
+          <Text style={styles.text}>{decodeToken.address}</Text>
+        </View>
+        <Image source={logo} style={styles.img} />
       </View>
 
       <Pressable

@@ -122,7 +122,7 @@ const OrderDetailsPage = () => {
               source={{ uri: item.productImg }}
               style={{ height: 70, width: 70, borderRadius: 10 }}
             />
-            <View style={{ marginLeft: 100, marginVertical: "auto" }}>
+            <View style={{ marginLeft: 20, marginVertical: "auto" }}>
               <Text style={styles.itemValue}>{item.productName}</Text>
               <Text style={styles.itemValue}>
                 {item.quantity} x {currencyFormatter(item.price)}

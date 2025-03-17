@@ -5,7 +5,8 @@ import { getAccountAPI } from "@/utils/api";
 import { useCurrentApp } from "@/context/app.context";
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from "expo-font";
-import { APP_FONT } from "@/utils/constant";
+import { APP_FONT, BASE_URL } from "@/utils/constant";
+import axios from "axios";
 SplashScreen.preventAutoHideAsync();
 
 const RootPage = () => {
@@ -18,10 +19,13 @@ const RootPage = () => {
   useEffect(() => {
     async function prepare() {
       try {
-        const res = await getAccountAPI();
+        const refresh_token = await AsyncStorage.getItem("refresh_token");
+        const res = await axios.post(
+          `${BASE_URL}/token/refresh?token=${refresh_token}`
+        );
         if (res.data) {
+          await AsyncStorage.setItem("access_token", res.data.access_token);
           setAppState({
-            user: res.data.user,
             access_token: await AsyncStorage.getItem("access_token"),
           });
           router.replace("/(tabs)");
