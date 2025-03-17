@@ -60,32 +60,66 @@ const CheckoutRight = ({
     };
 
     return (
-        <Col md={5} style={{ fontFamily: "Playfair Display, serif" }}>
-            <div className="comfirm-order rounded-4">
-                <div
-                    className="mb-4"
-                    style={{
-                        backgroundColor: "transparent",
-                        borderBottom: "1px solid black",
-                    }}
+        <Col md={5} style={{ fontFamily: 'Playfair Display, serif' }} >
+            <div className='comfirm-order rounded-4'>
+                <div className='mb-4 '
+                    style={{ backgroundColor: 'transparent', borderBottom: '1px solid black' }}
                 >
                     <h5>Tấm tắc lành đại học </h5>
                     <p>Nhà văn hóa sinh viên đại học quốc gia tp.hcm, tp.hcm</p>
                 </div>
 
-                {cartItems.map((item) => (
-                    <div key={item.productId} className="mb-3">
-                        <div className="confirm-order-item">
-                            <h6> {item.productName}</h6>
-                            <div className="d-flex justify-content-center gap-3">
-                                <p style={{ color: "rgb(218, 115, 50)" }}>
-                                    {item.price.toLocaleString()}
-                                </p>
-                                <p> x {item.quantity}</p>
+                {
+                    cartItems.map((item) => (
+                        <div key={item.productId} className="mb-3">
+                            <div className="confirm-order-item">
+                                <h6 > {item.productName}</h6>
+                                <div className="d-flex justify-content-center  gap-3">
+                                    <p style={{ color: 'rgb(218, 115, 50)' }}>{item.price.toLocaleString()}</p>
+                                    <p> x {item.quantity}</p>
+                                </div>
                             </div>
                         </div>
+                    ))
+                }
+            </div>
+
+            <div className='promotion-code p-4 rounded-4'>
+                <div>
+                    <div style={{ marginBottom: '8px', display: 'grid' }}>
+                        {
+                            <p className='m-0'>Điểm có sẵn: {memberPoint?.toLocaleString()}</p>
+                        }
+                        <p className='m-0'> * 1 đ = 1000 đ</p>
                     </div>
-                ))}
+                </div>
+                <div style={{ marginBottom: '10px', display: 'grid' }} >
+                    <input
+                        type="number"
+                        min={0}
+                        max={memberPoint}
+                        placeholder="Nhập điểm muốn sử dụng"
+                        onChange={(e) => handlePointUsed(e)}
+                        value={usePoint}
+                    />
+                    {pointUserError !== '' && <p style={{ color: 'red', marginTop: 5 }}>{pointUserError}</p>}
+                </div>
+
+                <div style={{ marginBottom: '8px', display: 'flex' }}>
+                    <input
+                        type="text"
+                        placeholder="Nhập mã khuyến mãi"
+                        value={promoCode}
+                        onChange={(e) => setPromoCode(e.target.value)}
+                    />
+                    <button onClick={handleApplyPromo}>Áp dụng</button>
+                </div>
+
+                <textarea
+                    placeholder="Ghi chú cho cửa hàng"
+                    value={CheckOutnote}
+                    onChange={(e) => { setNote(e.target.value); setCheckOutNote(e.target.value) }}
+                />
 
                 <Form className='rounded-4 card-total-price p-3'>
                     <div>
