@@ -275,9 +275,6 @@ const LoginPage = () => {
         }
     };
 
-
-
-
     const handleChange = (element, index, isFirstPassword) => {
         if (isNaN(element.value)) return false;
 
@@ -297,7 +294,7 @@ const LoginPage = () => {
     };
 
     // Add this function to handle backspace
-    const handleKeyDown = (e, index) => {
+    const handleKeyDown = (e) => {
         if (e.key === "Backspace") {
             e.preventDefault();
             let lastFilledIndex = 5;
@@ -315,8 +312,6 @@ const LoginPage = () => {
             }
         }
     };
-
-
 
     const handleBackToRegistration = () => {
         setCurrentView("customer");

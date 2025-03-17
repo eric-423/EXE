@@ -9,7 +9,7 @@ import { jwtDecode } from "jwt-decode";
 import { BASE_URL } from "./config/api";
 
 function App() {
-  const [role, setRole] = useState("");
+    const [role, setRole] = useState("");
 
     const getRoleUser = () => {
         const access = localStorage.getItem('_acc')
@@ -25,7 +25,6 @@ function App() {
         }
 
     }
-  };
 
     useEffect(() => {
         getRoleUser()
@@ -58,9 +57,7 @@ function App() {
         } catch (error) {
             console.error('Lỗi khi thực hiện fetch:', error);
         }
-
     }
-  };
 
     useEffect(() => {
         const checkAndRefreshToken = () => {
@@ -129,7 +126,6 @@ function App() {
             )}
         </Router>
     );
-
-}
+};
 
 export default App;
