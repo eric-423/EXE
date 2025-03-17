@@ -51,8 +51,9 @@ const PlaceOrderPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [cusAddress, setCusAddress] = useState();
   const [cusPhone, setCusPhone] = useState();
-  const { id } = useLocalSearchParams();
-  const branchId = id ? parseInt(id as string) : 0;
+  const { branchId } = useCurrentApp();
+  // const { id } = useLocalSearchParams();
+  // const branchId = id ? parseInt(id as string) : 0;
   const [total, setTotal] = useState();
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const dropdownItems = [
@@ -344,7 +345,6 @@ const PlaceOrderPage = () => {
   }, [restaurant]);
 
   useEffect(() => {
-    // Xử lý deep link khi app được mở lại
     const handleDeepLink = (event: { url: string }) => {
       if (event.url.includes("order-success")) {
         Toast.show("Thanh toán thành công!", {
@@ -357,11 +357,7 @@ const PlaceOrderPage = () => {
         router.replace("/(tabs)/");
       }
     };
-
-    // Đăng ký listener cho deep link
     const subscription = Linking.addEventListener("url", handleDeepLink);
-
-    // Kiểm tra nếu app được mở bằng deep link
     Linking.getInitialURL().then((url) => {
       if (url && url.includes("order-success")) {
         Toast.show("Thanh toán thành công!", {
@@ -383,7 +379,7 @@ const PlaceOrderPage = () => {
   const handleSelectAddress = (address: any) => {
     setSelectedAddress(address);
     setModalVisible(false);
-    Toast.show(`Selected Address: ${address.name}`, {
+    Toast.show(`Selected Address: ${address.fullName}`, {
       duration: Toast.durations.LONG,
       textColor: "white",
       backgroundColor: APP_COLOR.ORANGE,
@@ -478,7 +474,7 @@ const PlaceOrderPage = () => {
         {orderItems?.map((item, index) => {
           return (
             <View
-              key={index}
+              key={`${item.productId}-${index}`}
               style={{
                 gap: 10,
                 flexDirection: "row",
@@ -669,9 +665,9 @@ const PlaceOrderPage = () => {
                     Phương thức thanh toán
                   </Text>
                   <View style={styles.dropdown}>
-                    {dropdownItems.map((item) => (
+                    {dropdownItems.map((item, index) => (
                       <Pressable
-                        key={item.id}
+                        key={`${item.id}-${index}`}
                         style={[
                           styles.dropdownItem,
                           selectedOption === item.id &&
@@ -761,9 +757,9 @@ const PlaceOrderPage = () => {
               Chọn địa chỉ giao hàng
             </Text>
             <ScrollView>
-              {addresses.map((address) => (
+              {addresses.map((address: any, index: number) => (
                 <Pressable
-                  key={address.userId}
+                  key={`${address.userId}-${index}`}
                   onPress={() => handleSelectAddress(address)}
                   style={styles.addressItem}
                 >
