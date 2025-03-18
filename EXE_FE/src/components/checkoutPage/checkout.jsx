@@ -106,14 +106,14 @@ const Checkout = () => {
         }
         const totalAmount = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
         const calculatedPoints = Math.floor(totalAmount / 10000);
-
+        const branchId = localStorage.getItem("branchId");
         const body = {
             customerId: auth.id,
             promotionCode: promotionCode,
             note: note,
             address: userAddress,
             phoneNumber: phoneNumber,
-            branchId: 1,
+            branchId: branchId,
             pointUsed: Number(pointUsed),
             pointEarned: calculatedPoints,
             paymentMethodId: paymentMethodId,
