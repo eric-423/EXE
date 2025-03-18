@@ -4,7 +4,7 @@ import { Filter } from "lucide-react";
 import BranchInfo from "./BranchInfo";
 import DocumentCard from "./DocumentCard";
 import RequestTable from "./RequestTable";
-import ListBranch from "./listBranch";
+import ListBranch from "./ListBranch";
 
 function Branches() {
     const [activeMenu, setActiveMenu] = useState('thongtin');

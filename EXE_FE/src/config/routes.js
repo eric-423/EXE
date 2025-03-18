@@ -14,7 +14,7 @@ const routes = {
         hiring: "/hiring",
         menu: "/menu",
         best: "/best",
-        paymentSuccess: "/order-success",
+        paymentSuccess: "/payment-success",
         checkout: "/checkout",
         user: "/user",
         admin: "/admin",

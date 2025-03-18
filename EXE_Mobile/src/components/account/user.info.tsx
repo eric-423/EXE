@@ -5,140 +5,174 @@ import { APP_COLOR } from "@/utils/constant";
 import { UpdateUserSchema } from "@/utils/validate.schema";
 import { Formik } from "formik";
 import {
-    View, Text, StyleSheet, Image, Platform,
-    KeyboardAvoidingView,
-    ScrollView,
-    Pressable
-} from "react-native"
-import Toast from "react-native-root-toast";
+  View,
+  Text,
+  StyleSheet,
+  Platform,
+  KeyboardAvoidingView,
+  ScrollView,
+  Pressable,
+} from "react-native";
+import { jwtDecode } from "jwt-decode";
+import { useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+interface DecodedToken {
+  id: number;
+  name: string;
+  address: string;
+  phone: string;
+}
 
 const styles = StyleSheet.create({
-    container: {
-        paddingHorizontal: 15,
-        paddingTop: 50
-    }
-})
+  container: {
+    paddingHorizontal: 15,
+    paddingTop: 50,
+  },
+});
+
 const UserInfo = () => {
-    const { appState, setAppState } = useCurrentApp();
+  const [decodeToken, setDecodeToken] = useState<DecodedToken | null>(null);
 
-    const backend = Platform.OS === "android"
-        ? process.env.EXPO_PUBLIC_ANDROID_API_URL
-        : process.env.EXPO_PUBLIC_IOS_API_URL;
-
-    const baseImage = `${backend}/images/avatar`;
-
-    const handleUpdateUser = async (name: string, phone: string) => {
-        if (appState?.user._id) {
-            const res = await updateUserAPI(appState?.user._id, name, phone);
-            if (res.data) {
-                Toast.show("Cập nhật thông tin user thành công!", {
-                    duration: Toast.durations.LONG,
-                    textColor: "white",
-                    backgroundColor: APP_COLOR.ORANGE,
-                    opacity: 1
-                });
-
-                //update context
-                setAppState({
-                    ...appState,
-                    user: {
-                        ...appState.user,
-                        name: name, phone: phone
-                    }
-                })
-
-            } else {
-                const m = Array.isArray(res.message)
-                    ? res.message[0] : res.message;
-
-                Toast.show(m, {
-                    duration: Toast.durations.LONG,
-                    textColor: "white",
-                    backgroundColor: APP_COLOR.ORANGE,
-                    opacity: 1
-                });
-            }
+  useEffect(() => {
+    const getAccessToken = async () => {
+      try {
+        const token = await AsyncStorage.getItem("access_token");
+        if (token) {
+          const decoded = jwtDecode(token);
+          setDecodeToken(decoded);
+          console.log(decoded);
+        } else {
+          console.log("No access token found.");
         }
+      } catch (error) {
+        console.error("Error retrieving access token:", error);
+      }
+    };
+    getAccessToken();
+  }, []);
 
+  const handleUpdateUser = async (name: string, phone: string) => {
+    if (decodeToken?.id) {
+      //   const res =
+      //   if (res.data) {
+      //     Toast.show("Cập nhật thông tin user thành công!", {
+      //       duration: Toast.durations.LONG,
+      //       textColor: "white",
+      //       backgroundColor: APP_COLOR.ORANGE,
+      //       opacity: 1,
+      //     });
+      //     setDecodeToken((prev) =>
+      //       prev
+      //         ? {
+      //             ...prev,
+      //             name,
+      //             phone,
+      //           }
+      //         : null
+      //     );
+      //   } else {
+      //     const m = Array.isArray(res.message) ? res.message[0] : res.message;
+      //     Toast.show(m, {
+      //       duration: Toast.durations.LONG,
+      //       textColor: "white",
+      //       backgroundColor: APP_COLOR.ORANGE,
+      //       opacity: 1,
+      //     });
+      //   }
     }
+  };
 
-    return (
-        <KeyboardAvoidingView
-            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-            style={{ flex: 1 }}
-        >
-            <ScrollView
-                showsVerticalScrollIndicator={false}
-            >
-                <View style={styles.container}>
-                    <View style={{ alignItems: "center", gap: 5 }}>
-                        <Image
-                            style={{ height: 150, width: 150 }}
-                            source={{ uri: `${baseImage}/${appState?.user.avatar}` }}
-                        />
-                        <Text>{appState?.user.name}</Text>
-                    </View>
-                    <Formik
-                        validationSchema={UpdateUserSchema}
-                        initialValues={{
-                            name: appState?.user.name,
-                            email: appState?.user.email,
-                            phone: appState?.user.phone
-                        }}
-                        onSubmit={values => handleUpdateUser(values?.name ?? "", values?.phone ?? "")}
-                    >
-                        {({ handleChange, handleBlur, handleSubmit, values, errors,
-                            touched, isValid, dirty
-                        }) => (
-                            <View style={{ marginTop: 20, gap: 20 }}>
-                                <ShareInput
-                                    title="Họ tên"
-                                    onChangeText={handleChange('name')}
-                                    onBlur={handleBlur('name')}
-                                    value={values.name}
-                                    error={errors.name}
-                                    touched={touched.name}
-                                />
-                                <ShareInput
-                                    editable={false}
-                                    title="Email"
-                                    keyboardType="email-address"
-                                    value={appState?.user.email}
-                                />
+  if (!decodeToken) {
+    return null;
+  }
 
-                                <ShareInput
-                                    title="Số điện thoại"
-                                    onChangeText={handleChange('phone')}
-                                    onBlur={handleBlur('phone')}
-                                    value={values.phone}
-                                    error={errors.phone}
-                                    touched={touched.phone}
-                                />
+  return (
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+      style={{ flex: 1 }}
+    >
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.container}>
+          <View style={{ alignItems: "center", gap: 5 }}>
+            <Text>{decodeToken.name}</Text>
+          </View>
+          <Formik
+            validationSchema={UpdateUserSchema}
+            initialValues={{
+              name: decodeToken.name,
+              address: decodeToken.address,
+              phone: decodeToken.phone,
+            }}
+            onSubmit={(values) =>
+              handleUpdateUser(values?.name ?? "", values?.phone ?? "")
+            }
+          >
+            {({
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              values,
+              errors,
+              touched,
+              isValid,
+              dirty,
+            }) => (
+              <View style={{ marginTop: 20, gap: 20 }}>
+                <ShareInput
+                  title="Họ tên"
+                  onChangeText={handleChange("name")}
+                  onBlur={handleBlur("name")}
+                  value={values.name}
+                  error={errors.name}
+                  touched={touched.name}
+                />
+                <ShareInput
+                  title="Địa chỉ"
+                  onChangeText={handleChange("address")}
+                  onBlur={handleBlur("address")}
+                  value={values.address}
+                  error={errors.address}
+                  touched={touched.address}
+                />
 
-                                <Pressable
-                                    disabled={!(isValid && dirty)}
-                                    onPress={handleSubmit as any}
-                                    style={({ pressed }) => ({
-                                        opacity: pressed === true ? 0.5 : 1,
-                                        backgroundColor: isValid && dirty ?
-                                            APP_COLOR.ORANGE : APP_COLOR.GREY,
-                                        padding: 10,
-                                        marginTop: 10,
-                                        borderRadius: 3
-                                    })}
-                                >
-                                    <Text style={{
-                                        textAlign: "center",
-                                        color: isValid && dirty ? "white" : "grey"
-                                    }}>Lưu thay đổi</Text>
-                                </Pressable>
-                            </View>
-                        )}
-                    </Formik>
-                </View>
-            </ScrollView>
-        </KeyboardAvoidingView>
-    )
-}
+                <ShareInput
+                  title="Số điện thoại"
+                  onChangeText={handleChange("phone")}
+                  onBlur={handleBlur("phone")}
+                  value={values.phone}
+                  error={errors.phone}
+                  touched={touched.phone}
+                />
+
+                <Pressable
+                  disabled={!(isValid && dirty)}
+                  onPress={handleSubmit as any}
+                  style={({ pressed }) => ({
+                    opacity: pressed === true ? 0.5 : 1,
+                    backgroundColor:
+                      isValid && dirty ? APP_COLOR.ORANGE : APP_COLOR.GREY,
+                    padding: 10,
+                    marginTop: 10,
+                    borderRadius: 3,
+                  })}
+                >
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      color: isValid && dirty ? "white" : "orange",
+                    }}
+                  >
+                    Lưu thay đổi
+                  </Text>
+                </Pressable>
+              </View>
+            )}
+          </Formik>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
+  );
+};
 
 export default UserInfo;

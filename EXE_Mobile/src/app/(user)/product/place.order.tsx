@@ -22,6 +22,9 @@ import { Formik } from "formik";
 import { ChangePasswordSchema } from "@/utils/validate.schema";
 import CustomerInforInput from "@/components/input/customerInfo.input";
 import ShareButton from "@/components/button/share.button";
+import * as Linking from "expo-linking";
+import * as WebBrowser from "expo-web-browser";
+
 interface IOrderItem {
   image: string;
   title: string;
@@ -48,8 +51,9 @@ const PlaceOrderPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [cusAddress, setCusAddress] = useState();
   const [cusPhone, setCusPhone] = useState();
-  const { id } = useLocalSearchParams();
-  const branchId = id ? parseInt(id as string) : 0;
+  const { branchId } = useCurrentApp();
+  // const { id } = useLocalSearchParams();
+  // const branchId = id ? parseInt(id as string) : 0;
   const [total, setTotal] = useState();
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const dropdownItems = [
@@ -103,19 +107,6 @@ const PlaceOrderPage = () => {
         return;
       }
       const numericPointUsed = Number(pointUsed) || 0;
-      console.log("Creating order with data:", {
-        customerId: decodeToken,
-        promotionCode,
-        note,
-        address,
-        phoneNumber,
-        branchId: Number(branchId),
-        pointUsed: numericPointUsed,
-        pointEarned,
-        paymentMethodId,
-        orderItems,
-        pickUp,
-      });
 
       const response = await axios.post(`${BASE_URL}/orders/`, {
         customerId: decodeToken,
@@ -132,18 +123,28 @@ const PlaceOrderPage = () => {
       });
 
       if (response.data) {
-        Toast.show("Đặt hàng thành công!", {
-          duration: Toast.durations.LONG,
-          textColor: "white",
-          backgroundColor: APP_COLOR.ORANGE,
-          opacity: 1,
-        });
         if (paymentMethodId === 2) {
           const link = response.data.data.payment_url;
-          router.navigate(link);
+          try {
+            await WebBrowser.openBrowserAsync(link);
+          } catch (error) {
+            console.error("Error opening payment URL:", error);
+            Toast.show("Không thể mở trang thanh toán!", {
+              duration: Toast.durations.LONG,
+              textColor: "white",
+              backgroundColor: "red",
+              opacity: 1,
+            });
+          }
         } else {
+          Toast.show("Đặt hàng thành công!", {
+            duration: Toast.durations.LONG,
+            textColor: "white",
+            backgroundColor: APP_COLOR.ORANGE,
+            opacity: 1,
+          });
           setCart(0);
-          router.push("/(tabs)");
+          router.replace("/(tabs)/");
         }
       }
     } catch (error) {
@@ -176,7 +177,6 @@ const PlaceOrderPage = () => {
         if (token) {
           const decoded = jwtDecode(token);
           setDecodeToken(decoded.id);
-          console.log("Customer ID:", decoded.id);
         } else {
           console.log("No access token found.");
         }
@@ -344,10 +344,42 @@ const PlaceOrderPage = () => {
     }
   }, [restaurant]);
 
+  useEffect(() => {
+    const handleDeepLink = (event: { url: string }) => {
+      if (event.url.includes("order-success")) {
+        Toast.show("Thanh toán thành công!", {
+          duration: Toast.durations.LONG,
+          textColor: "white",
+          backgroundColor: APP_COLOR.ORANGE,
+          opacity: 1,
+        });
+        setCart(0);
+        router.replace("/(tabs)/");
+      }
+    };
+    const subscription = Linking.addEventListener("url", handleDeepLink);
+    Linking.getInitialURL().then((url) => {
+      if (url && url.includes("order-success")) {
+        Toast.show("Thanh toán thành công!", {
+          duration: Toast.durations.LONG,
+          textColor: "white",
+          backgroundColor: APP_COLOR.ORANGE,
+          opacity: 1,
+        });
+        setCart(0);
+        router.replace("/(tabs)/");
+      }
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+
   const handleSelectAddress = (address: any) => {
     setSelectedAddress(address);
     setModalVisible(false);
-    Toast.show(`Selected Address: ${address.name}`, {
+    Toast.show(`Selected Address: ${address.fullName}`, {
       duration: Toast.durations.LONG,
       textColor: "white",
       backgroundColor: APP_COLOR.ORANGE,
@@ -442,7 +474,7 @@ const PlaceOrderPage = () => {
         {orderItems?.map((item, index) => {
           return (
             <View
-              key={index}
+              key={`${item.productId}-${index}`}
               style={{
                 gap: 10,
                 flexDirection: "row",
@@ -633,9 +665,9 @@ const PlaceOrderPage = () => {
                     Phương thức thanh toán
                   </Text>
                   <View style={styles.dropdown}>
-                    {dropdownItems.map((item) => (
+                    {dropdownItems.map((item, index) => (
                       <Pressable
-                        key={item.id}
+                        key={`${item.id}-${index}`}
                         style={[
                           styles.dropdownItem,
                           selectedOption === item.id &&
@@ -725,9 +757,9 @@ const PlaceOrderPage = () => {
               Chọn địa chỉ giao hàng
             </Text>
             <ScrollView>
-              {addresses.map((address) => (
+              {addresses.map((address: any, index: number) => (
                 <Pressable
-                  key={address.userId}
+                  key={`${address.userId}-${index}`}
                   onPress={() => handleSelectAddress(address)}
                   style={styles.addressItem}
                 >

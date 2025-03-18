@@ -39,7 +39,6 @@ const CustomerLoginPage = () => {
         password: password,
       });
       setLoading(false);
-      console.log(res.data.data);
       if (res.data.data) {
         await AsyncStorage.setItem("access_token", res.data.data.access_token);
         await AsyncStorage.setItem(
@@ -67,7 +66,7 @@ const CustomerLoginPage = () => {
         }
       }
     } catch (error) {
-      console.log(">>> check error: ", error);
+      console.log(">>> check error login: ", error);
       Toast.show("Lỗi khi đăng nhập. Vui lòng thử lại.", {
         duration: Toast.durations.LONG,
         textColor: "white",
