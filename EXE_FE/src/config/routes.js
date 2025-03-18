@@ -14,10 +14,15 @@ const routes = {
         hiring: "/hiring",
         menu: "/menu",
         best: "/best",
-        paymentSuccess: "/order-success",
+        paymentSuccess: "/payment-success",
         checkout: "/checkout",
         user: "/user",
         admin: "/admin",
+    },
+    franchisee: {
+        home: "/franchisee",
+        register: "/franchisee/request",
+        requestForm: "/franchisee/request-form",
     },
     api: {
         loginGoogle: "/api/auth/callback/google/redirect",
