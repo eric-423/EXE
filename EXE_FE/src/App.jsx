@@ -20,6 +20,8 @@ function App() {
                 return;
             }
             setRole((decode.role).toUpperCase())
+            // setRole("ADMIN")
+            console.log('ADMIN')
         } catch (error) {
             console.error('Lỗi khi decode token:', error);
         }
@@ -87,7 +89,7 @@ function App() {
                     <Footer />
                 </>
             )}
-            {window.location.pathname.includes('/admin') && role !== 'ADMIN' && (
+            {window.location.pathname.includes('/admin') || role != 'ADMIN' && (
                 <Navigate to="/404" replace />
             )}
             {role === 'CUSTOMER' && (
