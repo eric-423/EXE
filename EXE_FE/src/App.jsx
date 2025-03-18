@@ -89,7 +89,7 @@ function App() {
                     <Footer />
                 </>
             )}
-            {window.location.pathname.includes('/admin') || role != 'ADMIN' && (
+            {window.location.pathname.includes('/admin') && role != 'ADMIN' && (
                 <Navigate to="/404" replace />
             )}
             {role === 'CUSTOMER' && (
