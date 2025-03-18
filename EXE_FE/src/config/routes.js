@@ -23,7 +23,7 @@ const routes = {
         home: "/franchisee",
         register: "/franchisee/request",
         requestForm: "/franchisee/request-form",
-    }
+    },
     api: {
         loginGoogle: "/api/auth/callback/google/redirect",
     },
