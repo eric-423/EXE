@@ -10,6 +10,7 @@ import InputUI from "../../components/ui/input/InputUI";
 import ButtonUI from "../../components/ui/button/ButtonUI";
 import { FaSearch } from "react-icons/fa";
 import { BASE_URL } from "../../config/api";
+import bannerImage from "/images/bg1.png";
 
 const Menu = () => {
   const [onStoresShow, setOnStoresShow] = useState(false);
@@ -18,15 +19,20 @@ const Menu = () => {
 
   const [productType, setProductType] = useState([]);
   const [page, setPage] = useState(0);
-  const [size, setSize] = useState(10);
+  const [size, setSize] = useState(20);
   const [typeId, setTypeId] = useState(1);
   const [products, setProducts] = useState([]);
+  const [branches, setBranches] = useState([]);
   const [refeshData, setRefeshData] = useState(true);
+  const [branchId, setBranchId] = useState(1);
 
   useEffect(() => {
     fetchProductType();
   }, []);
 
+  useEffect(() => {
+    fetchBranch();
+  }, []);
 
   useEffect(() => {
     if (refeshData) {
@@ -64,6 +70,21 @@ const Menu = () => {
   const setTypeProduct = (id) => {
     setTypeId(id);
     setRefeshData(true);
+  }
+
+  const fetchBranch = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/branches`);
+      const data = await response.json();
+      setBranches(data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const handleBranchId = (id) => {
+    setBranchId(id);
+    localStorage.setItem("branchId", id);
   }
 
   useDocumentTitle("Thực đơn Tấm Tắc");
@@ -154,9 +175,12 @@ const Menu = () => {
                     )}
                   </div>
                 </div>
+
                 <div className=" mb-4 p-3 pt-0">
-                  <MinimizedStoreList />
+                  <MinimizedStoreList branchId={branchId} handleBranchId={handleBranchId} branches={branches} />
+
                 </div>
+
               </Col>
               <Col md={8}>
                 {products ? <ProductList products={products} typeId={typeId} /> : null}
