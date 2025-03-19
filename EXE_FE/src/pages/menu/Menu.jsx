@@ -1,22 +1,14 @@
 import { Col, Tab, Container, Row, Form } from "react-bootstrap";
 import styles from "./Menu.module.css";
 import ProductList from "../../components/menu/product/ProductList";
-import DropdownLocation from "../../components/ui/dropdown/DropdownLocation";
-import { locationDropdown } from "../../config/constant";
-import { useDocumentTitle, useSelectLocation } from "../../hooks";
+import { useDocumentTitle } from "../../hooks";
 import { useEffect, useState } from "react";
 import MinimizedStoreList from "../../components/menu/store/miniStore/MinimizedStoreList";
-import InputUI from "../../components/ui/input/InputUI";
-import ButtonUI from "../../components/ui/button/ButtonUI";
-import { FaSearch } from "react-icons/fa";
 import { BASE_URL } from "../../config/api";
-import bannerImage from "/images/bg1.png";
+import AutoCompleteNearedBranch from "./AutoCompleteNearedBranch";
 
 const Menu = () => {
-  const [onStoresShow, setOnStoresShow] = useState(false);
-  const { cities, city, districts, district, onSelectCity, onSelectDistrict } =
-    useSelectLocation();
-
+  const [onStoresShow, setOnStoresShow] = useState(true);
   const [productType, setProductType] = useState([]);
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(20);
@@ -26,12 +18,39 @@ const Menu = () => {
   const [refeshData, setRefeshData] = useState(true);
   const [branchId, setBranchId] = useState(1);
 
+
+  const [currentLocation, setCurrentLocation] = useState(null);
+  const [location, setLocation] = useState(null);
+
+
+
+  //* ==================== Fetch location ==================== */
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        function (position) {
+          console.log(position)
+          setCurrentLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          });
+        },
+
+      );
+    }
+
+  }, []);
+
+  //* ==================== Fetch location ==================== */
+
   useEffect(() => {
     fetchProductType();
   }, []);
 
   useEffect(() => {
     fetchBranch();
+    localStorage.setItem("branchId", 1);
   }, []);
 
   useEffect(() => {
@@ -136,44 +155,29 @@ const Menu = () => {
                       Danh sách cửa hàng
                     </h6>
                   </div>
+
+
                   <div
                     className={`${styles.smoothTransition} ${onStoresShow ? styles.show : ""
                       } ${styles.rounded} p-2`}
                   >
+
                     {onStoresShow && (
+
                       <Form>
                         <div className={`${styles.rounded} border-bottom`}>
-                          <DropdownLocation
-                            items={cities}
-                            defaultSelected={city?.id}
-                            type={locationDropdown.cities}
-                            style={{ marginBottom: "7px" }}
-                            onSelect={onSelectCity}
-                          />
-                          <DropdownLocation
-                            items={districts}
-                            defaultSelected={district?.id}
-                            type={locationDropdown.districts}
-                            style={{ marginBottom: "7px" }}
-                            onSelect={onSelectDistrict}
-                            className={styles.customDropdown}
-                          />
                           <div className={styles.inputButtonContainer}>
-                            <InputUI
-                              placeholder="Tên khu vực..."
-                              className={styles.customInput}
-                            />
-                            <ButtonUI
-                              variant="secondary"
-                              className={styles.customButton}
-                            >
-                              <FaSearch />
-                            </ButtonUI>
+
+                            <AutoCompleteNearedBranch location={location} setLocation={setLocation} />
+
                           </div>
                         </div>
                       </Form>
+
                     )}
+
                   </div>
+
                 </div>
 
                 <div className=" mb-4 p-3 pt-0">

@@ -37,6 +37,7 @@ const MemberInfo = () => {
         const access = localStorage.getItem('_acc');
         if (!access) {
             console.error('Access token not found');
+
             return;
         }
         try {

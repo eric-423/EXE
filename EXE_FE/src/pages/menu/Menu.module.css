@@ -1,4 +1,6 @@
-@import "../../styles/global.css"; /* Import shared styles */
+@import "../../styles/global.css";
+
+/* Import shared styles */
 /* Menu.module.css */
 .menu-filter p,
 .menu-filter span {
@@ -6,6 +8,7 @@
   color: var(--dark-color);
   font-family: "Playfair Display", serif;
 }
+
 .custom-text-center {
   text-align: center;
 }
@@ -17,33 +20,42 @@
 .custom-width-50 {
   width: 50%;
 }
+
 .hoverEffect {
   transition: 0.3s;
+
   :hover {
     color: var(--primary-color);
     cursor: pointer;
   }
 }
+
 .smoothTransition {
   max-height: 0;
   opacity: 0;
   transition: max-height 0.4s ease-out, opacity 0.3s ease-out;
 }
+
 .customDropdown {
   position: relative;
   display: inline-block;
   width: 100%;
   color: var(--dark-color) !important;
+
   :hover .dropdown-content {
     display: block;
   }
 }
+
 .show {
-  max-height: 800px; /* Adjust based on content height */
+  max-height: 800px;
+  /* Adjust based on content height */
   opacity: 1;
 }
+
 .clickable {
   cursor: pointer;
+
   :hover {
     color: var(--primary-color);
   }
@@ -83,20 +95,45 @@
 }
 
 .customInput {
-  width: 70%;
-  flex: 1; /* Allow the input to take up remaining space */
+  width: 100%;
+  flex: 1;
+  /* Allow the input to take up remaining space */
 }
+
 .inputButtonContainer {
+  margin-top: 1rem;
   display: flex;
   align-items: center;
-  gap: 10px; /* Adjust the gap as needed */
+  gap: 10px;
+  width: 100%;
+
 }
+
+.ahihi {
+  justify-content: space-between;
+}
+
+
 .customButton {
-  height: 100%;
+  height: 2.5rem;
+  width: 3.5rem !important;
+  font-size: 1rem;
   width: auto;
-  padding: 0; /* Match the padding of the input */
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-sizing: border-box; /* Ensure padding is included in the height */
+  box-sizing: border-box;
+  background-color: var(--primary-color) !important;
+  color: white;
+}
+
+.customButton:active {
+  background-color: var(--primary-color) !important;
+  color: white !important;
+}
+
+.customButton:hover {
+  background-color: var(--primary-color) !important;
+  color: white !important;
 }

@@ -113,7 +113,7 @@ const Checkout = () => {
             note: note,
             address: userAddress,
             phoneNumber: phoneNumber,
-            branchId: branchId,
+            branchId: branchId || 1,
             pointUsed: Number(pointUsed),
             pointEarned: calculatedPoints,
             paymentMethodId: paymentMethodId,
