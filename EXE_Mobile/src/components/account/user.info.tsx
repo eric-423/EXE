@@ -1,7 +1,4 @@
 import ShareInput from "@/components/input/share.input";
-import { useCurrentApp } from "@/context/app.context";
-import { updateUserAPI } from "@/utils/api";
-import { APP_COLOR } from "@/utils/constant";
 import { UpdateUserSchema } from "@/utils/validate.schema";
 import { Formik } from "formik";
 import {
@@ -11,11 +8,11 @@ import {
   Platform,
   KeyboardAvoidingView,
   ScrollView,
-  Pressable,
 } from "react-native";
 import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import ShareButton from "../button/share.button";
 
 interface DecodedToken {
   id: number;
@@ -23,17 +20,14 @@ interface DecodedToken {
   address: string;
   phone: string;
 }
-
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 15,
     paddingTop: 50,
   },
 });
-
 const UserInfo = () => {
   const [decodeToken, setDecodeToken] = useState<DecodedToken | null>(null);
-
   useEffect(() => {
     const getAccessToken = async () => {
       try {
@@ -144,28 +138,10 @@ const UserInfo = () => {
                   error={errors.phone}
                   touched={touched.phone}
                 />
-
-                <Pressable
-                  disabled={!(isValid && dirty)}
-                  onPress={handleSubmit as any}
-                  style={({ pressed }) => ({
-                    opacity: pressed === true ? 0.5 : 1,
-                    backgroundColor:
-                      isValid && dirty ? APP_COLOR.ORANGE : APP_COLOR.GREY,
-                    padding: 10,
-                    marginTop: 10,
-                    borderRadius: 3,
-                  })}
-                >
-                  <Text
-                    style={{
-                      textAlign: "center",
-                      color: isValid && dirty ? "white" : "orange",
-                    }}
-                  >
-                    Lưu thay đổi
-                  </Text>
-                </Pressable>
+                <ShareButton
+                  title="Lưu thay đổi"
+                  onPress={() => handleUpdateUser(values.name, values.phone)}
+                />
               </View>
             )}
           </Formik>

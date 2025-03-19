@@ -1,7 +1,6 @@
 import { Redirect, router } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
-import { getAccountAPI } from "@/utils/api";
 import { useCurrentApp } from "@/context/app.context";
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from "expo-font";
@@ -44,7 +43,7 @@ const RootPage = () => {
     prepare();
   }, []);
   if (true) {
-    return <Redirect href={"/(auth)/welcome"} />;
+    return <Redirect href={"/(employee)"} />;
   }
   return <></>;
 };
