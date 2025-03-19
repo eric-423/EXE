@@ -9,6 +9,7 @@ import Checkout from "./../components/checkoutPage/checkout";
 import MemberInfo from "../pages/user/MemberInfo";
 import Admin from "../pages/admin/AdminLayout";
 // import Login from "../pages/login/LoginPage";
+import Location from "../pages/location/Location";
 
 //* ====================  Authorization for PUBLIC ==================== */
 const MainRouter = () => {
@@ -46,6 +47,10 @@ const publicRoutes = {
       path: config.routes.public.admin,
       element: <Admin />,
     },
+    {
+      path: config.routes.public.location,
+      element: <Location />,
+    }
   ],
 };
 

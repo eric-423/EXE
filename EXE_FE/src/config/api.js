@@ -10,3 +10,5 @@ export const API_ROUTES = {
     GET_USER_INFO: "/api/v1/users/get-user-info",
     UPDATE_USER_INFO: "/api/v1/users/update-user-info",
 };
+
+export const GOOGLE_MAPS_API_KEY = "AlzaSyHFPVOzZL4T9QgOEetA40Q3SDQdygGrUzu";

@@ -13,6 +13,10 @@ function App() {
 
     const getRoleUser = () => {
         const access = localStorage.getItem('_acc')
+        if (!access) {
+            setRole("");
+            return;
+        }
         try {
             const decode = jwtDecode(access);
             if (decode.exp < Date.now() / 1000) {
@@ -20,12 +24,10 @@ function App() {
                 return;
             }
             setRole((decode.role).toUpperCase())
-            // setRole("ADMIN")
-            console.log('ADMIN')
         } catch (error) {
             console.error('Lỗi khi decode token:', error);
+            setRole("");
         }
-
     }
 
     useEffect(() => {
@@ -36,6 +38,9 @@ function App() {
         const refresh = localStorage.getItem('_ref');
         if (!refresh) {
             console.error('Refresh token không tồn tại');
+            setRole("");
+            localStorage.removeItem('_acc');
+            localStorage.removeItem('_ref');
             return;
         }
         try {
@@ -53,17 +58,23 @@ function App() {
                 getRoleUser();
             } else {
                 console.error('Không thể làm mới token:', response.statusText);
+                setRole("");
                 localStorage.removeItem('_acc');
                 localStorage.removeItem('_ref');
             }
         } catch (error) {
             console.error('Lỗi khi thực hiện fetch:', error);
+            setRole("");
+            localStorage.removeItem('_acc');
+            localStorage.removeItem('_ref');
         }
     }
 
     useEffect(() => {
         const checkAndRefreshToken = () => {
             const access = localStorage.getItem('_acc');
+            if (!access) return;
+
             try {
                 const decoded = jwtDecode(access);
                 if (decoded.exp < (Date.now() / 1000) + 300) {
@@ -71,6 +82,9 @@ function App() {
                 }
             } catch (error) {
                 console.error('Lỗi khi decode token:', error);
+                setRole("");
+                localStorage.removeItem('_acc');
+                localStorage.removeItem('_ref');
             }
         };
 
@@ -80,52 +94,60 @@ function App() {
         return () => clearInterval(interval);
     }, []);
 
+    const renderContent = () => {
+        switch (role) {
+            case "CUSTOMER":
+                return (
+                    <>
+                        <Header />
+                        <RoutesComponent />
+                        <Footer />
+                    </>
+                );
+            case "ADMIN":
+            case "MANAGER":
+            case "FRANCHISEE_OWNER":
+                return <RoutesComponent />;
+            case "SHIPPER":
+            case "WORKER":
+                return (
+                    <>
+                        <Header />
+                        <RoutesComponent />
+                    </>
+                );
+            default:
+                return (
+                    <>
+                        <Header />
+                        <RoutesComponent />
+                        <Footer />
+                    </>
+                );
+        }
+    }
+
     return (
         <Router>
-            {!role && (
-                <>
-                    <Header />
-                    <RoutesComponent />
-                    <Footer />
-                </>
-            )}
-            {window.location.pathname.includes('/admin') && role != 'ADMIN' && (
+            {window.location.pathname.includes('/admin') && !role && role != 'ADMIN' && (
                 <Navigate to="/404" replace />
             )}
-            {role === 'CUSTOMER' && (
-                <>
-                    <Header />
-                    <RoutesComponent />
-                    <Footer />
-                </>
+            {window.location.pathname.includes('/manager') && !role && role != 'MANAGER' && (
+                <Navigate to="/404" replace />
             )}
-            {role === 'ADMIN' && (
-                <>
-                    <RoutesComponent />
-                </>
+            {window.location.pathname.includes('/franchisee') && !role && role != 'FRANCHISEE_OWNER' && (
+                <Navigate to="/404" replace />
             )}
-            {role === 'MANAGER' && (
-                <>
-                    <RoutesComponent />
-                </>
+            {window.location.pathname.includes('/shipper') && !role && role != 'SHIPPER' && (
+                <Navigate to="/404" replace />
             )}
-            {role === 'FRANCHISEE_OWNER' && (
-                <>
-                    <RoutesComponent />
-                </>
+            {window.location.pathname.includes('/worker') && !role && role != 'WORKER' && (
+                <Navigate to="/404" replace />
             )}
-            {role === 'SHIPPER' && (
-                <>
-                    <Header />
-                    <RoutesComponent />
-                </>
+            {window.location.pathname.includes('/user') && !role && role != 'CUSTOMER' && (
+                <Navigate to="/login" replace />
             )}
-            {role === 'WORKER' && (
-                <>
-                    <Header />
-                    <RoutesComponent />
-                </>
-            )}
+            {renderContent()}
         </Router>
     );
 };

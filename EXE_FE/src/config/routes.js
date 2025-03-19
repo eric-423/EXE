@@ -18,6 +18,7 @@ const routes = {
     checkout: "/checkout",
     user: "/user",
     admin: "/admin",
+    location: "/location",
   },
   franchisee: {
     home: "/franchisee",
