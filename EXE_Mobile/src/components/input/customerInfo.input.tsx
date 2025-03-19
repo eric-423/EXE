@@ -101,7 +101,7 @@ const CustomerInforInput = (props: IProps) => {
     editable = true,
     resetForm = false,
     isBoolean = false,
-    dropdownItems, // Destructure new dropdownItems prop
+    dropdownItems,
   } = props;
 
   useEffect(() => {

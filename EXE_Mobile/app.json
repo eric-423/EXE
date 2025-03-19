@@ -14,7 +14,10 @@
     "ios": {
       "supportsTablet": true,
       "scheme": "hoidanit-app",
-      "bundleIdentifier": "com.hoidanit.app"
+      "bundleIdentifier": "com.hoidanit.app",
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "Sử dụng Face ID để đăng nhập nhanh"
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -22,13 +25,14 @@
         "backgroundColor": "#ffffff"
       },
       "scheme": "hoidanit-app",
-      "package": "com.hoidanit.app"
+      "package": "com.hoidanit.app",
+      "permissions": ["USE_BIOMETRICS"]
     },
     "web": {
       "favicon": "./src/assets/favicon.png"
     },
     "scheme": "hoidanit-app",
-    "plugins": ["expo-router", "expo-font"],
+    "plugins": ["expo-router", "expo-font", "expo-local-authentication"],
     "experiments": {
       "typedRoutes": true
     }

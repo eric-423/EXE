@@ -1,6 +1,6 @@
 export const APP_COLOR = {
   ORANGE: "#FF6B00",
-  YELLOW: "#FFD700",
+  YELLOW: "#FFFACD",
   GREY: "#808080",
   BLACK: "#000000",
   WHITE: "#FFFFFF",
