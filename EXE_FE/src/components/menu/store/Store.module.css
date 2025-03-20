@@ -23,7 +23,7 @@
 }
 
 .content {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   color: var(--dark-color);
   font-family: "Playfair Display", serif;
 }
@@ -32,7 +32,8 @@
   display: flex;
   flex: 0 0 auto;
   /* Flex-grow, flex-shrink, and flex-basis for responsiveness */
-  max-width: 35%;
+  max-width: 32%;
+  height: 100%;
   padding: 5px;
 }
 

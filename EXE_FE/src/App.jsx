@@ -1,48 +1,50 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import { Navigate, BrowserRouter as Router } from "react-router-dom";
 import RoutesComponent from "./routes";
 import Header from "./components/ui/header/Header";
 import Footer from "./components/ui/footer/Footer";
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import { BASE_URL } from "./config/api";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 function App() {
-    const [role, setRole] = useState("");
+    const [role, setRole] = useState(null);
+    useEffect(() => {
+        getRoleUser();
+        console.log("Current role:", role);
+    }, []);
 
-    const getRoleUser = () => {
-        const access = localStorage.getItem('_acc')
+    const getRoleUser = async () => {
+        const access = localStorage.getItem('_acc');
         if (!access) {
-            setRole("");
+            setRole(null);
             return;
         }
+
         try {
-            const decode = jwtDecode(access);
-            if (decode.exp < Date.now() / 1000) {
-                fetchNewToken();
-                return;
+            const decoded = jwtDecode(access);
+            if (decoded.exp < Date.now() / 1000) {
+                await fetchNewToken();
+            } else {
+                setRole(decoded.role);
+                console.log(decoded.role)
             }
-            setRole((decode.role).toUpperCase())
         } catch (error) {
             console.error('Lỗi khi decode token:', error);
-            setRole("");
+            clearTokens();
         }
-    }
-
-    useEffect(() => {
-        getRoleUser()
-    }, [])
+    };
 
     const fetchNewToken = async () => {
         const refresh = localStorage.getItem('_ref');
         if (!refresh) {
             console.error('Refresh token không tồn tại');
-            setRole("");
-            localStorage.removeItem('_acc');
-            localStorage.removeItem('_ref');
+            clearTokens();
             return;
         }
+
+
         try {
             const response = await fetch(`${BASE_URL}/token/refresh?token=${refresh}`, {
                 method: 'POST',
@@ -51,105 +53,86 @@ function App() {
                 }
             });
 
-            if (response.ok) {
-                const data = await response.json();
-                localStorage.setItem('_acc', data.access_token);
-                localStorage.setItem('_ref', data.refresh_token);
-                getRoleUser();
-            } else {
-                console.error('Không thể làm mới token:', response.statusText);
-                setRole("");
-                localStorage.removeItem('_acc');
-                localStorage.removeItem('_ref');
+            if (!response.ok) {
+                throw new Error(`Không thể làm mới token: ${response.statusText}`);
             }
+
+            const data = await response.json();
+            localStorage.setItem('_acc', data.access_token);
+            localStorage.setItem('_ref', data.refresh_token);
+            const decoded = jwtDecode(data.access_token);
+            setRole(decoded.role);
         } catch (error) {
             console.error('Lỗi khi thực hiện fetch:', error);
-            setRole("");
-            localStorage.removeItem('_acc');
-            localStorage.removeItem('_ref');
+            clearTokens();
         }
-    }
+    };
+
+    const clearTokens = () => {
+        setRole(null);
+        localStorage.removeItem('_acc');
+        localStorage.removeItem('_ref');
+    };
 
     useEffect(() => {
-        const checkAndRefreshToken = () => {
+        const checkAndRefreshToken = async () => {
             const access = localStorage.getItem('_acc');
             if (!access) return;
-
             try {
                 const decoded = jwtDecode(access);
                 if (decoded.exp < (Date.now() / 1000) + 300) {
-                    fetchNewToken();
+                    await fetchNewToken();
                 }
             } catch (error) {
                 console.error('Lỗi khi decode token:', error);
-                setRole("");
-                localStorage.removeItem('_acc');
-                localStorage.removeItem('_ref');
+                clearTokens();
             }
         };
 
         checkAndRefreshToken();
         const interval = setInterval(checkAndRefreshToken, 1 * 60 * 1000);
-
         return () => clearInterval(interval);
     }, []);
 
-    const renderContent = () => {
-        switch (role) {
-            case "CUSTOMER":
-                return (
-                    <>
-                        <Header />
-                        <RoutesComponent />
-                        <Footer />
-                    </>
-                );
-            case "ADMIN":
-            case "MANAGER":
-            case "FRANCHISEE_OWNER":
-                return <RoutesComponent />;
-            case "SHIPPER":
-            case "WORKER":
-                return (
-                    <>
-                        <Header />
-                        <RoutesComponent />
-                    </>
-                );
-            default:
-                return (
-                    <>
-                        <Header />
-                        <RoutesComponent />
-                        <Footer />
-                    </>
-                );
-        }
-    }
+
+
+    const CustomerLayout = () => (
+        <>
+            <Header />
+            <RoutesComponent />
+            <Footer />
+        </>
+    );
+
+
 
     return (
-        <Router>
-            {window.location.pathname.includes('/admin') && !role && role != 'ADMIN' && (
-                <Navigate to="/404" replace />
-            )}
-            {window.location.pathname.includes('/manager') && !role && role != 'MANAGER' && (
-                <Navigate to="/404" replace />
-            )}
-            {window.location.pathname.includes('/franchisee') && !role && role != 'FRANCHISEE_OWNER' && (
-                <Navigate to="/404" replace />
-            )}
-            {window.location.pathname.includes('/shipper') && !role && role != 'SHIPPER' && (
-                <Navigate to="/404" replace />
-            )}
-            {window.location.pathname.includes('/worker') && !role && role != 'WORKER' && (
-                <Navigate to="/404" replace />
-            )}
-            {window.location.pathname.includes('/user') && !role && role != 'CUSTOMER' && (
-                <Navigate to="/login" replace />
-            )}
-            {renderContent()}
-        </Router>
+        <BrowserRouter>
+            {/* <Routes>
+                {
+                    (role == null || role == undefined || role == 'CUSTOMER') &&
+                    (
+                        <Route path="/*" element={<CustomerLayout />} />
+                    )
+                }
+
+                {role == 'MANAGER' && <Route path="/manager/*" element={<RoutesComponent />} />}
+                {role == 'FRANCHISEE_OWNER' && <Route path="/franchisee/*" element={<RoutesComponent />} />}
+                {role == 'SHIPPER' && <Route path="/shipper/*" element={<RoutesComponent />} />}
+                {role == 'WORKER' && <Route path="/worker/*" element={<RoutesComponent />} />}
+
+                {role && role != 'CUSTOMER' && <Route path="/user/*" element={<Navigate to="/login" replace />} />}
+
+                {
+                    role == 'ADMIN' && <Route path="/admin/*" element={<RoutesComponent />} />
+                }
+
+                <Route path="*" element={<Navigate to="/404" replace />} />
+            </Routes> */}
+            <RoutesComponent />
+
+        </BrowserRouter>
     );
-};
+}
 
 export default App;
