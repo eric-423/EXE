@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Text, View, Alert, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Marker, Polyline } from "react-native-maps";
 import * as Location from "expo-location";
 import { jwtDecode } from "jwt-decode";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import { BASE_URL } from "@/utils/constant";
+import { APP_COLOR, BASE_URL } from "@/utils/constant";
+
 const OrderPage = () => {
   const [location, setLocation] = useState<Location.LocationObject | null>(
     null
@@ -15,7 +16,10 @@ const OrderPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [decodeToken, setDecodeToken] = useState<any>("");
+
   const [shipAddress, setShipAddress] = useState("");
+  const [routeCoordinates, setRouteCoordinates] = useState<any[]>([]); // Lưu tọa độ đường đi
+
   const getAddressFromCoords = async (lat: number, lng: number) => {
     try {
       const response = await fetch(
@@ -29,6 +33,7 @@ const OrderPage = () => {
       console.error("Error fetching address:", error);
     }
   };
+
   useEffect(() => {
     const getAccessToken = async () => {
       try {
@@ -36,10 +41,25 @@ const OrderPage = () => {
         if (token) {
           const decoded = jwtDecode(token);
           setDecodeToken(decoded.id);
-          const shipAddress = axios.get(
+          const shipAddressResponse = await axios.get(
             `${BASE_URL}/orders/shipper/${decodeToken}?page=0&size=10&statusId=2`
           );
-          setShipAddress((await shipAddress).data.data.content[0].address);
+          const shipAddress = shipAddressResponse.data.data.content[0].address;
+          setShipAddress(shipAddress);
+
+          // Gọi API lấy chỉ dẫn đường
+          const directionResponse = await axios.get(
+            `https://maps.gomaps.pro/maps/api/directions/json?destination=${shipAddress}&origin=${address}&key=AlzaSyNOiNuM9dYaAZxahUvMvBOIjx4xyOSi3yr`
+          );
+          const directionsData = directionResponse.data.routes[0].legs[0].steps;
+
+          // Lấy các tọa độ từ API directions
+          const coordinates = directionsData.map((step: any) => ({
+            latitude: step.end_location.lat,
+            longitude: step.end_location.lng,
+          }));
+
+          setRouteCoordinates(coordinates);
         } else {
           console.log("No access token found.");
         }
@@ -48,7 +68,8 @@ const OrderPage = () => {
       }
     };
     getAccessToken();
-  }, []);
+  }, [decodeToken, address]);
+
   useEffect(() => {
     const getLocation = async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -65,6 +86,7 @@ const OrderPage = () => {
     };
     getLocation();
   }, []);
+
   let text = "Waiting...";
   if (errorMsg) {
     text = errorMsg;
@@ -114,6 +136,13 @@ const OrderPage = () => {
                 title="Vị trí của bạn"
                 description={address}
               />
+              {routeCoordinates.length > 0 && (
+                <Polyline
+                  coordinates={routeCoordinates}
+                  strokeColor={APP_COLOR.ORANGE}
+                  strokeWidth={4}
+                />
+              )}
             </MapView>
           </View>
         )}
