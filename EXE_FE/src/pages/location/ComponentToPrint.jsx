@@ -1,10 +1,12 @@
-// ComponentToPrint.jsx
-import React from 'react';
+import * as React from "react";
 
-const ComponentToPrint =
 
-() => {
-    return <div>ComponentToPrint</div>;
-};
+export const ComponentToPrint = React.forwardRef((props, ref) => {
+    return (
+        <div ref={ref}>
+            ccc
+        </div>
+    );
+});
 
-export default ComponentToPrint;
+ComponentToPrint.displayName = "ComponentToPrint";

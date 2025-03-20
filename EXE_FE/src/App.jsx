@@ -1,32 +1,34 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import RoutesComponent from "./routes";
 import Header from "./components/ui/header/Header";
 import Footer from "./components/ui/footer/Footer";
 import { useEffect, useState } from "react";
-import { jwtDecode } from "jwt-decode"; // Import đúng cách
+import { jwtDecode } from "jwt-decode";
 import { BASE_URL } from "./config/api";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 function App() {
     const [role, setRole] = useState(null);
-
     useEffect(() => {
         getRoleUser();
+        console.log("Current role:", role);
     }, []);
 
-    const getRoleUser = () => {
+    const getRoleUser = async () => {
         const access = localStorage.getItem('_acc');
         if (!access) {
             setRole(null);
             return;
         }
+
         try {
             const decoded = jwtDecode(access);
             if (decoded.exp < Date.now() / 1000) {
-                fetchNewToken();
+                await fetchNewToken();
             } else {
-                setRole(decoded.role ? decoded.role.toUpperCase() : '');
+                setRole(decoded.role);
+                console.log(decoded.role)
             }
         } catch (error) {
             console.error('Lỗi khi decode token:', error);
@@ -41,6 +43,8 @@ function App() {
             clearTokens();
             return;
         }
+
+
         try {
             const response = await fetch(`${BASE_URL}/token/refresh?token=${refresh}`, {
                 method: 'POST',
@@ -48,13 +52,16 @@ function App() {
                     'Content-Type': 'application/json'
                 }
             });
+
             if (!response.ok) {
                 throw new Error(`Không thể làm mới token: ${response.statusText}`);
             }
+
             const data = await response.json();
             localStorage.setItem('_acc', data.access_token);
             localStorage.setItem('_ref', data.refresh_token);
-            getRoleUser();
+            const decoded = jwtDecode(data.access_token);
+            setRole(decoded.role);
         } catch (error) {
             console.error('Lỗi khi thực hiện fetch:', error);
             clearTokens();
@@ -68,14 +75,13 @@ function App() {
     };
 
     useEffect(() => {
-        const checkAndRefreshToken = () => {
+        const checkAndRefreshToken = async () => {
             const access = localStorage.getItem('_acc');
             if (!access) return;
             try {
                 const decoded = jwtDecode(access);
-                // Nếu token sắp hết hạn trong vòng 5 phút thì refresh
                 if (decoded.exp < (Date.now() / 1000) + 300) {
-                    fetchNewToken();
+                    await fetchNewToken();
                 }
             } catch (error) {
                 console.error('Lỗi khi decode token:', error);
@@ -88,38 +94,44 @@ function App() {
         return () => clearInterval(interval);
     }, []);
 
-    return (
-        <Router>
+
+
+    const CustomerLayout = () => (
+        <>
             <Header />
-            <Routes>
+            <RoutesComponent />
+            <Footer />
+        </>
+    );
+
+
+
+    return (
+        <BrowserRouter>
+            {/* <Routes>
                 {
-                    (role === '' || role === null) && (
-                        <Route path={"/*"} element={<RoutesComponent />} />
+                    (role == null || role == undefined || role == 'CUSTOMER') &&
+                    (
+                        <Route path="/*" element={<CustomerLayout />} />
                     )
                 }
 
-                {role === 'MANAGER' && <Route path="/manager/*" element={<RoutesComponent />} />}
-                {role === 'FRANCHISEE_OWNER' && <Route path="/franchisee/*" element={<RoutesComponent />} />}
-                {role === 'SHIPPER' && <Route path="/shipper/*" element={<RoutesComponent />} />}
-                {role === 'WORKER' && <Route path="/worker/*" element={<RoutesComponent />} />
+                {role == 'MANAGER' && <Route path="/manager/*" element={<RoutesComponent />} />}
+                {role == 'FRANCHISEE_OWNER' && <Route path="/franchisee/*" element={<RoutesComponent />} />}
+                {role == 'SHIPPER' && <Route path="/shipper/*" element={<RoutesComponent />} />}
+                {role == 'WORKER' && <Route path="/worker/*" element={<RoutesComponent />} />}
+
+                {role && role != 'CUSTOMER' && <Route path="/user/*" element={<Navigate to="/login" replace />} />}
+
+                {
+                    role == 'ADMIN' && <Route path="/admin/*" element={<RoutesComponent />} />
                 }
 
-                {role === 'CUSTOMER' ? (
-                    <Route path="/user/*" element={<RoutesComponent />} />
-                ) : (
-                    <Route path="/user/*" element={<Navigate to="/login" replace />} />
-                )}
-
-                {role === 'ADMIN' ? (
-                    <Route path="/admin/*" element={<RoutesComponent />} />
-                ) : (
-                    <Route path="/admin/*" element={<Navigate to="/404" replace />} />
-                )}
-
                 <Route path="*" element={<Navigate to="/404" replace />} />
-            </Routes>
-            <Footer />
-        </Router>
+            </Routes> */}
+            <RoutesComponent />
+
+        </BrowserRouter>
     );
 }
 

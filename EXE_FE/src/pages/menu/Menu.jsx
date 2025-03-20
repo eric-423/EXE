@@ -46,7 +46,6 @@ const Menu = () => {
       const response = await fetch(`${BASE_URL}/branches/distance?destination=${defaultLocation}`);
       const data = await response.json();
       setBranches(data.data);
-      console.log(data.data)
     } catch (error) {
       console.log(error);
     }
