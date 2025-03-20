@@ -44,7 +44,7 @@ interface IDetails {
   quantity: number;
 }
 const PlaceOrderPage = () => {
-  const { restaurant, cart, setCart } = useCurrentApp();
+  const { restaurant, cart, setCart, locationReal } = useCurrentApp();
   const [orderItems, setOrderItems] = useState<IOrderItem[]>([]);
   const [decodeToken, setDecodeToken] = useState<any>("");
   const [modalVisible, setModalVisible] = useState(false);
@@ -762,7 +762,13 @@ const PlaceOrderPage = () => {
                 >
                   <View>
                     <Text style={styles.textNameInfor}>{address.fullName}</Text>
-                    <Text style={styles.textNameInfor}>{address.address}</Text>
+                    {locationReal ? (
+                      <Text style={styles.textInfor}>{locationReal}</Text>
+                    ) : (
+                      <Text style={styles.textNameInfor}>
+                        {address.address}
+                      </Text>
+                    )}
                   </View>
                   <Text style={styles.textInfor}>{address.phone}</Text>
                 </Pressable>

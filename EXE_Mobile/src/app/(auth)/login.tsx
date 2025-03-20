@@ -3,9 +3,10 @@ import SocialButton from "@/components/button/social.button";
 import ShareInput from "@/components/input/share.input";
 import { useCurrentApp } from "@/context/app.context";
 import { loginAPI } from "@/utils/api";
-import { APP_COLOR } from "@/utils/constant";
+import { APP_COLOR, BASE_URL } from "@/utils/constant";
 import { LoginSchema } from "@/utils/validate.schema";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 import { Link, router } from "expo-router";
 import { Formik } from "formik";
 import { useState } from "react";
@@ -25,26 +26,34 @@ const LoginPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const { setAppState } = useCurrentApp();
 
-  const handleLogin = async (email: string, password: string) => {
+  const handleLoginShipper = async (email: string, password: string) => {
     try {
       setLoading(true);
-      const res = await loginAPI(email, password);
+      const res = await axios.post(
+        `${BASE_URL}/users/signin?email=${email}&password=${password}`,
+        {
+          email: email,
+          password: password,
+        }
+      );
       setLoading(false);
-      if (res.data) {
-        await AsyncStorage.setItem("access_token", res.data.access_token);
-        setAppState(res.data);
-        router.replace("/(tabs)");
+      if (res.data.data) {
+        await AsyncStorage.setItem("access_token", res.data.data.access_token);
+        await AsyncStorage.setItem(
+          "refresh_token",
+          res.data.data.refresh_token
+        );
+        setAppState(res.data.data);
+        router.replace("/(employee)");
       } else {
-        const m = Array.isArray(res.message) ? res.message[0] : res.message;
-
-        Toast.show(m, {
+        Toast.show("Lỗi khi đăng nhập", {
           duration: Toast.durations.LONG,
           textColor: "white",
           backgroundColor: APP_COLOR.ORANGE,
           opacity: 1,
         });
 
-        if (res.statusCode === 400) {
+        if (res.status === 400) {
           router.replace({
             pathname: "/(auth)/verify",
             params: { email: email, isLogin: 1 },
@@ -52,7 +61,13 @@ const LoginPage = () => {
         }
       }
     } catch (error) {
-      console.log(">>> check error: ", error);
+      setLoading(false);
+      Toast.show("Lỗi hệ thống. Vui lòng thử lại.", {
+        duration: Toast.durations.LONG,
+        textColor: "white",
+        backgroundColor: APP_COLOR.ORANGE,
+        opacity: 1,
+      });
     }
   };
 
@@ -61,7 +76,7 @@ const LoginPage = () => {
       <Formik
         validationSchema={LoginSchema}
         initialValues={{ email: "", password: "" }}
-        onSubmit={(values) => handleLogin(values.email, values.password)}
+        onSubmit={(values) => console.log(values.email, values.password)}
       >
         {({
           handleChange,
@@ -118,7 +133,7 @@ const LoginPage = () => {
             <ShareButton
               loading={loading}
               title="Đăng Nhập"
-              onPress={handleSubmit as any}
+              onPress={() => handleLoginShipper(values.email, values.password)}
               textStyle={{
                 textTransform: "uppercase",
                 color: "#fff",
@@ -133,35 +148,6 @@ const LoginPage = () => {
               }}
               pressStyle={{ alignSelf: "stretch" }}
             />
-
-            <View
-              style={{
-                marginVertical: 15,
-                flexDirection: "row",
-                gap: 10,
-                justifyContent: "center",
-              }}
-            >
-              <Text
-                style={{
-                  color: APP_COLOR.BLACK,
-                }}
-              >
-                Chưa có tài khoản?
-              </Text>
-              <Link href={"/(auth)/signup"}>
-                <Text
-                  style={{
-                    color: APP_COLOR.ORANGE,
-                    textDecorationLine: "underline",
-                  }}
-                >
-                  Đăng ký.
-                </Text>
-              </Link>
-            </View>
-
-            <SocialButton title="Đăng nhập với" />
           </View>
         )}
       </Formik>

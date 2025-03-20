@@ -101,7 +101,7 @@ const RootLayout = () => {
                 options={{ headerShown: false }}
               />
               <Stack.Screen
-                name="(auth)/forgot.password"
+                name="(auth)/employee.login"
                 options={{ headerShown: false }}
               />
               <Stack.Screen

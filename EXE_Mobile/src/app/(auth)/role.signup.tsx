@@ -7,7 +7,6 @@ import { LinearGradient } from "expo-linear-gradient";
 import logo from "@/assets/logo.png";
 import { FONTS, typography } from "@/theme/typography";
 import TextBetweenLine from "@/components/button/text.between.line";
-import Ionicons from "@expo/vector-icons/Ionicons";
 const styles = StyleSheet.create({
   container: {
     flex: 1,

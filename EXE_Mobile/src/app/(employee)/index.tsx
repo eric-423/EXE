@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Calendar } from "react-native-calendars";
 import EmployeeHeader from "@/components/employee/topheader.employee";
@@ -6,8 +6,11 @@ import ShareButton from "@/components/button/share.button";
 import { FONTS } from "@/theme/typography";
 import { APP_COLOR } from "@/utils/constant";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { jwtDecode } from "jwt-decode";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const HomePage = () => {
   const today = new Date();
+  const [decodeToken, setDecodeToken] = useState<any>("");
   const currentDate = today.toISOString().split("T")[0];
   const styles = StyleSheet.create({
     textStyle: {
@@ -21,8 +24,23 @@ const HomePage = () => {
       width: 150,
     },
   });
+  useEffect(() => {
+    const getAccessToken = async () => {
+      try {
+        const token = await AsyncStorage.getItem("access_token");
+        if (token) {
+          const decoded = jwtDecode(token);
+          setDecodeToken(decoded);
+        } else {
+          console.log("No access token found.");
+        }
+      } catch (error) {
+        console.error("Error retrieving access token:", error);
+      }
+    };
+    getAccessToken();
+  }, []);
   const test = ["2025-03-19", "2025-03-21"];
-
   type taskDate = {
     marked: boolean;
     selectedTextColor: string;
@@ -71,9 +89,6 @@ const HomePage = () => {
     ...initializeMarkedDates(),
     ...markedDates,
   };
-  const sortedDates = Object.keys(combinedMarkedDates).sort(
-    (a, b) => new Date(a).getTime() - new Date(b).getTime()
-  );
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View
@@ -84,9 +99,10 @@ const HomePage = () => {
       >
         <View>
           <EmployeeHeader
-            employeeName="Minz"
-            employeeCode="123456"
-            branchName="Tam Tac NVH"
+            employeeName={decodeToken.name}
+            employeeCode={decodeToken.id}
+            employeeAddress={decodeToken.address}
+            employeePhone={decodeToken.phone}
           />
         </View>
         <Calendar

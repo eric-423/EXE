@@ -1,7 +1,7 @@
 import ShareButton from "@/components/button/share.button";
 import SocialButton from "@/components/button/social.button";
 import ShareInput from "@/components/input/share.input";
-import { APP_COLOR, APP_FONT } from "@/utils/constant";
+import { APP_COLOR } from "@/utils/constant";
 import { CustomerSignUpSchema } from "@/utils/validate.schema";
 import axios from "axios";
 import { Link, router } from "expo-router";
@@ -30,7 +30,7 @@ const handleSignUp = async (phoneNumber: string) => {
       const generateCodeResponse = await axios.post(
         `${BASE_URL}/verify-code/send?mode=${phoneNumber}`,
         {
-          phoneNumber: phoneNumber
+          phoneNumber: phoneNumber,
         }
       );
       if (generateCodeResponse.data) {

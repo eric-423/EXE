@@ -4,7 +4,6 @@ import {
   StyleSheet,
   ImageBackground,
   Image,
-  Pressable,
   Alert,
 } from "react-native";
 import ShareButton from "components/button/share.button";
@@ -113,9 +112,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const WelcomePage = () => {
+const EmployeeWelcomePage = () => {
   const { setAppState } = useCurrentApp();
-  const [state, setState] = useState<any>();
   useEffect(() => {
     async function prepare() {
       try {
@@ -173,7 +171,7 @@ const WelcomePage = () => {
             <Image style={styles.imgLogo} source={logo} />
             <View style={styles.textBackground}></View>
             <Text style={styles.heading}>Tấm Tắc</Text>
-            <Text style={styles.body}>Xin chào.</Text>
+            <Text style={styles.body}>Giao hàng.</Text>
           </View>
 
           <View style={styles.welcomeBtn}>
@@ -181,11 +179,10 @@ const WelcomePage = () => {
               title="Đăng nhập với"
               textStyle={typography.bodyMedium}
             />
-
             <ShareButton
-              title="Số điện thoại"
+              title="Email"
               onPress={() => {
-                router.navigate("/(auth)/customer.login");
+                router.navigate("/(auth)/login");
               }}
               textStyle={styles.loginBtnText}
               btnStyle={styles.loginBtnFast}
@@ -219,4 +216,4 @@ const WelcomePage = () => {
   );
 };
 
-export default WelcomePage;
+export default EmployeeWelcomePage;
