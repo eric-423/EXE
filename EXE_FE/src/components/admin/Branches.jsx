@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Filter } from "lucide-react";
 import BranchInfo from "./BranchInfo";
 import DocumentCard from "./DocumentCard";
 import RequestTable from "./RequestTable";
 import ListBranch from "./ListBranch";
+import { BASE_URL } from "../../config/api";
 
 function Branches() {
     const [activeMenu, setActiveMenu] = useState('thongtin');
@@ -230,6 +231,27 @@ function Branches() {
         },
     ];
 
+    const [order, setOrder] = useState([]);
+
+    useEffect(() => {
+        fetchOrder();
+    }, []);
+
+
+    const fetchOrder = async () => {
+        try {
+            const response = await fetch(`${BASE_URL}/order/get-all-order`);
+            const data = await response.json();
+            setOrder(data);
+            console.log(data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
+
+
 
     const renderContent = () => {
         switch (activeMenu) {
@@ -251,7 +273,6 @@ function Branches() {
                 return null;
         }
     };
-    console.log(activeMenu);
 
 
     return (

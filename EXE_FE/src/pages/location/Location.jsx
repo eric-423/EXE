@@ -1,120 +1,103 @@
-import { Row, Col, Container } from "react-bootstrap";
-import { useEffect, useState } from "react";
-import { AutoCompleteLocation } from "./AutoCompleteLocation";
-import { GOOGLE_MAPS_API_KEY } from "../../config/api";
+import * as React from "react";
+
+
+
 const Location = () => {
-  const [currentLocation, setCurrentLocation] = useState(null);
-  const [addressCoords, setAddressCoords] = useState(null);
+  // const componentRef = React.useRef(null);
 
-  useEffect(() => {
-    // Lấy vị trí hiện tại
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        function (position) {
-          console.log(position)
-          setCurrentLocation({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          });
-        },
+  // const handleAfterPrint = React.useCallback(() => {
+  //   console.log("`onAfterPrint` called");
+  //   window.dispatchEvent(new KeyboardEvent('keydown', {
+  //     key: 'Enter',
+  //     code: 'Enter',
+  //     bubbles: true
+  //   }));
+  // }, []);
 
-      );
-    }
+  // const handleBeforePrint = React.useCallback(() => {
+  //   console.log("`onBeforePrint` called");
+  //   return Promise.resolve();
+  // }, []);
 
-  }, []);
+  // const printFn = useReactToPrint({
+  //   contentRef: componentRef,
+  //   onAfterPrint: handleAfterPrint,
+  //   onBeforePrint: handleBeforePrint,
+  // });
 
-  useEffect(() => {
-    if (!currentLocation) return;
-
-    const loadGoogleMaps = () => {
-      const script = document.createElement("script");
-      script.src = `https://maps.gomaps.pro/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places`;
-      script.async = true;
-      script.defer = true;
-      script.onload = initMap;
-      document.head.appendChild(script);
-      return () => {
-        document.head.removeChild(script);
-      };
-    };
-
-    const initMap = () => {
-      const mapElement = document.getElementById("map");
-      if (mapElement) {
-        const map = new window.google.maps.Map(mapElement, {
-          center: currentLocation,
-          zoom: 13,
-        });
-        // || { lat: 10.8230989, lng: 106.6296638 }
-        new window.google.maps.Marker({
-          position: currentLocation,
-          map: map,
-          title: "Vị trí của bạn"
-        });
-      }
-    };
-
-    loadGoogleMaps();
-  }, [currentLocation]);
+  // return (
+  //   <div>
+  //     <button onClick={printFn}>Print</button>
+  //     <ComponentToPrint ref={componentRef} />
+  //   </div>
+  // );
 
 
+  const pdfUrl = "https://storage.googleapis.com/download/storage/v1/b/four-gems.appspot.com/o/11-Thu%20Mar%2020%2016:03:54%20ICT%202025.pdf?generation=1742461437063307&alt=media";
 
-  // tìm vj trí
+  // const handlePrintPDF = async () => {
+  //   try {
+  //     // Tải PDF từ URL
+  //     const response = await fetch(pdfUrl);
+  //     const blob = await response.blob();
 
-  // Utility function
-  const geocodeAddress = async (address) => {
+  //     // Tạo URL object từ blob
+  //     const pdfObjectUrl = URL.createObjectURL(blob);
+
+  //     // Mở PDF trong tab mới
+  //     const printWindow = window.open(pdfObjectUrl);
+
+
+  //     printWindow.onload = () => {
+  //       // In trực tiếp với cài đặt mặc định của máy in
+  //       printWindow.print({
+  //         silent: true, // Bỏ qua hộp thoại cài đặt in
+  //         printBackground: false, // In cả background
+  //         key: 'Enter'
+
+  //       });
+
+  //       setTimeout(() => {
+  //         printWindow.close();
+  //         URL.revokeObjectURL(pdfObjectUrl);
+  //       }, 1000);
+  //     };
+
+  //   } catch (error) {
+  //     console.error("Lỗi khi tải và in PDF:", error);
+  //   }
+  // };
+
+  const handlePrintPDF = async () => {
     try {
-      const response = await fetch(
-        `https://maps.gomaps.pro/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${GOOGLE_MAPS_API_KEY}`
-      );
+      const response = await fetch(pdfUrl);
+      const blob = await response.blob();
+      const pdfObjectUrl = URL.createObjectURL(blob);
 
-      const data = await response.json();
+      const printWindow = window.open(pdfObjectUrl, '_blank', 'width=800,height=600');
 
-      if (data.status === 'OK') {
-        return data.results[0].geometry.location;
+      if (printWindow) {
+        printWindow.addEventListener('load', function () {
+          try {
+            printWindow.focus();
+            printWindow.print();
+          } catch (err) {
+            console.error("Lỗi khi in:", err);
+            printWindow.close();
+          }
+        });
       }
-      throw new Error(data.error_message || 'Geocoding failed');
     } catch (error) {
-      console.error('Geocoding error:', error);
-      return null;
+      console.error("Lỗi khi tải PDF:", error);
     }
   };
 
-
-  useEffect(() => {
-    const fetchCoords = async () => {
-      const coords = await geocodeAddress('1600 Amphitheatre Parkway, Mountain View, CA');
-      if (coords) setAddressCoords(coords);
-    };
-    fetchCoords();
-  }, []);
-
-  const handleSelect = (place) => {
-    console.log("Địa điểm đã chọn:", place);
-  };
 
 
   return (
-    <section className="section mt-5 pb-5">
-      <Container>
-        <Row>
-          <Col md={12} className="text-center pb-5">
-            <h2 className="mb-5">Vị trí của chúng tôi</h2>
-            <div
-              id="map"
-              style={{ height: "40rem", width: "100%" }}
-            ></div>
-
-            <div style={{ padding: "20px" }}>
-              <h2>Google Places Autocomplete API</h2>
-              <AutoCompleteLocation onSelect={handleSelect} />
-            </div>
-
-
-          </Col>
-        </Row>
-      </Container>
-    </section>
+    <div>
+      <button onClick={handlePrintPDF}>In file PDF</button>
+    </div>
   );
 };
 

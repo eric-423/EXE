@@ -1,6 +1,45 @@
 import { PropTypes } from 'prop-types';
+import PrintIcon from '@mui/icons-material/Print';
+const fakeUrl = "https://storage.googleapis.com/download/storage/v1/b/four-gems.appspot.com/o/11-Thu%20Mar%2020%2016:03:54%20ICT%202025.pdf?generation=1742461437063307&alt=media"
+
+import { useReactToPrint } from 'react-to-print';
+import { useRef } from 'react';
+
 
 const RequestTable = ({ requests }) => {
+
+    const handlePrintPDF = async (pdfUrl) => {
+        const fakeUrl = "https://storage.googleapis.com/download/storage/v1/b/four-gems.appspot.com/o/11-Thu%20Mar%2020%2016:03:54%20ICT%202025.pdf?generation=1742461437063307&alt=media"
+        try {
+            const response = await fetch(fakeUrl);
+            const blob = await response.blob();
+            const pdfObjectUrl = URL.createObjectURL(blob);
+
+            const screenWidth = window.screen.width;
+            const screenHeight = window.screen.height;
+            const windowWidth = 900;
+            const windowHeight = 600;
+            const left = (screenWidth - windowWidth) / 2;
+            const top = (screenHeight - windowHeight) / 2;
+            const printWindow = window.open(pdfObjectUrl, '_blank', `width=${windowWidth},height=${windowHeight},left=${left},top=${top}`);
+
+            if (printWindow) {
+                printWindow.addEventListener('load', function () {
+                    try {
+                        printWindow.focus();
+                        printWindow.print();
+                    } catch (err) {
+                        console.error("Lỗi khi in:", err);
+                        printWindow.close();
+                    }
+                });
+            }
+        } catch (error) {
+            console.error("Lỗi khi tải PDF:", error);
+        }
+    };
+
+
     return (
         <div className="container my-4">
             <div className="row g-4">
@@ -15,12 +54,20 @@ const RequestTable = ({ requests }) => {
                                 padding: "1.5rem",
                             }}
                         >
-                            <span
-                                className="badge bg-warning text-white position-absolute  "
-                                style={{ top: "10px", right: "10px", height: "2.7rem", display: "flex", alignItems: "center", justifyContent: "center" }}
+
+                            <button className='position-absolute top-0 end-0 border-0 bg-transparent' onClick={handlePrintPDF}>
+                                <PrintIcon style={{ width: "2rem", height: "2rem" }} />
+                            </button>
+
+                            <div
+                                style={{
+                                    display: 'none',
+                                }}
+                                ref={req.url}
                             >
-                                {req.badge}
-                            </span>
+                                {req.url}
+                            </div>
+
 
                             <h6 className="fw-bold mt-2">{req.title}</h6>
                             <p className="mb-1">{req.sender}</p>

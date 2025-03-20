@@ -11,13 +11,14 @@ const MinimizedStoreList = ({ branchId, branches, handleBranchId }) => {
     <div className={`${styles.listContainer}`}>
       {branches.map((branch) => (
         < MinimizedStore
-          key={branch.id}
+          key={branch.branch.id}
+          distance={branch.distance}
           image={bannerImage}
           store={{
-            id: branch.id,
-            name: branch.name,
-            address: branch.address,
-            phone: branch.phone
+            id: branch.branch.id,
+            name: branch.branch.name,
+            address: branch.branch.address,
+            phone: branch.branch.phone
           }}
           handleBranchId={handleBranchId}
           branchId={branchId}
