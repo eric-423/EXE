@@ -22,7 +22,7 @@ ButtonUI.propTypes = {
 
 ButtonUI.defaultProps = {
   variant: "primary",
-  onClick: () => {},
+  onClick: () => { },
   className: "",
 };
 

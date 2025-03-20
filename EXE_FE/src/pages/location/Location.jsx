@@ -1,10 +1,14 @@
 import { Row, Col, Container } from "react-bootstrap";
-import { useEffect, useState } from "react";
-import { AutoCompleteLocation } from "./AutoCompleteLocation";
+import { useEffect, useRef, useState } from "react";
 import { GOOGLE_MAPS_API_KEY } from "../../config/api";
+
 const Location = () => {
+
   const [currentLocation, setCurrentLocation] = useState(null);
   const [addressCoords, setAddressCoords] = useState(null);
+
+
+
 
   useEffect(() => {
     // Lấy vị trí hiện tại
@@ -89,11 +93,6 @@ const Location = () => {
     fetchCoords();
   }, []);
 
-  const handleSelect = (place) => {
-    console.log("Địa điểm đã chọn:", place);
-  };
-
-
   return (
     <section className="section mt-5 pb-5">
       <Container>
@@ -104,16 +103,20 @@ const Location = () => {
               id="map"
               style={{ height: "40rem", width: "100%" }}
             ></div>
-
-            <div style={{ padding: "20px" }}>
-              <h2>Google Places Autocomplete API</h2>
-              <AutoCompleteLocation onSelect={handleSelect} />
-            </div>
-
-
           </Col>
         </Row>
       </Container>
+
+
+      {/* <div>
+        <ReactToPrint
+          trigger={() => <button>In</button>}
+          content={() => componentRef.current}
+        />
+        <ComponentToPrint ref={componentRef} />
+      </div> */}
+
+
     </section>
   );
 };

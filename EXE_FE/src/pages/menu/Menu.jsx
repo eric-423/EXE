@@ -30,17 +30,27 @@ const Menu = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         function (position) {
-          console.log(position)
           setCurrentLocation({
             lat: position.coords.latitude,
             lng: position.coords.longitude
           });
         },
-
       );
     }
-
   }, []);
+
+
+  const fetchBranch = async () => {
+    const defaultLocation = "146 Nguyễn Thị Kiểu, Hiệp Thành, Quận 12, Hồ Chí Minh, Việt Nam"
+    try {
+      const response = await fetch(`${BASE_URL}/branches/distance?destination=${defaultLocation}`);
+      const data = await response.json();
+      setBranches(data.data);
+      console.log(data.data)
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   //* ==================== Fetch location ==================== */
 
@@ -91,15 +101,7 @@ const Menu = () => {
     setRefeshData(true);
   }
 
-  const fetchBranch = async () => {
-    try {
-      const response = await fetch(`${BASE_URL}/branches`);
-      const data = await response.json();
-      setBranches(data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+
 
   const handleBranchId = (id) => {
     setBranchId(id);
@@ -168,7 +170,11 @@ const Menu = () => {
                         <div className={`${styles.rounded} border-bottom`}>
                           <div className={styles.inputButtonContainer}>
 
-                            <AutoCompleteNearedBranch location={location} setLocation={setLocation} />
+                            <AutoCompleteNearedBranch
+                              setBranches={setBranches}
+                              branches={branches}
+                              location={location}
+                              setLocation={setLocation} />
 
                           </div>
                         </div>
@@ -181,7 +187,11 @@ const Menu = () => {
                 </div>
 
                 <div className=" mb-4 p-3 pt-0">
-                  <MinimizedStoreList branchId={branchId} handleBranchId={handleBranchId} branches={branches} />
+
+                  <MinimizedStoreList
+                    branchId={branchId}
+                    handleBranchId={handleBranchId}
+                    branches={branches} />
 
                 </div>
 
