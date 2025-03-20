@@ -14,7 +14,6 @@ import { APP_COLOR, BASE_URL } from "@/utils/constant";
 import logo from "@/assets/logo.png";
 import { FONTS } from "@/theme/typography";
 import axios from "axios";
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { useCurrentApp } from "@/context/app.context";
 interface HeaderHomeProps {
   onBranchSelect: (id: string) => void;
@@ -106,8 +105,6 @@ const HeaderHome: React.FC<HeaderHomeProps> = ({ onBranchSelect }) => {
         const res = await axios.get(
           `${BASE_URL}/branches/distance?destination=${locationReal}`
         );
-        console.log(res.data.data);
-
         setBranchInfo(res.data.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -117,8 +114,9 @@ const HeaderHome: React.FC<HeaderHomeProps> = ({ onBranchSelect }) => {
     fetchData();
   }, []);
   const handleBranchSelect = (branch: any) => {
-    setSelectedBranch(branch.name);
-    onBranchSelect(branch.id);
+    console.log(branch);
+    setSelectedBranch(branch.branch.address);
+    onBranchSelect(branch.branch.id);
     setIsModalVisible(false);
   };
   useEffect(() => {
@@ -164,7 +162,10 @@ const HeaderHome: React.FC<HeaderHomeProps> = ({ onBranchSelect }) => {
             fontSize: 17,
             color: APP_COLOR.ORANGE,
             left: 15,
+            width: "75%",
           }}
+          numberOfLines={1}
+          ellipsizeMode="tail"
         >
           {selectedBranch || "Chọn chi nhánh"}
         </Text>

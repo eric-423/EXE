@@ -35,7 +35,6 @@ const UserInfo = () => {
         if (token) {
           const decoded = jwtDecode(token);
           setDecodeToken(decoded);
-          console.log(decoded);
         } else {
           console.log("No access token found.");
         }

@@ -74,9 +74,6 @@ const HomePage = () => {
   const sortedDates = Object.keys(combinedMarkedDates).sort(
     (a, b) => new Date(a).getTime() - new Date(b).getTime()
   );
-  const firstDate = sortedDates[2];
-  console.log(selectedDate);
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View

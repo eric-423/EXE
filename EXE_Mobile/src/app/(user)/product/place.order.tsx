@@ -52,8 +52,6 @@ const PlaceOrderPage = () => {
   const [cusAddress, setCusAddress] = useState();
   const [cusPhone, setCusPhone] = useState();
   const { branchId } = useCurrentApp();
-  const [discountPrice, setDiscountPrice] = useState(0);
-  const [total, setTotal] = useState();
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const dropdownItems = [
     { id: "1", title: "Tiền mặt" },
@@ -95,10 +93,6 @@ const PlaceOrderPage = () => {
     orderItems: any,
     pickUp: boolean
   ) => {
-    console.log(promotionCode);
-    if ((promotionCode = "9999")) {
-      setDiscountPrice(90000);
-    }
     try {
       if (!decodeToken) {
         Toast.show("Vui lòng đăng nhập để đặt hàng!", {
