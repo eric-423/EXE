@@ -14,7 +14,6 @@ const RootPage = () => {
   const [loaded, error] = useFonts({
     [APP_FONT as any]: require("@/assets/font/Playfair-Italic-VariableFont_opsz,wdth,wght.ttf"),
   });
-
   useEffect(() => {
     async function prepare() {
       try {
@@ -39,11 +38,10 @@ const RootPage = () => {
         await SplashScreen.hideAsync();
       }
     }
-
     prepare();
   }, []);
   if (true) {
-    return <Redirect href={"/(auth)/welcome"} />;
+    return <Redirect href={"/(auth)/employee.login"} />;
   }
   return <></>;
 };

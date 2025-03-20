@@ -3,7 +3,10 @@ import { Text, View, Alert, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
-
+import { jwtDecode } from "jwt-decode";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import { BASE_URL } from "@/utils/constant";
 const OrderPage = () => {
   const [location, setLocation] = useState<Location.LocationObject | null>(
     null
@@ -11,7 +14,8 @@ const OrderPage = () => {
   const [address, setAddress] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-
+  const [decodeToken, setDecodeToken] = useState<any>("");
+  const [shipAddress, setShipAddress] = useState("");
   const getAddressFromCoords = async (lat: number, lng: number) => {
     try {
       const response = await fetch(
@@ -25,7 +29,26 @@ const OrderPage = () => {
       console.error("Error fetching address:", error);
     }
   };
-
+  useEffect(() => {
+    const getAccessToken = async () => {
+      try {
+        const token = await AsyncStorage.getItem("access_token");
+        if (token) {
+          const decoded = jwtDecode(token);
+          setDecodeToken(decoded.id);
+          const shipAddress = axios.get(
+            `${BASE_URL}/orders/shipper/${decodeToken}?page=0&size=10&statusId=2`
+          );
+          setShipAddress((await shipAddress).data.data.content[0].address);
+        } else {
+          console.log("No access token found.");
+        }
+      } catch (error) {
+        console.error("Error retrieving access token:", error);
+      }
+    };
+    getAccessToken();
+  }, []);
   useEffect(() => {
     const getLocation = async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -33,7 +56,6 @@ const OrderPage = () => {
         setErrorMsg("Permission to access location was denied");
         return;
       }
-
       let loc = await Location.getCurrentPositionAsync({});
       setLocation(loc);
       if (loc.coords) {
@@ -41,10 +63,8 @@ const OrderPage = () => {
       }
       setIsLoading(false);
     };
-
     getLocation();
   }, []);
-
   let text = "Waiting...";
   if (errorMsg) {
     text = errorMsg;
@@ -70,16 +90,12 @@ const OrderPage = () => {
             Đang tải vị trí...
           </Text>
         ) : (
-          <View style={{ flex: 1, marginTop: 20 }}>
-            <Text style={{ textAlign: "center", marginBottom: 10 }}>
+          <View style={{ flex: 1 }}>
+            <Text style={{ textAlign: "center" }}>
               Tọa độ: {location?.coords.latitude}, {location?.coords.longitude}
             </Text>
             {address ? (
-              <Text
-                style={{ textAlign: "center", marginBottom: 10, padding: 10 }}
-              >
-                Địa chỉ: {address}
-              </Text>
+              <Text style={{ textAlign: "center" }}>Địa chỉ: {address}</Text>
             ) : null}
             <MapView
               style={{ flex: 1 }}

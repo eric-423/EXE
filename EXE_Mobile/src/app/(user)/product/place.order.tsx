@@ -49,6 +49,7 @@ const PlaceOrderPage = () => {
   const [decodeToken, setDecodeToken] = useState<any>("");
   const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [newAddress, setNewAddress] = useState<ICusInfor>();
   const [cusAddress, setCusAddress] = useState();
   const [cusPhone, setCusPhone] = useState();
   const { branchId } = useCurrentApp();
@@ -373,7 +374,10 @@ const PlaceOrderPage = () => {
     };
   }, []);
 
-  const handleSelectAddress = (address: any) => {
+  const handleSelectAddress = (address: any, locationReal: any) => {
+    if (locationReal) {
+      address.address = locationReal;
+    }
     setSelectedAddress(address);
     setModalVisible(false);
     Toast.show(`Selected Address: ${address.fullName}`, {
@@ -445,6 +449,8 @@ const PlaceOrderPage = () => {
                   fontSize: 17,
                   marginLeft: 20,
                 }}
+                numberOfLines={1}
+                ellipsizeMode="tail"
               >
                 {selectedAddress
                   ? selectedAddress.address
@@ -757,7 +763,7 @@ const PlaceOrderPage = () => {
               {addresses.map((address: any, index: number) => (
                 <Pressable
                   key={`${address.userId}-${index}`}
-                  onPress={() => handleSelectAddress(address)}
+                  onPress={() => handleSelectAddress(address, locationReal)}
                   style={styles.addressItem}
                 >
                   <View>
