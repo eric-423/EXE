@@ -14,10 +14,14 @@ import { APP_COLOR, BASE_URL } from "@/utils/constant";
 import logo from "@/assets/logo.png";
 import { FONTS } from "@/theme/typography";
 import axios from "axios";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import { useCurrentApp } from "@/context/app.context";
 interface HeaderHomeProps {
   onBranchSelect: (id: string) => void;
 }
 interface IPropsBranches {
+  distance: number;
+  branch: any;
   id: number;
   name: string;
 }
@@ -53,6 +57,12 @@ const styles = StyleSheet.create({
     borderBottomColor: APP_COLOR.GREY,
     borderBottomWidth: 1,
   },
+  branchItemHeader: {
+    fontFamily: FONTS.bold,
+    fontSize: 18,
+    textAlign: "center",
+    color: APP_COLOR.ORANGE,
+  },
   modalOverlay: {
     flex: 1,
     justifyContent: "center",
@@ -83,6 +93,7 @@ const HeaderHome: React.FC<HeaderHomeProps> = ({ onBranchSelect }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedBranch, setSelectedBranch] = useState<string | null>(null);
   const [branchesInfo, setBranchInfo] = useState([]);
+  const { locationReal } = useCurrentApp();
   const branches = [
     { id: 1, name: "Chi nhánh 1 - Hà Nội" },
     { id: 2, name: "Chi nhánh 2 - TP HCM" },
@@ -92,7 +103,11 @@ const HeaderHome: React.FC<HeaderHomeProps> = ({ onBranchSelect }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(`${BASE_URL}/branches`);
+        const res = await axios.get(
+          `${BASE_URL}/branches/distance?destination=${locationReal}`
+        );
+        console.log(res.data.data);
+
         setBranchInfo(res.data.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -103,8 +118,8 @@ const HeaderHome: React.FC<HeaderHomeProps> = ({ onBranchSelect }) => {
   }, []);
   const handleBranchSelect = (branch: any) => {
     setSelectedBranch(branch.name);
-    onBranchSelect(branch.id); // Pass the branch ID to parent
-    setIsModalVisible(false); // Close the modal
+    onBranchSelect(branch.id);
+    setIsModalVisible(false);
   };
   useEffect(() => {
     const getLocation = async () => {
@@ -141,12 +156,25 @@ const HeaderHome: React.FC<HeaderHomeProps> = ({ onBranchSelect }) => {
 
   return (
     <View style={styles.container}>
+      <Pressable onPress={() => setIsModalVisible(true)}>
+        <Text
+          style={{
+            position: "absolute",
+            fontFamily: FONTS.regular,
+            fontSize: 17,
+            color: APP_COLOR.ORANGE,
+            left: 15,
+          }}
+        >
+          {selectedBranch || "Chọn chi nhánh"}
+        </Text>
+      </Pressable>
       <View style={styles.location}>
         <Text
           style={{
             paddingLeft: 5,
             position: "absolute",
-            top: 3,
+            top: 25,
             left: 10,
             fontFamily: FONTS.medium,
             fontSize: 17,
@@ -161,20 +189,28 @@ const HeaderHome: React.FC<HeaderHomeProps> = ({ onBranchSelect }) => {
           style={{
             marginLeft: 10,
             position: "absolute",
-            top: 3,
+            top: 25,
             left: 70,
           }}
         />
         <Text
           style={{
             position: "absolute",
-            top: 3,
+            top: 25,
             left: 100,
             fontFamily: FONTS.medium,
             fontSize: 17,
+            width: "50%",
           }}
+          numberOfLines={1}
+          ellipsizeMode="tail"
         >
-          {location ? location : "Đang lấy vị trí..."}
+          {locationReal
+            ? locationReal
+            : location
+            ? location
+            : "Đang lấy vị trí..."}{" "}
+          hoặc
         </Text>
 
         <Image
@@ -190,21 +226,6 @@ const HeaderHome: React.FC<HeaderHomeProps> = ({ onBranchSelect }) => {
         />
       </View>
 
-      <Pressable onPress={() => setIsModalVisible(true)}>
-        <Text
-          style={{
-            position: "absolute",
-            fontFamily: FONTS.regular,
-            fontSize: 17,
-            color: APP_COLOR.ORANGE,
-            top: 25,
-            left: 15,
-          }}
-        >
-          {selectedBranch || "Chọn chi nhánh"}
-        </Text>
-      </Pressable>
-
       <Modal
         visible={isModalVisible}
         animationType="slide"
@@ -218,10 +239,14 @@ const HeaderHome: React.FC<HeaderHomeProps> = ({ onBranchSelect }) => {
               data={branchesInfo}
               renderItem={({ item }: { item: IPropsBranches }) => (
                 <Pressable onPress={() => handleBranchSelect(item)}>
-                  <Text style={styles.branchItem}>{item.name}</Text>
+                  <Text style={styles.branchItemHeader}>
+                    {item.branch.name} {"     "}
+                    {(item.distance / 1000).toFixed(1)} Km
+                  </Text>
+                  <Text style={styles.branchItem}>{item.branch.address}</Text>
                 </Pressable>
               )}
-              keyExtractor={(item) => item.id.toString()}
+              keyExtractor={(item: any) => item.id}
             />
             <Pressable onPress={() => setIsModalVisible(false)}>
               <Text style={styles.closeButton}>Đóng</Text>

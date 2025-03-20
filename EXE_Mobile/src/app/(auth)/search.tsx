@@ -4,10 +4,16 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { APP_COLOR } from "@/utils/constant";
 import { TextInput } from "react-native-gesture-handler";
 import { router } from "expo-router";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import debounce from "debounce";
-import { getRestaurantByNameAPI, getURLBaseBackend } from "@/utils/api";
-
+import Entypo from "@expo/vector-icons/Entypo";
+import axios from "axios";
+import { useCurrentApp } from "@/context/app.context";
+import ShareButton from "@/components/button/share.button";
+interface IAddress {
+  place_id: string;
+  description: string;
+}
 const data = [
   {
     key: 1,
@@ -30,21 +36,31 @@ const data = [
   { key: 7, name: "Giảm 50k", source: require("@/assets/icons/moi-moi.png") },
   { key: 8, name: "Milk Tea", source: require("@/assets/icons/salad.png") },
 ];
-
 const SearchPage = () => {
-  const [restaurants, setRestaurants] = useState<IRestaurant[]>([]);
+  const { setLocationReal } = useCurrentApp();
+  const [restaurants, setRestaurants] = useState<IAddress[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
-
-  const handleSearch = debounce(async (text: string) => {
-    setSearchTerm(text);
-    if (!text) return;
-
-    const res = await getRestaurantByNameAPI(text);
-    if (res.data) {
-      setRestaurants(res.data.results);
-    }
-  }, 300);
-
+  const handleCreateOrderLocation = (description: string) => {
+    setSearchTerm(description);
+    setLocationReal(description);
+    setRestaurants([]);
+  };
+  const handleChooseLocation = () => {
+    router.push("/(tabs)/");
+  };
+  const handleSearch = useCallback(
+    debounce(async (text: string) => {
+      setSearchTerm(text);
+      if (!text) return;
+      const res = await axios.get(
+        `https://maps.gomaps.pro/maps/api/place/queryautocomplete/json?input=${text}&language=vi&key=AlzaSyNOiNuM9dYaAZxahUvMvBOIjx4xyOSi3yr`
+      );
+      if (res.data) {
+        setRestaurants(res.data.predictions);
+      }
+    }, 500),
+    []
+  );
   const DefaultResult = () => {
     return (
       <View
@@ -89,7 +105,6 @@ const SearchPage = () => {
       </View>
     );
   };
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View
@@ -107,8 +122,12 @@ const SearchPage = () => {
           color={APP_COLOR.ORANGE}
         />
         <TextInput
-          placeholder="Tìm kiếm cửa hàng..."
-          onChangeText={(text: string) => handleSearch(text)}
+          placeholder="Địa chỉ giao hàng"
+          onChangeText={(text: string) => {
+            setSearchTerm(text);
+            handleSearch(text);
+          }}
+          value={searchTerm}
           autoFocus
           style={{
             flex: 1,
@@ -118,22 +137,20 @@ const SearchPage = () => {
             borderRadius: 3,
           }}
         />
+        <ShareButton
+          title="Chọn địa chỉ giao hàng"
+          onPress={handleChooseLocation}
+        />
       </View>
-      <View style={{ backgroundColor: "#eee", flex: 1 }}>
+      <Pressable style={{ backgroundColor: "#eee", flex: 1 }}>
         {searchTerm.length === 0 ? (
           <DefaultResult />
         ) : (
-          <View style={{ backgroundColor: "white", gap: 10 }}>
-            {restaurants?.map((item, index) => {
+          <Pressable style={{ backgroundColor: "white", gap: 10 }}>
+            {restaurants?.map((item) => {
               return (
                 <Pressable
-                  key={index}
-                  onPress={() =>
-                    router.navigate({
-                      pathname: "/product/[id]",
-                      params: { id: item._id },
-                    })
-                  }
+                  key={item.place_id}
                   style={{
                     flexDirection: "row",
                     alignItems: "center",
@@ -142,24 +159,24 @@ const SearchPage = () => {
                     borderBottomColor: "#eee",
                     borderBottomWidth: 1,
                   }}
+                  onPress={() => handleCreateOrderLocation(item.description)}
                 >
-                  <Image
-                    source={{
-                      uri: `${getURLBaseBackend()}/images/restaurant/${
-                        item.image
-                      }`,
+                  <Entypo
+                    name="location-pin"
+                    size={20}
+                    color={APP_COLOR.ORANGE}
+                    style={{
+                      marginRight: 10,
                     }}
-                    style={{ height: 50, width: 50 }}
                   />
-                  <Text>{item.name}</Text>
+                  <Text>{item.description}</Text>
                 </Pressable>
               );
             })}
-          </View>
+          </Pressable>
         )}
-      </View>
+      </Pressable>
     </SafeAreaView>
   );
 };
-
 export default SearchPage;

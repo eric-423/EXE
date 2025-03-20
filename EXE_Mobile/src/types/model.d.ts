@@ -57,6 +57,8 @@ declare global {
     productQuantity: number;
   }
   interface IRestaurant {
+    longitude: number;
+    latitude: number;
     _id: string;
     name: string;
     phone: string;

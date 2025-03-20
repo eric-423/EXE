@@ -11,6 +11,8 @@ interface AppContextType {
   setRestaurant: (v: any) => void;
   branchId: number | null;
   setBranchId: (v: any) => void;
+  locationReal: string;
+  setLocationReal: (v: any) => void;
 }
 const AppContext = createContext<AppContextType | null>(null);
 
@@ -24,6 +26,7 @@ const AppProvider = (props: IProps) => {
   const [cart, setCart] = useState<ICart | Record<string, never>>({});
   const [restaurant, setRestaurant] = useState<IRestaurant | null>(null);
   const [branchId, setBranchId] = useState<number | null>(1);
+  const [locationReal, setLocationReal] = useState("");
   return (
     <AppContext.Provider
       value={{
@@ -37,6 +40,8 @@ const AppProvider = (props: IProps) => {
         setRestaurant,
         branchId,
         setBranchId,
+        locationReal,
+        setLocationReal,
       }}
     >
       {props.children}
@@ -46,7 +51,6 @@ const AppProvider = (props: IProps) => {
 
 export const useCurrentApp = () => {
   const currentTheme = useContext(AppContext);
-
   if (!currentTheme) {
     throw new Error(
       "useCurrentApp has to be used within <AppContext.Provider>"
