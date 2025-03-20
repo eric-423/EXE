@@ -12,6 +12,7 @@ import { BarCodeScanner, BarCodeScannerResult } from "expo-barcode-scanner";
 import tamtac from "@/assets/logo.png";
 import { APP_COLOR } from "@/utils/constant";
 import { FONTS, typography } from "@/theme/typography";
+import { router } from "expo-router";
 
 const { width } = Dimensions.get("window");
 
@@ -20,6 +21,7 @@ export default function QRScanner() {
   const [scanned, setScanned] = useState(false);
   const [scanAnimation] = useState(new Animated.Value(0));
   const [scanResult, setScanResult] = useState("");
+
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -47,9 +49,15 @@ export default function QRScanner() {
     startScanAnimation();
   }, [scanAnimation]);
 
-  const handleBarCodeScanned = (scanningResult: BarCodeScannerResult) => {
+  const handleBarCodeScanned = async (scanningResult: BarCodeScannerResult) => {
     setScanned(true);
     setScanResult(scanningResult.data);
+    setTimeout(() => {
+      router.push({
+        pathname: "/(user)/order/[id]",
+        params: { id: scanningResult.data },
+      });
+    }, 300);
   };
 
   if (hasPermission === null) {
@@ -82,40 +90,43 @@ export default function QRScanner() {
         <Image source={tamtac} style={styles.image} />
         <Text style={[typography.h2, styles.title]}>Quét mã QR</Text>
       </View>
-      <View style={styles.scannerContainer}>
-        <BarCodeScanner
-          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-          style={styles.scanner}
-        />
-        <View style={styles.overlay}>
-          <View style={styles.unfocusedContainer}></View>
-          <View style={styles.middleContainer}>
+      {!scanned && (
+        <View style={styles.scannerContainer}>
+          <BarCodeScanner
+            onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+            style={styles.scanner}
+          />
+          <View style={styles.overlay}>
             <View style={styles.unfocusedContainer}></View>
-            <View style={styles.focusedContainer}>
-              <View style={styles.cornerTopLeft} />
-              <View style={styles.cornerTopRight} />
-              <View style={styles.cornerBottomLeft} />
-              <View style={styles.cornerBottomRight} />
+            <View style={styles.middleContainer}>
+              <View style={styles.unfocusedContainer}></View>
+              <View style={styles.focusedContainer}>
+                <View style={styles.cornerTopLeft} />
+                <View style={styles.cornerTopRight} />
+                <View style={styles.cornerBottomLeft} />
+                <View style={styles.cornerBottomRight} />
+              </View>
+              <View style={styles.unfocusedContainer}></View>
             </View>
             <View style={styles.unfocusedContainer}></View>
           </View>
-          <View style={styles.unfocusedContainer}></View>
+          <Animated.View
+            style={[
+              styles.scanningLine,
+              { transform: [{ translateY: scanAnimation }] },
+            ]}
+          />
         </View>
-        <Animated.View
-          style={[
-            styles.scanningLine,
-            { transform: [{ translateY: scanAnimation }] },
-          ]}
-        />
-      </View>
-      <View style={styles.bottomText}>
-        <Text style={typography.bodyMedium}>QR: {scanResult}</Text>
-      </View>
+      )}
+
       {scanned && (
         <View style={styles.reScanButtonContainer}>
           <Button
             title="Quét lại"
-            onPress={() => setScanned(false)}
+            onPress={() => {
+              setScanned(false);
+              setScanResult("");
+            }}
             color={APP_COLOR.ORANGE}
           />
         </View>
