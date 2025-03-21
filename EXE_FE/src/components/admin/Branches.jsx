@@ -1,14 +1,20 @@
 import { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Filter } from "lucide-react";
 import BranchInfo from "./BranchInfo";
 import DocumentCard from "./DocumentCard";
 import RequestTable from "./RequestTable";
 import ListBranch from "./ListBranch";
 import { BASE_URL } from "../../config/api";
+import useScanDetection from "use-scan-detection";
 
 function Branches() {
     const [activeMenu, setActiveMenu] = useState('thongtin');
+    const [order, setOrder] = useState([]);
+    const [branches, setBranches] = useState([]);
+    const [branchId, setBranchId] = useState(1);
+    const [refresh, setRefresh] = useState(true);
+    const [orderDelivering, setOrderDelivering] = useState([]);
+
 
     const shipTrackingToday = [
         {
@@ -115,143 +121,79 @@ function Branches() {
         },
     ]
 
-    const requests = [
-        {
-            id: 1,
-            title: "Yêu cầu thay đổi giờ làm việc tại chi nhánh Quận 1",
-            sender: "Người gửi: Nguyễn Văn A - Chi nhánh Quận 1",
-            date: "Ngày gửi: 02/12/2023, 08:00 AM",
-            status: "Trạng thái: Đang chờ xử lý",
-            staff: "Nhân sự: -",
-            badge: "Đang thảo luận",
-        },
-        {
-            id: 2,
-            title: "Yêu cầu thay đổi giờ làm việc tại chi nhánh Quận 1",
-            sender: "Người gửi: Nguyễn Văn B - Chi nhánh Quận 1",
-            date: "Ngày gửi: 02/12/2023, 09:15 AM",
-            status: "Trạng thái: Đang chờ xử lý",
-            staff: "Nhân sự: -",
-            badge: "Đang thảo luận",
-        },
-        {
-            id: 3,
-            title: "Yêu cầu thay đổi giờ làm việc tại chi nhánh Quận 1",
-            sender: "Người gửi: Nguyễn Văn C - Chi nhánh Quận 1",
-            date: "Ngày gửi: 02/12/2023, 10:00 AM",
-            status: "Trạng thái: Đang chờ xử lý",
-            staff: "Nhân sự: -",
-            badge: "Đang thảo luận",
-        },
-        {
-            id: 4,
-            title: "Yêu cầu thay đổi giờ làm việc tại chi nhánh Quận 1",
-            sender: "Người gửi: Nguyễn Thị D - Chi nhánh Quận 1",
-            date: "Ngày gửi: 02/12/2023, 10:30 AM",
-            status: "Trạng thái: Đang chờ xử lý",
-            staff: "Nhân sự: -",
-            badge: "Đang thảo luận",
-        },
-        {
-            id: 5,
-            title: "Yêu cầu thay đổi giờ làm việc tại chi nhánh Quận 1",
-            sender: "Người gửi: Trần Văn E - Chi nhánh Quận 1",
-            date: "Ngày gửi: 02/12/2023, 11:00 AM",
-            status: "Trạng thái: Đang chờ xử lý",
-            staff: "Nhân sự: -",
-            badge: "Đang thảo luận",
-        },
-        {
-            id: 6,
-            title: "Yêu cầu thay đổi giờ làm việc tại chi nhánh Quận 1",
-            sender: "Người gửi: Lê Thị F - Chi nhánh Quận 1",
-            date: "Ngày gửi: 02/12/2023, 11:30 AM",
-            status: "Trạng thái: Đang chờ xử lý",
-            staff: "Nhân sự: -",
-            badge: "Đang thảo luận",
-        },
-    ];
 
-
-    const branches = [
-        {
-            id: 1,
-            name: "Chi nhánh Nguyễn Văn Linh",
-            address: "123 Nguyễn Văn Linh, Quận 7, TP.HCM",
-            phone: "028 12345",
-            district: "7",
-            staff: "Trần Thị B",
-            director: "Nguyễn Văn A",
-            status: "Đang hoạt động",
-            requests: 2,
-        },
-        {
-            id: 2,
-            name: "Chi nhánh Nguyễn Văn Linh",
-            address: "123 Nguyễn Văn Linh, Quận 7, TP.HCM",
-            phone: "028 12345",
-            district: "7",
-            staff: "Trần Thị B",
-            director: "Nguyễn Văn A",
-            status: "Đang hoạt động",
-            requests: 0,
-        },
-        {
-            id: 3,
-            name: "Chi nhánh Nguyễn Văn Linh",
-            address: "123 Nguyễn Văn Linh, Quận 7, TP.HCM",
-            phone: "028 12345",
-            district: "7",
-            staff: "Trần Thị B",
-            director: "Nguyễn Văn A",
-            status: "Đang hoạt động",
-            requests: 0,
-        },
-        {
-            id: 4,
-            name: "Chi nhánh Nguyễn Văn Linh",
-            address: "123 Nguyễn Văn Linh, Quận 7, TP.HCM",
-            phone: "028 12345",
-            district: "7",
-            staff: "Trần Thị B",
-            director: "Nguyễn Văn A",
-            status: "Đang hoạt động",
-            requests: 0,
-        },
-        {
-            id: 5,
-            name: "Chi nhánh Nguyễn Văn Linh",
-            address: "123 Nguyễn Văn Linh, Quận 7, TP.HCM",
-            phone: "028 12345",
-            district: "7",
-            staff: "Trần Thị B",
-            director: "Nguyễn Văn A",
-            status: "Đang hoạt động",
-            requests: 0,
-        },
-    ];
-
-    const [order, setOrder] = useState([]);
 
     useEffect(() => {
-        fetchOrder();
-    }, []);
+        if (refresh) {
+            fetchOrder();
+        }
+        setRefresh(false);
+    }, [refresh]);
 
+    useEffect(() => {
+        fetchBranch();
+        fetchOrderDelivering();
+    }, []);
 
     const fetchOrder = async () => {
         try {
-            const response = await fetch(`${BASE_URL}/order/get-all-order`);
+            const response = await fetch(`${BASE_URL}/orders/branch/${branchId}?page=0&size=10&statusId=5`);
             const data = await response.json();
-            setOrder(data);
-            console.log(data);
+            setOrder(data.data.content);
         } catch (error) {
             console.log(error);
         }
     }
 
+    const fetchOrderDelivering = async () => {
+        try {
+            const response = await fetch(`${BASE_URL}/orders/branch/${branchId}?page=0&size=10&statusId=2`);
+            const data = await response.json();
+            setOrderDelivering(data.data.content);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            fetchOrderDelivering();
+        }, 5000);
+
+        return () => clearInterval(interval);
+    }, []);
 
 
 
+
+    const fetchBranch = async () => {
+        const defaultLocation = "146 Nguyễn Thị Kiểu, Hiệp Thành, Quận 12, Hồ Chí Minh, Việt Nam"
+        try {
+            const response = await fetch(`${BASE_URL}/branches/distance?destination=${defaultLocation}`);
+            const data = await response.json();
+            setBranches(data.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useScanDetection({
+        onComplete: async (code) => {
+            try {
+                const response = await fetch(`${BASE_URL}/orders/delivery/${code}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
+                });
+                const data = await response.json();
+                console.log(data)
+                fetchOrderDelivering();
+            } catch (error) {
+                console.log(error)
+            }
+        },
+    });
 
     const renderContent = () => {
         switch (activeMenu) {
@@ -264,16 +206,15 @@ function Branches() {
             case 'document':
                 return <DocumentCard contracts={contracts} />
             case 'solieu':
-                return <div>solieu</div>;
+                return <RequestTable refresh={refresh} setRefresh={setRefresh} order={orderDelivering} />;
             case 'yeucau':
-                return <RequestTable requests={requests} />;
+                return <RequestTable refresh={refresh} setRefresh={setRefresh} order={order} />;
             case 'branchList':
                 return <ListBranch branches={branches} />;
             default:
                 return null;
         }
     };
-
 
     return (
         <div className="mt-5">
@@ -301,18 +242,6 @@ function Branches() {
                             </li>
                             <li className="nav-item">
                                 <a
-                                    className={`nav-link ${activeMenu === 'lichtrinh' ? 'active' : ''}`}
-                                    href="#!"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        setActiveMenu('document')
-                                    }}
-                                >
-                                    Tài Liệu
-                                </a>
-                            </li>
-                            <li className="nav-item">
-                                <a
                                     className={`nav-link ${activeMenu === 'solieu' ? 'active' : ''}`}
                                     href="#!"
                                     onClick={(e) => {
@@ -320,7 +249,7 @@ function Branches() {
                                         setActiveMenu('solieu')
                                     }}
                                 >
-                                    Số liệu
+                                    Đang Giao
                                 </a>
                             </li>
                             <li className="nav-item">
@@ -332,9 +261,22 @@ function Branches() {
                                         setActiveMenu('yeucau')
                                     }}
                                 >
-                                    Yêu Cầu
+                                    Đơn hàng
                                 </a>
                             </li>
+                            <li className="nav-item">
+                                <a
+                                    className={`nav-link ${activeMenu === 'lichtrinh' ? 'active' : ''}`}
+                                    href="#!"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setActiveMenu('document')
+                                    }}
+                                >
+                                    Tài Liệu
+                                </a>
+                            </li>
+
                             <li className="nav-item">
                                 <a
                                     className={`nav-link ${activeMenu === 'branchList' ? 'active' : ''}`}
@@ -348,13 +290,6 @@ function Branches() {
                                 </a>
                             </li>
                         </ul>
-
-                        <div className="d-flex">
-                            <button className="btn btn-outline-dark d-flex align-items-center gap-2">
-                                <Filter size={16} />
-                                <span>Filter - Export to PDF/Excel</span>
-                            </button>
-                        </div>
                     </div>
                 </div>
             </nav>

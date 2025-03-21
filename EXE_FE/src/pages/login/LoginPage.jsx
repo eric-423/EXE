@@ -4,6 +4,7 @@ import styles from "./LoginPage.module.css";
 import { useDocumentTitle } from "../../hooks";
 import LoginLayout from "../../components/login/LoginLayout";
 import { BASE_URL } from "../../config/api";
+import { jwtDecode } from "jwt-decode";
 
 const LoginPage = () => {
     const navigate = useNavigate();
@@ -236,7 +237,12 @@ const LoginPage = () => {
             if (response.ok) {
                 localStorage.setItem("_acc", data.data.access_token);
                 localStorage.setItem("_ref", data.data.refresh_token);
-                navigate("/");
+                const decodedToken = jwtDecode(data.data.access_token);
+                if ((decodedToken.role).toUpperCase() == "ADMIN") {
+                    navigate("/admin");
+                } else {
+                    navigate("/");
+                }
             } else {
                 setLoginError(data.message || "Đăng nhập không thành công");
             }
