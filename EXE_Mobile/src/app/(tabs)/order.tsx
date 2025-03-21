@@ -119,7 +119,7 @@ const OrderPage = () => {
 
           if (res.data.data.content) {
             setOrderHistory(res.data.data.content);
-            setTotalPages(res.data.data.totalPages); // Set total pages
+            setTotalPages(res.data.data.totalPages);
           }
         } else {
           console.log("No access token found.");
@@ -130,7 +130,7 @@ const OrderPage = () => {
     };
 
     fetchOrderHistoryWithToken();
-  }, [currentPage]); // Re-fetch orders when currentPage changes
+  }, [currentPage]);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -249,7 +249,6 @@ const OrderPage = () => {
           })}
         </ScrollView>
 
-        {/* Pagination */}
         <View style={styles.paginationContainer}>
           <TouchableOpacity
             style={styles.paginationButton}
@@ -259,7 +258,6 @@ const OrderPage = () => {
             <Text style={styles.paginationText}>Trước</Text>
           </TouchableOpacity>
 
-          {/* Display current page and total pages */}
           <Text style={styles.paginationText1}>
             Trang {currentPage + 1} / {totalPages}
           </Text>
