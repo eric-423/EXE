@@ -6,5 +6,8 @@ export default defineConfig({
   plugins: [react()],
   optimizeDeps: {
     exclude: ['pdfjs-dist']
-  }
+  },
+  define: {
+    global: {},
+  },
 })

@@ -1,11 +1,12 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import { Home, Share2, User, Package, ChefHat, LogOut } from "lucide-react";
+import { Home, Share2, LogOut, MessageCircle } from "lucide-react";
 import Dashboard from "../../components/admin/Dashboard";
 import Branches from "./Branches";
 import { InfoCircle } from "react-bootstrap-icons";
 import Infomation from "./Infomation";
 import { BASE_URL } from "../../config/api";
+import ChatInterface from "../Chat/ChatInterface";
 
 const Sidebar = ({ onMenuClick }) => {
 
@@ -69,7 +70,11 @@ const Sidebar = ({ onMenuClick }) => {
           icon={<LogOut size={20} />}
           menu="logout"
           onMenuClick={() => handleLogout()}
-        // onClick={() => handleLogout()}
+        />
+        <NavItem
+          icon={<MessageCircle size={20} />}
+          menu="chat"
+          onMenuClick={onMenuClick}
         />
       </div>
     </div>
@@ -104,7 +109,12 @@ const MainComponent = () => {
         return <Branches />;
       case "infomation":
         return <Infomation />;
-
+      case "chat":
+        return (
+          <div style={{ position: 'relative', height: '83vh', marginTop: '20px' }}>
+            <ChatInterface />
+          </div>
+        );
       default:
         return null;
     }

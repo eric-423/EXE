@@ -253,25 +253,25 @@ const BranchInfo = ({ branchMembers }) => {
                             </h6>
                             <div className="d-grid mb-3" style={{ gap: 10 }} >
                                 <strong>
-                                    TotalCustomers : {metric.totalCustomers}
+                                    Tổng số người mua : {metric.totalCustomers}
                                 </strong>
                                 <strong>
-                                    TotalAmount : {metric.totalAmount}
+                                    Tổng số tiền : {metric.totalAmount}
                                 </strong>
                                 <strong>
-                                    TotalShippingFees : {metric.totalShippingFees}
+                                    Tổng số tiền vận chuyển : {metric.totalShippingFees}
                                 </strong>
                                 <strong>
-                                    AverageOrderValue : {metric.averageOrderValue}
+                                    Trung bình giá trị đơn hàng : {metric.averageOrderValue}
                                 </strong>
                                 <strong>
-                                    AverageShippingFee : {metric.averageShippingFee}
+                                    Giá Ship trung bình : {metric.averageShippingFee}
                                 </strong>
                                 <strong>
-                                    AverageShippingFee : {metric.totalOrders}
+                                    Tổng số đơn hàng : {metric.totalOrders}
                                 </strong>
                                 <strong>
-                                    AverageShippingFee : {metric.totalSubtotal}
+                                    Tổng giá trị đơn hàng : {metric.totalSubtotal}
                                 </strong>
                             </div>
 

@@ -124,11 +124,12 @@ function Branches() {
 
 
     useEffect(() => {
-        if (refresh) {
+        const interval = setInterval(() => {
             fetchOrder();
-        }
-        setRefresh(false);
-    }, [refresh]);
+        }, 5000);
+        return () => clearInterval(interval);
+    }, []);
+
 
     useEffect(() => {
         fetchBranch();
@@ -182,35 +183,13 @@ function Branches() {
     let timeoutId;
 
     const handleKeyPress = async (e) => {
-        // Thêm ký tự mới vào buffer
         const newBuffer = barcodeBuffer + e.key;
         setBarcodeBuffer(newBuffer);
-        // Đợi 100ms để đảm bảo đã nhận đủ dữ liệu từ máy quét
         clearTimeout(timeoutId);
         timeoutId = setTimeout(async () => {
             const barcodeNumber = parseInt(newBuffer);
             setBarcode(barcodeNumber);
             setBarcodeBuffer('');
-
-            if (barcodeNumber) {
-                try {
-                    const response = await fetch(`${BASE_URL}/orders/delivery/${barcodeNumber}`, {
-                        method: "PUT",
-                        headers: {
-                            "Content-Type": "application/json",
-                        }
-                    });
-                    const data = await response.json();
-                    console.log("Barcode scanned:", barcodeNumber);
-                    console.log("Response:", data);
-                    fetchOrderDelivering();
-                } catch (error) {
-                    console.error("Error processing barcode:", error);
-                } finally {
-                    setBarcodeBuffer('');
-                    setBarcode('');
-                }
-            }
         }, 100);
 
 
@@ -248,14 +227,10 @@ function Branches() {
 
 
 
-
-
     const renderContent = () => {
         switch (activeMenu) {
             case 'thongtin':
                 return <BranchInfo
-                    shipTrackingToday={shipTrackingToday}
-                    shipTrackingNextDay={shipTrackingNextDay}
                     branchMembers={branchMembers}
                 />;
             case 'document':
@@ -273,7 +248,6 @@ function Branches() {
 
     return (
         <div className="mt-5">
-            {/* Top Navigation Bar */}
             <nav className="navbar-expand-lg ">
                 <div className="container">
                     <a className="navbar-brand fw-bold mb-2" href="#!" style={{ fontSize: 20 }} >
