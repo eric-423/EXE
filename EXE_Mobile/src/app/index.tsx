@@ -41,7 +41,7 @@ const RootPage = () => {
     prepare();
   }, []);
   if (true) {
-    return <Redirect href={"/(auth)/employee.login"} />;
+    return <Redirect href={"/(auth)/welcome"} />;
   }
   return <></>;
 };

@@ -105,6 +105,18 @@ const PlaceOrderPage = () => {
         return;
       }
       const numericPointUsed = Number(pointUsed) || 0;
+      console.log(
+        promotionCode,
+        note,
+        address,
+        phoneNumber,
+        branchId,
+        pointUsed,
+        pointEarned,
+        paymentMethodId,
+        orderItems,
+        pickUp
+      );
 
       const response = await axios.post(`${BASE_URL}/orders/`, {
         customerId: decodeToken,

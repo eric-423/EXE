@@ -23,9 +23,13 @@ import demo from "@/assets/demo.jpg";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
+
 const OrderPage = () => {
   const [orderHistory, setOrderHistory] = useState<IOrderHistoryCus[]>([]);
   const [orderId, setOrderid] = useState();
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+
   const styles = StyleSheet.create({
     text: {
       fontFamily: FONTS.regular,
@@ -59,7 +63,30 @@ const OrderPage = () => {
       fontFamily: FONTS.regular,
       marginHorizontal: "auto",
     },
+    paginationContainer: {
+      flexDirection: "row",
+      justifyContent: "center",
+      marginVertical: 10,
+    },
+    paginationButton: {
+      backgroundColor: APP_COLOR.ORANGE,
+      paddingVertical: 8,
+      paddingHorizontal: 20,
+      borderRadius: 8,
+      marginHorizontal: 10,
+    },
+    paginationText: {
+      color: APP_COLOR.WHITE,
+      fontSize: 16,
+      fontFamily: FONTS.regular,
+    },
+    paginationText1: {
+      color: APP_COLOR.ORANGE,
+      fontSize: 16,
+      fontFamily: FONTS.regular,
+    },
   });
+
   function formatDateToDDMMYYYY(isoDate: string): string {
     const date = new Date(isoDate);
     const day = String(date.getDate()).padStart(2, "0");
@@ -68,13 +95,16 @@ const OrderPage = () => {
 
     return `${day}-${month}-${year}`;
   }
+
   const handleViewDetails = (id: number) => {
     router.navigate({
       pathname: "/(user)/order/[id]",
       params: { id: id },
     });
   };
+
   const [decodeToken, setDecodeToken] = useState<any>("");
+
   useEffect(() => {
     const fetchOrderHistoryWithToken = async () => {
       try {
@@ -84,11 +114,12 @@ const OrderPage = () => {
           setDecodeToken(decoded.id);
 
           const res = await axios.get(
-            `${BASE_URL}/orders/customer/${decoded.id}?page=0&size=10`
+            `${BASE_URL}/orders/customer/${decoded.id}?page=${currentPage}&size=10`
           );
 
           if (res.data.data.content) {
             setOrderHistory(res.data.data.content);
+            setTotalPages(res.data.data.totalPages); // Set total pages
           }
         } else {
           console.log("No access token found.");
@@ -99,7 +130,7 @@ const OrderPage = () => {
     };
 
     fetchOrderHistoryWithToken();
-  }, []);
+  }, [currentPage]); // Re-fetch orders when currentPage changes
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -217,6 +248,32 @@ const OrderPage = () => {
             );
           })}
         </ScrollView>
+
+        {/* Pagination */}
+        <View style={styles.paginationContainer}>
+          <TouchableOpacity
+            style={styles.paginationButton}
+            onPress={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}
+            disabled={currentPage === 0}
+          >
+            <Text style={styles.paginationText}>Trước</Text>
+          </TouchableOpacity>
+
+          {/* Display current page and total pages */}
+          <Text style={styles.paginationText1}>
+            Trang {currentPage + 1} / {totalPages}
+          </Text>
+
+          <TouchableOpacity
+            style={styles.paginationButton}
+            onPress={() =>
+              setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1))
+            }
+            disabled={currentPage === totalPages - 1}
+          >
+            <Text style={styles.paginationText}>Tiếp</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </SafeAreaView>
   );

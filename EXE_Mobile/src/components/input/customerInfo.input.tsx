@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { FONTS } from "@/theme/typography";
-
 const styles = StyleSheet.create({
   inputGroup: {
     padding: 5,
@@ -67,7 +66,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-
 interface IProps {
   title?: string;
   keyboardType?: KeyboardTypeOptions;
@@ -81,7 +79,7 @@ interface IProps {
   editable?: boolean;
   resetForm?: boolean;
   isBoolean?: boolean;
-  dropdownItems?: { id: string; title: string }[]; // New prop for dropdown items
+  dropdownItems?: { id: string; title: string }[];
 }
 
 const CustomerInforInput = (props: IProps) => {

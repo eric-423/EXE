@@ -1,5 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import React, { useEffect, useState, useCallback } from "react";
+import {
+  StyleSheet,
+  View,
+  FlatList,
+  Text,
+  TextInput,
+  Pressable,
+} from "react-native";
 import { Formik } from "formik";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -11,10 +18,13 @@ import { FONTS } from "@/theme/typography";
 import { APP_COLOR, BASE_URL } from "@/utils/constant";
 import { ChangePasswordSchema } from "@/utils/validate.schema";
 import { router } from "expo-router";
+import debounce from "debounce";
 
 const CustomerInfoPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [userId, setUserId] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [addressSuggestions, setAddressSuggestions] = useState<any[]>([]);
 
   const styles = StyleSheet.create({
     container: {
@@ -70,6 +80,25 @@ const CustomerInfoPage = () => {
     }
   };
 
+  const handleSearch = useCallback(
+    debounce(async (text: string) => {
+      setSearchTerm(text);
+      if (!text) return;
+      const res = await axios.get(
+        `https://maps.gomaps.pro/maps/api/place/queryautocomplete/json?input=${text}&language=vi&key=AlzaSyNOiNuM9dYaAZxahUvMvBOIjx4xyOSi3yr`
+      );
+      if (res.data) {
+        setAddressSuggestions(res.data.predictions);
+      }
+    }, 500),
+    []
+  );
+
+  const handleSelectAddress = (address: string) => {
+    setSearchTerm(address);
+    setAddressSuggestions([]);
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Formik
@@ -116,14 +145,47 @@ const CustomerInfoPage = () => {
                 error={errors.fullName}
                 touched={touched.fullName}
               />
-              <CustomerInforInput
-                title="Địa chỉ"
-                onChangeText={handleChange("address")}
-                onBlur={handleBlur("address")}
-                value={values.address}
-                error={errors.address}
-                touched={touched.address}
-              />
+              <View>
+                <Text style={{ fontFamily: FONTS.regular }}>Địa chỉ</Text>
+                <TextInput
+                  placeholder="Nhập địa chỉ"
+                  onChangeText={(text) => {
+                    setSearchTerm(text);
+                    handleSearch(text);
+                  }}
+                  value={searchTerm}
+                  style={{
+                    borderWidth: 1,
+                    borderColor: APP_COLOR.GREY,
+                    borderRadius: 10,
+                    padding: 6,
+                    marginTop: 5,
+                    backgroundColor: "white",
+                    marginHorizontal: 5,
+                  }}
+                />
+                {addressSuggestions.length > 0 && (
+                  <FlatList
+                    data={addressSuggestions}
+                    keyExtractor={(item) => item.place_id}
+                    renderItem={({ item }) => (
+                      <Pressable
+                        onPress={() => handleSelectAddress(item.description)}
+                      >
+                        <View
+                          style={{
+                            padding: 10,
+                            borderBottomWidth: 1,
+                            borderBottomColor: "#eee",
+                          }}
+                        >
+                          <Text>{item.description}</Text>
+                        </View>
+                      </Pressable>
+                    )}
+                  />
+                )}
+              </View>
               <CustomerInforInput
                 title="Số điện thoại"
                 onChangeText={handleChange("phone")}
@@ -144,7 +206,7 @@ const CustomerInfoPage = () => {
                 onPress={() => {
                   handleImportInfo(
                     values.fullName,
-                    values.address,
+                    searchTerm,
                     values.phone,
                     values.isDefault,
                     values.userId
