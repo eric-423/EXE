@@ -1,12 +1,33 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import { Home, Share2, User, Package, ChefHat } from "lucide-react";
+import { Home, Share2, User, Package, ChefHat, LogOut } from "lucide-react";
 import Dashboard from "../../components/admin/Dashboard";
 import Branches from "./Branches";
 import { InfoCircle } from "react-bootstrap-icons";
 import Infomation from "./Infomation";
+import { BASE_URL } from "../../config/api";
 
 const Sidebar = ({ onMenuClick }) => {
+
+  const handleLogout = async () => {
+    try {
+      const accessToken = localStorage.getItem("_acc");
+      const response = await fetch(`${BASE_URL}/users/logout/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+    } catch (error) {
+      console.log(error)
+    } finally {
+      localStorage.removeItem("_acc");
+      localStorage.removeItem("_ref");
+      window.location.href = "/";
+    }
+  };
+
   return (
     <div
       className=" sidebar-admin d-flex flex-column h-100 position-fixed start-0 top-0 shadow"
@@ -40,24 +61,15 @@ const Sidebar = ({ onMenuClick }) => {
           onMenuClick={onMenuClick}
         />
         <NavItem
-          icon={<User size={20} />}
-          menu="profile"
-          onMenuClick={onMenuClick}
-        />
-        <NavItem
-          icon={<Package size={20} />}
-          menu="packages"
-          onMenuClick={onMenuClick}
-        />
-        <NavItem
-          icon={<ChefHat size={20} />}
-          menu="recipes"
-          onMenuClick={onMenuClick}
-        />
-        <NavItem
           icon={<InfoCircle size={20} />}
           menu="infomation"
           onMenuClick={onMenuClick}
+        />
+        <NavItem
+          icon={<LogOut size={20} />}
+          menu="logout"
+          onMenuClick={() => handleLogout()}
+        // onClick={() => handleLogout()}
         />
       </div>
     </div>
@@ -78,6 +90,8 @@ const NavItem = ({ icon, menu, onMenuClick }) => {
 const MainComponent = () => {
   const [activeMenu, setActiveMenu] = useState("home");
 
+
+
   const handleMenuClick = (menu) => {
     setActiveMenu(menu);
   };
@@ -88,14 +102,9 @@ const MainComponent = () => {
         return <Dashboard />;
       case "share":
         return <Branches />;
-      case "profile":
-        return <div>Profile Content</div>;
-      case "packages":
-        return <div>Packages Content</div>;
-      case "recipes":
-        return <div>Recipes Content</div>;
       case "infomation":
         return <Infomation />;
+
       default:
         return null;
     }

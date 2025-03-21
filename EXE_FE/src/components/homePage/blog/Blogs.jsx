@@ -93,8 +93,6 @@ MenuItem.propTypes = {
     title: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     time: PropTypes.string.isRequired,
-    price: PropTypes.string.isRequired,
-    oldPrice: PropTypes.string,
 };
 
 export default Blogs;

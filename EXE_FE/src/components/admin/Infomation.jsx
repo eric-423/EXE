@@ -2,6 +2,10 @@ import { Col, Row } from 'react-bootstrap'
 import { Smile } from 'lucide-react';
 
 
+
+
+
+
 const Infomation = () => {
     return (
         <div className="mt-5">
@@ -14,7 +18,7 @@ const Infomation = () => {
                             <Smile size={35} />
                         </div>
                         <div>
-                            <h4>Độ Hài Lòng</h4>
+                            <h4>Đ   ộ Hài Lòng</h4>
                             <h3>92%</h3>
                         </div>
                     </div>
