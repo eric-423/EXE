@@ -6,7 +6,7 @@ import { FONTS } from "@/theme/typography";
 interface EmployeeCardProps {
   employeeName: string;
   employeeCode: number;
-  employeeAddress: string;
+  employeeAddress?: string;
   employeePhone: number;
 }
 
@@ -30,14 +30,16 @@ function EmployeeHeader({
             <Text style={styles.boldText}>{employeeName}</Text> - Mã Nhân Viên:{" "}
             {employeeCode}
           </Text>
-          <Text
-            style={styles.branchText}
-            numberOfLines={2}
-            ellipsizeMode="tail"
-          >
-            Địa chỉ: {employeeAddress}
-          </Text>
-          <Text style={styles.branchText}>{employeePhone}</Text>
+          {employeeAddress ? (
+            <Text
+              style={styles.branchText}
+              numberOfLines={2}
+              ellipsizeMode="tail"
+            >
+              Địa chỉ: {employeeAddress}
+            </Text>
+          ) : null}
+          <Text style={styles.phoneText}>{employeePhone}</Text>
         </View>
       </View>
     </View>
@@ -79,9 +81,14 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.regular,
     width: "30%",
   },
+  phoneText: {
+    fontSize: 20,
+    color: "#555",
+    marginTop: 4,
+    fontFamily: FONTS.regular,
+  },
   contentText: {
     marginLeft: 15,
   },
 });
-
 export default EmployeeHeader;

@@ -23,7 +23,8 @@ import demo from "@/assets/demo.jpg";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
-const OrderPage = () => {
+
+const InprocessOrder = () => {
   const [orderHistory, setOrderHistory] = useState<IOrderHistoryCus[]>([]);
   const [orderId, setOrderid] = useState();
   const styles = StyleSheet.create({
@@ -60,6 +61,7 @@ const OrderPage = () => {
       marginHorizontal: "auto",
     },
   });
+
   function formatDateToDDMMYYYY(isoDate: string): string {
     const date = new Date(isoDate);
     const day = String(date.getDate()).padStart(2, "0");
@@ -68,38 +70,49 @@ const OrderPage = () => {
 
     return `${day}-${month}-${year}`;
   }
+
   const handleViewDetails = (id: number) => {
     router.navigate({
       pathname: "/(user)/order/[id]",
       params: { id: id },
     });
   };
+
   const [decodeToken, setDecodeToken] = useState<any>("");
-  useEffect(() => {
-    const fetchOrderHistoryWithToken = async () => {
-      try {
-        const token = await AsyncStorage.getItem("access_token");
-        if (token) {
-          const decoded = jwtDecode(token);
-          setDecodeToken(decoded.id);
 
-          const res = await axios.get(
-            `${BASE_URL}/orders/customer/${decoded.id}?page=0&size=10`
-          );
+  const fetchOrderHistoryWithToken = async () => {
+    try {
+      const token = await AsyncStorage.getItem("access_token");
+      if (token) {
+        const decoded = jwtDecode(token);
+        setDecodeToken(decoded.id);
+        const res = await axios.get(
+          `${BASE_URL}/orders/shipper/${decodeToken}?page=0&size=10&statusId=2`
+        );
 
-          if (res.data.data.content) {
-            setOrderHistory(res.data.data.content);
-          }
-        } else {
-          console.log("No access token found.");
+        if (res.data.data.content) {
+          setOrderHistory(res.data.data.content);
         }
-      } catch (error) {
-        console.error("Error:", error);
+      } else {
+        console.log("No access token found.");
       }
-    };
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
-    fetchOrderHistoryWithToken();
-  }, []);
+  useEffect(() => {
+    if (decodeToken) {
+      fetchOrderHistoryWithToken();
+    }
+
+    const intervalId = setInterval(() => {
+      if (decodeToken) {
+        fetchOrderHistoryWithToken();
+      }
+    }, 10000);
+    return () => clearInterval(intervalId);
+  }, [decodeToken]);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -121,11 +134,11 @@ const OrderPage = () => {
                 fontSize: 20,
               }}
             >
-              Lịch sử đơn hàng
+              Đơn hàng chờ giao
             </Text>
             <Image
               source={logo}
-              style={{ width: 100, height: 100, marginLeft: 110 }}
+              style={{ width: 100, height: 100, marginLeft: 100 }}
             />
           </View>
         </View>
@@ -145,22 +158,19 @@ const OrderPage = () => {
                   }}
                 >
                   <View style={{ gap: 10 }}>
-                    <Text style={styles.text}>{item.address}</Text>
+                    <Text style={styles.text}>Giao đến: {item.address}</Text>
                     <Text style={styles.text}>
                       {formatDateToDDMMYYYY(item.createdAt)}
                     </Text>
                     <Text style={styles.text}>
-                      {currencyFormatter(item.amount)}{" "}
-                      <Text style={styles.earnPoint}>
-                        (+ {item.pointEarned} điểm)
-                      </Text>
+                      Tổng thu: {currencyFormatter(item.amount)}{" "}
                     </Text>
                     <View style={{ flexDirection: "row" }}>
                       <Text style={styles.text}>
                         Trạng thái:{" "}
                         {(() => {
                           switch (item.orderStatus) {
-                            case "Đang chuẩn bị":
+                            case "Đang Chuẩn Bị":
                               return (
                                 <Text style={{ color: APP_COLOR.ORANGE }}>
                                   {item.orderStatus}
@@ -168,29 +178,29 @@ const OrderPage = () => {
                               );
                             case "Đang giao":
                               return (
-                                <Text style={{ color: APP_COLOR.YELLOW }}>
+                                <Text style={{ color: "blue" }}>
                                   {item.orderStatus}
                                 </Text>
                               );
-                            case "Đã giao":
+                            case "Đã Giao":
                               return (
                                 <Text style={{ color: "green" }}>
                                   {item.orderStatus}
                                 </Text>
                               );
-                            case "Đã hủy":
+                            case "Đã Hủy":
                               return (
                                 <Text style={{ color: "red" }}>
                                   {item.orderStatus}
                                 </Text>
                               );
-                            case "Đặt hàng thành công":
+                            case "Đặt Hàng Thành Công":
                               return (
                                 <Text style={{ color: "blue" }}>
                                   {item.orderStatus}
                                 </Text>
                               );
-                            case "Chờ thanh toán":
+                            case "Chờ Thanh Toán":
                               return (
                                 <Text style={{ color: "orange" }}>
                                   {item.orderStatus}
@@ -222,4 +232,4 @@ const OrderPage = () => {
   );
 };
 
-export default OrderPage;
+export default InprocessOrder;

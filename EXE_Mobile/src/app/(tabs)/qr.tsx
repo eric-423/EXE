@@ -88,7 +88,12 @@ export default function QRScanner() {
     <View style={styles.container}>
       <View style={styles.headerContent}>
         <Image source={tamtac} style={styles.image} />
-        <Text style={[typography.h2, styles.title]}>Quét mã QR</Text>
+        <Text style={[typography.h2, styles.title]}>Chi tiết đơn hàng</Text>
+      </View>
+      <View>
+        <Text style={styles.title}>
+          Hãy quét mã dưới cùng của đơn hàng để xem nhé....
+        </Text>
       </View>
       {!scanned && (
         <View style={styles.scannerContainer}>
@@ -150,12 +155,13 @@ const styles = StyleSheet.create({
     top: 40,
   },
   image: {
-    width: 200,
-    height: 200,
+    width: 150,
+    height: 150,
   },
   title: {
-    marginBottom: 20,
+    marginBottom: 25,
     color: APP_COLOR.ORANGE,
+    fontFamily: FONTS.regular,
   },
   scannerContainer: {
     width: width - 40,

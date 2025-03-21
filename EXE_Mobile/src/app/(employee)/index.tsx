@@ -101,7 +101,6 @@ const HomePage = () => {
           <EmployeeHeader
             employeeName={decodeToken.name}
             employeeCode={decodeToken.id}
-            employeeAddress={decodeToken.address}
             employeePhone={decodeToken.phone}
           />
         </View>

@@ -141,7 +141,7 @@ const EmployeeWelcomePage = () => {
         if (isBiometricAuth) {
           const authenticated = await authenticateWithBiometric();
           if (authenticated) {
-            router.replace("/(tabs)");
+            router.replace("/(employee)");
           } else {
             console.log("Xác thực không thành công.");
           }

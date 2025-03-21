@@ -6,6 +6,7 @@ import { APP_COLOR } from "@/utils/constant";
 import { View } from "react-native";
 import { FONTS } from "@/theme/typography";
 import Entypo from "@expo/vector-icons/Entypo";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 const EmployeeLayout = () => {
   const getIcons = (routeName: string, focused: boolean, size: number) => {
     if (routeName === "index") {
@@ -19,9 +20,9 @@ const EmployeeLayout = () => {
     }
     if (routeName === "order") {
       return (
-        <MaterialIcons
-          name="list-alt"
-          size={size}
+        <FontAwesome5
+          name="map-marked-alt"
+          size={24}
           color={focused ? APP_COLOR.ORANGE : APP_COLOR.GREY}
         />
       );
@@ -59,11 +60,19 @@ const EmployeeLayout = () => {
       );
     }
 
-    if (routeName === "chat") {
+    if (routeName === "inprocess") {
       return focused ? (
-        <Entypo name="chat" size={24} color={APP_COLOR.ORANGE} />
+        <MaterialIcons
+          name="delivery-dining"
+          size={24}
+          color={APP_COLOR.ORANGE}
+        />
       ) : (
-        <Entypo name="chat" size={24} color={APP_COLOR.GREY} />
+        <MaterialIcons
+          name="delivery-dining"
+          size={24}
+          color={APP_COLOR.GREY}
+        />
       );
     }
 
@@ -109,11 +118,11 @@ const EmployeeLayout = () => {
           route.name === "qr"
             ? "Quét mã QR"
             : route.name === "order"
-            ? "Đơn hàng"
+            ? "Bản đồ"
             : route.name === "index"
             ? "Lịch trình"
-            : route.name === "chat"
-            ? "Nhắn tin"
+            : route.name === "inprocess"
+            ? "Đơn đang giao"
             : "Tôi",
       })}
     >
@@ -126,7 +135,7 @@ const EmployeeLayout = () => {
       <Tabs.Screen
         name="order"
         options={{
-          title: "Đơn hàng",
+          title: "Bản đồ",
         }}
       />
       <Tabs.Screen
@@ -146,7 +155,7 @@ const EmployeeLayout = () => {
         }}
       />
       <Tabs.Screen
-        name="chat"
+        name="inprocess"
         options={{
           title: "Thông báo",
         }}

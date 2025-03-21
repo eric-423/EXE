@@ -55,7 +55,7 @@ const OrderPage = () => {
           const shipAddress = shipAddressResponse.data.data.content[0].address;
           setShipAddress(shipAddress);
           const directionResponse = await axios.get(
-            `https://maps.gomaps.pro/maps/api/directions/json?destination=${shipAddress}&origin=${address}&key=AlzaSyNOiNuM9dYaAZxahUvMvBOIjx4xyOSi3yr`
+            `https://maps.gomaps.pro/maps/api/directions/json?destination=${shipAddress}&mode=driving&origin=${address}&key=AlzaSyNOiNuM9dYaAZxahUvMvBOIjx4xyOSi3yr`
           );
           const directionsData = directionResponse.data.routes[0].legs[0].steps;
           const coordinates = directionsData.map((step: any) => ({
@@ -118,13 +118,6 @@ const OrderPage = () => {
                 employeePhone={shipperInfo.phone}
               />
             ) : null}
-            <Text
-              style={{ fontFamily: FONTS.regular, fontSize: 20 }}
-              numberOfLines={2}
-              ellipsizeMode="tail"
-            >
-              Đơn hàng vận chuyển: {shipAddress}
-            </Text>
             <MapView
               style={{ flex: 1 }}
               region={{

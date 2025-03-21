@@ -10,10 +10,13 @@ import {
 } from "react-native";
 import { BarCodeScanner, BarCodeScannerResult } from "expo-barcode-scanner";
 import tamtac from "@/assets/logo.png";
-import { APP_COLOR } from "@/utils/constant";
+import { APP_COLOR, BASE_URL } from "@/utils/constant";
 import { FONTS, typography } from "@/theme/typography";
 import { router } from "expo-router";
-
+import { jwtDecode } from "jwt-decode";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import Toast from "react-native-root-toast";
 const { width } = Dimensions.get("window");
 
 export default function QRScanner() {
@@ -21,13 +24,12 @@ export default function QRScanner() {
   const [scanned, setScanned] = useState(false);
   const [scanAnimation] = useState(new Animated.Value(0));
   const [scanResult, setScanResult] = useState("");
-
+  const [decodeToken, setDecodeToken] = useState<any>("");
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
       setHasPermission(status === "granted");
     };
-
     getBarCodeScannerPermissions();
     const startScanAnimation = () => {
       Animated.loop(
@@ -48,16 +50,35 @@ export default function QRScanner() {
 
     startScanAnimation();
   }, [scanAnimation]);
-
   const handleBarCodeScanned = async (scanningResult: BarCodeScannerResult) => {
     setScanned(true);
     setScanResult(scanningResult.data);
-    setTimeout(() => {
-      router.push({
-        pathname: "/(user)/order/[id]",
-        params: { id: scanningResult.data },
-      });
-    }, 300);
+    const token = await AsyncStorage.getItem("access_token");
+    if (token) {
+      const decoded = jwtDecode(token);
+      const shipperId = decoded.id;
+      const confirmStatus = await axios.put(
+        `${BASE_URL}/orders/delivered/${scanningResult.data}?shipperId=${shipperId}`
+      );
+
+      if (confirmStatus.data.data) {
+        Toast.show("Xác nhận đơn hàng thành công", {
+          duration: Toast.durations.LONG,
+          textColor: "white",
+          backgroundColor: APP_COLOR.ORANGE,
+          opacity: 1,
+        });
+      } else {
+        Toast.show("Xác nhận đơn hàng không thành công", {
+          duration: Toast.durations.LONG,
+          textColor: "white",
+          backgroundColor: "red",
+          opacity: 1,
+        });
+      }
+    } else {
+      console.log("No access token found.");
+    }
   };
 
   if (hasPermission === null) {
@@ -69,7 +90,6 @@ export default function QRScanner() {
       </View>
     );
   }
-
   if (hasPermission === false) {
     return (
       <View style={styles.container}>
@@ -88,7 +108,7 @@ export default function QRScanner() {
     <View style={styles.container}>
       <View style={styles.headerContent}>
         <Image source={tamtac} style={styles.image} />
-        <Text style={[typography.h2, styles.title]}>Quét mã QR</Text>
+        <Text style={[typography.h2, styles.title]}>Xác nhận đơn hàng</Text>
       </View>
       {!scanned && (
         <View style={styles.scannerContainer}>
@@ -150,12 +170,13 @@ const styles = StyleSheet.create({
     top: 40,
   },
   image: {
-    width: 200,
-    height: 200,
+    width: 150,
+    height: 150,
   },
   title: {
-    marginBottom: 20,
+    marginBottom: 25,
     color: APP_COLOR.ORANGE,
+    fontFamily: FONTS.regular,
   },
   scannerContainer: {
     width: width - 40,
