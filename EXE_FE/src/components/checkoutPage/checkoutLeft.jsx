@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import AutoCompleteNearedBranch from './AutoCompleteNearedBranch';
 
 const CheckoutLeft = ({
   setUserName,
@@ -20,10 +21,13 @@ const CheckoutLeft = ({
   const [isNewAddress, setIsNewAddress] = useState("default");
   const [isPickup, setIsPickup] = useState(false);
   const [isCod, setIsCod] = useState(true);
+  const [branches, setBranches] = useState([]);
 
   useEffect(() => {
     setPaymentMethodId(1);
   }, [setPaymentMethodId]);
+
+
 
   return (
     <>
@@ -125,21 +129,13 @@ const CheckoutLeft = ({
                       color: "black",
                     }}
                   />
-                  <input
-                    type="text"
-                    className="form-control mb-2"
-                    placeholder="Địa chỉ giao hàng"
-                    value={address}
-                    onChange={(e) => {
-                      setAddress(e.target.value);
-                      setUserAddress(e.target.value);
-                    }}
-                    style={{
-                      backgroundColor: "transparent",
-                      border: "1px solid black",
-                      color: "black",
-                    }}
+
+                  <AutoCompleteNearedBranch
+                    location={address}
+                    setLocation={setAddress}
+                    setUserAddress={setUserAddress}
                   />
+
                   <input
                     type="text"
                     className="form-control mb-2"
@@ -159,106 +155,6 @@ const CheckoutLeft = ({
               )}
             </div>
 
-            <div className="mb-3">
-              <div className="d-flex justify-content-start  mb-3 ">
-                <div className="form-check-inline m-0 pt-2">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    name="isBuyFor"
-                    id="checkboxBuyFor"
-                    checked={isBuyFor}
-                    onChange={() => setIsBuyFor(!isBuyFor)}
-                    style={{
-                      width: 20,
-                      height: 20,
-                      padding: 0,
-                      backgroundColor: "rgb(235, 209, 135)",
-                    }}
-                  />
-                  <label className="form-check-label" htmlFor="checkboxBuyFor">
-                    Đặt Hộ
-                  </label>
-                </div>
-              </div>
-
-              {isBuyFor && (
-                <>
-                  <input
-                    type="text"
-                    className="form-control mb-2 info-input"
-                    placeholder="Tên người nhận"
-                    disabled={!isBuyFor}
-                    value={name}
-                    onChange={(e) => {
-                      setName(e.target.value);
-                      setUserName(e.target.value);
-                    }}
-                  />
-                  <input
-                    type="text"
-                    className="form-control mb-2 info-input"
-                    placeholder="Số điện thoại người nhận"
-                    disabled={!isBuyFor}
-                    value={phone}
-                    onChange={(e) => {
-                      setPhone(e.target.value);
-                      setPhoneNumber(e.target.value);
-                    }}
-                  />
-
-                  <input
-                    type="text"
-                    className="form-control mb-2"
-                    placeholder="Địa chỉ chi tiết"
-                  />
-                </>
-              )}
-
-              {/* <div className="form-check form-check-inline mt-2 mb-3 ">
-                                    <input
-                                        className="form-check-input"
-                                        type="radio"
-                                        name="deliveryTime"
-                                        id="radioGiaoNgay"
-                                        defaultChecked
-                                        style={{ width: 25, height: 25, backgroundColor: 'rgb(235, 209, 135)' }}
-                                    />
-                                    <label className="form-check-label ml-2 " style={{ fontSize: '15px' }} htmlFor="radioGiaoNgay">
-                                        Giao ngay
-                                    </label>
-                                </div> */}
-
-              {/* <div className="d-flex form-check form-check-inline mb-3">
-                                    <input
-                                        className="form-check-input"
-                                        type="radio"
-                                        name="deliveryTime"
-                                        id="radioHenGio"
-                                        style={{ width: 25, height: 25, backgroundColor: 'rgb(235, 209, 135)' }}
-                                    />
-
-                                    <label
-                                        className='ml-2 pt-1'
-                                        style={{
-                                            fontSize: '15px',
-                                            width: '100%',
-                                            backgroundColor: 'transparent',
-                                        }}
-                                        htmlFor="radioHenGio"
-                                    >
-                                        Hẹn lịch giao lúc
-                                        <input
-                                            type="time"
-                                            style={{
-                                                width: '80px',
-                                                margin: '0 5px',
-                                            }}
-                                        />
-                                        Ngày {new Date().getDate()}/{new Date().getMonth() + 1}
-                                    </label>
-                                </div> */}
-            </div>
           </>
         )}
 

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 import deliveryVideo from "../../assets/videos/delivery.mp4";
 import "./PaymentSuccessPage.css";
 
@@ -7,6 +8,10 @@ const PaymentSuccessPage = () => {
     const orderTime = "13:46, 27/01/2025";
     const orderCode = "2501270005";
     window.location.href = "hoidanit-app://order-success";
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     return (
         <div className="payment-success-container">
@@ -21,10 +26,7 @@ const PaymentSuccessPage = () => {
                 </div>
 
                 <div className="order-details">
-                    <p className="order-time">
-                        Đơn hàng được tạo lúc {orderTime}
-                    </p>
-                    <p className="order-code">Mã đơn hàng: {orderCode}</p>
+
                     <p className="order-note">
                         Hãy chú ý điện thoại của bạn trong suốt quá trình giao
                         hàng nhé!

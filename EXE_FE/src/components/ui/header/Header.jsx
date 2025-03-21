@@ -3,8 +3,39 @@ import "./Header.css";
 import { Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Cart from "../../cart/Cart";
+import { LogIn, LogOut } from "lucide-react";
+import { useEffect, useState } from "react";
+import { BASE_URL } from "../../../config/api";
 
 const Header = () => {
+
+  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("_acc"));
+
+  useEffect(() => {
+    setIsLoggedIn(localStorage.getItem("_acc"));
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      const accessToken = localStorage.getItem("_acc");
+      await fetch(`${BASE_URL}/users/logout/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+    } catch (error) {
+      console.log(error)
+    } finally {
+      localStorage.removeItem("_acc");
+      localStorage.removeItem("_ref");
+      setIsLoggedIn(false);
+      window.location.reload();
+      window.location.href = "/";
+    }
+  };
+
   return (
     <Row className="header">
       <Col md={1} className="p-0 ">
@@ -38,13 +69,16 @@ const Header = () => {
 
       <Col md={3}>
         <div className="header-right">
-          <Link to="/login" className="icon-link">
-            <img
-              src="/icons/notification-3.svg"
-              alt="notifications"
-              className="header-icon"
-            />
-          </Link>
+          {!isLoggedIn ? (
+            <Link to="/login" className="icon-link">
+              <LogIn style={{ width: "2.5rem", height: "2.5rem" }} />
+            </Link>
+          ) : (
+            <Link to="/" className="icon-link" onClick={handleLogout}>
+              <LogOut style={{ width: "2.5rem", height: "2.5rem" }} />
+            </Link>
+          )}
+
           <Link to="/user" className="icon-link">
             <img
               src="/icons/account.svg"
