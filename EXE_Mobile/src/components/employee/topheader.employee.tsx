@@ -30,7 +30,13 @@ function EmployeeHeader({
             <Text style={styles.boldText}>{employeeName}</Text> - Mã Nhân Viên:{" "}
             {employeeCode}
           </Text>
-          <Text style={styles.branchText}>Địa chỉ: {employeeAddress}</Text>
+          <Text
+            style={styles.branchText}
+            numberOfLines={2}
+            ellipsizeMode="tail"
+          >
+            Địa chỉ: {employeeAddress}
+          </Text>
           <Text style={styles.branchText}>{employeePhone}</Text>
         </View>
       </View>
@@ -71,6 +77,7 @@ const styles = StyleSheet.create({
     color: "#555",
     marginTop: 4,
     fontFamily: FONTS.regular,
+    width: "30%",
   },
   contentText: {
     marginLeft: 15,

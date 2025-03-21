@@ -7,6 +7,9 @@ import { jwtDecode } from "jwt-decode";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { APP_COLOR, BASE_URL } from "@/utils/constant";
+import EmployeeHeader from "@/components/employee/topheader.employee";
+import { FONTS } from "@/theme/typography";
+import { string } from "yup";
 
 const OrderPage = () => {
   const [location, setLocation] = useState<Location.LocationObject | null>(
@@ -16,10 +19,14 @@ const OrderPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [decodeToken, setDecodeToken] = useState<any>("");
-
   const [shipAddress, setShipAddress] = useState("");
-  const [routeCoordinates, setRouteCoordinates] = useState<any[]>([]); // Lưu tọa độ đường đi
-
+  const [routeCoordinates, setRouteCoordinates] = useState<any[]>([]);
+  const [mark, setMark] = useState<{ lat: number; lng: number }>();
+  const [shipperInfo, setShipperInfo] = useState<{
+    name: string;
+    id: number;
+    phone: number;
+  } | null>(null);
   const getAddressFromCoords = async (lat: number, lng: number) => {
     try {
       const response = await fetch(
@@ -41,25 +48,25 @@ const OrderPage = () => {
         if (token) {
           const decoded = jwtDecode(token);
           setDecodeToken(decoded.id);
+          setShipperInfo(decoded);
           const shipAddressResponse = await axios.get(
             `${BASE_URL}/orders/shipper/${decodeToken}?page=0&size=10&statusId=2`
           );
           const shipAddress = shipAddressResponse.data.data.content[0].address;
           setShipAddress(shipAddress);
-
-          // Gọi API lấy chỉ dẫn đường
           const directionResponse = await axios.get(
             `https://maps.gomaps.pro/maps/api/directions/json?destination=${shipAddress}&origin=${address}&key=AlzaSyNOiNuM9dYaAZxahUvMvBOIjx4xyOSi3yr`
           );
           const directionsData = directionResponse.data.routes[0].legs[0].steps;
-
-          // Lấy các tọa độ từ API directions
           const coordinates = directionsData.map((step: any) => ({
             latitude: step.end_location.lat,
             longitude: step.end_location.lng,
           }));
-
           setRouteCoordinates(coordinates);
+          const shippingMark = await axios.get(
+            `https://maps.gomaps.pro/maps/api/geocode/json?address=${shipAddress}&language=vi&region=vn&key=AlzaSyNOiNuM9dYaAZxahUvMvBOIjx4xyOSi3yr`
+          );
+          setMark(shippingMark.data.results[0].geometry.location);
         } else {
           console.log("No access token found.");
         }
@@ -97,28 +104,27 @@ const OrderPage = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ flex: 1 }}>
-        <Text
-          style={{
-            fontSize: 20,
-            fontWeight: "bold",
-            textAlign: "center",
-            marginTop: 20,
-          }}
-        >
-          Vị trí của bạn
-        </Text>
         {isLoading ? (
           <Text style={{ textAlign: "center", marginTop: 10 }}>
             Đang tải vị trí...
           </Text>
         ) : (
           <View style={{ flex: 1 }}>
-            <Text style={{ textAlign: "center" }}>
-              Tọa độ: {location?.coords.latitude}, {location?.coords.longitude}
-            </Text>
-            {address ? (
-              <Text style={{ textAlign: "center" }}>Địa chỉ: {address}</Text>
+            {shipperInfo ? (
+              <EmployeeHeader
+                employeeAddress={address}
+                employeeName={shipperInfo.name}
+                employeeCode={shipperInfo.id}
+                employeePhone={shipperInfo.phone}
+              />
             ) : null}
+            <Text
+              style={{ fontFamily: FONTS.regular, fontSize: 20 }}
+              numberOfLines={2}
+              ellipsizeMode="tail"
+            >
+              Đơn hàng vận chuyển: {shipAddress}
+            </Text>
             <MapView
               style={{ flex: 1 }}
               region={{
@@ -136,6 +142,16 @@ const OrderPage = () => {
                 title="Vị trí của bạn"
                 description={address}
               />
+              {mark ? (
+                <Marker
+                  coordinate={{
+                    latitude: mark?.lat ?? 0,
+                    longitude: mark?.lng ?? 0,
+                  }}
+                  title="Vị trí giao hàng"
+                  description={shipAddress}
+                />
+              ) : null}
               {routeCoordinates.length > 0 && (
                 <Polyline
                   coordinates={routeCoordinates}
