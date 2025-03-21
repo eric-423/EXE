@@ -238,7 +238,8 @@ const LoginPage = () => {
                 localStorage.setItem("_acc", data.data.access_token);
                 localStorage.setItem("_ref", data.data.refresh_token);
                 const decodedToken = jwtDecode(data.data.access_token);
-                if ((decodedToken.role).toUpperCase() == "ADMIN") {
+                console.log(decodedToken.role)
+                if ((decodedToken.role).toUpperCase() == "MANAGER") {
                     navigate("/admin");
                 } else {
                     navigate("/");

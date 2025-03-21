@@ -98,7 +98,6 @@ function App() {
     const CustomerLayout = () => (
         <>
             <Header />
-            {/* {role} */}
             <RoutesComponent />
             <Footer />
         </>

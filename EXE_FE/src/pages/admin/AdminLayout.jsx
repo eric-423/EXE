@@ -14,9 +14,7 @@ const AdminLayout = () => {
 
         const decodedToken = jwtDecode(accessToken);
 
-        console.log(decodedToken.role)
-
-        if ((decodedToken.role).toUpperCase() != "ADMIN") {
+        if ((decodedToken.role).toUpperCase() != "MANAGER") {
             window.location.href = "/";
         } else {
             setLoading(true)
