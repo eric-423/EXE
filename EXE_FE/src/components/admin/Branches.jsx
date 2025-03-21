@@ -5,7 +5,7 @@ import DocumentCard from "./DocumentCard";
 import RequestTable from "./RequestTable";
 import ListBranch from "./ListBranch";
 import { BASE_URL } from "../../config/api";
-import useScanDetection from "use-scan-detection";
+// import useScanDetection from "use-scan-detection";
 
 function Branches() {
     const [activeMenu, setActiveMenu] = useState('thongtin');
@@ -177,23 +177,78 @@ function Branches() {
         }
     }
 
-    useScanDetection({
-        onComplete: async (code) => {
+    const [barcodeBuffer, setBarcodeBuffer] = useState('');
+    const [barcode, setBarcode] = useState('');
+    let timeoutId;
+
+    const handleKeyPress = async (e) => {
+        // Thêm ký tự mới vào buffer
+        const newBuffer = barcodeBuffer + e.key;
+        setBarcodeBuffer(newBuffer);
+        // Đợi 100ms để đảm bảo đã nhận đủ dữ liệu từ máy quét
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(async () => {
+            const barcodeNumber = parseInt(newBuffer);
+            setBarcode(barcodeNumber);
+            setBarcodeBuffer('');
+
+            if (barcodeNumber) {
+                try {
+                    const response = await fetch(`${BASE_URL}/orders/delivery/${barcodeNumber}`, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json",
+                        }
+                    });
+                    const data = await response.json();
+                    console.log("Barcode scanned:", barcodeNumber);
+                    console.log("Response:", data);
+                    fetchOrderDelivering();
+                } catch (error) {
+                    console.error("Error processing barcode:", error);
+                } finally {
+                    setBarcodeBuffer('');
+                    setBarcode('');
+                }
+            }
+        }, 100);
+
+
+        if (parseInt(newBuffer)) {
             try {
-                const response = await fetch(`${BASE_URL}/orders/delivery/${code}`, {
+                const response = await fetch(`${BASE_URL}/orders/delivery/${parseInt(newBuffer)}`, {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
                     }
                 });
                 const data = await response.json();
-                console.log(data)
+                console.log("Barcode scanned:", newBuffer);
+                console.log("Response:", data);
                 fetchOrderDelivering();
             } catch (error) {
-                console.log(error)
+                console.error("Error processing barcode:", error);
+            } finally {
+                setBarcodeBuffer('');
+                setBarcode('');
             }
-        },
-    });
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener('keypress', handleKeyPress);
+        return () => {
+            window.removeEventListener('keypress', handleKeyPress);
+            if (timeoutId) {
+                clearTimeout(timeoutId);
+            }
+        };
+    }, [barcodeBuffer]);
+
+
+
+
+
 
     const renderContent = () => {
         switch (activeMenu) {
