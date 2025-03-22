@@ -1,6 +1,7 @@
 package com.tamtac.tamtac.untils;
 
 import com.tamtac.tamtac.entity.User;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -15,7 +16,7 @@ public class JwtTokenHelper {
     @Value("${jwt.secretkey}")
     private String key;
 
-    public String generateToken(User user, int time) {
+    public String generateToken(User user, Long time) {
         SecretKey secretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(key));
         String token = Jwts.builder()
                 .setIssuer("ATDStore")
@@ -24,10 +25,21 @@ public class JwtTokenHelper {
                 .claim("name", user.getFullName())
                 .claim("address", user.getAddress())
                 .claim("id", user.getId())
+                .claim("phone", user.getPhone())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date().getTime()) + time))
                 .signWith(secretKey).compact();
         return token;
+    }
+
+    public long getExpirationTime(String token) {
+        SecretKey secretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(key));
+        Claims claims = Jwts.parser()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.getExpiration().getTime();
     }
 
     public boolean verifyToken(String token) {

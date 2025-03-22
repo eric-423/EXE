@@ -14,7 +14,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class KeyBranchProduct implements Serializable {
 
-    @Column(name = "order_id")
+    @Column(name = "branch_id")
     private int branchId;
 
     @Column(name = "product_id")

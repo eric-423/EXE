@@ -16,6 +16,7 @@ public class OrderRequest {
     private int pointUsed;
     private int pointEarned;
     private int paymentMethodId;
-
+    private String longitude;
+    private String latitude;
     List<OrderItemRequest> orderItems;
 }

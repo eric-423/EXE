@@ -9,7 +9,7 @@ import java.util.Date;
 @Data
 public class CustomerDTO implements Serializable {
 
-    private int id;
+    private Integer id;
 
     private String fullName;
 
@@ -19,13 +19,29 @@ public class CustomerDTO implements Serializable {
 
     private String address;
 
-    private boolean isActive;
+    private Boolean isActive;
 
     private String dateOfBirth;
 
     private Date createdAt;
 
-    private int memberPoint;
+    private Integer memberPoint;
 
     private String memberRank;
+
+    @Override
+    public String toString() {
+        return "CustomerDTO{" +
+                "id=" + id +
+                ", fullName='" + fullName + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", address='" + address + '\'' +
+                ", isActive=" + isActive +
+                ", dateOfBirth='" + dateOfBirth + '\'' +
+                ", createdAt=" + createdAt +
+                ", memberPoint=" + memberPoint +
+                ", memberRank='" + memberRank + '\'' +
+                '}';
+    }
 }

@@ -25,12 +25,13 @@ public class OrderDTO implements Serializable {
 
     private Double amount;
 
-    private Double shipping_fee;
+    private Double shippingFee;
 
     private Boolean isPickUp;
 
     private Date delivery_at;
 
+    private String orderStatus;
     private String note;
 
     private String payment_code;
@@ -47,4 +48,36 @@ public class OrderDTO implements Serializable {
 
     private List<OrderIemDTO> orderItems;
 
+    private CustomerDTO customerDTO;
+
+    @Override
+    public String toString() {
+        StringBuilder orderItems = new StringBuilder();
+
+        for(OrderIemDTO orderItem : this.orderItems){
+            orderItems.append(orderItem.toString());
+        }
+
+        return "OrderDTO{" +
+                "id=" + id +
+                ", subTotal=" + subTotal +
+                ", promotionCode='" + promotionCode + '\'' +
+                ", discountValue=" + discountValue +
+                ", discountPercent=" + discountPercent +
+                ", amount=" + amount +
+                ", shippingFee=" + shippingFee +
+                ", isPickUp=" + isPickUp +
+                ", delivery_at=" + delivery_at +
+                ", orderStatus='" + orderStatus + '\'' +
+                ", note='" + note + '\'' +
+                ", payment_code='" + payment_code + '\'' +
+                ", address='" + address + '\'' +
+                ", phone='" + phone + '\'' +
+                ", pointUsed=" + pointUsed +
+                ", pointEarned=" + pointEarned +
+                ", createdAt=" + createdAt +
+                ", orderItems=" + orderItems +
+                ", customerDTO=" + customerDTO.toString() +
+                '}';
+    }
 }

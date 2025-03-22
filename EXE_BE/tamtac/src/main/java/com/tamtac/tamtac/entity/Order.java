@@ -48,6 +48,9 @@ public class Order {
     @Column(name = "order_address")
     private String address;
 
+    @Column(name = "invoice_url")
+    private String invoiceUrl;
+
     @Column(name = "order_phone")
     private String phone;
 
@@ -63,6 +66,16 @@ public class Order {
     @Column(name = "is_pick_up")
     private boolean isPickUp;
 
+    @Column(name = "payment_time")
+    private Date paymentTime;
+
+    @Column(name = "payment_url", columnDefinition = "TEXT")
+    private String paymentUrl;
+
+    @Column(name = "expired_payment_time")
+    private Date expiredPaymentTime;
+
+
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "customer_id")
     private User customer;
@@ -70,6 +83,10 @@ public class Order {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "worker_id")
     private User worker;
+
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @JoinColumn(name = "shipped_by")
+    private User shipper;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "status_id")

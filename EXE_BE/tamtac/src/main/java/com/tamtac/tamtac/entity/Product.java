@@ -26,22 +26,28 @@ public class Product {
     @Column(name = "product_price")
     private double price;
 
+    @Column(name = "product_image")
+    private String image;
+
     @Column(name = "create_date")
     private Date createdDate;
 
     @Column(name = "update_date")
-    private String image;
+    private Date updateDate;
+
+    @Column(name = "is_active")
+    private boolean isActive;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinColumn(name = "product_type_id")
     private ProductType productType;
-
-    @OneToOne(mappedBy = "product", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
-    private Recipe recipe;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     private List<OrderItem> orderItems;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     private List<BranchProduct> branchProducts;
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
+    private List<ProductRecipes> productRecipes;
 }

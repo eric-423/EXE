@@ -82,7 +82,7 @@ public class ProductService implements ProductServiceImp {
 
             productDTO.setProductQuantity(branchProductRepository.findByKeyBranchProduct(keyBranchProduct).getQuantity());
 
-            productDTOS.add(convertDTO(product));
+            productDTOS.add(productDTO);
         }
 
         int totalElements = productDTOS.size();

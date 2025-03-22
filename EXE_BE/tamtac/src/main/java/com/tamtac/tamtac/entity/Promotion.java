@@ -27,6 +27,9 @@ public class Promotion {
     @Column(name = "promotion_discount")
     private int value;
 
+    @Column(name = "minimum_order_value")
+    private double minimumOrderValue;
+
     @Column(name = "promotion_start_date")
     private String startDate;
 
