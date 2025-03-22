@@ -87,12 +87,15 @@ const ChatInterface = () => {
         const newClient = new Client({
             webSocketFactory: () => socket,
             reconnectDelay: 2000,
-            debug: function (str) {
-                console.log(str);
-            },
+            // debug: function (str) {
+            //     console.log(str);
+            // },
         });
 
         newClient.onConnect = () => {
+            console.log('Đang thử kết nối tới WebSocket...');
+            console.log('Socket state:', socket.readyState);
+            console.log('Client state:', newClient);
             console.log('Connected to WebSocket');
             newClient.subscribe("/topic/chat", (message) => {
                 console.log('Received message:', message);
@@ -119,20 +122,6 @@ const ChatInterface = () => {
     ];
 
 
-    // const handleSendMessage = (e) => {
-    //     e.preventDefault();
-    //     if (newMessage.trim() && selectedUser) {
-    //         const newMessageObj = {
-    //             id: Date.now(),
-    //             content: newMessage,
-    //             senderId: userId,
-    //             sendTime: new Date().toISOString()
-    //         };
-    //         setMessages(prevMessages => [...prevMessages, newMessageObj]);
-    //         setNewMessage('');
-    //     }
-    // };
-
     const loadMessage = async () => {
         const response = await fetch(`${BASE_URL}/chat/room/chat?chatId=${roomId}`);
         const data = await response.json();
@@ -142,9 +131,6 @@ const ChatInterface = () => {
     useEffect(() => {
         loadMessage();
     }, [roomId]);
-
-
-
 
 
 
