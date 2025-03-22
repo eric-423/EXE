@@ -1,11 +1,15 @@
 package com.tamtac.tamtac.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Entity
 @Table(name = "product_type")
+@Data
+@NoArgsConstructor
 public class ProductType {
 
     @Id

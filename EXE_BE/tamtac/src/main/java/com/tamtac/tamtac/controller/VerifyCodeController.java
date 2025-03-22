@@ -1,12 +1,10 @@
 package com.tamtac.tamtac.controller;
 
+import com.tamtac.tamtac.payload.request.CustomerRequest;
 import com.tamtac.tamtac.service.Imp.OtpServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/verify-code")
@@ -16,8 +14,8 @@ public class VerifyCodeController {
     private OtpServiceImp otpServiceImp;
 
     @PostMapping("/send")
-    public ResponseEntity<?> sendVerifyCode(@RequestParam String phoneNumber) {
-        return ResponseEntity.ok(otpServiceImp.generateOTP(phoneNumber));
+    public ResponseEntity<?> sendVerifyCode(@RequestBody CustomerRequest customerRequest, @RequestParam String mode) {
+        return ResponseEntity.ok(otpServiceImp.generateOTP(customerRequest.getPhoneNumber(), mode));
     }
 
     @PostMapping("/verify")

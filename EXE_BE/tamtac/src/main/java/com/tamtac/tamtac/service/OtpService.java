@@ -31,7 +31,7 @@ public class OtpService implements OtpServiceImp {
     private JwtTokenHelper jwtTokenHelper;
 
     @Override
-    public String generateOTP(String phoneNumber) {
+    public String generateOTP(String phoneNumber, String mode) {
         String otp = String.format("%06d", random.nextInt(999999));
         User user = userRepository.findByPhone(phoneNumber);
 
@@ -51,6 +51,9 @@ public class OtpService implements OtpServiceImp {
             verifyCode.setUser(user);
 
             verifyCodeRepository.save(verifyCode);
+            if(mode.equals("dev")){
+                return otp;
+            }
             zaloServiceImp.sendOtp(otp, phoneNumber);
             return otp;
         } else {
@@ -69,8 +72,8 @@ public class OtpService implements OtpServiceImp {
             verifyCodeRepository.save(verifyCode);
 
             Map<String, Object>result = new HashMap<>();
-            String accessToken = jwtTokenHelper.generateToken(user,300000);
-            String refreshToken = jwtTokenHelper.generateToken(user,864000000);
+            String accessToken = jwtTokenHelper.generateToken(user, 300000L);
+            String refreshToken = jwtTokenHelper.generateToken(user, 864000000L);
             result.put("access_token", accessToken);
             result.put("refresh_token", refreshToken );
 

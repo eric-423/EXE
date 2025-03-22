@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Table(name = "material")
 @Data
@@ -16,14 +18,15 @@ public class Material {
     private int id;
     @Column(name = "material_name")
     private String name;
-    @Column(name = "material_quantity")
-    private int quantity;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
     @JoinColumn(name = "material_type_id")
     private MaterialType materialType;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REFRESH,CascadeType.DETACH})
-    @JoinColumn(name = "warehouse_id")
-    private Warehouse warehouse;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH}, mappedBy = "material")
+    private List<ProductRecipes> productRecipes;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH}, mappedBy = "material")
+    private List<MaterialWarehouse> materialWarehouses;
 }

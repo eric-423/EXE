@@ -8,6 +8,9 @@ import java.util.Map;
 
 public interface CustomerServiceImp {
     CustomerDTO createCustomer(LoginCustomerRequest loginCustomerRequest);
-    boolean changePassword(CustomerRequest customerRequest, String token);
+    boolean changePassword(String token, String password);
     public Map<String, Object> loginCustomer(LoginCustomerRequest loginCustomerRequest);
+    CustomerDTO getProfile(int id, String token);
+    boolean deleteCustomer(String token);
+    CustomerDTO updateCustomer(int id, String token, CustomerRequest customerRequest);
 }
