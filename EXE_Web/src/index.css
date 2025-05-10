@@ -1,0 +1,79 @@
+/* Import Bootstrap CSS */
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap");
+
+:root {
+  /* Convert OKLCH colors to more standard formats for Bootstrap */
+  --bs-primary: #ff7a00;
+  --bs-primary-rgb: 255, 122, 0;
+  --bs-secondary: #f5f5f5;
+  --bs-secondary-rgb: 245, 245, 245;
+  --bs-success: #198754;
+  --bs-info: #0dcaf0;
+  --bs-warning: #ffc107;
+  --bs-danger: #dc3545;
+  --bs-light: #f8f9fa;
+  --bs-dark: #212529;
+  --bs-white: #ffffff;
+  --bs-black: #000000;
+  
+  /* Custom theme variables */
+  --bs-border-radius: 0.5rem;
+  --bs-border-color: #e2e2e2;
+  
+  /* Sidebar specific variables */
+  --sidebar-bg: var(--bs-white);
+  --sidebar-color: var(--bs-dark);
+  --sidebar-border: var(--bs-border-color);
+  
+  /* Chart colors */
+  --chart-1: #ff7a00;
+  --chart-2: #0099cc;
+  --chart-3: #3366cc;
+  --chart-4: #ffcc00;
+  --chart-5: #ff9900;
+}
+
+/* Dark mode theme */
+.dark {
+  --bs-primary: #ff7a00;
+  --bs-secondary: #2c2c2c;
+  --bs-light: #343a40;
+  --bs-dark: #f8f9fa;
+  
+  --bs-body-bg: #212529;
+  --bs-body-color: #f8f9fa;
+  
+  --sidebar-bg: #2c2c2c;
+  --sidebar-color: #f8f9fa;
+  --sidebar-border: rgba(255, 255, 255, 0.1);
+  
+  /* Chart colors for dark mode */
+  --chart-1: #9966ff;
+  --chart-2: #66ccff;
+  --chart-3: #ffcc00;
+  --chart-4: #cc66ff;
+  --chart-5: #ff6666;
+}
+
+/* Basic styling */
+body {
+  margin: 0;
+  font-family: Montserrat, Roboto, 
+    'Helvetica Neue', Arial, sans-serif;
+  background-color: var(--bs-body-bg, #fff);
+  color: var(--bs-body-color, #212529);
+}
+
+/* Custom utility classes */
+.border-custom {
+  border-color: var(--bs-border-color);
+}
+
+.bg-sidebar {
+  background-color: var(--sidebar-bg);
+}
+
+.text-sidebar {
+  color: var(--sidebar-color);
+}
