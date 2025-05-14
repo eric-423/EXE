@@ -39,7 +39,7 @@ export default function Home() {
 
       {/* Best Sellers Section */}
       <section className='py-20 bg-gradient-to-b from-secondary to-background relative lg:px-30'>
-        <div className='absolute top-[-30px] left-0 w-[120%] z-0 h-25 bg-background rotate-3' />
+        <div className='absolute top-[-30px] right-0 w-[120%] z-0 h-25 bg-background -rotate-3' />
 
         <div className='container mx-auto px-4'>
           <div className='flex flex-col items-center mb-12'>
@@ -92,12 +92,6 @@ export default function Home() {
             <BranchList />
 
             <div className='bg-white rounded-2xl shadow-lg p-8 relative overflow-hidden'>
-              <div className='absolute top-0 right-0 w-32 h-32'>
-                <svg viewBox='0 0 100 100' className='w-full h-full text-primary/10'>
-                  <circle cx='90' cy='10' r='40' fill='currentColor' />
-                </svg>
-              </div>
-
               <div className='relative'>
                 <div className='flex items-center mb-4'>
                   <div className='w-12 h-12 rounded-full flex items-center justify-center mr-4'>

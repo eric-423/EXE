@@ -3,7 +3,7 @@ const routes = {
   login: '/login',
   register: '/register',
   profile: '/profile',
-  chat: '/chat',
+  menu: '/menu',
   blogs: '/blog',
   blogDetails: '/blog/:id',
   editProfile: '/edit-profile',

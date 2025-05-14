@@ -30,6 +30,12 @@ const router = createBrowserRouter([
               Component: (await import('@/pages/Login')).default,
             }),
           },
+          {
+            path: configs.routes.menu,
+            lazy: async () => ({
+              Component: (await import('@/pages/Menu')).default,
+            }),
+          },
         ],
       },
     ],

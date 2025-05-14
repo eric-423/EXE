@@ -2,6 +2,7 @@
 
 import logo from '@/assets/full-logo.svg';
 import { Button } from '@/components/ui/button';
+import configs from '@/configs';
 
 import { Bell, LogIn, Menu, ShoppingCart, User, X } from 'lucide-react';
 import { useState } from 'react';
@@ -61,7 +62,7 @@ export default function Header() {
 function NavLinks({ mobile = false }: { mobile?: boolean }) {
   const links = [
     { href: '/about', label: 'Về Tấm Tắc' },
-    { href: '/order', label: 'Đặt Hàng' },
+    { href: configs.routes.menu, label: 'Đặt Hàng' },
     { href: '/ai-menu', label: 'Thực đơn từ AI' },
     { href: '/story', label: 'Chuyện Cơm Tấm' },
     { href: '/franchise', label: 'Nhượng Quyền' },

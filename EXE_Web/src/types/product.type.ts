@@ -10,6 +10,11 @@ export interface Product {
   time: string;
 }
 
+export interface ProductType {
+  id: number;
+  name: string;
+}
+
 export type ProductResponse = SuccessResponse<{
   products: Product[];
   total: number;

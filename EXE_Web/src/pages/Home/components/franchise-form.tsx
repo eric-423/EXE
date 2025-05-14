@@ -14,12 +14,22 @@ const FranchiseForm = () => {
   const [province, setProvince] = useState<string>('');
   const [district, setDistrict] = useState<string>('');
 
+  const handleProvinceChange = (value: string) => {
+    setProvince(value);
+    setDistrict('');
+  };
+  const handleDistrictChange = (value: string) => {
+    setDistrict(value);
+  };
+
   const { data: districts } = useQuery({
-    queryKey: [GET_DISTRICTS_QUERY_KEY],
-    queryFn: () => getDistricts(province),
+    queryKey: [GET_DISTRICTS_QUERY_KEY, province],
+    queryFn: async () => await getDistricts(province),
     refetchOnWindowFocus: false,
     enabled: !!province,
   });
+
+  console.log('district', districts);
   return (
     <>
       <form className='space-y-2'>
@@ -64,14 +74,14 @@ const FranchiseForm = () => {
             <Label htmlFor='province' className='block text-sm font-medium text-gray-700 mb-1'>
               Khu vực
             </Label>
-            <Select value={province}>
+            <Select value={province} onValueChange={handleProvinceChange}>
               <SelectTrigger className='w-full'>
                 <SelectValue placeholder='Chọn khu vực' />
               </SelectTrigger>
               <SelectContent>
                 {Object.values(Provinces).map((item) => (
-                  <SelectItem key={item.id} value={item.id} onClick={() => setProvince(item.id)}>
-                    {item.name}{' '}
+                  <SelectItem key={item.id} value={item.id}>
+                    {item.name}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -81,13 +91,15 @@ const FranchiseForm = () => {
             <Label htmlFor='province' className='block text-sm font-medium text-gray-700 mb-1'>
               Quận huyện
             </Label>
-            <Select value={district} disabled={!province}>
+            <Select value={district} disabled={!province} onValueChange={handleDistrictChange}>
               <SelectTrigger className='w-full'>
                 <SelectValue placeholder='Chọn quận huyện' />
               </SelectTrigger>
               <SelectContent>
                 {districts?.map((item) => (
-                  <SelectItem key={item.id} value={item.id} onClick={() => setDistrict(item.name)}></SelectItem>
+                  <SelectItem key={item.id} value={item.id}>
+                    {item.name}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
