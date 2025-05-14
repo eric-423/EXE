@@ -6,6 +6,7 @@ export enum AuthAction {
 }
 
 export enum Role {
+  ADMIN = 'ADMIN',
   GUEST = 'GUEST',
-  USER = 'USER',
+  USER = 'CUSTOMER',
 }

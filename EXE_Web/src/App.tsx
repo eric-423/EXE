@@ -1,5 +1,7 @@
+import { RouterProvider } from 'react-router-dom';
+
 import { ThemeProvider } from './contexts/ThemeContext';
-import Home from './pages/Home';
+import router from './routes';
 
 export default function App() {
   return (
@@ -11,8 +13,9 @@ export default function App() {
     //     </AuthProvider>
     //   </QueryClientProvider>
     // </ThemeProvider>
-    <ThemeProvider>
-      <Home />
+    // <ThemeProvider>
+    <ThemeProvider defaultTheme='system' storageKey='theme'>
+      <RouterProvider router={router} />
     </ThemeProvider>
   );
 }

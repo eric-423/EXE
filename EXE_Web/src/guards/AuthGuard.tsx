@@ -1,8 +1,8 @@
-import { LoadingSpinner } from '@/components/common/loading-spinner';
-import { config } from '@/config/app';
+import { config } from '@/configs/app';
 import { useAuth } from '@/hooks';
 
 import { FC, PropsWithChildren } from 'react';
+import Spinner from 'react-bootstrap/Spinner';
 import { Navigate } from 'react-router-dom';
 
 // AuthGuard is component that will be used to protect routes
@@ -10,7 +10,7 @@ import { Navigate } from 'react-router-dom';
 const AuthGuard: FC<PropsWithChildren> = ({ children }) => {
   const { isInitialized, isAuthenticated, user } = useAuth();
 
-  if (!isInitialized || (!user)) return <LoadingSpinner size='lg' />;
+  if (!isInitialized || !user) return <Spinner animation='border' />;
 
   if (!isAuthenticated) return <Navigate to={config.routes.landing} replace />;
 
