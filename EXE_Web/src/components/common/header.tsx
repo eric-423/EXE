@@ -1,12 +1,11 @@
 'use client';
 
+import logo from '@/assets/full-logo.svg';
 import { Button } from '@/components/ui/button';
 
 import { Bell, LogIn, Menu, ShoppingCart, User, X } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-
-import logo from '/public/full-logo.svg';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

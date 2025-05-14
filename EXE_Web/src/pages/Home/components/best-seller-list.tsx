@@ -36,7 +36,7 @@ const BestSellerList = () => {
   return (
     <div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
       {productMockData.map((item) => (
-        <ProductCard item={item} />
+        <ProductCard item={item} key={item.id} />
       ))}
     </div>
   );

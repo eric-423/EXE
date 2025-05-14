@@ -3,6 +3,10 @@ import { RouterProvider } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
 import router from './routes';
 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
+
 export default function App() {
   return (
     // <ThemeProvider>
@@ -15,7 +19,9 @@ export default function App() {
     // </ThemeProvider>
     // <ThemeProvider>
     <ThemeProvider defaultTheme='system' storageKey='theme'>
-      <RouterProvider router={router} />
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
     </ThemeProvider>
   );
 }

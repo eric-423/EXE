@@ -11,10 +11,7 @@ type ProductCardProps = {
 
 const ProductCard = ({ item }: ProductCardProps) => {
   return (
-    <Card
-      key={item.id}
-      className='group p-0 overflow-hidden bg-white/80 backdrop-blur-sm border-none shadow-lg hover:shadow-xl transition-all duration-300'
-    >
+    <Card className='group p-0 overflow-hidden bg-white/80 backdrop-blur-sm border-none shadow-lg hover:shadow-xl transition-all duration-300'>
       <div className='relative h-64 overflow-hidden'>
         <img
           src={item.img || '/placeholder.svg'}
