@@ -6,5 +6,5 @@ export const GET_BRANCHES_STALE_TIME = 1000 * 60 * 30;
 
 export const getBranches = async () => {
   const { data } = await http.get('/branches');
-  return data as Branch[];
+  return data.data as Branch[];
 };

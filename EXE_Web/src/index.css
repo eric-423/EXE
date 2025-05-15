@@ -22,18 +22,18 @@
   --accent: oklch(0.8 0.15 80); /* Same as secondary - #F8A91F */
   --accent-foreground: oklch(0.2 0.05 30); /* Dark text on accent */
   --destructive: oklch(0.65 0.25 25); /* Red for destructive actions */
-  --border: oklch(0.85 0.03 80); /* Light border color */
+  --border: oklch(0.67 0.1827 41.83); /* Light border color */
   --input: oklch(0.85 0.03 80); /* Light input border color */
   --ring: oklch(0.65 0.2 30); /* Same as primary - #EC6426 */
   --tertiary: oklch(0.35 0.15 140);
-  --light: oklch(0.93 0.0392 59.86);
+  --dark-green: oklch(0.33 0.0662 148.77); /* Dark green - #1A3F22 */
 
   /* Chart colors */
   --chart-1: oklch(0.65 0.2 30); /* Primary - #EC6426 */
   --chart-2: oklch(0.6 0.12 200); /* Blue */
   --chart-3: oklch(0.4 0.07 230); /* Darker blue */
   --chart-4: oklch(0.8 0.15 80); /* Secondary - #F8A91F */
-  --chart-5: oklch(0.35 0.15 140); /* Tertiary - #1A3F22 */
+  --chart-5: oklch(0.4 0.1348 148.77); /* Tertiary - #1A3F22 */
 
   /* Sidebar specific variables */
   --sidebar: oklch(1 0 0); /* White sidebar */
@@ -68,14 +68,14 @@
   --border: oklch(1 0 0 / 10%); /* Subtle white border */
   --input: oklch(1 0 0 / 15%); /* Subtle white input border */
   --ring: oklch(0.65 0.2 30); /* Same as primary - #EC6426 */
-  --light: oklch(0.93 0.0392 59.86);
+  --dark-green: oklch(0.33 0.0662 148.77); /* Dark green - #1A3F22 */
 
   /* Chart colors for dark mode */
   --chart-1: oklch(0.65 0.2 30); /* Primary - #EC6426 */
   --chart-2: oklch(0.7 0.17 200); /* Brighter blue */
   --chart-3: oklch(0.8 0.15 80); /* Secondary - #F8A91F */
   --chart-4: oklch(0.65 0.25 300); /* Purple */
-  --chart-5: oklch(0.65 0.25 15); /* Red-orange */
+  --chart-5: oklch(0.4 0.1348 148.77); /* Red-orange */
 
   /* Sidebar specific variables for dark mode */
   --sidebar: oklch(0.3 0.06 30); /* Slightly lighter than background */
@@ -133,6 +133,9 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) transparent;
   }
 
   body {

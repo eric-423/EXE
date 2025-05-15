@@ -12,7 +12,7 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className='sticky top-0 z-50 w-full bg-background border-b shadow-sm'>
+    <header className='sticky top-0 z-50 w-full bg-background shadow-sm'>
       <div className='container mx-auto px-5 md:px-16 py-0 flex items-center justify-between'>
         {/* Logo */}
         <Link to='/' className='flex items-center space-x-2'>
