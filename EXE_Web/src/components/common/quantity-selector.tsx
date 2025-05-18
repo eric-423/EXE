@@ -1,3 +1,5 @@
+import { cn } from '@/lib/utils';
+
 import { Minus, Plus } from 'lucide-react';
 
 import { Button } from '../ui/button';
@@ -7,11 +9,12 @@ interface QuantitySelectorProps {
   onDecrease: () => void;
   onIncrease: () => void;
   small?: boolean;
+  className?: string;
 }
 
-export function QuantitySelector({ value, onDecrease, onIncrease, small = false }: QuantitySelectorProps) {
+export function QuantitySelector({ value, onDecrease, onIncrease, small = false, className }: QuantitySelectorProps) {
   return (
-    <div className={`flex items-center ${small ? 'gap-1' : 'gap-2'}`}>
+    <div className={cn(`flex items-center ${small ? 'gap-1' : 'gap-2'}`, className)}>
       <Button
         variant='outline'
         size={small ? 'sm' : 'icon'}

@@ -25,6 +25,10 @@ export type ProductResponse = SuccessResponse<{
   last: boolean;
 }>;
 
+export type CartProduct = Product & {
+  quantity: number;
+  note: string;
+};
 export interface OrderProduct {
   productId: number;
   quantity: number;

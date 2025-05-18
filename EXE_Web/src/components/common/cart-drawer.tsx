@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/drawer';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
+import { MOCKUP_CART_ITEMS } from '@/utils/mockupData';
 
 import { ChevronRight, Edit, MapPin, ShoppingCart, X } from 'lucide-react';
 import { useState } from 'react';
@@ -23,35 +24,8 @@ import { QuantitySelector } from './quantity-selector';
 export function CartDrawer() {
   const [open, setOpen] = useState(false);
 
-  // Sample cart data
-  const cartItems = [
-    {
-      id: 1,
-      name: 'COMBO - SÀ BÌ CHƯỞNG',
-      price: 134000,
-      quantity: 1,
-      note: 'Canh chua',
-      image: '/combo-dish.jpg',
-    },
-    {
-      id: 2,
-      name: 'COMBO - SÀ BÌ CHƯỞNG',
-      price: 138000,
-      quantity: 1,
-      note: 'Thêm cơm',
-      image: '/combo-dish.jpg',
-    },
-    {
-      id: 3,
-      name: 'CƠM SƯỜN CỘNG',
-      price: 85000,
-      quantity: 1,
-      image: '/com-suon.jpg',
-    },
-  ];
-
   // Calculate total
-  const subtotal = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+  const subtotal = MOCKUP_CART_ITEMS.reduce((total, item) => total + item.productPrice * item.quantity, 0);
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>
@@ -60,7 +34,7 @@ export function CartDrawer() {
           <div className='relative flex items-center justify-center h-10 w-10 rounded-full transition-colors'>
             <ShoppingCart className='h-5 w-5 text-primary' />
             <Badge className='absolute -top-1 -right-3 h-5 w-5 rounded-full p-0 flex items-center justify-center bg-primary hover:bg-primary'>
-              {cartItems.reduce((total, item) => total + item.quantity, 0)}
+              {MOCKUP_CART_ITEMS.reduce((total, item) => total + item.quantity, 0)}
             </Badge>
           </div>
 
@@ -85,8 +59,8 @@ export function CartDrawer() {
           {/* Cart Items */}
           <ScrollArea className='flex-1 px-6 py-4' style={{ maxHeight: 'calc(70vh - 200px)' }}>
             <div className='space-y-4'>
-              {cartItems.map((item, index) => (
-                <div key={item.id} className='group'>
+              {MOCKUP_CART_ITEMS.map((item, index) => (
+                <div key={item.productId} className='group'>
                   <div className='flex gap-3'>
                     {/* Remove button (visible on hover) */}
                     <button className='opacity-0 group-hover:opacity-100 transition-opacity h-6 w-6 flex-shrink-0 rounded-full bg-foreground/5 hover:bg-foreground/15 transition-colors flex items-center justify-center'>
@@ -96,9 +70,9 @@ export function CartDrawer() {
                     {/* Item content */}
                     <div className='flex-grow'>
                       <div className='flex justify-between'>
-                        <h4 className='font-medium'>{item.name}</h4>
+                        <h4 className='font-medium'>{item.productName}</h4>
                         <div className='text-primary font-medium'>
-                          {item.price.toLocaleString()}đ × {item.quantity}
+                          {item.productPrice.toLocaleString()}đ × {item.quantity}
                         </div>
                       </div>
 
@@ -124,7 +98,7 @@ export function CartDrawer() {
                     </div>
                   </div>
 
-                  {index < cartItems.length - 1 && <Separator className='mt-4 bg-foreground/10' />}
+                  {index < MOCKUP_CART_ITEMS.length - 1 && <Separator className='mt-4 bg-foreground/10' />}
                 </div>
               ))}
             </div>
