@@ -1,16 +1,23 @@
+import { useIsMobile } from '@/hooks/use-mobile';
 import { Product } from '@/types/product.type';
 import { contentOverflow } from '@/utils/contentOverflow';
 
-import { Archive, Plus, Star } from 'lucide-react';
+import { Plus, Star } from 'lucide-react';
+import { useState } from 'react';
 
 import { Button } from '../ui/button';
 import { Card } from '../ui/card';
+
+import { AddToCartDialog } from './add-to-cart-dialog';
+import { AddToCartDrawer } from './add-to-cart-drawer';
 
 type ProductCardProps = {
   item: Product;
 };
 
 const ProductCard = ({ item }: ProductCardProps) => {
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const isMobile = useIsMobile();
   return (
     <Card className='group p-0 overflow-hidden bg-white/80 backdrop-blur-sm border-none shadow-lg hover:shadow-xl transition-all duration-300'>
       <div className='relative h-64 overflow-hidden'>
@@ -26,17 +33,23 @@ const ProductCard = ({ item }: ProductCardProps) => {
       </div>
       <div className='p-6 pt-0'>
         <h3 className='text-xl font-bold mb-2'>{item.productName}</h3>
-        <p className='text-gray-600 mb-4 h-10'>{contentOverflow(item.productDescription, 80)}</p>
+        <p className='text-gray-600 mb-4 h-10'>{contentOverflow(item.productDescription, 50)}</p>
 
         {/* <div className='flex justify-between items-center mb-4'> */}
         <div className='flex items-center justify-between mt-4'>
           <span className='font-bold text-primary text-xl'>{item.productPrice.toLocaleString()}đ</span>
-          <Button size='sm' className='bg-secondary !px-4 hover:bg-primary hover:text-white '>
+          <Button
+            size='sm'
+            className='bg-secondary !px-4 hover:bg-primary hover:text-white '
+            onClick={() => setDialogOpen(true)}
+          >
             <Plus className='h-4 w-4 mr-1' />
             Thêm
           </Button>
         </div>
       </div>
+      {dialogOpen && !isMobile && <AddToCartDialog product={item} open={dialogOpen} onOpenChange={setDialogOpen} />}
+      {dialogOpen && isMobile && <AddToCartDrawer open={dialogOpen} onOpenChange={setDialogOpen} />}
     </Card>
   );
 };

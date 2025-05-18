@@ -24,9 +24,11 @@ export default function Home() {
   return (
     <>
       {isLoadingProducts ? (
-        <LoadingSpinner />
+        <div className='flex items-center justify-center min-h-screen'>
+          <LoadingSpinner />
+        </div>
       ) : (
-        <main className='min-h-screen bg-background '>
+        <main className='min-h-screen bg-background overflow-x-hidden'>
           {/* Why Choose Us Section */}
           <section className='relative pb-20 pt-3 overflow-hidden lg:px-30'>
             <div className='container mx-auto px-4'>

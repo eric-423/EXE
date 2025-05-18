@@ -24,3 +24,9 @@ export type ProductResponse = SuccessResponse<{
   size: number;
   last: boolean;
 }>;
+
+export interface OrderProduct {
+  productId: number;
+  quantity: number;
+  note: string;
+}
