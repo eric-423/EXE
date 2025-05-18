@@ -4,9 +4,12 @@ import logo from '@/assets/full-logo.svg';
 import { Button } from '@/components/ui/button';
 import configs from '@/configs';
 
-import { Bell, LogIn, Menu, ShoppingCart, User, X } from 'lucide-react';
+import { Bell, LogIn, Menu, User, X } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+
+import { CartDrawer } from './cart-drawer';
+import { CartPopover } from './cart-popover';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -121,17 +124,8 @@ function ActionButtons({ mobile = false }: { mobile?: boolean }) {
           </Button>
         </>
       )}
-      <Button
-        variant='ghost'
-        size={mobile ? 'default' : 'icon'}
-        className='text-[#E05E11] hover:text-[#B84A0E] hover:bg-[#FFE8D6] relative'
-      >
-        <ShoppingCart size={mobile ? 20 : 24} />
-        {mobile && <span className='ml-2'>Giỏ hàng</span>}
-        <span className='absolute -top-1 -right-1 bg-[#E05E11] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center'>
-          2
-        </span>
-      </Button>
+
+      {mobile ? <CartDrawer /> : <CartPopover />}
     </>
   );
 }

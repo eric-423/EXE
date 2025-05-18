@@ -7,8 +7,8 @@ import { Link, NavLink } from 'react-router-dom';
 
 const Footer = () => {
   return (
-    <footer className='bg-gradient-to-r from-[#E05E11] to-[#F17732] text-white'>
-      <div className='container mx-auto px-4 py-12'>
+    <footer className='bg-gradient-to-r from-primary to-[#F17732] text-white'>
+      <div className='container mx-auto p-12'>
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8'>
           {/* Logo and Tagline */}
           <div className='flex flex-col items-start'>

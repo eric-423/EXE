@@ -8,7 +8,7 @@
   --radius: 0.5rem;
   /* Converting your colors to OKLCH format */
   --background: oklch(0.93 0.0392 59.86); /* Light background - #FDE3CF */
-  --foreground: oklch(0.35 0.08 30); /* Dark text - #632713 */
+  --foreground: oklch(0.35 0.0924 37.81); /* Dark text - #632713 */
   --card: oklch(1 0 0); /* White */
   --card-foreground: oklch(0.35 0.08 30); /* Dark text - #632713 */
   --popover: oklch(1 0 0); /* White */

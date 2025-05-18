@@ -80,7 +80,7 @@ export default function MenuPage() {
               </div>
             </div>
           </div>
-          <div className='container mx-auto px-4 pt-8 py-20'>
+          <div className='container mx-auto px-20 pt-8 py-20'>
             <div className='flex flex-col lg:flex-row gap-8'>
               {/* Sidebar */}
               <div className='lg:w-1/4'>

@@ -13,14 +13,15 @@ import { AddToCartDrawer } from './add-to-cart-drawer';
 
 type ProductCardProps = {
   item: Product;
+  descriptionOverflow?: number;
 };
 
-const ProductCard = ({ item }: ProductCardProps) => {
+const ProductCard = ({ item, descriptionOverflow = 40 }: ProductCardProps) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const isMobile = useIsMobile();
   return (
-    <Card className='group p-0 overflow-hidden bg-white/80 backdrop-blur-sm border-none shadow-lg hover:shadow-xl transition-all duration-300'>
-      <div className='relative h-64 overflow-hidden'>
+    <Card className='group p-0 overflow-hidden gap-4 bg-white/80 backdrop-blur-sm border-none shadow-lg hover:shadow-xl transition-all duration-300'>
+      <div className='relative h-50 overflow-hidden'>
         <img
           src={item.productImage || '/placeholder.svg'}
           alt={item.productName}
@@ -31,12 +32,14 @@ const ProductCard = ({ item }: ProductCardProps) => {
           <span className='text-sm font-medium'>{item.rating}</span>
         </div>
       </div>
-      <div className='p-6 pt-0'>
-        <h3 className='text-xl font-bold mb-2'>{item.productName}</h3>
-        <p className='text-gray-600 mb-4 h-10'>{contentOverflow(item.productDescription, 50)}</p>
+      <div className='p-4 pt-0'>
+        <h3 className='text-base font-bold mb-1'>{item.productName}</h3>
+        <p className='text-gray-600 text-sm mb-2 h-10'>
+          {contentOverflow(item.productDescription, descriptionOverflow)}
+        </p>
 
         {/* <div className='flex justify-between items-center mb-4'> */}
-        <div className='flex items-center justify-between mt-4'>
+        <div className='flex items-center justify-between '>
           <span className='font-bold text-primary text-xl'>{item.productPrice.toLocaleString()}đ</span>
           <Button
             size='sm'

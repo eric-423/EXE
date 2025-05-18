@@ -9,7 +9,7 @@ const promoteContent = [
     id: '1',
     title: 'NGUYÊN LIỆU TƯƠI NGON',
     subtitle: 'ĂN TOÀN',
-    icon: <Sparkles className='h-8 w-8 text-primary' />,
+    icon: <Sparkles className='h-6 w-6 text-primary' />,
     img: `${image}`,
     description:
       'Chúng tôi chỉ sử dụng những nguyên liệu tươi ngon nhất, được chọn lọc kỹ càng để đảm bảo hương vị tuyệt hảo cho mỗi món ăn.',
@@ -18,7 +18,7 @@ const promoteContent = [
     id: '2',
     title: 'CÔNG THỨC ĐỘC ĐÁO',
     subtitle: 'NGON CHUẨN VỊ',
-    icon: <Award className='h-8 w-8 text-primary' />,
+    icon: <Award className='h-6 w-6 text-primary' />,
     img: `${image}`,
     description:
       'Công thức độc quyền được phát triển bởi các đầu bếp hàng đầu, giữ trọn hương vị truyền thống Sài Gòn với chút biến tấu hiện đại.',
@@ -27,7 +27,7 @@ const promoteContent = [
     id: '3',
     title: 'GIÁ CẢ PHẢI CHĂNG',
     subtitle: 'CHẤT LƯỢNG CAO',
-    icon: <ShoppingBag className='h-8 w-8 text-primary' />,
+    icon: <ShoppingBag className='h-6 w-6 text-primary' />,
     img: `${image}`,
     description:
       'Chúng tôi cam kết mang đến trải nghiệm ẩm thực chất lượng với mức giá hợp lý, phù hợp với mọi đối tượng khách hàng.',
