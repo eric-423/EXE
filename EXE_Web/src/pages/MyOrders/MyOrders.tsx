@@ -8,6 +8,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 import { ChevronDown, RotateCw } from 'lucide-react';
 import { OrderCard } from './components/order-card';
+import { useState } from 'react';
+import OrderDetailsDialog from './components/order-details-dialog';
 
 const ORDER_STATUS = [
   {
@@ -28,6 +30,8 @@ const ORDER_STATUS = [
   },
 ];
 export default function MyOrders() {
+  const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
+
   // Mock order history data - in a real app, this would be fetched from an API
   const orders = [
     {
@@ -99,6 +103,15 @@ export default function MyOrders() {
     }
   };
 
+  const handleOrderClick = (orderId: string) => {
+    setSelectedOrderId(orderId);
+    console.log(`Order ${orderId} clicked`); // For debugging
+  };
+
+  const handleCloseDialog = () => {
+    setSelectedOrderId(null);
+  };
+
   return (
     <div className='min-h-screen py-8 px-4 md:px-6'>
       <div className='container mx-auto md:px-30'>
@@ -126,7 +139,7 @@ export default function MyOrders() {
                 {orders.length > 0 ? (
                   <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
                     {orders.map((order) => (
-                      <OrderCard key={order.id} order={order} />
+                      <OrderCard key={order.id} order={order} onViewDetails={() => handleOrderClick(order.id)} />
                     ))}
                   </div>
                 ) : (
@@ -142,7 +155,7 @@ export default function MyOrders() {
                     {orders
                       .filter((order) => order.status === status.value)
                       .map((order) => (
-                        <OrderCard key={order.id} order={order} />
+                        <OrderCard key={order.id} order={order} onViewDetails={() => handleOrderClick(order.id)} />
                       ))}
                   </div>
                 ) : (
@@ -165,6 +178,8 @@ export default function MyOrders() {
             </Button>
           </div>
         )}
+
+        <OrderDetailsDialog orderId={selectedOrderId} open={!!selectedOrderId} onClose={handleCloseDialog} />
       </div>
     </div>
   );

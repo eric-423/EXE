@@ -36,7 +36,7 @@ export default function Home() {
                 <Badge className='bg-primary/10 text-primary font-medium text-lg my-9 rounded-full px-4 py-1'>
                   Trải nghiệm ẩm thực
                 </Badge>
-                <h2 className='text-4xl md:text-5xl font-bold mb-3 text-center relative'>
+                <h2 className='text-3xl md:text-4xl font-bold mb-3 text-center relative'>
                   <StyledHeading
                     text={
                       <>
@@ -54,14 +54,14 @@ export default function Home() {
 
           {/* Best Sellers Section */}
           <section className='py-20 bg-gradient-to-b from-secondary to-background relative lg:px-30'>
-            <div className='absolute top-[-30px] right-0 w-[120%] z-0 h-25 bg-background -rotate-3' />
+            <div className='absolute top-[-32px] right-0 w-[120%] z-0 h-25 bg-background -rotate-2' />
 
             <div className='container mx-auto px-4'>
               <div className='flex flex-col items-center mb-12'>
                 <Badge className='bg-background text-primary font-medium text-lg my-7 rounded-full px-4 py-1'>
                   Món ăn nổi bật
                 </Badge>
-                <h2 className='text-4xl md:text-5xl font-bold text-center'>BEST SELLERS</h2>
+                <h2 className='text-3xl md:text-4xl font-bold text-center'>BEST SELLERS</h2>
               </div>
 
               <BestSellerList products={products} />
@@ -82,7 +82,7 @@ export default function Home() {
                 <Badge className='bg-primary/10 text-primary font-medium text-lg mb-3 rounded-full px-4 py-1 my-9'>
                   Câu chuyện ẩm thực
                 </Badge>
-                <h2 className='text-4xl md:text-5xl font-bold text-center relative'>
+                <h2 className='text-3xl md:text-4xl font-bold text-center relative'>
                   <StyledHeading text='CHUYỆN CƠM TẤM' />
                 </h2>
               </div>
@@ -93,14 +93,14 @@ export default function Home() {
 
           {/* Franchise Section */}
           <section className='py-20 bg-gradient-to-b from-secondary to-background relative lg:px-30'>
-            <div className='absolute top-[-30px] left-0 w-[120%] z-0 h-25 bg-background rotate-3' />
+            <div className='absolute top-[-31px] left-0 w-[130%] z-0 h-25 bg-background rotate-3' />
 
             <div className='container mx-auto px-4'>
               <div className='flex flex-col items-center mb-12'>
                 <Badge className='bg-background text-primary font-medium text-lg my-7 rounded-full px-4 py-1'>
                   Cơ hội kinh doanh
                 </Badge>
-                <h2 className='text-4xl md:text-5xl font-bold text-center'>HỆ THỐNG NHƯỢNG QUYỀN</h2>
+                <h2 className='text-3xl md:text-4xl font-bold text-center'>HỆ THỐNG NHƯỢNG QUYỀN</h2>
               </div>
 
               <div className='grid grid-cols-1 lg:grid-cols-2 gap-12'>
