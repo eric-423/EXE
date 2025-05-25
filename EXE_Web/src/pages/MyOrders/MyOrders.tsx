@@ -1,15 +1,16 @@
 'use client';
 
-// import { useRouter } from 'next/navigation';
-// import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 import { ChevronDown, RotateCw } from 'lucide-react';
-import { OrderCard } from './components/order-card';
 import { useState } from 'react';
+
+import { OrderCard } from './components/order-card';
 import OrderDetailsDialog from './components/order-details-dialog';
+import OrderDetailsDrawer from './components/order-details-drawer';
 
 const ORDER_STATUS = [
   {
@@ -31,6 +32,7 @@ const ORDER_STATUS = [
 ];
 export default function MyOrders() {
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
+  const isMobile = useIsMobile();
 
   // Mock order history data - in a real app, this would be fetched from an API
   const orders = [
@@ -179,7 +181,11 @@ export default function MyOrders() {
           </div>
         )}
 
-        <OrderDetailsDialog orderId={selectedOrderId} open={!!selectedOrderId} onClose={handleCloseDialog} />
+        {isMobile ? (
+          <OrderDetailsDrawer orderId={selectedOrderId} open={!!selectedOrderId} onClose={handleCloseDialog} />
+        ) : (
+          <OrderDetailsDialog orderId={selectedOrderId} open={!!selectedOrderId} onClose={handleCloseDialog} />
+        )}
       </div>
     </div>
   );
