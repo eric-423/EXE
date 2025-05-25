@@ -3,8 +3,6 @@ import logo from '@/assets/full-logo-white.svg';
 import { Mail, MapPin, Phone } from 'lucide-react';
 import { Link, NavLink } from 'react-router-dom';
 
-// import './Footer.css';
-
 const Footer = () => {
   return (
     <footer className='bg-gradient-to-r from-primary to-[#F17732] text-white'>

@@ -42,6 +42,12 @@ const router = createBrowserRouter([
               Component: (await import('@/pages/Checkout')).default,
             }),
           },
+          {
+            path: configs.routes.myOrders,
+            lazy: async () => ({
+              Component: (await import('@/pages/MyOrders')).default,
+            }),
+          },
         ],
       },
     ],
