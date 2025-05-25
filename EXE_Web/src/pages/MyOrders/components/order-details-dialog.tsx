@@ -11,7 +11,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Separator } from '@/components/ui/separator';
 
 import { AlertCircle, Calendar, CheckCircle2, Clock, MapPin, Phone, Receipt, ShoppingBag, User } from 'lucide-react';
 import { useState } from 'react';
@@ -24,7 +23,6 @@ interface OrderDetailsDialogProps {
 
 function OrderDetailsDialog({ orderId, open, onClose }: OrderDetailsDialogProps) {
   const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
-  console.log('OrderDetailsDialog rendered with orderId:', orderId);
 
   // Mock function to get order details - in a real app, this would fetch from an API
   const getOrderDetails = (id: string) => {

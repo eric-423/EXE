@@ -37,15 +37,34 @@ const router = createBrowserRouter([
             }),
           },
           {
-            path: configs.routes.checkout,
+            path: configs.routes.paymentResult,
             lazy: async () => ({
-              Component: (await import('@/pages/Checkout')).default,
+              Component: (await import('@/pages/PaymentResult')).default,
             }),
           },
+        ],
+      },
+    ],
+  },
+  // Authenticated routes
+  {
+    lazy: async () => ({
+      Component: (await import('@/guards/AuthGuard')).default,
+    }),
+    children: [
+      {
+        lazy: mainLayoutLazy,
+        children: [
           {
             path: configs.routes.myOrders,
             lazy: async () => ({
               Component: (await import('@/pages/MyOrders')).default,
+            }),
+          },
+          {
+            path: configs.routes.checkout,
+            lazy: async () => ({
+              Component: (await import('@/pages/Checkout')).default,
             }),
           },
         ],

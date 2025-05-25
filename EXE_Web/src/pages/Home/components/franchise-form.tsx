@@ -29,7 +29,6 @@ const FranchiseForm = () => {
     enabled: !!province,
   });
 
-  console.log('district', districts);
   return (
     <>
       <form className='space-y-2'>

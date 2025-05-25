@@ -5,6 +5,7 @@ const routes = {
   profile: '/profile',
   checkout: '/checkout',
   menu: '/menu',
+  paymentResult: '/payment-result',
   blogs: '/blog',
   blogDetails: '/blog/:id',
   editProfile: '/edit-profile',

@@ -106,8 +106,7 @@ export default function MyOrders() {
   };
 
   const handleOrderClick = (orderId: string) => {
-    setSelectedOrderId(orderId);
-    console.log(`Order ${orderId} clicked`); // For debugging
+    setSelectedOrderId(orderId); // For debugging
   };
 
   const handleCloseDialog = () => {

@@ -23,7 +23,6 @@ interface OrderDetailsDrawerProps {
 
 function OrderDetailsDrawer({ orderId, open, onClose }: OrderDetailsDrawerProps) {
   const [cancelDrawerOpen, setCancelDrawerOpen] = useState(false);
-  console.log('OrderDetailsDrawer rendered with orderId:', orderId);
 
   // Mock function to get order details - in a real app, this would fetch from an API
   const getOrderDetails = (id: string) => {
