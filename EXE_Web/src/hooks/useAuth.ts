@@ -1,13 +1,92 @@
-import { AuthContext } from '@/contexts/auth/AuthContext';
+'use client';
 
-import { useContext } from 'react';
+import { refetchToken } from '@/apis/user.api';
+import configs from '@/configs';
+import { UserAuthData } from '@/types/user.type';
+import { removeAccessToken, removeRefreshToken } from '@/utils/cookies';
+import JwtDecode from '@/utils/jwtDecode';
 
-export default function useAuth() {
-  const context = useContext(AuthContext);
+import { useCallback, useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
 
-  if (!context) {
-    throw new Error('Auth context must be used within an AuthProvider');
-  }
+import { useMutation } from '@tanstack/react-query';
 
-  return context;
-}
+const useAuth = () => {
+  const [user, setUser] = useState<UserAuthData | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const [cookies] = useCookies([configs.cookies.accessToken, configs.cookies.refreshToken]);
+  const accessToken = cookies[configs.cookies.accessToken];
+
+  const { mutate: refreshTokenMutation, isPending: isLoading } = useMutation({
+    mutationFn: () => refetchToken(cookies[configs.cookies.refreshToken]),
+    onSuccess: (data) => {
+      if (data?.data.data.access_token) {
+        const decodedData = JwtDecode(data.data.data.access_token);
+        const userData = {
+          id: decodedData.id,
+          phoneNumber: decodedData.phone,
+          role: decodedData.role,
+          exp: decodedData.exp,
+        };
+        setUser(userData);
+        setIsAuthenticated(true);
+      }
+    },
+    onError: (error) => {
+      console.error('Token refresh failed:', error);
+      removeAccessToken();
+      removeRefreshToken();
+      setUser(null);
+      setIsAuthenticated(false);
+    },
+  });
+
+  useEffect(() => {
+    if (accessToken) {
+      const decodedToken = JwtDecode(accessToken);
+      const userData = {
+        id: decodedToken.id,
+        phoneNumber: decodedToken.phone,
+        role: decodedToken.role,
+        exp: decodedToken.exp,
+      };
+      setUser(userData);
+      setIsAuthenticated(true);
+    } else {
+      setUser(null);
+      setIsAuthenticated(false);
+    }
+  }, [accessToken]);
+
+  // Function to check token expiration
+  const checkTokenExpiration = useCallback(() => {
+    if (accessToken) {
+      const decodedToken = JwtDecode(accessToken);
+
+      // Check if the token is expired
+      if (!decodedToken || decodedToken.exp < Date.now() / 1000) {
+        refreshTokenMutation();
+      }
+    }
+  }, [accessToken, cookies]);
+
+  useEffect(() => {
+    if (!accessToken) {
+      setUser(null);
+      setIsAuthenticated(false);
+      return;
+    }
+
+    // Set up an interval to check token expiration every 5 seconds
+    const intervalId = setInterval(checkTokenExpiration, 5000);
+
+    // Clean up the interval on component unmount
+    return () => clearInterval(intervalId);
+  }, [checkTokenExpiration]);
+
+  console.log('useAuth hook initialized', { user, isAuthenticated, isLoading });
+  return { isLoading, user, isAuthenticated };
+};
+
+export default useAuth;

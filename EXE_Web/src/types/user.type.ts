@@ -27,3 +27,9 @@ export type CreateAccountResponse = SuccessResponse<{
 export type VerifyTokenForgotPasswordResponse = SuccessResponse<{
   success: boolean;
 }>;
+
+export type UserAuthData = {
+  id: number;
+  phoneNumber: string;
+  role: string;
+};

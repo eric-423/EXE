@@ -10,10 +10,18 @@ const guestGuardLazy = async () => ({
   Component: (await import('@/guards/GuestGuard')).default,
 });
 
+const customerGuardLazy = async () => ({
+  Component: (await import('@/guards/CustomerGuard')).default,
+});
+
+const authGuardLazy = async () => ({
+  Component: (await import('@/guards/CustomerGuard')).default,
+});
+
 const router = createBrowserRouter([
-  // Guest routes
+  // Public routes
   {
-    lazy: guestGuardLazy,
+    lazy: customerGuardLazy,
     children: [
       {
         lazy: mainLayoutLazy,
@@ -25,15 +33,15 @@ const router = createBrowserRouter([
             }),
           },
           {
-            path: configs.routes.login,
-            lazy: async () => ({
-              Component: (await import('@/pages/Login')).default,
-            }),
-          },
-          {
             path: configs.routes.menu,
             lazy: async () => ({
               Component: (await import('@/pages/Menu')).default,
+            }),
+          },
+          {
+            path: configs.routes.checkout,
+            lazy: async () => ({
+              Component: (await import('@/pages/Checkout')).default,
             }),
           },
           {
@@ -46,11 +54,25 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    lazy: guestGuardLazy,
+    children: [
+      {
+        lazy: mainLayoutLazy,
+        children: [
+          {
+            path: configs.routes.login,
+            lazy: async () => ({
+              Component: (await import('@/pages/Login')).default,
+            }),
+          },
+        ],
+      },
+    ],
+  },
   // Authenticated routes
   {
-    lazy: async () => ({
-      Component: (await import('@/guards/AuthGuard')).default,
-    }),
+    lazy: authGuardLazy,
     children: [
       {
         lazy: mainLayoutLazy,
@@ -59,12 +81,6 @@ const router = createBrowserRouter([
             path: configs.routes.myOrders,
             lazy: async () => ({
               Component: (await import('@/pages/MyOrders')).default,
-            }),
-          },
-          {
-            path: configs.routes.checkout,
-            lazy: async () => ({
-              Component: (await import('@/pages/Checkout')).default,
             }),
           },
         ],

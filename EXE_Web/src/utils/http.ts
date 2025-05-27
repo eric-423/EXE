@@ -1,5 +1,6 @@
 import configs from '@/configs';
-import { AuthResponse } from '@/types/auth.type';
+import cookies from '@/configs/cookies';
+import { JWTDecodeData } from '@/types/auth.type';
 
 import axios, { AxiosError, AxiosInstance } from 'axios';
 
@@ -10,8 +11,10 @@ import {
   removeAccessToken,
   removeRefreshToken,
   setAccessToken,
+  setCookie,
   setRefreshToken,
 } from './cookies';
+import JwtDecode from './jwtDecode';
 
 class Http {
   private accessToken: string;
@@ -44,11 +47,13 @@ class Http {
       (response) => {
         const { url, method } = response.config;
         if (
-          method === 'post' &&
-          url?.includes(configs.routes.login || configs.routes.register || configs.routes.loginGoogle)
+          (method === 'post' && url?.includes('/verify-code/verify')) ||
+          (method === 'post' && url?.includes('sign-in')) ||
+          (method === 'post' && url?.includes('token/refresh'))
         ) {
-          this.accessToken = (response.data as AuthResponse).data.access_token;
-          this.refreshToken = (response.data as AuthResponse).data.refresh_token;
+          this.accessToken = response.data.data.access_token;
+          this.refreshToken = response.data.data.refresh_token;
+          console.log('Access Token:', this.accessToken);
           setAccessToken(this.accessToken);
           setRefreshToken(this.refreshToken);
         } else if (url === configs.routes.logout) {

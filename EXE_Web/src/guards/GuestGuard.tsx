@@ -1,18 +1,18 @@
+import { LoadingSpinner } from '@/components/common/loading-spinner';
 import { config } from '@/configs/app';
 import { useAuth } from '@/hooks';
 
 import { FC, PropsWithChildren } from 'react';
-import Spinner from 'react-bootstrap/Spinner';
 import { Navigate, Outlet } from 'react-router-dom';
 // GuestGuard is a component that will be used to protect routes
 // that should only be accessed by unauthenticated users.
-const GuestGuard: FC<PropsWithChildren> = ({ children }) => {
-  console.log(children);
-  const { isInitialized, isAuthenticated } = useAuth();
+const GuestGuard: FC<PropsWithChildren> = () => {
+  const { isLoading, isAuthenticated, user } = useAuth();
+  console.log('GuestGuard', user);
 
-  // if (!isInitialized) return <Spinner animation='border' />;
+  if (isLoading) return <LoadingSpinner />;
 
-  // if (isAuthenticated) return <Navigate to={config.routes.home} replace />;
+  if (isAuthenticated) return <Navigate to={config.routes.home} replace />;
 
   return <Outlet />;
 };

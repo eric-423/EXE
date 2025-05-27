@@ -114,14 +114,16 @@ function ActionButtons({ mobile = false }: { mobile?: boolean }) {
         </>
       ) : (
         <>
-          <Button
-            variant='ghost'
-            size={mobile ? 'default' : 'icon'}
-            className='text-primary hover:text-[#B84A0E] hover:bg-[#FFE8D6]'
-          >
-            <LogIn size={mobile ? 20 : 24} />
-            {mobile && <span className='ml-2'>Đăng nhập</span>}
-          </Button>
+          <Link to={configs.routes.login}>
+            <Button
+              variant='ghost'
+              size={mobile ? 'default' : 'icon'}
+              className='text-primary hover:text-[#B84A0E] hover:bg-[#FFE8D6]'
+            >
+              <LogIn size={mobile ? 20 : 24} />
+              {mobile && <span className='ml-2'>Đăng nhập</span>}
+            </Button>
+          </Link>
         </>
       )}
 

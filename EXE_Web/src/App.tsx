@@ -1,9 +1,11 @@
 import { RouterProvider } from 'react-router-dom';
-
+import { ToastContainer } from 'react-toastify';
 import { ThemeProvider } from './contexts/ThemeContext';
 import router from './routes';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { AuthProvider } from './contexts/auth/AuthContext';
+import { CookiesProvider } from 'react-cookie';
 
 const queryClient = new QueryClient();
 
@@ -20,7 +22,19 @@ export default function App() {
     // <ThemeProvider>
     <ThemeProvider defaultTheme='system' storageKey='theme'>
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
+        <CookiesProvider defaultSetOptions={{ path: '/' }}>
+          {/* <AuthProvider> */}
+          <RouterProvider router={router} />
+          {/* </AuthProvider> */}
+          <ToastContainer
+            position='top-right'
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            pauseOnHover
+            theme='light'
+          />
+        </CookiesProvider>
       </QueryClientProvider>
     </ThemeProvider>
   );

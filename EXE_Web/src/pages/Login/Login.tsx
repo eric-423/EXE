@@ -1,11 +1,143 @@
+import { changePassword, sendOTP, signIn, signUp, verifyOTP } from '@/apis/user.api';
 import bannerImage from '@/assets/images/Home - Banner.jpg';
+import { LoadingSpinner } from '@/components/common/loading-spinner';
+import { Button } from '@/components/ui/button';
+import { Form } from '@/components/ui/form';
 import useDocumentTitle from '@/hooks/useDocumentTitle';
+import useScrollTop from '@/hooks/useScrollTop';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
+
+import { FORM_CONTENTS, FORM_RESOLVERS, SET_FORM_FIELDS } from './components/form-contents';
+import FormItems from './components/form-items';
+import { AuthFormValues } from './schema';
+
+import { useMutation } from '@tanstack/react-query';
+import { useAuth } from '@/hooks';
+import { useNavigate } from 'react-router-dom';
+
+type FormStep = 'phone' | 'login' | 'otp' | 'register';
 
 const Login = () => {
   useDocumentTitle('Đăng nhập');
+  const [formStep, setFormStep] = useState<FormStep>('phone');
   const [phoneNumber, setPhoneNumber] = useState('');
+  const formFields = SET_FORM_FIELDS[formStep];
+  const formContents = FORM_CONTENTS[formStep];
+  useScrollTop();
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+  if (isAuthenticated) navigate('/');
+  const form = useForm<AuthFormValues, any, AuthFormValues>({
+    resolver: FORM_RESOLVERS[formStep],
+    defaultValues: {
+      phoneNumber: '',
+      password: '',
+      otp: '',
+      confirmPassword: '',
+    },
+    mode: 'onChange',
+  });
+  const { mutate: signUpMutate, isPending: isSigningUp } = useMutation({
+    mutationFn: (phoneNumber: string) => signUp(phoneNumber),
+    onSuccess: () => {
+      sendOTPMutate(phoneNumber);
+    },
+    onError: () => {
+      setFormStep('login');
+    },
+  });
+
+  const { mutate: sendOTPMutate, isPending: isSendingOTP } = useMutation({
+    mutationFn: (phoneNumber: string) => sendOTP(phoneNumber),
+    onSuccess: () => {
+      setFormStep('otp');
+    },
+    onError: () => {
+      toast.error('Gửi mã xác thực thất bại, xin vui lòng thử lại sau');
+    },
+  });
+
+  const { mutate: verifyOTPMutate, isPending: isVerifyingOTP } = useMutation({
+    mutationFn: (data: { phoneNumber: string; otp: string }) => verifyOTP(data.phoneNumber, data.otp),
+    onSuccess: () => {
+      setFormStep('register');
+    },
+    onError: () => {
+      toast.error('Mã xác thực không đúng. Vui lòng thử lại.');
+    },
+  });
+
+  const { mutate: signInMutate, isPending: isSigningIn } = useMutation({
+    mutationFn: (data: { phoneNumber: string; password: string }) => signIn(data),
+    onSuccess: () => {
+      toast.success('Đăng nhập thành công!');
+    },
+    onError: () => {
+      toast.error('Sai mật khẩu. Vui lòng thử lại.');
+    },
+  });
+
+  const { mutate: createPasswordMutate, isPending: isCreatingPassword } = useMutation({
+    mutationFn: (data: { phoneNumber: string; password: string }) => changePassword(data),
+    onSuccess: () => {
+      toast.success('Chào mừng trở thành thành viên của Tấm Tắc!');
+    },
+    onError: () => {
+      toast.error('Không thể tạo mật khẩu. Vui lòng thử lại sau.');
+    },
+  });
+
+  const isLoading = isSendingOTP || isVerifyingOTP || isSigningIn || isSigningUp || isCreatingPassword;
+
+  const onSubmit = (data: AuthFormValues) => {
+    if (formStep === 'phone') {
+      // Save phone number for use in other steps
+      setPhoneNumber(data.phoneNumber);
+      // Check if user exists
+      signUpMutate(data.phoneNumber);
+    } else if (formStep === 'login') {
+      // Try to login user
+      signInMutate({
+        phoneNumber: data.phoneNumber || phoneNumber,
+        password: data.password ?? '',
+      });
+    } else if (formStep === 'otp') {
+      // Verify OTP
+      verifyOTPMutate({
+        phoneNumber: phoneNumber,
+        otp: data.otp ?? '',
+      });
+    } else if (formStep === 'register') {
+      // Check if passwords match
+      if (data.password !== data.confirmPassword) {
+        toast.error('Mật khẩu không khớp. Vui lòng thử lại.');
+        return;
+      }
+
+      // Register new user
+      createPasswordMutate({
+        phoneNumber: phoneNumber,
+        password: data.password ?? '',
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (formStep === 'phone') {
+      form.reset({ phoneNumber: '', password: '', otp: '', confirmPassword: '' });
+    } else if (formStep === 'login') {
+      form.setValue('phoneNumber', phoneNumber);
+      form.setValue('password', '');
+    } else if (formStep === 'otp') {
+      form.setValue('otp', '');
+    } else if (formStep === 'register') {
+      form.setValue('password', '');
+      form.setValue('confirmPassword', '');
+    }
+  }, [formStep, form, phoneNumber]);
 
   return (
     <div className='min-h-screen w-full'>
@@ -20,42 +152,43 @@ const Login = () => {
         </div>
 
         {/* Form Section */}
-        <div className='w-full md:w-1/2 bg-background flex items-center justify-center p-4'>
-          <div className='w-full max-w-[500px] px-2 md:px-4'>
-            <div className='flex justify-between items-center mb-4'>
-              <h1 className='font-bold text-2xl md:text-3xl'>
-                <span className='text-primary'>Tấm</span> ngon, <span className='text-secondary'>Tắc</span> nhớ!
-              </h1>
-            </div>
-            <p className='mb-6 text-foreground'>Thương hiệu cơm tấm hàng đầu dành cho sinh viên.</p>
-
-            {/* Form */}
-            <form className='space-y-4'>
-              <div>
-                <input
-                  type='tel'
-                  placeholder='Số điện thoại'
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
-                  className='w-full px-6 py-4 border border-input rounded-lg bg-background text-foreground h-[60px] focus:outline-none focus:ring-2 focus:ring-ring'
-                />
-              </div>
-
-              <button
-                type='submit'
-                className='w-full py-4 bg-primary text-primary-foreground border-none rounded-lg text-lg font-medium h-[60px] flex items-center justify-center hover:opacity-90 transition-opacity'
-              >
-                Đăng nhập
-              </button>
-
-              <div className='relative flex items-center py-4'>
-                <div className='flex-grow border-t border-border'></div>
-                <span className='flex-shrink mx-4 text-muted-foreground'>Bạn là người nhà của Tấm Tắc?</span>
-                <div className='flex-grow border-t border-border'></div>
-              </div>
-            </form>
+        {isLoading ? (
+          <div className='flex items-center justify-center w-full h-screen'>
+            <LoadingSpinner />
           </div>
-        </div>
+        ) : (
+          <>
+            <div className='w-full md:w-1/2 bg-background flex items-center justify-center p-4'>
+              <div className='w-full max-w-[500px] px-2 md:px-4'>
+                <div className='flex justify-between items-center mb-0'>
+                  <h1 className='font-bold text-2xl md:text-3xl'>
+                    <span className='text-primary'>Tấm</span> ngon, <span className='text-secondary'>Tắc</span> nhớ!
+                  </h1>
+                </div>
+                <p className='mb-6 text-foreground'>{formContents.description}</p>
+
+                {/* Form */}
+                <Form {...form}>
+                  <form className='space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
+                    <FormItems form={form} formFields={formFields} />
+                    <Button
+                      type='submit'
+                      className='w-full py-4 bg-primary text-primary-foreground border-none rounded-lg text-lg font-medium h-[60px] flex items-center justify-center hover:opacity-90 transition-opacity'
+                    >
+                      Đăng nhập
+                    </Button>
+
+                    <div className='relative flex items-center py-4'>
+                      <div className='flex-grow border-t border-border'></div>
+                      <span className='flex-shrink mx-4 text-muted-foreground'>Bạn là người nhà của Tấm Tắc?</span>
+                      <div className='flex-grow border-t border-border'></div>
+                    </div>
+                  </form>
+                </Form>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

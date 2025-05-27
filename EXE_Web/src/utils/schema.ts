@@ -1,24 +1,24 @@
-// import { z } from 'zod';
+import { z } from 'zod';
 
-// import { PASSWORD_REGEX, PHONE_REGEX, USER_MESSAGES } from './constants';
+import { PASSWORD_REGEX, PHONE_REGEX, USER_MESSAGES } from './constants';
 
-// // GLOBAL SCHEMA
-// export const emailSchema = z
-//   .string({
-//     message: USER_MESSAGES.EMAIL_MESSAGE,
-//   })
-//   .email({
-//     message: USER_MESSAGES.EMAIL_MESSAGE,
-//   });
+// GLOBAL SCHEMA
+export const emailSchema = z
+  .string({
+    message: USER_MESSAGES.EMAIL_MESSAGE,
+  })
+  .email({
+    message: USER_MESSAGES.EMAIL_MESSAGE,
+  });
 
-// export const passwordSchema = (message: string = '') =>
-//   z
-//     .string({
-//       message: message,
-//     })
-//     .refine((value) => PASSWORD_REGEX.test(value), {
-//       message: message,
-//     });
+export const passwordSchema = (message: string = '') =>
+  z
+    .string({
+      message: message,
+    })
+    .refine((value) => PASSWORD_REGEX.test(value), {
+      message: message,
+    });
 
 // export const fullnameSchema = z
 //   .string({
@@ -34,10 +34,10 @@
 //   disable: z.boolean().optional(),
 // });
 
-// export const phoneSchema = z
-//   .string({
-//     message: USER_MESSAGES.PHONE_MESSAGE,
-//   })
-//   .refine((value) => PHONE_REGEX.test(value), {
-//     message: USER_MESSAGES.PHONE_MESSAGE,
-//   });
+export const phoneSchema = z
+  .string({
+    message: USER_MESSAGES.PHONE_MESSAGE,
+  })
+  .refine((value) => PHONE_REGEX.test(value), {
+    message: USER_MESSAGES.PHONE_MESSAGE,
+  });
