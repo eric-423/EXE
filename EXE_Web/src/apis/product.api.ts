@@ -1,4 +1,4 @@
-import { ProductResponse, ProductType } from '@/types/product.type';
+import { ProductType } from '@/types/product.type';
 import http from '@/utils/http';
 
 export const GET_PRODUCT_TYPE_QUERY_KEY = 'GET_PRODUCT_TYPE_QUERY_KEY';

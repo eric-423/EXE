@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/drawer';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
-import { MOCKUP_CART_ITEMS } from '@/utils/mockupData';
+import { useCart } from '@/contexts/cart/CartContext';
 
 import { ChevronRight, Edit, MapPin, ShoppingCart, X } from 'lucide-react';
 import { useState } from 'react';
@@ -22,10 +22,8 @@ import ControlledButton from './controlled-button';
 import { QuantitySelector } from './quantity-selector';
 
 export function CartDrawer() {
+  const { items, removeItem, updateQuantity, getTotalPrice, getTotalItems } = useCart();
   const [open, setOpen] = useState(false);
-
-  // Calculate total
-  const subtotal = MOCKUP_CART_ITEMS.reduce((total, item) => total + item.productPrice * item.quantity, 0);
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>
@@ -34,7 +32,7 @@ export function CartDrawer() {
           <div className='relative flex items-center justify-center h-10 w-10 rounded-full transition-colors'>
             <ShoppingCart className='h-5 w-5 text-primary' />
             <Badge className='absolute -top-1 -right-3 h-5 w-5 rounded-full p-0 flex items-center justify-center bg-primary hover:bg-primary'>
-              {MOCKUP_CART_ITEMS.reduce((total, item) => total + item.quantity, 0)}
+              {getTotalItems()}
             </Badge>
           </div>
 
@@ -59,11 +57,14 @@ export function CartDrawer() {
           {/* Cart Items */}
           <ScrollArea className='flex-1 px-6 py-4' style={{ maxHeight: 'calc(70vh - 200px)' }}>
             <div className='space-y-4'>
-              {MOCKUP_CART_ITEMS.map((item, index) => (
+              {items.map((item, index) => (
                 <div key={item.productId} className='group'>
                   <div className='flex gap-3'>
                     {/* Remove button (visible on hover) */}
-                    <button className='opacity-0 group-hover:opacity-100 transition-opacity h-6 w-6 flex-shrink-0 rounded-full bg-foreground/5 hover:bg-foreground/15 transition-colors flex items-center justify-center'>
+                    <button
+                      className='opacity-0 group-hover:opacity-100 transition-opacity h-6 w-6 flex-shrink-0 rounded-full bg-foreground/5 hover:bg-foreground/15 transition-colors flex items-center justify-center'
+                      onClick={() => removeItem(item.productId)}
+                    >
                       <X className='h-3 w-3 text-foreground/50' />
                     </button>
 
@@ -85,8 +86,8 @@ export function CartDrawer() {
                       <div className='flex items-center justify-between mt-2'>
                         <QuantitySelector
                           value={item.quantity}
-                          onIncrease={() => item.quantity + 1}
-                          onDecrease={() => item.quantity - 1}
+                          onIncrease={() => updateQuantity(item.productId, item.quantity + 1)}
+                          onDecrease={() => updateQuantity(item.productId, item.quantity - 1)}
                         />
 
                         <div className='flex items-center gap-1'>
@@ -98,7 +99,7 @@ export function CartDrawer() {
                     </div>
                   </div>
 
-                  {index < MOCKUP_CART_ITEMS.length - 1 && <Separator className='mt-4 bg-foreground/10' />}
+                  {index < items.length - 1 && <Separator className='mt-4 bg-foreground/10' />}
                 </div>
               ))}
             </div>
@@ -108,7 +109,7 @@ export function CartDrawer() {
           <DrawerFooter className='px-6 pt-4 pb-6 border-t border-foreground/10'>
             <div className='flex justify-between items-center mb-4'>
               <span className='font-medium text-lg'>Tạm tính</span>
-              <span className='font-bold text-xl text-primary'>{subtotal.toLocaleString()}đ</span>
+              <span className='font-bold text-xl text-primary'>{getTotalPrice().toLocaleString()}đ</span>
             </div>
 
             <Button className='w-full h-12 bg-[#4CAF50] hover:bg-[#43A047] text-white rounded-lg font-medium'>

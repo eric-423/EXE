@@ -3,11 +3,13 @@ import bannerImage from '@/assets/images/Home - Banner.jpg';
 import { LoadingSpinner } from '@/components/common/loading-spinner';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
+import { useAuth } from '@/hooks';
 import useDocumentTitle from '@/hooks/useDocumentTitle';
 import useScrollTop from '@/hooks/useScrollTop';
 
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { FORM_CONTENTS, FORM_RESOLVERS, SET_FORM_FIELDS } from './components/form-contents';
@@ -15,8 +17,6 @@ import FormItems from './components/form-items';
 import { AuthFormValues } from './schema';
 
 import { useMutation } from '@tanstack/react-query';
-import { useAuth } from '@/hooks';
-import { useNavigate } from 'react-router-dom';
 
 type FormStep = 'phone' | 'login' | 'otp' | 'register';
 

@@ -1,58 +1,55 @@
 'use client';
 
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Drawer, DrawerClose, DrawerContent, DrawerTitle } from '@/components/ui/drawer';
 import { Separator } from '@/components/ui/separator';
+import { useCart } from '@/contexts/cart/CartContext';
+import { Product } from '@/types/product.type';
 
 import { ShoppingBag, X } from 'lucide-react';
 import { useState } from 'react';
+
+import { Textarea } from '../ui/textarea';
 
 import { QuantitySelector } from './quantity-selector';
 
 interface AddToCartDrawerProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  product: Product;
 }
 
-export function AddToCartDrawer({ open, onOpenChange }: AddToCartDrawerProps) {
+export function AddToCartDrawer({ open, onOpenChange, product }: AddToCartDrawerProps) {
+  const { addItem } = useCart();
   const [mainQuantity, setMainQuantity] = useState(1);
-  const [extras, setExtras] = useState({
-    rice: 0,
-    eggCake: 0,
-    grilledRibs: 0,
-  });
-
-  const originalPrice = 123000;
-  const discountPrice = 86000;
-
-  // Calculate total price
-  const calculateTotal = () => {
-    let total = discountPrice * mainQuantity;
-    total += extras.rice * 2000;
-    total += extras.eggCake * 12000;
-    total += extras.grilledRibs * 20000;
-    return total;
-  };
-
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('vi-VN').format(price) + 'đ';
-  };
+  const [notes, setNotes] = useState('');
 
   const handleQuantityChange = (item: string, value: number) => {
-    if (item === 'main') {
-      setMainQuantity(Math.max(1, mainQuantity + value));
-    } else {
-      setExtras({
-        ...extras,
-        [item]: Math.max(0, extras[item as keyof typeof extras] + value),
-      });
-    }
+    // if (item === 'main') {
+    setMainQuantity(Math.max(1, mainQuantity + value));
+    // } else {
+    //   setExtras({
+    //     ...extras,
+    //     [item]: Math.max(0, extras[item as keyof typeof extras] + value),
+    //   });
+    // }
+  };
+
+  const handleAddToCart = () => {
+    const cartItem = {
+      productId: product.productId,
+      productName: product.productName,
+      productPrice: product.productPrice,
+      quantity: mainQuantity,
+      note: notes,
+    };
+    addItem(cartItem);
+    onOpenChange(false);
   };
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <DrawerContent className='sm:max-w-[500px] p-0 bg-background overflow-hidden rounded-xl'>
+      <DrawerContent className='sm:max-w-[500px] p-0 bg-background overflow-hidden rounded-xl gap-1'>
         <div className='sticky top-0 z-10 bg-background pt-4 px-6'>
           <div className='flex items-center justify-between mb-2'>
             <DrawerTitle className='text-xl font-bold'>Thêm món ăn</DrawerTitle>
@@ -64,24 +61,20 @@ export function AddToCartDrawer({ open, onOpenChange }: AddToCartDrawerProps) {
           <Separator className='mb-4' />
         </div>
 
-        <div className='px-6 pb-6 max-h-[80vh] overflow-y-auto custom-scrollbar'>
+        <div className='px-6 max-h-[80vh] overflow-y-auto custom-scrollbar'>
           {/* Main Dish */}
           <div className='flex gap-4 mb-6'>
-            <div className='relative w-24 h-24 rounded-lg overflow-hidden flex-shrink-0'>
-              <img src='/combo-dish.jpg' alt='COMBO - SÀ BÌ CHƯỞNG' className='object-cover' />
+            <div className='relative w-24 h-24 rounded-lg overflow-hidden flex-shrink-0 object-cover'>
+              <img src={product.productImage} alt={product.productName} className='object-cover h-full w-full' />
             </div>
             <div className='flex-grow'>
-              <h3 className='font-bold text-lg'>COMBO - SÀ BÌ CHƯỞNG</h3>
-              <ul className='text-sm text-gray-600 mt-1 mb-2'>
-                <li>- Cơm sườn nướng, bì, chả trứng</li>
-                <li>- Canh tự chọn</li>
-                <li>- Nước ngọt tự chọn</li>
-              </ul>
+              <h3 className='font-bold text-lg'>{product.productName}</h3>
+              <div className='text-sm mt-1 mb-1'>{product.productDescription}</div>
               <div className='flex items-center justify-between'>
                 <div className='flex items-center gap-2'>
-                  <span className='font-bold text-[#E05E11]'>{formatPrice(discountPrice)}</span>
-                  <span className='text-gray-500 text-sm line-through'>{formatPrice(originalPrice)}</span>
-                  <Badge className='bg-[#E05E11]/10 text-[#E05E11] hover:bg-[#E05E11]/20 ml-1'>-30%</Badge>
+                  <span className='font-bold text-primary'>{product.productPrice.toLocaleString()}đ</span>
+                  {/* <span className='text-gray-500 text-sm line-through'>{product.productPrice.toLocaleString()}đ</span> */}
+                  {/* <Badge className='bg-primary/10 text-primary hover:bg-primary/20 ml-1'>-30%</Badge> */}
                 </div>
                 <QuantitySelector
                   value={mainQuantity}
@@ -93,39 +86,25 @@ export function AddToCartDrawer({ open, onOpenChange }: AddToCartDrawerProps) {
           </div>
 
           {/* Extra Items */}
-          <div className='mb-6'>
-            <h3 className='font-medium text-lg mb-3'>Thức ăn dùng thêm</h3>
-            <div className='space-y-3'>
-              {[
-                { id: 'rice', name: 'Cơm thêm', price: 2000 },
-                { id: 'eggCake', name: 'Chả trứng hấp', price: 12000 },
-                { id: 'grilledRibs', name: 'Sườn nướng', price: 20000 },
-              ].map((extra) => (
-                <div key={extra.id} className='flex items-center justify-between bg-white p-3 rounded-lg shadow-sm'>
-                  <div>
-                    <span className='font-medium'>{extra.name}</span>
-                    <div className='text-sm text-gray-500'>+ {formatPrice(extra.price)}</div>
-                  </div>
-                  <QuantitySelector
-                    value={extras[extra.id as keyof typeof extras]}
-                    onDecrease={() => handleQuantityChange(extra.id, -1)}
-                    onIncrease={() => handleQuantityChange(extra.id, 1)}
-                    small
-                  />
-                </div>
-              ))}
-            </div>
+          <div>
+            <h3 className='font-medium text-lg mb-3'>Ghi chú</h3>
+            <Textarea
+              value={notes}
+              placeholder='Nhập ghi chú của bạn ở đây...'
+              className='resize-none h-24 mb-1'
+              onChange={(e) => setNotes(e.target.value)}
+            />
           </div>
         </div>
 
         {/* Footer with Add to Cart Button */}
-        <div className='sticky bottom-0 bg-background border-t border-gray-200 p-4'>
+        <div className='sticky bottom-0 bg-background border-t border-gray-200 p-4 m-2 mt-0'>
           <Button
             className='w-full bg-[#4CAF50] hover:bg-[#43A047] text-white h-12 rounded-lg'
-            onClick={() => onOpenChange(false)}
+            onClick={handleAddToCart}
           >
             <ShoppingBag className='h-5 w-5 mr-2' />
-            {formatPrice(calculateTotal())} - Thêm vào giỏ hàng
+            {(product.productPrice * mainQuantity).toLocaleString()}đ - Thêm vào giỏ hàng
           </Button>
         </div>
       </DrawerContent>

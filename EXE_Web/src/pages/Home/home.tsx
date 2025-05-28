@@ -1,3 +1,4 @@
+import { GET_BRANCHES_QUERY_KEY, GET_BRANCHES_STALE_TIME, getBranches } from '@/apis/branch.api';
 import { GET_PRODUCTS_QUERY_KEY, getProducts } from '@/apis/product.api';
 import logo from '@/assets/favicon.svg';
 import { LoadingSpinner } from '@/components/common/loading-spinner';
@@ -21,9 +22,15 @@ export default function Home() {
     queryFn: () => getProducts(),
     select: (data) => data.content.slice(0, 3),
   });
+
+  const { data: branches, isLoading: isLoadingBranches } = useQuery({
+    queryKey: [GET_BRANCHES_QUERY_KEY],
+    queryFn: () => getBranches(),
+    staleTime: GET_BRANCHES_STALE_TIME,
+  });
   return (
     <>
-      {isLoadingProducts ? (
+      {isLoadingProducts || isLoadingBranches ? (
         <div className='flex items-center justify-center min-h-screen'>
           <LoadingSpinner />
         </div>
@@ -104,7 +111,7 @@ export default function Home() {
               </div>
 
               <div className='grid grid-cols-1 lg:grid-cols-2 gap-12'>
-                <BranchList />
+                <BranchList items={branches || []} />
 
                 <div className='bg-white rounded-2xl shadow-lg p-8 relative overflow-hidden'>
                   <div className='relative'>

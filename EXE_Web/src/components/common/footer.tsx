@@ -1,7 +1,7 @@
 import logo from '@/assets/full-logo-white.svg';
 
 import { Mail, MapPin, Phone } from 'lucide-react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (

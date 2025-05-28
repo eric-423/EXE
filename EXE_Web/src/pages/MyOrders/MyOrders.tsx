@@ -1,6 +1,5 @@
 'use client';
 
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -90,20 +89,6 @@ export default function MyOrders() {
       rated: true,
     },
   ];
-
-  // Get status badge
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case 'processing':
-        return <Badge className='bg-blue-500'>Đang chuẩn bị</Badge>;
-      case 'completed':
-        return <Badge className='bg-green-500'>Hoàn thành</Badge>;
-      case 'cancelled':
-        return <Badge className='bg-red-500'>Đã hủy</Badge>;
-      default:
-        return null;
-    }
-  };
 
   const handleOrderClick = (orderId: string) => {
     setSelectedOrderId(orderId); // For debugging

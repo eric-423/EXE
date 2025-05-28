@@ -7,10 +7,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Separator } from '@/components/ui/separator';
-import { Textarea } from '@/components/ui/textarea';
 import { MOCKUP_CART_ITEMS } from '@/utils/mockupData';
 
-import { Clock, CreditCard, Edit, MapPin, QrCode, ShieldCheck, User, Wallet } from 'lucide-react';
+import { Clock, CreditCard, MapPin, QrCode, ShieldCheck, User, Wallet } from 'lucide-react';
 import { useState } from 'react';
 
 import CheckoutSection from './components/checkout-section';

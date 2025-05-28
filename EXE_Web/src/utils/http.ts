@@ -1,6 +1,4 @@
 import configs from '@/configs';
-import cookies from '@/configs/cookies';
-import { JWTDecodeData } from '@/types/auth.type';
 
 import axios, { AxiosError, AxiosInstance } from 'axios';
 
@@ -11,10 +9,8 @@ import {
   removeAccessToken,
   removeRefreshToken,
   setAccessToken,
-  setCookie,
   setRefreshToken,
 } from './cookies';
-import JwtDecode from './jwtDecode';
 
 class Http {
   private accessToken: string;

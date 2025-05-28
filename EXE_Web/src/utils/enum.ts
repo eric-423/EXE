@@ -5,6 +5,16 @@ export enum AuthAction {
   PATCH_USER = 'PATCH_USER',
 }
 
+export enum CartAction {
+  INITIALIZE = 'INITIALIZE',
+  ADD_ITEM = 'ADD_ITEM',
+  REMOVE_ITEM = 'REMOVE_ITEM',
+  UPDATE_ITEM = 'UPDATE_ITEM',
+  CLEAR_CART = 'CLEAR_CART',
+  UPDATE_QUANTITY = 'UPDATE_QUANTITY',
+  SET_LOADING = 'SET_LOADING',
+}
+
 export enum Role {
   ADMIN = 'ADMIN',
   GUEST = 'GUEST',

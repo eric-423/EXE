@@ -1,4 +1,3 @@
-import image from '@/assets/images/Home - Banner.jpg';
 import ProductCard from '@/components/common/product-card';
 import { Product } from '@/types/product.type';
 

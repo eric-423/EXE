@@ -3,6 +3,7 @@
 import logo from '@/assets/full-logo.svg';
 import { Button } from '@/components/ui/button';
 import configs from '@/configs';
+import { useAuth } from '@/hooks';
 
 import { Bell, LogIn, Menu, User, X } from 'lucide-react';
 import { useState } from 'react';
@@ -12,6 +13,7 @@ import { CartDrawer } from './cart-drawer';
 import { CartPopover } from './cart-popover';
 
 export default function Header() {
+  const { isAuthenticated } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -31,7 +33,7 @@ export default function Header() {
 
         {/* Desktop Action Buttons */}
         <div className='hidden md:flex items-center space-x-4'>
-          <ActionButtons />
+          <ActionButtons isAuthenticated={isAuthenticated} />
         </div>
 
         {/* Mobile Menu Button */}
@@ -53,7 +55,7 @@ export default function Header() {
               <NavLinks mobile />
             </nav>
             <div className='flex justify-center space-x-6 pt-4 border-t'>
-              <ActionButtons mobile />
+              <ActionButtons mobile isAuthenticated={isAuthenticated} />
             </div>
           </div>
         </div>
@@ -89,11 +91,11 @@ function NavLinks({ mobile = false }: { mobile?: boolean }) {
   );
 }
 
-function ActionButtons({ mobile = false }: { mobile?: boolean }) {
-  const user = false;
+function ActionButtons({ mobile = false, isAuthenticated = false }: { mobile?: boolean; isAuthenticated?: boolean }) {
+  console.log('isAuthenticated:', isAuthenticated);
   return (
     <>
-      {user ? (
+      {isAuthenticated ? (
         <>
           <Button
             variant='ghost'

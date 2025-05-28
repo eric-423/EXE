@@ -1,7 +1,7 @@
 import { SuccessResponse } from './response.type';
 
 export interface Product {
-  productId: string;
+  productId: number;
   productName: string;
   productDescription: string;
   productImage: string;

@@ -49,6 +49,7 @@ export default function MenuPage() {
     if (branches && !selectedBranch) {
       setSelectedBranch(branches[0]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [branches]);
 
   useEffect(() => {

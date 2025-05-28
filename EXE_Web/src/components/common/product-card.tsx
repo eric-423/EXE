@@ -52,7 +52,7 @@ const ProductCard = ({ item, descriptionOverflow = 40 }: ProductCardProps) => {
         </div>
       </div>
       {dialogOpen && !isMobile && <AddToCartDialog product={item} open={dialogOpen} onOpenChange={setDialogOpen} />}
-      {dialogOpen && isMobile && <AddToCartDrawer open={dialogOpen} onOpenChange={setDialogOpen} />}
+      {dialogOpen && isMobile && <AddToCartDrawer product={item} open={dialogOpen} onOpenChange={setDialogOpen} />}
     </Card>
   );
 };

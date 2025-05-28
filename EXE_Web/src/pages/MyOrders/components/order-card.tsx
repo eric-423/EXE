@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 
-import { Calendar, ChevronRight, Clock, MapPin, RotateCw } from 'lucide-react';
+import { Calendar, Clock, MapPin, RotateCw } from 'lucide-react';
 
 interface OrderCardProps {
   order: {

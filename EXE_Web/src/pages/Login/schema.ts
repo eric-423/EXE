@@ -1,5 +1,4 @@
-import { PHONE_REGEX, USER_MESSAGES } from '@/utils/constants';
-import { emailSchema, passwordSchema } from '@/utils/schema';
+import { PHONE_REGEX } from '@/utils/constants';
 
 import { z } from 'zod';
 

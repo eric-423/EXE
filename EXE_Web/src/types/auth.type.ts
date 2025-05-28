@@ -1,4 +1,5 @@
 import { JwtPayload } from 'jwt-decode';
+
 import { SuccessResponse } from './response.type';
 
 export type AuthResponse = SuccessResponse<{

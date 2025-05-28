@@ -5,31 +5,11 @@ import { Branch } from '@/types/branch.type';
 
 import { Utensils } from 'lucide-react';
 
-const BranchListItem = [
-  {
-    id: '1',
-    name: 'Cơm Tấm Tắc - Chi Nhánh 1',
-    address: '123 Đường ABC, Quận 1, TP.HCM',
-    phone: '0123456789',
-    img: `${image}`,
-  } as Branch,
-  {
-    id: '2',
-    name: 'Cơm Tấm Tắc - Chi Nhánh 2',
-    address: '456 Đường DEF, Quận 2, TP.HCM',
-    phone: '0987654321',
-    img: `${image}`,
-  } as Branch,
-  {
-    id: '3',
-    name: 'Cơm Tấm Tắc - Chi Nhánh 3',
-    address: '789 Đường GHI, Quận 3, TP.HCM',
-    phone: '0912345678',
-    img: `${image}`,
-  } as Branch,
-];
+interface BranchListItemProps {
+  items: Branch[];
+}
 
-const BranchList = () => {
+const BranchList = ({ items }: BranchListItemProps) => {
   return (
     <div>
       <Tabs defaultValue='tphcm' className='w-full'>
@@ -39,7 +19,7 @@ const BranchList = () => {
           <TabsTrigger value='danang'>Đà Nẵng</TabsTrigger>
         </TabsList>
         <TabsContent value='tphcm'>
-          {BranchListItem.map((item) => (
+          {items.map((item) => (
             <BranchCard item={item} key={item.id} className='mt-2' />
           ))}
         </TabsContent>

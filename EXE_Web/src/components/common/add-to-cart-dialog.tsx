@@ -1,14 +1,12 @@
 'use client';
 
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogClose, DialogContent, DialogTitle } from '@/components/ui/dialog';
-import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { useCart } from '@/contexts/cart/CartContext';
 import { Product } from '@/types/product.type';
 
-import { Minus, Plus, ShoppingBag, X } from 'lucide-react';
+import { ShoppingBag, X } from 'lucide-react';
 import { useState } from 'react';
 
 import { Textarea } from '../ui/textarea';
@@ -22,36 +20,31 @@ interface AddToCartDialogProps {
 }
 
 export function AddToCartDialog({ open, onOpenChange, product }: AddToCartDialogProps) {
+  const { addItem } = useCart();
   const [mainQuantity, setMainQuantity] = useState(1);
-  const [extras, setExtras] = useState({
-    rice: 0,
-    eggCake: 0,
-    grilledRibs: 0,
-  });
-  const discountPrice = 86000;
-
-  // Calculate total price
-  const calculateTotal = () => {
-    let total = discountPrice * mainQuantity;
-    total += extras.rice * 2000;
-    total += extras.eggCake * 12000;
-    total += extras.grilledRibs * 20000;
-    return total;
-  };
-
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('vi-VN').format(price) + 'đ';
-  };
+  const [notes, setNotes] = useState('');
 
   const handleQuantityChange = (item: string, value: number) => {
-    if (item === 'main') {
-      setMainQuantity(Math.max(1, mainQuantity + value));
-    } else {
-      setExtras({
-        ...extras,
-        [item]: Math.max(0, extras[item as keyof typeof extras] + value),
-      });
-    }
+    // if (item === 'main') {
+    setMainQuantity(Math.max(1, mainQuantity + value));
+    // } else {
+    //   setExtras({
+    //     ...extras,
+    //     [item]: Math.max(0, extras[item as keyof typeof extras] + value),
+    //   });
+    // }
+  };
+
+  const handleAddToCart = () => {
+    const cartItem = {
+      productId: product.productId,
+      productName: product.productName,
+      productPrice: product.productPrice,
+      quantity: mainQuantity,
+      note: notes,
+    };
+    addItem(cartItem);
+    onOpenChange(false);
   };
 
   return (
@@ -80,8 +73,8 @@ export function AddToCartDialog({ open, onOpenChange, product }: AddToCartDialog
               <div className='flex items-center justify-between'>
                 <div className='flex items-center gap-2'>
                   <span className='font-bold text-primary'>{product.productPrice.toLocaleString()}đ</span>
-                  <span className='text-gray-500 text-sm line-through'>{product.productPrice.toLocaleString()}đ</span>
-                  <Badge className='bg-primary/10 text-primary hover:bg-primary/20 ml-1'>-30%</Badge>
+                  {/* <span className='text-gray-500 text-sm line-through'>{product.productPrice.toLocaleString()}đ</span> */}
+                  {/* <Badge className='bg-primary/10 text-primary hover:bg-primary/20 ml-1'>-30%</Badge> */}
                 </div>
                 <QuantitySelector
                   value={mainQuantity}
@@ -95,7 +88,12 @@ export function AddToCartDialog({ open, onOpenChange, product }: AddToCartDialog
           {/* Extra Items */}
           <div>
             <h3 className='font-medium text-lg mb-3'>Ghi chú</h3>
-            <Textarea placeholder='Nhập ghi chú của bạn ở đây...' className='resize-none h-24 mb-1' />
+            <Textarea
+              value={notes}
+              placeholder='Nhập ghi chú của bạn ở đây...'
+              className='resize-none h-24 mb-1'
+              onChange={(e) => setNotes(e.target.value)}
+            />
           </div>
         </div>
 
@@ -103,10 +101,10 @@ export function AddToCartDialog({ open, onOpenChange, product }: AddToCartDialog
         <div className='sticky bottom-0 bg-background border-t border-gray-200 p-4 m-2 mt-0'>
           <Button
             className='w-full bg-[#4CAF50] hover:bg-[#43A047] text-white h-12 rounded-lg'
-            onClick={() => onOpenChange(false)}
+            onClick={handleAddToCart}
           >
             <ShoppingBag className='h-5 w-5 mr-2' />
-            {formatPrice(calculateTotal())} - Thêm vào giỏ hàng
+            {(product.productPrice * mainQuantity).toLocaleString()}đ - Thêm vào giỏ hàng
           </Button>
         </div>
       </DialogContent>
