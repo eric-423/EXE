@@ -24,7 +24,7 @@ export function AddToCartDialog({ open, onOpenChange, product }: AddToCartDialog
   const [mainQuantity, setMainQuantity] = useState(1);
   const [notes, setNotes] = useState('');
 
-  const handleQuantityChange = (item: string, value: number) => {
+  const handleQuantityChange = (value: number) => {
     // if (item === 'main') {
     setMainQuantity(Math.max(1, mainQuantity + value));
     // } else {
@@ -78,8 +78,8 @@ export function AddToCartDialog({ open, onOpenChange, product }: AddToCartDialog
                 </div>
                 <QuantitySelector
                   value={mainQuantity}
-                  onDecrease={() => handleQuantityChange('main', -1)}
-                  onIncrease={() => handleQuantityChange('main', 1)}
+                  onDecrease={() => handleQuantityChange(-1)}
+                  onIncrease={() => handleQuantityChange(1)}
                 />
               </div>
             </div>

@@ -14,6 +14,7 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { useCart } from '@/contexts/cart/CartContext';
+import { STORE_INFO } from '@/utils/mockupData';
 
 import { ChevronRight, Edit, MapPin, ShoppingCart, X } from 'lucide-react';
 import { useState } from 'react';
@@ -46,7 +47,7 @@ export function CartDrawer() {
             <div className='flex items-center text-sm text-gray-600 mt-1'>
               <MapPin className='h-3.5 w-3.5 mr-1 flex-shrink-0' />
               <p className='line-clamp-1'>
-                Tấm Tắc Láng Đại học - Nhà văn hóa sinh viên, Khu đô thị Đại học Quốc gia TP. Hồ Chí Minh
+                {STORE_INFO.name} - {STORE_INFO.address}
               </p>
               <ControlledButton title='Đổi cửa hàng' className='ml-2'>
                 <Edit className='h-3.5 w-3.5' />

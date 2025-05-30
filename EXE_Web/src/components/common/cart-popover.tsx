@@ -6,6 +6,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { useCart } from '@/contexts/cart/CartContext';
+import { STORE_INFO } from '@/utils/mockupData';
 
 import { ChevronRight, Edit, MapPin, ShoppingCart, X } from 'lucide-react';
 import { useState } from 'react';
@@ -35,10 +36,10 @@ export function CartPopover() {
           <div className='pb-4 border-b border-foreground/30'>
             <div className='flex items-start justify-between'>
               <div>
-                <h3 className='font-bold text-lg'>Tấm Tắc Láng Đại học</h3>
+                <h3 className='font-bold text-lg'>{STORE_INFO.name}</h3>
                 <div className='flex items-center text-sm text-gray-600 mt-1'>
                   <MapPin className='h-3.5 w-3.5 mr-1 flex-shrink-0' />
-                  <p className='line-clamp-1'>Nhà văn hóa sinh viên, Khu đô thị Đại học Quốc gia TP. Hồ Chí Minh</p>
+                  <p className='line-clamp-1'>{STORE_INFO.address}</p>
                 </div>
               </div>
               <ControlledButton title='Đổi cửa hàng'>

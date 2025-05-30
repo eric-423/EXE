@@ -7,8 +7,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 // GuestGuard is a component that will be used to protect routes
 // that should only be accessed by unauthenticated users.
 const GuestGuard: FC<PropsWithChildren> = () => {
-  const { isLoading, isAuthenticated, user } = useAuth();
-  console.log('GuestGuard', user);
+  const { isLoading, isAuthenticated } = useAuth();
 
   if (isLoading) return <LoadingSpinner />;
 

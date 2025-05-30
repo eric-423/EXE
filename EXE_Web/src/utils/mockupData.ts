@@ -1,40 +1,5 @@
-import image from '@/assets/images/Home - Banner.jpg';
-import { CartProduct } from '@/types/product.type';
-export const MOCKUP_CART_ITEMS = [
-  {
-    productId: '1',
-    productName: 'Cơm Tấm Sườn Bì Chả',
-    productImage: `${image}`,
-    productPrice: 50000,
-    productQuantity: 1,
-    productType: 'Cơm Tấm',
-    productDescription: 'Cơm tấm sườn bì chả ngon nhất Sài Gòn',
-    rating: 4.5,
-    note: 'Thêm nước mắm',
-    quantity: 1,
-  } as CartProduct,
-  {
-    productId: '2',
-    productName: 'Cơm Tấm Chả',
-    productImage: `${image}`,
-    productPrice: 50000,
-    productQuantity: 1,
-    productType: 'Cơm Tấm',
-    productDescription: 'Cơm tấm chả ngon nhất Sài Gòn',
-    rating: 4.5,
-    note: 'Thêm nước mắm',
-    quantity: 1,
-  } as CartProduct,
-  {
-    productId: '3',
-    productName: 'Cơm Tấm Bì Chả',
-    productImage: `${image}`,
-    productPrice: 50000,
-    productQuantity: 1,
-    productType: 'Cơm Tấm',
-    productDescription: 'Cơm tấm bì chả ngon nhất Sài Gòn',
-    rating: 4.5,
-    note: 'Thêm nước mắm',
-    quantity: 1,
-  } as CartProduct,
-];
+export const STORE_INFO = {
+  name: 'Tấm Tắc Làng Đại Học',
+  address: 'Nhà Văn hóa Sinh viên, khu đô thị Đại học Quốc gia TP. Hồ Chí Minh',
+  phone: '0828-024-246',
+};

@@ -46,6 +46,7 @@ const useAuth = () => {
   useEffect(() => {
     if (accessToken) {
       const decodedToken = JwtDecode(accessToken);
+      if (!decodedToken || decodedToken.exp < Date.now() / 1000) return;
       const userData = {
         id: decodedToken.id,
         phoneNumber: decodedToken.phone,
@@ -86,7 +87,6 @@ const useAuth = () => {
     return () => clearInterval(intervalId);
   }, [checkTokenExpiration]);
 
-  console.log('useAuth hook initialized', { user, isAuthenticated, isLoading });
   return { isLoading, user, isAuthenticated };
 };
 

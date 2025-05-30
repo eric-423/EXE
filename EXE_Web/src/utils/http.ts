@@ -44,14 +44,21 @@ class Http {
         const { url, method } = response.config;
         if (
           (method === 'post' && url?.includes('/verify-code/verify')) ||
-          (method === 'post' && url?.includes('sign-in')) ||
           (method === 'post' && url?.includes('token/refresh'))
         ) {
-          this.accessToken = response.data.data.access_token;
-          this.refreshToken = response.data.data.refresh_token;
-          console.log('Access Token:', this.accessToken);
-          setAccessToken(this.accessToken);
-          setRefreshToken(this.refreshToken);
+          if (response.data.access_token) {
+            this.accessToken = response.data.access_token;
+            this.refreshToken = response.data.refresh_token;
+            setAccessToken(this.accessToken);
+            setRefreshToken(this.refreshToken);
+          }
+        } else if (method === 'post' && url?.includes('sign-in')) {
+          if (response.data.data.access_token) {
+            this.accessToken = response.data.data.access_token;
+            this.refreshToken = response.data.data.refresh_token;
+            setAccessToken(this.accessToken);
+            setRefreshToken(this.refreshToken);
+          }
         } else if (url === configs.routes.logout) {
           this.accessToken = '';
           this.refreshToken = '';

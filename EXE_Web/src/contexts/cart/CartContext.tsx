@@ -61,12 +61,10 @@ const CartProvider: FC<PropsWithChildren> = ({ children }) => {
     loadCart();
   }, []);
 
-  console.log('CartProvider rendered', state);
   // Save cart to localStorage whenever items change
   useEffect(() => {
     if (state.isInitialized && !state.isLoading) {
       try {
-        console.log('Saving cart to localStorage', state);
         saveCartToLocalStorage(state);
       } catch (error) {
         console.error('Error saving cart to storage:', error);

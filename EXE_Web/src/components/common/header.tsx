@@ -4,10 +4,11 @@ import logo from '@/assets/full-logo.svg';
 import { Button } from '@/components/ui/button';
 import configs from '@/configs';
 import { useAuth } from '@/hooks';
+import { removeAccessToken, removeRefreshToken } from '@/utils/cookies';
 
-import { Bell, LogIn, Menu, User, X } from 'lucide-react';
+import { LogIn, LogOut, Menu, User, X } from 'lucide-react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import { CartDrawer } from './cart-drawer';
 import { CartPopover } from './cart-popover';
@@ -92,26 +93,35 @@ function NavLinks({ mobile = false }: { mobile?: boolean }) {
 }
 
 function ActionButtons({ mobile = false, isAuthenticated = false }: { mobile?: boolean; isAuthenticated?: boolean }) {
-  console.log('isAuthenticated:', isAuthenticated);
+  const url = useLocation().pathname;
+  const handleLogout = () => {
+    removeAccessToken();
+    removeRefreshToken();
+    window.location.href = configs.routes.home;
+  };
+
   return (
     <>
       {isAuthenticated ? (
         <>
+          <Link to={configs.routes.myOrders}>
+            <Button
+              variant='ghost'
+              size={mobile ? 'default' : 'icon'}
+              className='text-primary hover:text-[#B84A0E] hover:bg-[#FFE8D6]'
+            >
+              <User size={mobile ? 20 : 24} />
+              {mobile && <span className='ml-2'>Tài khoản</span>}
+            </Button>
+          </Link>
           <Button
             variant='ghost'
             size={mobile ? 'default' : 'icon'}
             className='text-primary hover:text-[#B84A0E] hover:bg-[#FFE8D6]'
+            onClick={handleLogout}
           >
-            <Bell size={mobile ? 20 : 24} />
-            {mobile && <span className='ml-2'>Thông báo</span>}
-          </Button>
-          <Button
-            variant='ghost'
-            size={mobile ? 'default' : 'icon'}
-            className='text-primary hover:text-[#B84A0E] hover:bg-[#FFE8D6]'
-          >
-            <User size={mobile ? 20 : 24} />
-            {mobile && <span className='ml-2'>Tài khoản</span>}
+            <LogOut size={mobile ? 20 : 24} />
+            {mobile && <span className='ml-2'>Đăng xuất</span>}
           </Button>
         </>
       ) : (
@@ -129,7 +139,7 @@ function ActionButtons({ mobile = false, isAuthenticated = false }: { mobile?: b
         </>
       )}
 
-      {mobile ? <CartDrawer /> : <CartPopover />}
+      {url !== configs.routes.checkout && (mobile ? <CartDrawer /> : <CartPopover />)}
     </>
   );
 }

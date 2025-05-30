@@ -8,14 +8,13 @@ import { Navigate, Outlet } from 'react-router-dom';
 
 // AuthGuard is component that will be used to protect routes
 // that should only be accessed by authenticated users.
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+ 
 const CustomerGuard: FC<PropsWithChildren> = () => {
   const { isLoading, user } = useAuth();
 
   if (isLoading) return <LoadingSpinner />;
 
   if (user && !Role.USER.includes(user?.role)) return <Navigate to={config.routes.login} replace />;
-  console.log('CustomerGuard', user);
 
   return <Outlet />;
 };

@@ -3,11 +3,10 @@ import Header from '@/components/common/header';
 import { Button } from '@/components/ui/button';
 
 import { BotMessageSquare } from 'lucide-react';
-import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 
 const MainLayout = () => {
-  const [open, setOpen] = useState(false);
+  const open = false;
   const handleChatbotClick = () => {};
   return (
     <>

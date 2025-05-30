@@ -65,7 +65,8 @@ const Login = () => {
     onSuccess: () => {
       setFormStep('register');
     },
-    onError: () => {
+    onError: (error) => {
+      console.error('Error verifying OTP:', error);
       toast.error('Mã xác thực không đúng. Vui lòng thử lại.');
     },
   });

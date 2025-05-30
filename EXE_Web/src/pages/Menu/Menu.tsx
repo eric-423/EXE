@@ -13,7 +13,6 @@ import { ProductType } from '@/types/product.type';
 import { useEffect, useState } from 'react';
 
 import BranchList from './components/branch-list';
-import FeaturedProduct from './components/featured-product';
 import ProductList from './components/product-list';
 import ProductTypeList from './components/product-type-list';
 
@@ -111,8 +110,6 @@ export default function MenuPage() {
 
               {/* Main Content */}
               <div className='lg:w-3/4' id='menu-content'>
-                {/* Featured Item */}
-                {productType.id === 0 && <FeaturedProduct />}
                 {/* Menu Grid */}
                 <div>
                   <div className='flex items-center justify-between mb-6'>

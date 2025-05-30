@@ -9,7 +9,7 @@ import { Suspense } from 'react';
 
 function PaymentResultContent() {
   // Get payment status from URL params (success or failed)
-  const status = 'failed';
+  const status = 'success';
   const orderId = '2502250036';
   const amount = '372150';
   const paymentMethod = 'momo';

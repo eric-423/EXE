@@ -1,4 +1,3 @@
-import image from '@/assets/images/Home - Banner.jpg';
 import BranchCard from '@/components/common/branch-card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Branch } from '@/types/branch.type';
