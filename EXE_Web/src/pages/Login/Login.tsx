@@ -3,13 +3,11 @@ import bannerImage from '@/assets/images/Home - Banner.jpg';
 import { LoadingSpinner } from '@/components/common/loading-spinner';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
-import { useAuth } from '@/hooks';
 import useDocumentTitle from '@/hooks/useDocumentTitle';
 import useScrollTop from '@/hooks/useScrollTop';
 
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { FORM_CONTENTS, FORM_RESOLVERS, SET_FORM_FIELDS } from './components/form-contents';
@@ -27,9 +25,6 @@ const Login = () => {
   const formFields = SET_FORM_FIELDS[formStep];
   const formContents = FORM_CONTENTS[formStep];
   useScrollTop();
-  const { isAuthenticated } = useAuth();
-  const navigate = useNavigate();
-  if (isAuthenticated) navigate('/');
   const form = useForm<AuthFormValues, any, AuthFormValues>({
     resolver: FORM_RESOLVERS[formStep],
     defaultValues: {
@@ -81,17 +76,7 @@ const Login = () => {
     },
   });
 
-  const { mutate: createPasswordMutate, isPending: isCreatingPassword } = useMutation({
-    mutationFn: (data: { phoneNumber: string; password: string }) => changePassword(data),
-    onSuccess: () => {
-      toast.success('Chào mừng trở thành thành viên của Tấm Tắc!');
-    },
-    onError: () => {
-      toast.error('Không thể tạo mật khẩu. Vui lòng thử lại sau.');
-    },
-  });
-
-  const isLoading = isSendingOTP || isVerifyingOTP || isSigningIn || isSigningUp || isCreatingPassword;
+  const isLoading = isSendingOTP || isVerifyingOTP || isSigningIn || isSigningUp;
 
   const onSubmit = (data: AuthFormValues) => {
     if (formStep === 'phone') {
@@ -117,12 +102,6 @@ const Login = () => {
         toast.error('Mật khẩu không khớp. Vui lòng thử lại.');
         return;
       }
-
-      // Register new user
-      createPasswordMutate({
-        phoneNumber: phoneNumber,
-        password: data.password ?? '',
-      });
     }
   };
 
@@ -154,7 +133,7 @@ const Login = () => {
 
         {/* Form Section */}
         {isLoading ? (
-          <div className='flex items-center justify-center w-full h-screen'>
+          <div className='flex items-center justify-center w-full h-screen md:w-1/2'>
             <LoadingSpinner />
           </div>
         ) : (
@@ -172,6 +151,7 @@ const Login = () => {
                 <Form {...form}>
                   <form className='space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
                     <FormItems form={form} formFields={formFields} />
+
                     <Button
                       type='submit'
                       className='w-full py-4 bg-primary text-primary-foreground border-none rounded-lg text-lg font-medium h-[60px] flex items-center justify-center hover:opacity-90 transition-opacity'

@@ -32,4 +32,5 @@ export type UserAuthData = {
   id: number;
   phoneNumber: string;
   role: string;
+  isNewUser?: boolean;
 };

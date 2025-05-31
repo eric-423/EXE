@@ -12,5 +12,6 @@ export const checkoutSchema = z.object({
   paymentMethod: z.enum(['cash', 'qr'], {
     required_error: 'Vui lòng chọn phương thức thanh toán',
   }),
+  note: z.string().max(500, 'Ghi chú không được quá 500 ký tự').optional(),
 });
 export type CheckoutFormData = z.infer<typeof checkoutSchema>;

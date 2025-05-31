@@ -9,6 +9,7 @@ import {
   removeAccessToken,
   removeRefreshToken,
   setAccessToken,
+  setCookie,
   setRefreshToken,
 } from './cookies';
 
@@ -51,6 +52,9 @@ class Http {
             this.refreshToken = response.data.refresh_token;
             setAccessToken(this.accessToken);
             setRefreshToken(this.refreshToken);
+            if (url?.includes('/verify-code/verify')) {
+              setCookie(configs.cookies.isNew, 'true');
+            }
           }
         } else if (method === 'post' && url?.includes('sign-in')) {
           if (response.data.data.access_token) {

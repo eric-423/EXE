@@ -38,18 +38,6 @@ const router = createBrowserRouter([
               Component: (await import('@/pages/Menu')).default,
             }),
           },
-          {
-            path: configs.routes.checkout,
-            lazy: async () => ({
-              Component: (await import('@/pages/Checkout')).default,
-            }),
-          },
-          {
-            path: configs.routes.paymentResult,
-            lazy: async () => ({
-              Component: (await import('@/pages/PaymentResult')).default,
-            }),
-          },
         ],
       },
     ],
@@ -81,6 +69,18 @@ const router = createBrowserRouter([
             path: configs.routes.myOrders,
             lazy: async () => ({
               Component: (await import('@/pages/MyOrders')).default,
+            }),
+          },
+          {
+            path: configs.routes.checkout,
+            lazy: async () => ({
+              Component: (await import('@/pages/Checkout')).default,
+            }),
+          },
+          {
+            path: configs.routes.paymentResult,
+            lazy: async () => ({
+              Component: (await import('@/pages/PaymentResult')).default,
             }),
           },
         ],

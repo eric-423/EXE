@@ -4,7 +4,7 @@
 import { refetchToken } from '@/apis/user.api';
 import configs from '@/configs';
 import { UserAuthData } from '@/types/user.type';
-import { removeAccessToken, removeRefreshToken } from '@/utils/cookies';
+import { getCookie, removeAccessToken, removeRefreshToken } from '@/utils/cookies';
 import JwtDecode from '@/utils/jwtDecode';
 
 import { useCallback, useEffect, useState } from 'react';
@@ -22,8 +22,8 @@ const useAuth = () => {
   const { mutate: refreshTokenMutation, isPending: isLoading } = useMutation({
     mutationFn: () => refetchToken(cookies[configs.cookies.refreshToken]),
     onSuccess: (data) => {
-      if (data?.data.data.access_token) {
-        const decodedData = JwtDecode(data.data.data.access_token);
+      if (data?.data.access_token) {
+        const decodedData = JwtDecode(data.data.access_token);
         const userData = {
           id: decodedData.id,
           phoneNumber: decodedData.phone,
@@ -52,6 +52,7 @@ const useAuth = () => {
         phoneNumber: decodedToken.phone,
         role: decodedToken.role,
         exp: decodedToken.exp,
+        isNewUser: getCookie(configs.cookies.isNew),
       };
       setUser(userData);
       setIsAuthenticated(true);
