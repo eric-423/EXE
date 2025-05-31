@@ -28,7 +28,7 @@ const ControlledDateTimePicker = ({ field, handleDateSelect, handleTimeChange }:
                 !field && 'text-muted-foreground',
               )}
             >
-              {field ? format(field, 'MM/dd/yyyy - HH:mm') : <span>Chọn ngày</span>}
+              {field ? format(field, 'dd/MM/yyyy - HH:mm') : <span>Chọn ngày</span>}
               <CalendarIcon className='ml-auto h-4 w-4 text-foreground/70' />
             </Button>
           </FormControl>

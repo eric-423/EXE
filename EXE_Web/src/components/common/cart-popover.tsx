@@ -10,6 +10,7 @@ import { STORE_INFO } from '@/utils/mockupData';
 
 import { ChevronRight, Edit, MapPin, ShoppingCart, X } from 'lucide-react';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import ControlledButton from './controlled-button';
 import { QuantitySelector } from './quantity-selector';
@@ -106,10 +107,12 @@ export function CartPopover() {
               <span className='font-bold text-xl text-primary'>{getTotalPrice().toLocaleString()}đ</span>
             </div>
 
-            <Button className='w-full h-12 bg-[#4CAF50] hover:bg-[#43A047] text-white rounded-lg font-medium'>
-              Xác nhận đơn hàng
-              <ChevronRight className='h-4 w-4 ml-1' />
-            </Button>
+            <Link to='/checkout'>
+              <Button className='w-full h-12 bg-[#4CAF50] hover:bg-[#43A047] text-white rounded-lg font-medium'>
+                Xác nhận đơn hàng
+                <ChevronRight className='h-4 w-4 ml-1' />
+              </Button>
+            </Link>
           </div>
         </div>
       </PopoverContent>
