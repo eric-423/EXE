@@ -57,8 +57,6 @@ const useAuth = () => {
       }
     },
     onError: (error) => {
-      if (!isMountedRef.current) return;
-
       console.error('Token refresh failed:', error);
       removeAccessToken();
       removeRefreshToken();
@@ -68,6 +66,7 @@ const useAuth = () => {
         user: null,
         isAuthenticated: false,
       }));
+      location.reload();
     },
   });
 

@@ -1,0 +1,17 @@
+import { useCart } from '@/contexts/cart/CartContext';
+import { removeCookie } from '@/utils/cookies';
+
+import { useEffect } from 'react';
+
+import { PaymentResultContent } from './PaymentResult';
+
+export default function PaymentSuccess() {
+  const { clearCart } = useCart();
+  clearCart();
+  useEffect(() => {
+    return () => {
+      removeCookie('is_paying');
+    };
+  });
+  return <PaymentResultContent isSuccess={true} />;
+}

@@ -8,8 +8,8 @@ export const getCookie = (name: string) => {
   return cookies.get(name);
 };
 
-export const setCookie = (name: string, value: string) => {
-  cookies.set(name, value);
+export const setCookie = (name: string, value: string, expires?: Date) => {
+  cookies.set(name, value, { expires: expires });
 };
 
 export const removeCookie = (name: string) => {
@@ -22,7 +22,7 @@ export const getAccessToken = () => {
 };
 
 export const setAccessToken = (token: string) => {
-  setCookie(config.cookies.accessToken, token);
+  setCookie(config.cookies.accessToken, token, new Date(new Date().setMinutes(new Date().getMinutes() + 20)));
 };
 
 export const removeAccessToken = () => {

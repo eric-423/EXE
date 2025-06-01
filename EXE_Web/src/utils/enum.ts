@@ -22,8 +22,11 @@ export enum Role {
 }
 
 export enum OrderStatus {
-  'PROCESSING' = 'Chờ Thanh Toán',
-  'COMPLETED' = 'Đặt Hàng Thành Công',
-  'CANCELLED' = 'Đã Hủy',
-  'PAID' = 'Đã Thanh Toán',
+  'PROCESSING' = 'Đang chuẩn bị',
+  'IN_DELIVERY' = 'Đang giao hàng',
+  'COMPLETED' = 'Đã giao',
+  'VERIFIED' = 'Đặt Hàng Thành Công',
+  'CANCELLED' = 'Đã hủy',
+  'PAID' = 'Đã thanh toán',
+  'UNPAID' = 'Chờ Thanh Toán',
 }

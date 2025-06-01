@@ -8,7 +8,19 @@ import type { FieldPath, useFormContext } from 'react-hook-form';
 
 import type { AuthFormValues } from '../schema';
 
-import type { FormFieldType } from './form-contents';
+export type FormFieldType = {
+  label: string;
+  name: string;
+  type: string;
+  placeholder: string;
+  control?: {
+    required?: boolean;
+    pattern?: RegExp;
+    minLength?: number;
+    maxLength?: number;
+  };
+  errorMessage: string;
+};
 
 interface FormItemsProps {
   form: ReturnType<typeof useFormContext<AuthFormValues>>;

@@ -16,7 +16,7 @@ import { AuthFormValues } from './schema';
 
 import { useMutation } from '@tanstack/react-query';
 
-type FormStep = 'phone' | 'login' | 'otp' | 'register';
+type FormStep = 'phone' | 'login' | 'otp';
 
 const Login = () => {
   useDocumentTitle('Đăng nhập');
@@ -31,7 +31,6 @@ const Login = () => {
       phoneNumber: '',
       password: '',
       otp: '',
-      confirmPassword: '',
     },
     mode: 'onChange',
   });
@@ -58,7 +57,7 @@ const Login = () => {
   const { mutate: verifyOTPMutate, isPending: isVerifyingOTP } = useMutation({
     mutationFn: (data: { phoneNumber: string; otp: string }) => verifyOTP(data.phoneNumber, data.otp),
     onSuccess: () => {
-      setFormStep('register');
+      toast.success('Chào mừng bạn đến với Tấm Tắc!');
     },
     onError: (error) => {
       console.error('Error verifying OTP:', error);
@@ -96,26 +95,17 @@ const Login = () => {
         phoneNumber: phoneNumber,
         otp: data.otp ?? '',
       });
-    } else if (formStep === 'register') {
-      // Check if passwords match
-      if (data.password !== data.confirmPassword) {
-        toast.error('Mật khẩu không khớp. Vui lòng thử lại.');
-        return;
-      }
     }
   };
 
   useEffect(() => {
     if (formStep === 'phone') {
-      form.reset({ phoneNumber: '', password: '', otp: '', confirmPassword: '' });
+      form.reset({ phoneNumber: '', password: '', otp: '' });
     } else if (formStep === 'login') {
       form.setValue('phoneNumber', phoneNumber);
       form.setValue('password', '');
     } else if (formStep === 'otp') {
       form.setValue('otp', '');
-    } else if (formStep === 'register') {
-      form.setValue('password', '');
-      form.setValue('confirmPassword', '');
     }
   }, [formStep, form, phoneNumber]);
 

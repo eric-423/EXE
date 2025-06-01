@@ -19,19 +19,15 @@ interface OrderDetailsDrawerProps {
 
 export function OrderDetailsDrawer({ order, open, onClose }: OrderDetailsDrawerProps) {
   const [cancelDrawerOpen, setCancelDrawerOpen] = useState(false);
-
-  // Format price
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('vi-VN').format(price) + 'đ';
-  };
+  const withdrawable = [OrderStatus.UNPAID, OrderStatus.VERIFIED];
 
   // Get status badge
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case 'pending':
+      case OrderStatus.UNPAID:
         return <Badge className='bg-yellow-500'>Chờ xác nhận</Badge>;
-      case 'processing':
-        return <Badge className='bg-blue-500'>Đang xử lý</Badge>;
+      case OrderStatus.PROCESSING || OrderStatus.VERIFIED || OrderStatus.IN_DELIVERY:
+        return <Badge className='bg-blue-500'>{status}</Badge>;
       case OrderStatus.COMPLETED:
         return <Badge className='bg-green-500'>{OrderStatus.COMPLETED}</Badge>;
       case OrderStatus.CANCELLED:
@@ -146,7 +142,7 @@ export function OrderDetailsDrawer({ order, open, onClose }: OrderDetailsDrawerP
                           )}
                         </div>
                         <div className='text-right'>
-                          <div className='text-primary font-medium text-sm'>{formatPrice(item.price)}</div>
+                          <div className='text-primary font-medium text-sm'>{item.price.toLocaleString()}đ</div>
                           <div className='text-xs text-muted-foreground mt-1'>x {item.quantity}</div>
                         </div>
                       </div>
@@ -181,7 +177,7 @@ export function OrderDetailsDrawer({ order, open, onClose }: OrderDetailsDrawerP
           </div>
 
           <DrawerFooter className='flex flex-col sm:flex-row gap-3'>
-            {order.orderStatus === OrderStatus.PROCESSING && (
+            {withdrawable.includes(order.orderStatus) && (
               <Drawer open={cancelDrawerOpen} onOpenChange={setCancelDrawerOpen}>
                 <Button variant='outline' className='w-full sm:w-auto' onClick={() => setCancelDrawerOpen(true)}>
                   Hủy đơn

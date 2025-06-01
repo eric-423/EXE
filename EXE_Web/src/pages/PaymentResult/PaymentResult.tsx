@@ -5,40 +5,11 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
 import { ArrowRight, CheckCircle2, Home, ShoppingBag, XCircle } from 'lucide-react';
-import { Suspense } from 'react';
 
-function PaymentResultContent() {
-  // Get payment status from URL params (success or failed)
-  const status = 'success';
-  const orderId = '2502250036';
-  const amount = '372150';
-  const paymentMethod = 'momo';
-
-  const isSuccess = status === 'success';
-
-  // Mock payment data
-  const paymentData = {
-    orderId,
-    amount: Number.parseInt(amount),
-    paymentMethod,
-    transactionId: isSuccess ? 'TXN' + Date.now() : null,
-    timestamp: new Date().toLocaleString('vi-VN'),
-    customerName: 'Lê Minh Duy',
-    customerPhone: '0999888777',
-    restaurant: 'Tấm Tắc Láng Đại Học',
-    items: [
-      { name: 'COMBO - SÀ BÌ CHƯỞNG', quantity: 2, price: 272000 },
-      { name: 'CƠM SƯỜN CỘNG', quantity: 1, price: 85000 },
-      { name: 'Coca Cola', quantity: 2, price: 24000 },
-    ],
-    subtotal: 381000,
-    discount: 24850,
-    deliveryFee: 16000,
-    total: Number.parseInt(amount),
-  };
-
+export function PaymentResultContent({ isSuccess = true }) {
+  // const navigate = useNavigate();
   return (
-    <div className='min-h-screen from-orange-50 to-amber-50 py-8 px-4 md:px-6'>
+    <div className='from-orange-50 to-amber-50 py-8 px-4 md:px-6'>
       <div className='container mx-auto max-w-2xl'>
         {/* Status Header */}
         <div className='text-center mb-6'>
@@ -60,12 +31,7 @@ function PaymentResultContent() {
 
           <p className='text-muted-foreground text-lg'>
             {isSuccess ? (
-              <>
-                Đơn hàng của bạn đã được xác nhận và đang được chuẩn bị.
-                <p>
-                  Mã giao dịch: <span className='font-medium text-green-600'>{paymentData.transactionId}</span>
-                </p>
-              </>
+              <>Đơn hàng của bạn đã được xác nhận và đang được chuẩn bị.</>
             ) : (
               'Có lỗi xảy ra trong quá trình thanh toán. Vui lòng thử lại.'
             )}
@@ -76,7 +42,7 @@ function PaymentResultContent() {
         <div className='text-center mb-6'>
           <Badge
             className={`text-sm px-4 py-2 ${
-              isSuccess ? 'bg-green-500 hover:bg-green-600' : 'bg-red-500 hover:bg-red-600'
+              isSuccess ? 'bg-green-600 hover:bg-green-800' : 'bg-red-600 hover:bg-red-700'
             }`}
           >
             {isSuccess ? 'Đã thanh toán' : 'Thanh toán thất bại'}
@@ -97,10 +63,7 @@ function PaymentResultContent() {
                   Tiếp tục đặt hàng
                 </Button>
 
-                <Button
-                  className='w-full bg-primary hover:bg-primary/90 text-white py-3'
-                  // onClick={() => router.push(`/orders/${paymentData.orderId}`)}
-                >
+                <Button className='w-full bg-primary hover:bg-primary/90 text-white py-3'>
                   Xem chi tiết đơn hàng
                   <ArrowRight className='h-4 w-4' />
                 </Button>
@@ -119,7 +82,7 @@ function PaymentResultContent() {
         </div>
 
         {/* Additional Info */}
-        <Card className='mt-6 border-none shadow-sm bg-foreground'>
+        <Card className={`mt-6 shadow-sm  border-none ${isSuccess ? 'bg-secondary' : 'bg-foreground'}`}>
           <CardContent className='p-0 text-center'>
             <p className='text-lg text-white'>
               {isSuccess ? (
@@ -136,22 +99,5 @@ function PaymentResultContent() {
         </Card>
       </div>
     </div>
-  );
-}
-
-export default function PaymentResultPage() {
-  return (
-    <Suspense
-      fallback={
-        <div className='min-h-screen bg-gradient-to-br from-orange-50 to-amber-50 flex items-center justify-center'>
-          <div className='text-center'>
-            <div className='animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4'></div>
-            <p className='text-muted-foreground'>Đang tải kết quả thanh toán...</p>
-          </div>
-        </div>
-      }
-    >
-      <PaymentResultContent />
-    </Suspense>
   );
 }

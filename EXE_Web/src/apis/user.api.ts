@@ -38,3 +38,5 @@ export const refetchUserData = (token: string) => {
     throw new Error('Failed to refetch user data');
   });
 };
+
+export const getMe = (userId: number) => http.get(`/customer/profile/${userId}`);

@@ -56,8 +56,6 @@ export const useGetCustomerOrders = () => {
     select: (data) => data.data.content,
   });
 
-  console.log('Fetched Orders:', fetchedOrders);
-
   const filterOrders = (order: RawOrder) => {
     const items = order.orderItems.map(
       (item: RawOrderItem) =>
@@ -79,7 +77,7 @@ export const useGetCustomerOrders = () => {
       customerName: order.customerDTO?.fullName || 'Khách hàng',
       customerPhone: order.phone,
       subTotal: order.subTotal,
-      paymentStatus: order.orderStatus === OrderStatus.PROCESSING ? OrderStatus.PROCESSING : OrderStatus.PAID,
+      paymentStatus: order.orderStatus === OrderStatus.UNPAID ? OrderStatus.UNPAID : OrderStatus.PAID,
       orderStatus: order.orderStatus,
       rated: items.some((item) => item.feedback !== null),
     } as OrderResponse;
@@ -91,7 +89,6 @@ export const useGetCustomerOrders = () => {
       setOrders(formattedOrders);
     }
   }, [fetchedOrders]);
-  console.log('Formatted Orders:', orders);
 
   return { orders, isLoadingOrders };
 };

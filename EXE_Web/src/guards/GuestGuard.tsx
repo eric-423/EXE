@@ -1,5 +1,5 @@
 import { LoadingSpinner } from '@/components/common/loading-spinner';
-import { config } from '@/configs/app';
+import configs from '@/configs';
 import { useAuth } from '@/hooks';
 
 import { FC, PropsWithChildren } from 'react';
@@ -11,7 +11,7 @@ const GuestGuard: FC<PropsWithChildren> = () => {
 
   if (isLoading) return <LoadingSpinner />;
 
-  if (isAuthenticated) return <Navigate to={config.routes.home} replace />;
+  if (isAuthenticated) return <Navigate to={configs.routes.home} replace />;
 
   return <Outlet />;
 };

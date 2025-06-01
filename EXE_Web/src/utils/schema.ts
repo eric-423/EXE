@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { PASSWORD_REGEX, PHONE_REGEX, USER_MESSAGES } from './constants';
+import { PHONE_REGEX, USER_MESSAGES } from './constants';
 
 // GLOBAL SCHEMA
 export const emailSchema = z
@@ -11,14 +11,17 @@ export const emailSchema = z
     message: USER_MESSAGES.EMAIL_MESSAGE,
   });
 
-export const passwordSchema = (message: string = '') =>
-  z
-    .string({
-      message: message,
-    })
-    .refine((value) => PASSWORD_REGEX.test(value), {
-      message: message,
-    });
+export const setPasswordSchema = z
+  .object({
+    password: z.string().min(6, 'Mật khẩu phải có ít nhất 6 ký tự'),
+    confirmPassword: z.string().min(6, 'Mật khẩu xác nhận phải có ít nhất 6 ký tự'),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Mật khẩu xác nhận không khớp',
+    path: ['confirmPassword'],
+  });
+
+export type setPasswordFormData = z.infer<typeof setPasswordSchema>;
 
 // export const fullnameSchema = z
 //   .string({
@@ -28,16 +31,11 @@ export const passwordSchema = (message: string = '') =>
 //     message: USER_MESSAGES.FULLNAME_MESSAGE,
 //   });
 
-// export const optionSchema = z.object({
-//   label: z.string(),
-//   value: z.string(),
-//   disable: z.boolean().optional(),
-// });
-
 export const phoneSchema = z
   .string({
     message: USER_MESSAGES.PHONE_MESSAGE,
   })
+  .trim()
   .refine((value) => PHONE_REGEX.test(value), {
     message: USER_MESSAGES.PHONE_MESSAGE,
   });

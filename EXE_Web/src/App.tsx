@@ -12,15 +12,6 @@ const queryClient = new QueryClient();
 
 export default function App() {
   return (
-    // <ThemeProvider>
-    //   <QueryClientProvider client={queryClient}>
-    //     <AuthProvider>
-    //       <RouterProvider router={router} />
-    //       <Toaster position='top-right' richColors duration={1500} />
-    //     </AuthProvider>
-    //   </QueryClientProvider>
-    // </ThemeProvider>
-    // <ThemeProvider>
     <ThemeProvider defaultTheme='system' storageKey='theme'>
       <QueryClientProvider client={queryClient}>
         <CookiesProvider defaultSetOptions={{ path: '/' }}>

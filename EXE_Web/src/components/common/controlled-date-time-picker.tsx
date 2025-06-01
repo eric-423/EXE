@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils';
+import { getReceiveTime } from '@/utils/getReceiveTime';
 
 import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
@@ -40,8 +41,8 @@ const ControlledDateTimePicker = ({ field, handleDateSelect, handleTimeChange }:
               selected={field}
               onSelect={handleDateSelect}
               initialFocus
-              fromDate={field}
-              disabled={(date) => date <= field}
+              today={undefined}
+              disabled={(date) => date < new Date(getReceiveTime().setHours(0, 0, 0, 0))}
             />
             <div className='flex flex-col sm:flex-row sm:h-[300px] divide-y sm:divide-y-0 sm:divide-x'>
               <ScrollArea className='w-64 sm:w-auto'>

@@ -17,7 +17,7 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ className, size 
     <div className='flex items-center justify-center'>
       <div
         className={twMerge(
-          'animate-spin rounded-full border-2 border-gray-300 border-t-primary',
+          'animate-spin rounded-full border-2 border-background border-t-primary',
           sizeClasses[size],
           className,
         )}

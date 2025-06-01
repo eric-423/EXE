@@ -7,8 +7,6 @@ import { useAuth } from '@/hooks';
 import { type FC, type PropsWithChildren, useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 
-// AuthGuard is component that will be used to protect routes
-// that should only be accessed by authenticated users.
 const AuthGuard: FC<PropsWithChildren> = ({ children }) => {
   const { isLoading, isAuthenticated } = useAuth();
   const [shouldRedirect, setShouldRedirect] = useState(false);
@@ -26,7 +24,15 @@ const AuthGuard: FC<PropsWithChildren> = ({ children }) => {
   }, [isLoading, isAuthenticated]);
 
   if (isLoading) {
-    return <LoadingSpinner />;
+    return (
+      <>
+        <div className='min-h-screen fixed inset-0 flex items-center justify-center z-50'>
+          <div className='flex flex-col items-center justify-center space-y-4'>
+            <LoadingSpinner />
+          </div>
+        </div>
+      </>
+    );
   }
 
   if (shouldRedirect) {
