@@ -20,3 +20,10 @@ export enum Role {
   GUEST = 'GUEST',
   USER = 'CUSTOMER',
 }
+
+export enum OrderStatus {
+  'PROCESSING' = 'Chờ Thanh Toán',
+  'COMPLETED' = 'Đặt Hàng Thành Công',
+  'CANCELLED' = 'Đã Hủy',
+  'PAID' = 'Đã Thanh Toán',
+}

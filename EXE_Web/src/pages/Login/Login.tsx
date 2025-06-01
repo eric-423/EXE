@@ -1,4 +1,4 @@
-import { changePassword, sendOTP, signIn, signUp, verifyOTP } from '@/apis/user.api';
+import { sendOTP, signIn, signUp, verifyOTP } from '@/apis/user.api';
 import bannerImage from '@/assets/images/Home - Banner.jpg';
 import { LoadingSpinner } from '@/components/common/loading-spinner';
 import { Button } from '@/components/ui/button';

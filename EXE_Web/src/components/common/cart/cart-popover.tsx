@@ -2,15 +2,7 @@
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from '@/components/ui/drawer';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { useCart } from '@/contexts/cart/CartContext';
@@ -20,45 +12,46 @@ import { ChevronRight, Edit, MapPin, ShoppingCart, X } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import ControlledButton from './controlled-button';
-import { QuantitySelector } from './quantity-selector';
+import ControlledButton from '../controlled-button';
+import { QuantitySelector } from '../quantity-selector';
 
-export function CartDrawer() {
+export function CartPopover() {
   const { items, removeItem, updateQuantity, getTotalPrice, getTotalItems } = useCart();
   const [open, setOpen] = useState(false);
 
   return (
-    <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>
-        <Button variant='ghost' size={'icon'} className='text-primary hover:text-[#B84A0E] hover:bg-[#FFE8D6] mx-12'>
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger>
+        <Button variant='ghost' size={'icon'} className='text-primary hover:text-[#B84A0E] hover:bg-[#FFE8D6]'>
           <div className='relative flex items-center justify-center h-10 w-10 rounded-full transition-colors'>
             <ShoppingCart className='h-5 w-5 text-primary' />
-            <Badge className='absolute -top-1 -right-3 h-5 w-5 rounded-full p-0 flex items-center justify-center bg-primary hover:bg-primary'>
+            <Badge className='absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center bg-primary hover:bg-primary'>
               {getTotalItems()}
             </Badge>
           </div>
-
-          <span className='ml-2'>Giỏ hàng</span>
         </Button>
-      </DrawerTrigger>
-      <DrawerContent className='max-w-[100vw] sm:max-w-[500px] mx-auto'>
-        <div className='mx-auto w-full max-w-[500px]'>
-          <DrawerHeader className='px-6 pt-6 pb-4 border-b border-foreground/10'>
-            <DrawerTitle className='font-bold text-lg'>Giỏ hàng của bạn</DrawerTitle>
-            <div className='flex items-center text-sm text-gray-600 mt-1'>
-              <MapPin className='h-3.5 w-3.5 mr-1 flex-shrink-0' />
-              <p className='line-clamp-1'>
-                {STORE_INFO.name} - {STORE_INFO.address}
-              </p>
-              <ControlledButton title='Đổi cửa hàng' className='ml-2'>
-                <Edit className='h-3.5 w-3.5' />
+      </PopoverTrigger>
+      <PopoverContent className='w-[500px] p-0 rounded-xl border-none shadow-lg' align='end' sideOffset={8}>
+        <div className='bg-background/30 rounded-xl p-7 overflow-hidden'>
+          {/* Header */}
+          <div className='pb-4 border-b border-foreground/30'>
+            <div className='flex items-start justify-between'>
+              <div>
+                <h3 className='font-bold text-lg'>{STORE_INFO.name}</h3>
+                <div className='flex items-center text-sm text-gray-600 mt-1'>
+                  <MapPin className='h-3.5 w-3.5 mr-1 flex-shrink-0' />
+                  <p className='line-clamp-1'>{STORE_INFO.address}</p>
+                </div>
+              </div>
+              <ControlledButton title='Đổi cửa hàng'>
+                <Edit className='h-4 w-4' />
               </ControlledButton>
             </div>
-          </DrawerHeader>
+          </div>
 
           {/* Cart Items */}
-          <ScrollArea className='flex-1 px-6 py-4' style={{ maxHeight: 'calc(70vh - 200px)' }}>
-            <div className='space-y-4'>
+          <ScrollArea className='max-h-[320px] overflow-auto'>
+            <div className='p-4 pl-0 space-y-4'>
               {items.map((item, index) => (
                 <div key={item.productId} className='group'>
                   <div className='flex gap-3'>
@@ -107,8 +100,8 @@ export function CartDrawer() {
             </div>
           </ScrollArea>
 
-          {/* Subtotal and Checkout */}
-          <DrawerFooter className='px-6 pt-4 pb-6 border-t border-foreground/10'>
+          {/* Subtotal */}
+          <div className='pt-4 border-t border-gray-100'>
             <div className='flex justify-between items-center mb-4'>
               <span className='font-medium text-lg'>Tạm tính</span>
               <span className='font-bold text-xl text-primary'>{getTotalPrice().toLocaleString()}đ</span>
@@ -120,14 +113,9 @@ export function CartDrawer() {
                 <ChevronRight className='h-4 w-4 ml-1' />
               </Button>
             </Link>
-            <DrawerClose asChild>
-              <Button variant='outline' className='w-full'>
-                Tiếp tục mua hàng
-              </Button>
-            </DrawerClose>
-          </DrawerFooter>
+          </div>
         </div>
-      </DrawerContent>
-    </Drawer>
+      </PopoverContent>
+    </Popover>
   );
 }

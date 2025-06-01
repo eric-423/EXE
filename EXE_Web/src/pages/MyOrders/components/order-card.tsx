@@ -2,21 +2,13 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
+import { OrderResponse } from '@/types/order.type';
+import { OrderStatus } from '@/utils/enum';
 
-import { Calendar, Clock, MapPin, RotateCw } from 'lucide-react';
+import { Calendar, Clock, MapPin, RotateCw, Star } from 'lucide-react';
 
 interface OrderCardProps {
-  order: {
-    id: string;
-    date: string;
-    time: string;
-    restaurant: string;
-    items: number;
-    total: number;
-    status: string;
-    image: string;
-    rated?: boolean;
-  };
+  order: OrderResponse;
   onViewDetails: () => void;
 }
 
@@ -26,12 +18,12 @@ export function OrderCard({ order, onViewDetails }: OrderCardProps) {
   // Get status badge
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case 'processing':
-        return <Badge className='bg-blue-500'>Đang chuẩn bị</Badge>;
-      case 'completed':
-        return <Badge className='bg-green-500'>Hoàn thành</Badge>;
-      case 'cancelled':
-        return <Badge className='bg-red-500'>Đã hủy</Badge>;
+      case OrderStatus.PROCESSING:
+        return <Badge className='bg-blue-500'>{OrderStatus.PROCESSING}</Badge>;
+      case OrderStatus.COMPLETED:
+        return <Badge className='bg-green-500'>{OrderStatus.COMPLETED}</Badge>;
+      case OrderStatus.CANCELLED:
+        return <Badge className='bg-red-500'>{OrderStatus.CANCELLED}</Badge>;
       default:
         return null;
     }
@@ -51,18 +43,18 @@ export function OrderCard({ order, onViewDetails }: OrderCardProps) {
             <div>
               <div className='flex items-center text-sm text-muted-foreground mb-2'>
                 <Calendar className='h-4 w-4 mr-1' />
-                <span>{order.date}</span>
+                <span>{order.date.toLocaleDateString()}</span>
                 <Clock className='h-4 w-4 ml-3 mr-1' />
-                <span>{order.time}</span>
+                <span>{order.date.toLocaleTimeString()}</span>
               </div>
               <div className='flex items-start mb-3'>
                 <MapPin className='h-4 w-4 mr-2 mt-1 flex-shrink-0 text-primary' />
                 <p className='text-sm'>{order.restaurant}</p>
               </div>
               <p className='text-sm font-medium'>
-                {order.total.toLocaleString()}đ ({order.items} món)
+                {order.subTotal.toLocaleString()}đ ({order.totalItems} món)
               </p>
-              <div className='mt-3'>{getStatusBadge(order.status)}</div>
+              <div className='mt-3'>{getStatusBadge(order.orderStatus)}</div>
             </div>
           </div>
         </div>
@@ -71,7 +63,7 @@ export function OrderCard({ order, onViewDetails }: OrderCardProps) {
       <Separator className='bg-foreground/20 mx-5 ' style={{ width: 'inherit' }} />
 
       <CardFooter className='p-4 pt-0 pb-6 flex flex-wrap gap-2 justify-end'>
-        {order.status === 'cancelled' && (
+        {order.orderStatus === OrderStatus.CANCELLED && (
           <Button
             variant='outline'
             className='text-primary border-primary/20 hover:bg-primary/5'
@@ -82,7 +74,7 @@ export function OrderCard({ order, onViewDetails }: OrderCardProps) {
             Đặt lại
           </Button>
         )}
-        {order.status === 'completed' && (
+        {order.orderStatus === 'completed' && (
           <Button
             variant='outline'
             className='text-primary border-primary/20 hover:bg-primary/5'
@@ -93,15 +85,15 @@ export function OrderCard({ order, onViewDetails }: OrderCardProps) {
             Đặt lại
           </Button>
         )}
-        {order.status === 'processing' && (
+        {order.orderStatus === OrderStatus.COMPLETED && (
           <Button
             variant='outline'
             className='text-primary border-primary/20 hover:bg-primary/5'
             size={'sm'}
             // onClick={() => router.push(`/menu`)}
           >
-            <RotateCw className='h-4 w-4 mr-2' />
-            Đặt tiếp
+            <Star className='h-4 w-4 mr-1' />
+            Đánh giá
           </Button>
         )}
         <Button

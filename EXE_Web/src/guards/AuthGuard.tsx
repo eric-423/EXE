@@ -1,18 +1,37 @@
+'use client';
+
 import { LoadingSpinner } from '@/components/common/loading-spinner';
 import { config } from '@/configs/app';
 import { useAuth } from '@/hooks';
 
-import { FC, PropsWithChildren } from 'react';
+import { type FC, type PropsWithChildren, useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 
 // AuthGuard is component that will be used to protect routes
 // that should only be accessed by authenticated users.
 const AuthGuard: FC<PropsWithChildren> = ({ children }) => {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isLoading, isAuthenticated } = useAuth();
+  const [shouldRedirect, setShouldRedirect] = useState(false);
 
-  if (isLoading) return <LoadingSpinner />;
+  // Add a small delay before redirecting to prevent flickering
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      // Wait a short moment to ensure the auth state is stable
+      const timer = setTimeout(() => {
+        setShouldRedirect(true);
+      }, 100);
 
-  if (!isAuthenticated) return <Navigate to={config.routes.login} replace />;
+      return () => clearTimeout(timer);
+    }
+  }, [isLoading, isAuthenticated]);
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
+  if (shouldRedirect) {
+    return <Navigate to={config.routes.login} replace />;
+  }
 
   return <>{children}</>;
 };

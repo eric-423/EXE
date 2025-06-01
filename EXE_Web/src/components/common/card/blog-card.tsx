@@ -1,3 +1,5 @@
+import { buttonVariants } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import { config } from '@/configs/app';
 import { cn } from '@/lib/utils';
 import { Blog } from '@/types/blog.type';
@@ -5,14 +7,11 @@ import { Blog } from '@/types/blog.type';
 import { ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-import { buttonVariants } from '../ui/button';
-import { Card } from '../ui/card';
-
 type BlogCardProps = {
   item: Blog;
 };
 
-const BlogCard = ({ item }: BlogCardProps) => {
+export const BlogCard = ({ item }: BlogCardProps) => {
   return (
     <Card className='group relative p-0 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1'>
       <div className='aspect-square relative overflow-hidden'>
@@ -41,5 +40,3 @@ const BlogCard = ({ item }: BlogCardProps) => {
     </Card>
   );
 };
-
-export default BlogCard;

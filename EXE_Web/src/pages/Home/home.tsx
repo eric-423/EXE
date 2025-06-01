@@ -22,7 +22,6 @@ import { useQuery } from '@tanstack/react-query';
 export default function Home() {
   const { user } = useAuth();
   const [updatePasswordDialogOpen, setUpdatePasswordDialogOpen] = useState(true);
-  console.log(updatePasswordDialogOpen);
   const { data: products, isLoading: isLoadingProducts } = useQuery({
     queryKey: [GET_PRODUCTS_QUERY_KEY],
     queryFn: () => getProducts(),

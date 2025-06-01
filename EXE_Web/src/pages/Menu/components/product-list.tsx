@@ -1,4 +1,4 @@
-import ProductCard from '@/components/common/product-card';
+import { ProductCard } from '@/components/common/card';
 import { Product } from '@/types/product.type';
 
 type ProductListProps = {

@@ -34,3 +34,12 @@ export interface OrderProduct {
   quantity: number;
   note: string;
 }
+
+export interface OrderProductResponse {
+  productId: number;
+  productName: string;
+  quantity: number;
+  note: string;
+  price: number;
+  feedback?: string;
+}

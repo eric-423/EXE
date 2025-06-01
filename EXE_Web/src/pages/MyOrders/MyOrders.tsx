@@ -1,15 +1,15 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
+import { OrderDetailsDialog, OrderDetailsDrawer } from '@/components/common/order-details';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useGetCustomerOrders } from '@/hooks/useGetCustomerOrders';
+import { OrderResponse } from '@/types/order.type';
+import { OrderStatus } from '@/utils/enum';
 
-import { ChevronDown, RotateCw } from 'lucide-react';
 import { useState } from 'react';
 
 import { OrderCard } from './components/order-card';
-import OrderDetailsDialog from './components/order-details-dialog';
-import OrderDetailsDrawer from './components/order-details-drawer';
 
 const ORDER_STATUS = [
   {
@@ -18,159 +18,100 @@ const ORDER_STATUS = [
   },
   {
     label: 'Đã đặt hàng',
-    value: 'processing',
+    value: OrderStatus.PROCESSING,
   },
   {
     label: 'Hoàn thành',
-    value: 'completed',
+    value: OrderStatus.COMPLETED,
   },
   {
     label: 'Đã hủy',
-    value: 'cancelled',
+    value: OrderStatus.CANCELLED,
   },
 ];
 export default function MyOrders() {
-  const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
+  const [selectedOrder, setSelectedOrder] = useState<OrderResponse | null>(null);
   const isMobile = useIsMobile();
 
-  // Mock order history data - in a real app, this would be fetched from an API
-  const orders = [
-    {
-      id: '2502250035',
-      date: '09/02/2025',
-      time: '14:12',
-      restaurant: 'Nhà văn hóa sinh viên, Khu đô thị Đại học Quốc gia TP. Hồ Chí Minh',
-      items: 3,
-      total: 130000,
-      status: 'processing', // processing, completed, cancelled
-      image: '/com-suon.jpg',
-    },
-    {
-      id: '2502250034',
-      date: '09/02/2025',
-      time: '14:12',
-      restaurant: 'Nhà văn hóa sinh viên, Khu đô thị Đại học Quốc gia TP. Hồ Chí Minh',
-      items: 3,
-      total: 130000,
-      status: 'completed',
-      image: '/com-suon.jpg',
-      rated: false,
-    },
-    {
-      id: '2502250033',
-      date: '09/02/2025',
-      time: '14:12',
-      restaurant: 'Nhà văn hóa sinh viên, Khu đô thị Đại học Quốc gia TP. Hồ Chí Minh',
-      items: 3,
-      total: 130000,
-      status: 'cancelled',
-      image: '/com-suon.jpg',
-    },
-    {
-      id: '2502250032',
-      date: '08/02/2025',
-      time: '18:45',
-      restaurant: 'Nhà văn hóa sinh viên, Khu đô thị Đại học Quốc gia TP. Hồ Chí Minh',
-      items: 2,
-      total: 95000,
-      status: 'completed',
-      image: '/com-suon.jpg',
-      rated: true,
-    },
-    {
-      id: '2502250031',
-      date: '07/02/2025',
-      time: '12:30',
-      restaurant: 'Nhà văn hóa sinh viên, Khu đô thị Đại học Quốc gia TP. Hồ Chí Minh',
-      items: 4,
-      total: 175000,
-      status: 'completed',
-      image: '/com-suon.jpg',
-      rated: true,
-    },
-  ];
+  const { orders, isLoadingOrders } = useGetCustomerOrders();
 
-  const handleOrderClick = (orderId: string) => {
-    setSelectedOrderId(orderId); // For debugging
+  const handleOrderClick = (order: OrderResponse) => {
+    setSelectedOrder(order); // For debugging
   };
 
   const handleCloseDialog = () => {
-    setSelectedOrderId(null);
+    setSelectedOrder(null);
   };
 
   return (
     <div className='min-h-screen py-8 px-4 md:px-6'>
-      <div className='container mx-auto md:px-30'>
-        {/* Page header */}
-        <div className='flex flex-col items-center mb-4'>
-          <div className='bg-primary/20 px-6 py-2 rounded-full mb-4'>
-            <h1 className='text-xl md:text-2xl font-bold text-center'>Lịch sử mua hàng</h1>
-          </div>
+      {isLoadingOrders ? (
+        <div className='flex items-center justify-center min-h-screen'>
+          <div className='animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary'></div>
         </div>
-
-        {/* Orders list */}
-        <Tabs defaultValue='all' className='mb-8'>
-          <TabsList className='grid grid-cols-4 mb-6'>
-            {ORDER_STATUS.map((status) => {
-              return (
-                <TabsTrigger key={status.value} value={status.value} className='text-sm font-medium'>
-                  {status.label}
-                </TabsTrigger>
-              );
-            })}
-          </TabsList>
-          {ORDER_STATUS.map((status) =>
-            status.value === 'all' ? (
-              <TabsContent value={status.value} className='space-y-6'>
-                {orders.length > 0 ? (
-                  <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-                    {orders.map((order) => (
-                      <OrderCard key={order.id} order={order} onViewDetails={() => handleOrderClick(order.id)} />
-                    ))}
-                  </div>
-                ) : (
-                  <div className='text-center py-12 bg-white rounded-lg shadow-sm'>
-                    <p className='text-muted-foreground'>Không tìm thấy đơn hàng nào</p>
-                  </div>
-                )}
-              </TabsContent>
-            ) : (
-              <TabsContent value={status.value} className='space-y-6'>
-                {orders.filter((order) => order.status === status.value).length > 0 ? (
-                  <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-                    {orders
-                      .filter((order) => order.status === status.value)
-                      .map((order) => (
-                        <OrderCard key={order.id} order={order} onViewDetails={() => handleOrderClick(order.id)} />
-                      ))}
-                  </div>
-                ) : (
-                  <div className='text-center py-12 bg-white rounded-lg shadow-sm'>
-                    <p className='text-muted-foreground'>Không có đơn hàng nào {status.label.toLowerCase()}</p>
-                  </div>
-                )}
-              </TabsContent>
-            ),
-          )}
-        </Tabs>
-
-        {/* Load more button */}
-        {orders.length > 0 && (
-          <div className='flex justify-center mt-8'>
-            <Button variant='outline' className='flex items-center gap-2'>
-              <RotateCw className='h-4 w-4' />
-              Xem thêm đơn hàng
-              <ChevronDown className='h-4 w-4' />
-            </Button>
+      ) : (
+        <div className='container mx-auto lg:px-30'>
+          {/* Page header */}
+          <div className='flex flex-col items-center mb-4'>
+            <div className='bg-primary/20 px-6 py-2 rounded-full mb-4'>
+              <h1 className='text-xl md:text-2xl font-bold text-center'>Lịch sử mua hàng</h1>
+            </div>
           </div>
-        )}
 
-        {isMobile ? (
-          <OrderDetailsDrawer orderId={selectedOrderId} open={!!selectedOrderId} onClose={handleCloseDialog} />
-        ) : (
-          <OrderDetailsDialog orderId={selectedOrderId} open={!!selectedOrderId} onClose={handleCloseDialog} />
-        )}
-      </div>
+          {/* Orders list */}
+          <Tabs defaultValue='all' className='mb-8'>
+            <TabsList className='grid grid-cols-4 mb-6'>
+              {ORDER_STATUS.map((status) => {
+                return (
+                  <TabsTrigger key={status.value} value={status.value} className='text-sm font-medium'>
+                    {status.label}
+                  </TabsTrigger>
+                );
+              })}
+            </TabsList>
+            {ORDER_STATUS.map((status) =>
+              status.value === 'all' ? (
+                <TabsContent value={status.value} className='space-y-6'>
+                  {orders.length > 0 ? (
+                    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+                      {orders.map((order) => (
+                        <OrderCard key={order.id} order={order} onViewDetails={() => handleOrderClick(order)} />
+                      ))}
+                    </div>
+                  ) : (
+                    <div className='text-center py-12 bg-white rounded-lg shadow-sm'>
+                      <p className='text-muted-foreground'>Không tìm thấy đơn hàng nào</p>
+                    </div>
+                  )}
+                </TabsContent>
+              ) : (
+                <TabsContent value={status.value} className='space-y-6'>
+                  {orders.filter((order) => order.orderStatus === status.value).length > 0 ? (
+                    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+                      {orders
+                        .filter((order) => order.orderStatus === status.value)
+                        .map((order) => (
+                          <OrderCard key={order.id} order={order} onViewDetails={() => handleOrderClick(order)} />
+                        ))}
+                    </div>
+                  ) : (
+                    <div className='text-center py-12 bg-white rounded-lg shadow-sm'>
+                      <p className='text-muted-foreground'>Không có đơn hàng nào {status.label.toLowerCase()}</p>
+                    </div>
+                  )}
+                </TabsContent>
+              ),
+            )}
+          </Tabs>
+
+          {selectedOrder !== null &&
+            (isMobile ? (
+              <OrderDetailsDrawer order={selectedOrder} open={!!selectedOrder} onClose={handleCloseDialog} />
+            ) : (
+              <OrderDetailsDialog order={selectedOrder} open={!!selectedOrder} onClose={handleCloseDialog} />
+            ))}
+        </div>
+      )}
     </div>
   );
 }

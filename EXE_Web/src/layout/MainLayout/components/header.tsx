@@ -1,6 +1,7 @@
 'use client';
 
 import logo from '@/assets/full-logo.svg';
+import { CartDrawer, CartPopover } from '@/components/common/cart';
 import { Button } from '@/components/ui/button';
 import configs from '@/configs';
 import { useAuth } from '@/hooks';
@@ -9,9 +10,6 @@ import { removeAccessToken, removeRefreshToken } from '@/utils/cookies';
 import { LogIn, LogOut, Menu, User, X } from 'lucide-react';
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-
-import { CartDrawer } from './cart-drawer';
-import { CartPopover } from './cart-popover';
 
 export default function Header() {
   const { isAuthenticated } = useAuth();

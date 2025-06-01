@@ -1,25 +1,24 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { Drawer, DrawerClose, DrawerContent, DrawerTitle } from '@/components/ui/drawer';
+import { Dialog, DialogClose, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
+import { Textarea } from '@/components/ui/textarea';
 import { useCart } from '@/contexts/cart/CartContext';
 import { Product } from '@/types/product.type';
 
 import { ShoppingBag, X } from 'lucide-react';
 import { useState } from 'react';
 
-import { Textarea } from '../ui/textarea';
+import { QuantitySelector } from '../quantity-selector';
 
-import { QuantitySelector } from './quantity-selector';
-
-interface AddToCartDrawerProps {
+interface AddToCartDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   product: Product;
 }
 
-export function AddToCartDrawer({ open, onOpenChange, product }: AddToCartDrawerProps) {
+export function AddToCartDialog({ open, onOpenChange, product }: AddToCartDialogProps) {
   const { addItem } = useCart();
   const [mainQuantity, setMainQuantity] = useState(1);
   const [notes, setNotes] = useState('');
@@ -48,15 +47,15 @@ export function AddToCartDrawer({ open, onOpenChange, product }: AddToCartDrawer
   };
 
   return (
-    <Drawer open={open} onOpenChange={onOpenChange}>
-      <DrawerContent className='sm:max-w-[500px] p-0 bg-background overflow-hidden rounded-xl gap-1'>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className='sm:max-w-[500px] p-0 bg-background overflow-hidden rounded-xl gap-1'>
         <div className='sticky top-0 z-10 bg-background pt-4 px-6'>
           <div className='flex items-center justify-between mb-2'>
-            <DrawerTitle className='text-xl font-bold'>Thêm món ăn</DrawerTitle>
-            <DrawerClose className='h-8 w-8 rounded-full hover:bg-gray-100 flex items-center justify-center'>
+            <DialogTitle className='text-xl font-bold'>Thêm món ăn</DialogTitle>
+            <DialogClose className='h-8 w-8 rounded-full hover:bg-gray-100 flex items-center justify-center'>
               <X className='h-4 w-4' />
               <span className='sr-only'>Close</span>
-            </DrawerClose>
+            </DialogClose>
           </div>
           <Separator className='mb-4' />
         </div>
@@ -107,7 +106,7 @@ export function AddToCartDrawer({ open, onOpenChange, product }: AddToCartDrawer
             {(product.productPrice * mainQuantity).toLocaleString()}đ - Thêm vào giỏ hàng
           </Button>
         </div>
-      </DrawerContent>
-    </Drawer>
+      </DialogContent>
+    </Dialog>
   );
 }

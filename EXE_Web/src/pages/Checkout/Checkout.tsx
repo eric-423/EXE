@@ -2,7 +2,7 @@
 
 import ControlledDateTimePicker from '@/components/common/controlled-date-time-picker';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardFooter, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -16,7 +16,7 @@ import { initialOrder, Order } from '@/types/order.type';
 import { getReceiveTime } from '@/utils/getReceiveTime';
 import { STORE_INFO } from '@/utils/mockupData';
 
-import { Clock, CreditCard, MapPin, QrCode, ShieldCheck, User, Wallet } from 'lucide-react';
+import { Clock, CreditCard, MapPin, QrCode, ShieldCheck, User } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';

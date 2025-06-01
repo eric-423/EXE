@@ -1,13 +1,12 @@
+import { Card } from '@/components/ui/card';
 import { Content } from '@/types/content.type';
-
-import { Card } from '../ui/card';
 
 type ContentCardProps = {
   item: Content;
   className?: string;
 };
 
-const ContentCard = ({ item }: ContentCardProps) => {
+export const ContentCard = ({ item }: ContentCardProps) => {
   return (
     <Card className='group relative bg-white rounded-2xl p-1 shadow-lg overflow-hidden transition-all duration-500 hover:shadow-xl hover:-translate-y-1 '>
       <div className='absolute top-0 left-0 w-full h-48 overflow-hidde'>
@@ -34,5 +33,3 @@ const ContentCard = ({ item }: ContentCardProps) => {
     </Card>
   );
 };
-
-export default ContentCard;

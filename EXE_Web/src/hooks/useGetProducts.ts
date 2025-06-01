@@ -1,4 +1,4 @@
-import { GET_PRODUCTS_BY_BRANCH_QUERY_KEY, getProductsByBranch } from '@/apis/product.api';
+import { GET_PRODUCTS_BY_BRANCH_QUERY_KEY, getProducts } from '@/apis/product.api';
 import { Product } from '@/types/product.type';
 
 import { useEffect, useState } from 'react';
@@ -11,13 +11,13 @@ type useGetProductsProps = {
   branchId?: number;
 };
 
-const useGetProducts = ({ size, productType, branchId }: useGetProductsProps) => {
+const useGetProducts = ({ size, productType }: useGetProductsProps) => {
   const [productList, setProductList] = useState<Product[]>([]);
   const [page, setPage] = useState<number>(0);
 
   const { data: fetchedProducts, isLoading: isLoadingProducts } = useQuery({
-    queryKey: [GET_PRODUCTS_BY_BRANCH_QUERY_KEY, productType, branchId, page],
-    queryFn: () => getProductsByBranch(productType, branchId || 0, page, size),
+    queryKey: [GET_PRODUCTS_BY_BRANCH_QUERY_KEY, productType, page],
+    queryFn: () => getProducts(page, size, productType),
   });
 
   const nextPage = () => {
@@ -32,7 +32,7 @@ const useGetProducts = ({ size, productType, branchId }: useGetProductsProps) =>
         setProductList((prev) => [...prev, ...fetchedProducts.content]);
       }
     }
-  }, [fetchedProducts, productType, branchId]);
+  }, [fetchedProducts, productType]);
 
   return {
     productList,

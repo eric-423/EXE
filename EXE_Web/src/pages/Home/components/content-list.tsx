@@ -1,5 +1,5 @@
 import image from '@/assets/images/Home - Banner.jpg';
-import ContentCard from '@/components/common/content-card';
+import { ContentCard } from '@/components/common/card';
 import { Content } from '@/types/content.type';
 
 import { Award, ShoppingBag, Sparkles } from 'lucide-react';

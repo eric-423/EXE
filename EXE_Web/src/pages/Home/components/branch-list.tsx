@@ -1,4 +1,4 @@
-import BranchCard from '@/components/common/branch-card';
+import { BranchCard } from '@/components/common/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Branch } from '@/types/branch.type';
 

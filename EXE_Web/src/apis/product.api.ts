@@ -11,12 +11,12 @@ export const getProductType = async () => {
   return [{ id: 0, name: 'Tất cả' }, ...data] as ProductType[];
 };
 
-export const getProducts = async (page: number = 0, size: number = 10, productType: number = 0) => {
+export const getProducts = async (page: number = 0, size: number = 100, productType: number = 0) => {
   const { data } = await http.get('/products', {
     params: {
       page,
       size,
-      productType,
+      typeId: productType,
     },
   });
   return data.data;
@@ -26,7 +26,7 @@ export const getProductsByBranch = async (
   productType: number = 0,
   branchId: number = 1,
   page: number = 0,
-  size: number = 10,
+  size: number = 100,
 ) => {
   const { data } = await http.get(`/products/branch/${branchId}`, {
     params: {

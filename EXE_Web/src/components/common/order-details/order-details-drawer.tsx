@@ -3,87 +3,22 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+import { Drawer, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle } from '@/components/ui/drawer';
+import { OrderResponse } from '@/types/order.type';
+import { OrderStatus } from '@/utils/enum';
+import { STORE_INFO } from '@/utils/mockupData';
 
-import { AlertCircle, Calendar, CheckCircle2, Clock, MapPin, Phone, Receipt, ShoppingBag, User } from 'lucide-react';
+import { AlertCircle, Calendar, CheckCircle2, MapPin, Phone, Receipt, ShoppingBag, User } from 'lucide-react';
 import { useState } from 'react';
 
-interface OrderDetailsDialogProps {
-  orderId: string | null;
+interface OrderDetailsDrawerProps {
+  order: OrderResponse;
   open: boolean;
   onClose: () => void;
 }
 
-function OrderDetailsDialog({ orderId, open, onClose }: OrderDetailsDialogProps) {
-  const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
-
-  // Mock function to get order details - in a real app, this would fetch from an API
-  const getOrderDetails = (id: string) => {
-    // Mock order data - in a real app, this would be fetched from an API
-    return {
-      id: id,
-      customerName: 'Lê Minh Duy',
-      customerPhone: '0999888777',
-      orderStatus: id === '2502250035' ? 'processing' : id === '2502250033' ? 'cancelled' : 'completed',
-      paymentStatus: 'paid', // paid, pending
-      orderDate: '13:46, 25/01/2025',
-      deliveryDate: '12:30, 26/01/2025',
-      restaurant: {
-        name: 'Tấm Tắc Láng Đại Học',
-        phone: '0902857455',
-      },
-      items: [
-        {
-          id: 1,
-          name: 'COMBO - SÀ BÌ CHƯỞNG',
-          price: 134000,
-          quantity: 1,
-          notes: 'Canh chua, nước ngọt: Coca Cola, cơm thêm',
-        },
-        {
-          id: 2,
-          name: 'COMBO - SÀ BÌ CHƯỞNG',
-          price: 138000,
-          quantity: 1,
-          notes: 'Canh chua, nước ngọt: Coca Cola, cơm thêm, rau chua thêm',
-        },
-        {
-          id: 3,
-          name: 'CƠM SƯỜN CỘNG',
-          price: 85000,
-          quantity: 2,
-          notes: 'Canh chua\nGhi chú: Lấy ít cơm',
-        },
-        {
-          id: 4,
-          name: 'Chả Trứng Hấp',
-          price: 12000,
-          quantity: 1,
-          notes: '',
-        },
-        {
-          id: 5,
-          name: 'Coca Cola',
-          price: 12000,
-          quantity: 4,
-          notes: '',
-        },
-      ],
-      subtotal: 442400,
-      discount: 86250,
-      deliveryFee: 16000,
-      total: 372150,
-    };
-  };
-
-  const order = orderId ? getOrderDetails(orderId) : null;
+export function OrderDetailsDrawer({ order, open, onClose }: OrderDetailsDrawerProps) {
+  const [cancelDrawerOpen, setCancelDrawerOpen] = useState(false);
 
   // Format price
   const formatPrice = (price: number) => {
@@ -97,10 +32,10 @@ function OrderDetailsDialog({ orderId, open, onClose }: OrderDetailsDialogProps)
         return <Badge className='bg-yellow-500'>Chờ xác nhận</Badge>;
       case 'processing':
         return <Badge className='bg-blue-500'>Đang xử lý</Badge>;
-      case 'completed':
-        return <Badge className='bg-green-500'>Đã hoàn thành</Badge>;
-      case 'cancelled':
-        return <Badge className='bg-red-500'>Đã hủy</Badge>;
+      case OrderStatus.COMPLETED:
+        return <Badge className='bg-green-500'>{OrderStatus.COMPLETED}</Badge>;
+      case OrderStatus.CANCELLED:
+        return <Badge className='bg-red-500'>{OrderStatus.CANCELLED}</Badge>;
       default:
         return null;
     }
@@ -109,10 +44,10 @@ function OrderDetailsDialog({ orderId, open, onClose }: OrderDetailsDialogProps)
   // Get payment status badge
   const getPaymentStatusBadge = (status: string) => {
     switch (status) {
-      case 'paid':
-        return <Badge className='bg-green-500'>Đã thanh toán</Badge>;
-      case 'pending':
-        return <Badge className='bg-yellow-500'>Chưa thanh toán</Badge>;
+      case OrderStatus.PAID:
+        return <Badge className='bg-green-500'>{OrderStatus.PAID}</Badge>;
+      case OrderStatus.PROCESSING:
+        return <Badge className='bg-yellow-500'>{OrderStatus.PROCESSING}</Badge>;
       default:
         return null;
     }
@@ -121,7 +56,7 @@ function OrderDetailsDialog({ orderId, open, onClose }: OrderDetailsDialogProps)
   // Handle cancel order
   const handleCancelOrder = () => {
     alert('Đơn hàng đã được hủy thành công');
-    setCancelDialogOpen(false);
+    setCancelDrawerOpen(false);
     onClose();
   };
 
@@ -129,19 +64,19 @@ function OrderDetailsDialog({ orderId, open, onClose }: OrderDetailsDialogProps)
 
   return (
     <>
-      <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-        <DialogContent className='max-w-4xl max-h-[90vh] overflow-y-auto'>
-          <DialogHeader>
+      <Drawer open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
+        <DrawerContent data-vaul-custom-container='true' className='max-w-4xl p-4 max-h-[90vh] overflow-y-auto'>
+          <DrawerHeader>
             <div className='flex items-center justify-between'>
-              <DialogTitle className='text-2xl font-bold'>Chi tiết đơn hàng</DialogTitle>
-              <div className='flex items-center gap-2'>
+              <DrawerTitle className='text-2xl font-bold'>Chi tiết đơn hàng</DrawerTitle>
+              <div className='flex flex-col items-end gap-2'>
                 {getStatusBadge(order.orderStatus)}
                 {getPaymentStatusBadge(order.paymentStatus)}
               </div>
             </div>
-          </DialogHeader>
+          </DrawerHeader>
 
-          <div className='space-y-6'>
+          <div className='space-y-6  p-2'>
             {/* Order information */}
             <Card className='border-none shadow-none bg-transparent p-0'>
               <CardContent className='p-4 py-2'>
@@ -174,7 +109,7 @@ function OrderDetailsDialog({ orderId, open, onClose }: OrderDetailsDialogProps)
                       <Calendar className='h-4 w-4 mr-2 text-primary mt-0.5' />
                       <div>
                         <p className='text-xs text-muted-foreground'>Thời gian đặt hàng</p>
-                        <p className='font-medium text-sm'>{order.orderDate}</p>
+                        <p className='font-medium text-sm'>{order.date.toLocaleString()}</p>
                       </div>
                     </div>
                     <div className='flex items-start'>
@@ -182,15 +117,8 @@ function OrderDetailsDialog({ orderId, open, onClose }: OrderDetailsDialogProps)
                       <div>
                         <p className='text-xs text-muted-foreground'>Cửa hàng</p>
                         <p className='font-medium text-sm'>
-                          {order.restaurant.name} - {order.restaurant.phone}
+                          {STORE_INFO.name} - {STORE_INFO.phone}
                         </p>
-                      </div>
-                    </div>
-                    <div className='flex items-start'>
-                      <Clock className='h-4 w-4 mr-2 text-primary mt-0.5' />
-                      <div>
-                        <p className='text-xs text-muted-foreground'>Thời gian nhận hàng</p>
-                        <p className='font-medium text-sm'>{order.deliveryDate}</p>
                       </div>
                     </div>
                   </div>
@@ -209,12 +137,12 @@ function OrderDetailsDialog({ orderId, open, onClose }: OrderDetailsDialogProps)
               <CardContent className='px-1'>
                 <div className='divide-y max-h-60 overflow-y-auto'>
                   {order.items.map((item) => (
-                    <div key={item.id} className='py-4 px-5 border-foreground/20 '>
+                    <div key={item.productId} className='py-4 px-5 border-foreground/20 '>
                       <div className='flex justify-between items-start'>
                         <div className='flex-1'>
-                          <h4 className='font-medium text-sm'>{item.name}</h4>
-                          {item.notes && (
-                            <p className='text-xs text-muted-foreground mt-1 whitespace-pre-line'>{item.notes}</p>
+                          <h4 className='font-medium text-sm'>{item.productName}</h4>
+                          {item.note && (
+                            <p className='text-xs text-muted-foreground mt-1 whitespace-pre-line'>{item.note}</p>
                           )}
                         </div>
                         <div className='text-right'>
@@ -236,13 +164,13 @@ function OrderDetailsDialog({ orderId, open, onClose }: OrderDetailsDialogProps)
                     <Receipt className='h-5 w-5 mr-2 text-primary' />
                     Tổng thanh toán
                   </CardTitle>
-                  <span className='text-lg text-primary font-bold'>{formatPrice(order.total)}</span>
+                  <span className='text-lg text-primary font-bold'>{order.subTotal.toLocaleString()}đ</span>
                 </div>
               </CardHeader>
             </Card>
 
             {/* Order status message */}
-            {order.orderStatus === 'completed' && (
+            {order.orderStatus === OrderStatus.COMPLETED && (
               <div className='flex items-center justify-center p-3 bg-green-50 rounded-lg border border-green-200'>
                 <CheckCircle2 className='h-4 w-4 mr-2 text-green-500' />
                 <span className='text-green-700 text-sm'>
@@ -252,41 +180,36 @@ function OrderDetailsDialog({ orderId, open, onClose }: OrderDetailsDialogProps)
             )}
           </div>
 
-          <DialogFooter className='flex flex-col sm:flex-row gap-3'>
-            {order.orderStatus === 'processing' && (
-              <Dialog open={cancelDialogOpen} onOpenChange={setCancelDialogOpen}>
-                <Button variant='outline' className='w-full sm:w-auto' onClick={() => setCancelDialogOpen(true)}>
+          <DrawerFooter className='flex flex-col sm:flex-row gap-3'>
+            {order.orderStatus === OrderStatus.PROCESSING && (
+              <Drawer open={cancelDrawerOpen} onOpenChange={setCancelDrawerOpen}>
+                <Button variant='outline' className='w-full sm:w-auto' onClick={() => setCancelDrawerOpen(true)}>
                   Hủy đơn
                 </Button>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle className='flex items-center'>
-                      <AlertCircle className='h-5 w-5 mr-2 text-red-500' />
-                      Xác nhận hủy đơn hàng
-                    </DialogTitle>
-                    <DialogDescription>
-                      Bạn có chắc chắn muốn hủy đơn hàng này? Hành động này không thể hoàn tác.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <DialogFooter>
-                    <Button variant='outline' onClick={() => setCancelDialogOpen(false)}>
+                <DrawerContent>
+                  <DrawerHeader>
+                    <DrawerTitle className='flex items-center flex-col'>
+                      <AlertCircle className='h-8 w-8 mb-3 text-red-500' />
+                      <p>Bạn có chắc chắn muốn hủy đơn hàng này?</p>
+                    </DrawerTitle>
+                  </DrawerHeader>
+                  <DrawerFooter>
+                    <Button variant='outline' onClick={() => setCancelDrawerOpen(false)}>
                       Không, giữ đơn hàng
                     </Button>
                     <Button variant='destructive' onClick={handleCancelOrder}>
                       Có, hủy đơn hàng
                     </Button>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
+                  </DrawerFooter>
+                </DrawerContent>
+              </Drawer>
             )}
             <Button className='w-full sm:w-auto bg-[#4CAF50] hover:bg-[#43A047] text-white' onClick={onClose}>
               Tiếp tục đặt hàng
             </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
     </>
   );
 }
-
-export default OrderDetailsDialog;

@@ -1,4 +1,4 @@
-import BranchSmallCard from '@/components/common/branch-small-card';
+import { BranchSmallCard } from '@/components/common/card';
 import { Branch } from '@/types/branch.type';
 
 import { Dispatch, SetStateAction } from 'react';

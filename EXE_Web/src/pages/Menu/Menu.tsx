@@ -27,7 +27,7 @@ export default function MenuPage() {
     nextPage,
     totalElements,
   } = useGetProducts({
-    size: 9,
+    size: 100,
     productType: productType.id,
     branchId: selectedBranch?.id,
   });

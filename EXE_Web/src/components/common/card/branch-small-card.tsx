@@ -9,7 +9,7 @@ type BranchSmallCardProps = {
   onClick?: () => void;
 };
 
-const BranchSmallCard = ({ store, className, onClick }: BranchSmallCardProps) => {
+export const BranchSmallCard = ({ store, className, onClick }: BranchSmallCardProps) => {
   return (
     <>
       <div
@@ -27,5 +27,3 @@ const BranchSmallCard = ({ store, className, onClick }: BranchSmallCardProps) =>
     </>
   );
 };
-
-export default BranchSmallCard;

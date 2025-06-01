@@ -1,3 +1,5 @@
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Product } from '@/types/product.type';
 import { contentOverflow } from '@/utils/contentOverflow';
@@ -5,18 +7,15 @@ import { contentOverflow } from '@/utils/contentOverflow';
 import { Plus, Star } from 'lucide-react';
 import { useState } from 'react';
 
-import { Button } from '../ui/button';
-import { Card } from '../ui/card';
-
-import { AddToCartDialog } from './add-to-cart-dialog';
-import { AddToCartDrawer } from './add-to-cart-drawer';
+import { AddToCartDialog } from '../add-to-cart/add-to-cart-dialog';
+import { AddToCartDrawer } from '../add-to-cart/add-to-cart-drawer';
 
 type ProductCardProps = {
   item: Product;
   descriptionOverflow?: number;
 };
 
-const ProductCard = ({ item, descriptionOverflow = 40 }: ProductCardProps) => {
+export const ProductCard = ({ item, descriptionOverflow = 40 }: ProductCardProps) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const isMobile = useIsMobile();
   return (
@@ -56,5 +55,3 @@ const ProductCard = ({ item, descriptionOverflow = 40 }: ProductCardProps) => {
     </Card>
   );
 };
-
-export default ProductCard;

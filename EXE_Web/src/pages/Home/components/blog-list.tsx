@@ -1,5 +1,5 @@
 import image from '@/assets/images/Home - Banner.jpg';
-import BlogCard from '@/components/common/blog-card';
+import { BlogCard } from '@/components/common/card';
 import { Blog } from '@/types/blog.type';
 
 const mockBlogs: Blog[] = [

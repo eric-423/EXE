@@ -1,4 +1,6 @@
-import { OrderProduct } from './product.type';
+import { OrderStatus } from '@/utils/enum';
+
+import { OrderProduct, OrderProductResponse } from './product.type';
 
 export interface Order {
   customerId: number;
@@ -31,3 +33,17 @@ export const initialOrder: Order = {
   orderItems: [],
   pickUp: true,
 };
+
+export interface OrderResponse {
+  id: number;
+  date: Date;
+  restaurant: string;
+  items: OrderProductResponse[];
+  totalItems: number;
+  subTotal: number;
+  orderStatus: string;
+  paymentStatus: OrderStatus.PAID;
+  customerName: string;
+  customerPhone: string;
+  rated?: boolean;
+}
