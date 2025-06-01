@@ -1,6 +1,9 @@
 'use client';
 
+import { placeOrder } from '@/apis/order.api';
+import { GET_ME_QUERY_KEY, getMe } from '@/apis/user.api';
 import ControlledDateTimePicker from '@/components/common/controlled-date-time-picker';
+import { LoadingSpinner } from '@/components/common/loading-spinner';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form';
@@ -13,11 +16,12 @@ import { useCart } from '@/contexts/cart/CartContext';
 import { useAuth } from '@/hooks';
 import { cn } from '@/lib/utils';
 import { initialOrder, Order } from '@/types/order.type';
+import { setCookie } from '@/utils/cookies';
 import { getReceiveTime } from '@/utils/getReceiveTime';
 import { STORE_INFO } from '@/utils/mockupData';
 
 import { Clock, CreditCard, MapPin, QrCode, ShieldCheck, User } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { z } from 'zod';
@@ -26,27 +30,62 @@ import CheckoutSection from './components/checkout-section';
 import { CheckoutFormData, checkoutSchema } from './schema';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 export default function CheckoutPage() {
-  const { items, getTotalPrice } = useCart();
+  const { items, getTotalPrice, getTotalItems } = useCart();
+  if (getTotalItems() === 0) {
+    window.location.href = '/';
+    return null; // Prevent rendering if cart is empty
+  }
   const { user } = useAuth();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const { data: userData, isLoading: isLoadingUserData } = useQuery({
+    queryKey: [GET_ME_QUERY_KEY],
+    queryFn: () => getMe(user?.id || 0),
+    select: (data) => data.data.data,
+  });
+
+  const { mutate: placeOrderMutate } = useMutation({
+    mutationFn: (order: Order) => placeOrder(order),
+    onSuccess: (data) => {
+      toast.success('Đặt hàng thành công! Chuyển hướng đến thanh toán...');
+      setCookie('is_paying', 'true', new Date(Date.now() + 10 * 60 * 1000));
+      window.location.href = data.data.payment_url;
+    },
+    onError: () => {
+      toast.error('Không thể đặt hàng. Vui lòng thử lại sau.');
+    },
+  });
 
   const form = useForm<CheckoutFormData>({
     resolver: zodResolver(checkoutSchema),
     defaultValues: {
       customerName: '',
-      customerPhone: user?.phoneNumber || '',
+      customerPhone: user?.phoneNumber,
       customerEmail: '',
       receiveTime: z.date().safeParse(getReceiveTime()).success ? getReceiveTime() : new Date(),
       paymentMethod: 'qr',
     },
   });
 
+  useEffect(() => {
+    if (userData) {
+      form.reset({
+        customerName: userData.fullName || '',
+        customerPhone: userData.phone || '',
+        customerEmail: userData.email || '',
+        receiveTime: z.date().safeParse(getReceiveTime()).success ? getReceiveTime() : new Date(),
+        paymentMethod: 'qr',
+      });
+    }
+  }, [userData, form]);
+
   function handleDateSelect(date: Date | undefined) {
     if (date) {
-      form.setValue('receiveTime', date);
+      form.setValue('receiveTime', new Date(date.setHours(11, 30)));
     }
   }
 
@@ -81,11 +120,9 @@ export default function CheckoutPage() {
       };
 
       // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      placeOrderMutate(orderData);
 
       // Here you would typically send the data to your backend
-      console.log('Order submitted:', orderData);
-
       toast.success('Đơn hàng của bạn đã được xác nhận. Chúng tôi sẽ liên hệ với bạn sớm nhất.');
 
       // Reset form after successful submission
@@ -100,10 +137,10 @@ export default function CheckoutPage() {
 
   return (
     <>
-      {isSubmitting && (
-        <div className='fixed inset-0 bg-black/50 flex items-center justify-center z-50'>
+      {(isSubmitting || isLoadingUserData) && (
+        <div className='fixed inset-0 bg-foreground/30 flex items-center justify-center z-50'>
           <div className='flex flex-col items-center justify-center space-y-4'>
-            <div className='animate-spin rounded-full h-12 w-12 border-t-2 border-primary'></div>
+            <LoadingSpinner />
           </div>
         </div>
       )}

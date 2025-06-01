@@ -8,12 +8,9 @@ export interface User {
   address: string;
   isActive: boolean;
   dateOfBirth: string | null;
-  note: string | null;
   createdAt: string;
   memberPoint: number;
-  emailVerified: boolean;
-  phoneVerified: boolean;
-  role: string;
+  memberRank: string;
 }
 
 export type UserResponse = SuccessResponse<{

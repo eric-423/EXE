@@ -18,8 +18,10 @@ export function OrderCard({ order, onViewDetails }: OrderCardProps) {
   // Get status badge
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case OrderStatus.PROCESSING:
-        return <Badge className='bg-blue-500'>{OrderStatus.PROCESSING}</Badge>;
+      case OrderStatus.UNPAID:
+        return <Badge className='bg-yellow-500'>{OrderStatus.UNPAID}</Badge>;
+      case OrderStatus.PROCESSING || OrderStatus.VERIFIED || OrderStatus.IN_DELIVERY:
+        return <Badge className='bg-blue-500'>{status}</Badge>;
       case OrderStatus.COMPLETED:
         return <Badge className='bg-green-500'>{OrderStatus.COMPLETED}</Badge>;
       case OrderStatus.CANCELLED:
@@ -64,17 +66,6 @@ export function OrderCard({ order, onViewDetails }: OrderCardProps) {
 
       <CardFooter className='p-4 pt-0 pb-6 flex flex-wrap gap-2 justify-end'>
         {order.orderStatus === OrderStatus.CANCELLED && (
-          <Button
-            variant='outline'
-            className='text-primary border-primary/20 hover:bg-primary/5'
-            size={'sm'}
-            // onClick={() => router.push(`/reorder/${order.id}`)}
-          >
-            <RotateCw className='h-4 w-4 mr-2' />
-            Đặt lại
-          </Button>
-        )}
-        {order.orderStatus === 'completed' && (
           <Button
             variant='outline'
             className='text-primary border-primary/20 hover:bg-primary/5'

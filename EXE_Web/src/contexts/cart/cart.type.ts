@@ -20,8 +20,8 @@ export interface CartState {
 export type CartActionPayload =
   | { type: CartAction.INITIALIZE; payload: Partial<CartState> }
   | { type: CartAction.ADD_ITEM; payload: CartItem }
-  | { type: CartAction.REMOVE_ITEM; payload: number }
-  | { type: CartAction.UPDATE_QUANTITY; payload: { id: number; quantity: number } }
+  | { type: CartAction.REMOVE_ITEM; payload: CartItem }
+  | { type: CartAction.UPDATE_QUANTITY; payload: CartItem }
   | { type: CartAction.UPDATE_ITEM; payload: CartItem }
   | { type: CartAction.CLEAR_CART; payload: null }
   | { type: CartAction.SET_LOADING; payload: boolean };
@@ -29,8 +29,8 @@ export type CartActionPayload =
 export interface CartContextType extends CartState {
   dispatch: Dispatch<CartActionPayload>;
   addItem: (item: CartItem) => void;
-  removeItem: (id: number) => void;
-  updateQuantity: (id: number, quantity: number) => void;
+  removeItem: (item: CartItem) => void;
+  updateQuantity: (item: CartItem) => void;
   updateItem: (item: CartItem) => void;
   clearCart: () => void;
   getTotalItems: () => number;

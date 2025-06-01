@@ -17,6 +17,12 @@ const customerGuardLazy = async () => ({
 const authGuardLazy = async () => ({
   Component: (await import('@/guards/CustomerGuard')).default,
 });
+const orderGuardLazy = async () => ({
+  Component: (await import('@/guards/OrderGuard')).default,
+});
+const paymentGuardLazy = async () => ({
+  Component: (await import('@/guards/PaymentGuard')).default,
+});
 
 const router = createBrowserRouter([
   // Public routes
@@ -66,26 +72,57 @@ const router = createBrowserRouter([
         lazy: mainLayoutLazy,
         children: [
           {
-            path: configs.routes.myOrders,
+            path: configs.routes.profile,
             lazy: async () => ({
-              Component: (await import('@/pages/MyOrders')).default,
+              Component: (await import('@/pages/Profile')).default,
             }),
           },
           {
-            path: configs.routes.checkout,
-            lazy: async () => ({
-              Component: (await import('@/pages/Checkout')).default,
-            }),
+            lazy: orderGuardLazy,
+            children: [
+              {
+                path: configs.routes.checkout,
+                lazy: async () => ({
+                  Component: (await import('@/pages/Checkout')).default,
+                }),
+              },
+            ],
           },
           {
-            path: configs.routes.paymentResult,
-            lazy: async () => ({
-              Component: (await import('@/pages/PaymentResult')).default,
-            }),
+            lazy: paymentGuardLazy,
+            children: [
+              {
+                path: configs.routes.paymentFailed,
+                lazy: async () => ({
+                  Component: (await import('@/pages/PaymentResult')).PaymentFailed,
+                }),
+              },
+              {
+                path: configs.routes.paymentSuccess,
+                lazy: async () => ({
+                  Component: (await import('@/pages/PaymentResult')).PaymentSuccess,
+                }),
+              },
+            ],
           },
         ],
       },
     ],
+  },
+  // Not found route
+  {
+    path: configs.routes.notFound,
+    lazy: async () => ({
+      Component: (await import('@/pages/404')).default,
+    }),
+  },
+
+  // Error routes
+  {
+    path: configs.routes.notFound,
+    lazy: async () => ({
+      Component: (await import('@/pages/404')).default,
+    }),
   },
 ]);
 

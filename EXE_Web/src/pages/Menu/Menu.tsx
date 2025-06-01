@@ -4,7 +4,6 @@ import image from '@/assets/images/Home - Banner.jpg';
 import { LoadingSpinner } from '@/components/common/loading-spinner';
 import StyledHeading from '@/components/common/styled-heading';
 import InfiniteScroll from '@/components/ui/infinite-scroll';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import useDocumentTitle from '@/hooks/useDocumentTitle';
 import useGetProducts from '@/hooks/useGetProducts';
 import { Branch } from '@/types/branch.type';
@@ -122,19 +121,6 @@ export default function MenuPage() {
                         productType.name
                       )}
                     </h2>
-                    <Select defaultValue='popular'>
-                      <SelectTrigger className='w-[180px] border-none bg-transparent focus:ring-0'>
-                        <div className='flex items-center'>
-                          <SelectValue placeholder='Sắp xếp theo' />
-                        </div>
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value='popular'>Phổ biến nhất</SelectItem>
-                        <SelectItem value='price-asc'>Giá: Thấp đến cao</SelectItem>
-                        <SelectItem value='price-desc'>Giá: Cao đến thấp</SelectItem>
-                        <SelectItem value='rating'>Đánh giá cao nhất</SelectItem>
-                      </SelectContent>
-                    </Select>
                   </div>
 
                   {isLoadingProducts ? (

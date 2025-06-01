@@ -77,12 +77,12 @@ const CartProvider: FC<PropsWithChildren> = ({ children }) => {
     dispatch(addItemAction(item));
   }, []);
 
-  const removeItem = useCallback((id: number) => {
-    dispatch(removeItemAction(id));
+  const removeItem = useCallback((item: CartItem) => {
+    dispatch(removeItemAction(item));
   }, []);
 
-  const updateQuantity = useCallback((id: number, quantity: number) => {
-    dispatch(updateQuantityAction(id, quantity));
+  const updateQuantity = useCallback((item: CartItem) => {
+    dispatch(updateQuantityAction(item));
   }, []);
 
   const updateItem = useCallback((item: CartItem) => {

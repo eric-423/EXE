@@ -12,7 +12,6 @@ export const phoneSchema = z.object({
     }),
   password: z.string().optional(),
   otp: z.string().optional(),
-  confirmPassword: z.string().optional(),
 });
 
 export const loginSchema = z.object({
@@ -32,7 +31,6 @@ export const loginSchema = z.object({
       { message: 'Mật khẩu phải có ít nhất 6 ký tự' },
     ),
   otp: z.string().optional(),
-  confirmPassword: z.string().optional(),
 });
 
 export const otpSchema = z.object({
@@ -47,30 +45,6 @@ export const otpSchema = z.object({
       },
       { message: 'Mã OTP phải có đúng 6 số' },
     ),
-  confirmPassword: z.string().optional(),
-});
-
-export const registerSchema = z.object({
-  phoneNumber: z.string(),
-  password: z
-    .string()
-    .optional()
-    .refine(
-      (val) => {
-        return val && val.length >= 6;
-      },
-      { message: 'Mật khẩu phải có ít nhất 6 ký tự' },
-    ),
-  confirmPassword: z
-    .string()
-    .optional()
-    .refine(
-      (val) => {
-        return val && val.length >= 6;
-      },
-      { message: 'Mật khẩu phải có ít nhất 6 ký tự' },
-    ),
-  otp: z.string().optional(),
 });
 
 // Base form values type
@@ -78,7 +52,6 @@ export type AuthFormValues = {
   phoneNumber: string;
   password?: string;
   otp?: string;
-  confirmPassword?: string;
 };
 
 export default loginSchema;

@@ -32,7 +32,7 @@ export default function Header() {
 
         {/* Desktop Action Buttons */}
         <div className='hidden md:flex items-center space-x-4'>
-          <ActionButtons isAuthenticated={isAuthenticated} />
+          <ActionButtons isAuthenticated={isAuthenticated} onClick={() => setIsMenuOpen(!isMenuOpen)} />
         </div>
 
         {/* Mobile Menu Button */}
@@ -54,7 +54,7 @@ export default function Header() {
               <NavLinks mobile />
             </nav>
             <div className='flex justify-center space-x-6 pt-4 border-t'>
-              <ActionButtons mobile isAuthenticated={isAuthenticated} />
+              <ActionButtons mobile isAuthenticated={isAuthenticated} onClick={() => setIsMenuOpen(!isMenuOpen)} />
             </div>
           </div>
         </div>
@@ -90,9 +90,18 @@ function NavLinks({ mobile = false }: { mobile?: boolean }) {
   );
 }
 
-function ActionButtons({ mobile = false, isAuthenticated = false }: { mobile?: boolean; isAuthenticated?: boolean }) {
+function ActionButtons({
+  mobile = false,
+  isAuthenticated = false,
+  onClick,
+}: {
+  mobile?: boolean;
+  isAuthenticated?: boolean;
+  onClick: () => void;
+}) {
   const url = useLocation().pathname;
   const handleLogout = () => {
+    onClick();
     removeAccessToken();
     removeRefreshToken();
     window.location.href = configs.routes.home;
@@ -102,11 +111,12 @@ function ActionButtons({ mobile = false, isAuthenticated = false }: { mobile?: b
     <>
       {isAuthenticated ? (
         <>
-          <Link to={configs.routes.myOrders}>
+          <Link to={configs.routes.profile}>
             <Button
               variant='ghost'
               size={mobile ? 'default' : 'icon'}
               className='text-primary hover:text-[#B84A0E] hover:bg-[#FFE8D6]'
+              onClick={onClick}
             >
               <User size={mobile ? 20 : 24} />
               {mobile && <span className='ml-2'>Tài khoản</span>}

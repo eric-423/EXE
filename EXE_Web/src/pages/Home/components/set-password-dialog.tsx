@@ -7,12 +7,11 @@ import configs from '@/configs';
 import { useAuth } from '@/hooks';
 import { FORM_CONTENTS, SET_FORM_FIELDS } from '@/pages/Login/components/form-contents';
 import { removeCookie } from '@/utils/cookies';
+import { setPasswordFormData, setPasswordSchema } from '@/utils/schema';
 
 import { useState } from 'react';
 import { FieldPath, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-
-import { setPasswordFormData, setPasswordSchema } from './set-password-modal.schema';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DialogTitle } from '@radix-ui/react-dialog';

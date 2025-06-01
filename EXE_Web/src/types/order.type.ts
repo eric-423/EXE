@@ -24,7 +24,7 @@ export const initialOrder: Order = {
   note: '',
   address: '',
   phoneNumber: '',
-  branchId: 0,
+  branchId: 1,
   pointUsed: 0,
   pointEarned: 0,
   paymentMethodId: 0,
@@ -41,8 +41,8 @@ export interface OrderResponse {
   items: OrderProductResponse[];
   totalItems: number;
   subTotal: number;
-  orderStatus: string;
-  paymentStatus: OrderStatus.PAID;
+  orderStatus: OrderStatus;
+  paymentStatus: OrderStatus;
   customerName: string;
   customerPhone: string;
   rated?: boolean;

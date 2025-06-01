@@ -29,13 +29,13 @@ const InputPassword = ({ field, placeholder }: InputPasswordProps) => {
       {showPassword ? (
         <FaRegEye
           size={16}
-          className='absolute top-1/2 right-3 -translate-y-1/2 text-gray-400 cursor-pointer'
+          className='absolute top-1/2 right-3 -translate-y-1/2 text-foreground/50 cursor-pointer'
           onClick={handleTogglePassword}
         />
       ) : (
         <FaRegEyeSlash
           size={16}
-          className='absolute top-1/2 right-3 -translate-y-1/2 text-gray-400 cursor-pointer'
+          className='absolute top-1/2 right-3 -translate-y-1/2 text-foreground/30 cursor-pointer'
           onClick={handleTogglePassword}
         />
       )}

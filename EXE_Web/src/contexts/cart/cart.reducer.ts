@@ -23,7 +23,7 @@ export function reducer(state: CartState, action: CartActionPayload): CartState 
     case CartAction.ADD_ITEM: {
       const item = action.payload;
       const existingItemIndex = state.items.findIndex(
-        (existingItem: CartItem) => existingItem.productId === item.productId,
+        (existingItem: CartItem) => existingItem.productId === item.productId && existingItem.note === item.note,
       );
 
       if (existingItemIndex > -1) {
@@ -41,22 +41,26 @@ export function reducer(state: CartState, action: CartActionPayload): CartState 
     case CartAction.REMOVE_ITEM:
       return {
         ...state,
-        items: state.items.filter((item: CartItem) => item.productId !== action.payload),
+        items: state.items.filter(
+          (item: CartItem) => item.productId !== action.payload.productId || item.note !== action.payload.note,
+        ),
       };
 
     case CartAction.UPDATE_QUANTITY: {
-      const { id, quantity } = action.payload;
+      const item = action.payload;
 
-      if (quantity <= 0) {
+      if (item.quantity <= 0) {
         return {
           ...state,
-          items: state.items.filter((item: CartItem) => item.productId !== id),
+          items: state.items.filter((item: CartItem) => item.productId !== item.productId || item.note !== item.note),
         };
       }
 
       return {
         ...state,
-        items: state.items.map((item: CartItem) => (item.productId === id ? { ...item, quantity } : item)),
+        items: state.items.map((product: CartItem) =>
+          product.productId === item.productId ? { ...product, quantity: item.quantity } : product,
+        ),
       };
     }
 
@@ -100,17 +104,17 @@ export function addItem(payload: CartItem): CartActionPayload {
   };
 }
 
-export function removeItem(id: number): CartActionPayload {
+export function removeItem(payload: CartItem): CartActionPayload {
   return {
     type: CartAction.REMOVE_ITEM,
-    payload: id,
+    payload,
   };
 }
 
-export function updateQuantity(id: number, quantity: number): CartActionPayload {
+export function updateQuantity(payload: CartItem): CartActionPayload {
   return {
     type: CartAction.UPDATE_QUANTITY,
-    payload: { id, quantity },
+    payload,
   };
 }
 
