@@ -7,7 +7,11 @@ export function getReceiveTime() {
       receiveTime.setDate(receiveTime.getDate() + 1);
     }
   }
-  receiveTime.setHours(12);
-  receiveTime.setMinutes(0);
+  receiveTime.setHours(12, 0);
   return receiveTime;
+}
+
+export function getReceiveTimeString(time: Date) {
+  const localISOTime = new Date(time.getTime() - time.getTimezoneOffset() * 60000).toISOString();
+  return localISOTime;
 }

@@ -6,6 +6,7 @@ import StyledHeading from '@/components/common/styled-heading';
 import InfiniteScroll from '@/components/ui/infinite-scroll';
 import useDocumentTitle from '@/hooks/useDocumentTitle';
 import useGetProducts from '@/hooks/useGetProducts';
+import useScrollTop from '@/hooks/useScrollTop';
 import { Branch } from '@/types/branch.type';
 import { ProductType } from '@/types/product.type';
 
@@ -17,7 +18,8 @@ import ProductTypeList from './components/product-type-list';
 
 import { useQuery } from '@tanstack/react-query';
 export default function MenuPage() {
-  useDocumentTitle('Thực đơn Tấm Tắc');
+  useDocumentTitle('Tấm Tắc | Thực đơn');
+  useScrollTop();
   const [productType, setProductType] = useState<ProductType>({ id: 0, name: 'Tất cả' });
   const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
   const {
@@ -35,12 +37,16 @@ export default function MenuPage() {
     queryKey: [GET_PRODUCT_TYPE_QUERY_KEY],
     queryFn: () => getProductType(),
     staleTime: GET_PRODUCT_TYPE_STALE_TIME,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   });
 
   const { data: branches, isLoading: isLoadingBranches } = useQuery({
     queryKey: [GET_BRANCHES_QUERY_KEY],
     queryFn: () => getBranches(),
     staleTime: GET_BRANCHES_STALE_TIME,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   });
 
   useEffect(() => {

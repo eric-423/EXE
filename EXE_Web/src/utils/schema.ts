@@ -9,7 +9,8 @@ export const emailSchema = z
   })
   .email({
     message: USER_MESSAGES.EMAIL_MESSAGE,
-  });
+  })
+  .optional();
 
 export const setPasswordSchema = z
   .object({

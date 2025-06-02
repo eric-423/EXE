@@ -19,7 +19,7 @@ import { useMutation } from '@tanstack/react-query';
 type FormStep = 'phone' | 'login' | 'otp';
 
 const Login = () => {
-  useDocumentTitle('Đăng nhập');
+  useDocumentTitle('Tấm Tắc | Đăng nhập');
   const [formStep, setFormStep] = useState<FormStep>('phone');
   const [phoneNumber, setPhoneNumber] = useState('');
   const formFields = SET_FORM_FIELDS[formStep];

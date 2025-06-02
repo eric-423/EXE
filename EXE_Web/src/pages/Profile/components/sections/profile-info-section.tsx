@@ -4,7 +4,7 @@ import { LoadingSpinner } from '@/components/common/loading-spinner';
 import { Card, CardContent } from '@/components/ui/card';
 import { User } from '@/types/user.type';
 
-import { Calendar, LucideUser, Mail, Phone, ShoppingBag } from 'lucide-react';
+import { Calendar, CircleUserRound, LucideUser, Mail, Phone, ShoppingBag } from 'lucide-react';
 
 interface ProfileInfoSectionProps {
   user: User;
@@ -24,14 +24,20 @@ export default function ProfileInfoSection({ user, totalOrders, isLoading }: Pro
           <CardContent className='space-y-6'>
             {/* User Avatar and Basic Info */}
             <div className='space-y-2 items-center justify-items-center text-center'>
-              <h3 className='text-xl font-semibold'>{user.fullName}</h3>
+              <CircleUserRound className='h-20 w-20' />
+              <h3 className='text-xl font-semibold'>{user?.fullName}</h3>
               <div className='flex items-center gap-1'>
                 <Phone className='h-4 w-4' />
-                {user.phone}
+                {user?.phone}
               </div>
               <div className='flex items-center gap-1'>
-                <Mail className='h-4 w-4' />
-                {user.email}
+                {user.email ? (
+                  <>
+                    <Mail className='h-4 w-4' /> {user.email}
+                  </>
+                ) : (
+                  <></>
+                )}
               </div>
             </div>
 
@@ -49,14 +55,14 @@ export default function ProfileInfoSection({ user, totalOrders, isLoading }: Pro
                   <Calendar className='h-5 w-5 text-green-600' />
                   <span className='text-sm font-medium text-green-600'>Ngày tham gia</span>
                 </div>
-                <p className='text-lg font-semibold text-green-900 mt-1'>{user.createdAt.split('T')[0]}</p>
+                <p className='text-lg font-semibold text-green-900 mt-1'>{user?.createdAt}</p>
               </div>
               <div className='bg-purple-50 p-4 rounded-lg'>
                 <div className='flex items-center gap-2'>
                   <LucideUser className='h-5 w-5 text-purple-600' />
                   <span className='text-sm font-medium text-purple-600'>Trạng thái</span>
                 </div>
-                <p className='text-lg font-semibold text-purple-900 mt-1'>{user.memberRank}</p>
+                <p className='text-lg font-semibold text-purple-900 mt-1'>{user?.memberRank}</p>
               </div>
             </div>
 

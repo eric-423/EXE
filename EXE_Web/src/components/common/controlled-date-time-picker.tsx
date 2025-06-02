@@ -14,9 +14,15 @@ interface ControlledDateTimePickerProps {
   field: Date;
   handleDateSelect?: (date: Date | undefined) => void;
   handleTimeChange: (type: 'hour' | 'minute', value: string) => void;
+  timeRestriction?: number[];
 }
 
-const ControlledDateTimePicker = ({ field, handleDateSelect, handleTimeChange }: ControlledDateTimePickerProps) => {
+const ControlledDateTimePicker = ({
+  field,
+  handleDateSelect,
+  handleTimeChange,
+  timeRestriction,
+}: ControlledDateTimePickerProps) => {
   return (
     <>
       <Popover>
@@ -65,7 +71,9 @@ const ControlledDateTimePicker = ({ field, handleDateSelect, handleTimeChange }:
               </ScrollArea>
               <ScrollArea className='w-64 sm:w-auto'>
                 <div className='flex sm:flex-col p-2'>
-                  {Array.from({ length: 4 }, (_, i) => i * 15).map((minute) => (
+                  {Array.from({ length: timeRestriction?.length ?? 2 }, (_, i) =>
+                    timeRestriction ? timeRestriction[i] : i * 30,
+                  ).map((minute) => (
                     <Button
                       key={minute}
                       size='icon'

@@ -14,10 +14,12 @@ import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 import { useCart } from '@/contexts/cart/CartContext';
 import { useAuth } from '@/hooks';
+import useDocumentTitle from '@/hooks/useDocumentTitle';
+import useScrollTop from '@/hooks/useScrollTop';
 import { cn } from '@/lib/utils';
 import { initialOrder, Order } from '@/types/order.type';
 import { setCookie } from '@/utils/cookies';
-import { getReceiveTime } from '@/utils/getReceiveTime';
+import { getReceiveTime, getReceiveTimeString } from '@/utils/getReceiveTime';
 import { STORE_INFO } from '@/utils/mockupData';
 
 import { Clock, CreditCard, MapPin, QrCode, ShieldCheck, User } from 'lucide-react';
@@ -33,6 +35,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 export default function CheckoutPage() {
+  useDocumentTitle('Tấm Tắc | Xác nhận đơn hàng');
+  useScrollTop();
   const { items, getTotalPrice, getTotalItems } = useCart();
   if (getTotalItems() === 0) {
     window.location.href = '/';
@@ -41,11 +45,14 @@ export default function CheckoutPage() {
   const { user } = useAuth();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [timeRestriction, setTimeRestriction] = useState<number[]>([0, 15, 30]);
 
   const { data: userData, isLoading: isLoadingUserData } = useQuery({
     queryKey: [GET_ME_QUERY_KEY],
     queryFn: () => getMe(user?.id || 0),
     select: (data) => data.data.data,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   });
 
   const { mutate: placeOrderMutate } = useMutation({
@@ -53,7 +60,9 @@ export default function CheckoutPage() {
     onSuccess: (data) => {
       toast.success('Đặt hàng thành công! Chuyển hướng đến thanh toán...');
       setCookie('is_paying', 'true', new Date(Date.now() + 10 * 60 * 1000));
-      window.location.href = data.data.payment_url;
+      setTimeout(() => {
+        window.location.href = data.data.payment_url;
+      }, 1000);
     },
     onError: () => {
       toast.error('Không thể đặt hàng. Vui lòng thử lại sau.');
@@ -65,7 +74,7 @@ export default function CheckoutPage() {
     defaultValues: {
       customerName: '',
       customerPhone: user?.phoneNumber,
-      customerEmail: '',
+      customerEmail: undefined,
       receiveTime: z.date().safeParse(getReceiveTime()).success ? getReceiveTime() : new Date(),
       paymentMethod: 'qr',
     },
@@ -76,7 +85,7 @@ export default function CheckoutPage() {
       form.reset({
         customerName: userData.fullName || '',
         customerPhone: userData.phone || '',
-        customerEmail: userData.email || '',
+        customerEmail: userData.email || undefined,
         receiveTime: z.date().safeParse(getReceiveTime()).success ? getReceiveTime() : new Date(),
         paymentMethod: 'qr',
       });
@@ -85,7 +94,7 @@ export default function CheckoutPage() {
 
   function handleDateSelect(date: Date | undefined) {
     if (date) {
-      form.setValue('receiveTime', new Date(date.setHours(11, 30)));
+      form.setValue('receiveTime', new Date(date.setHours(12, 0)));
     }
   }
 
@@ -96,8 +105,14 @@ export default function CheckoutPage() {
     if (type === 'hour') {
       const hour = parseInt(value, 10);
       newDate.setHours(hour);
+      setTimeRestriction(hour === 11 ? [30, 45] : [0, 15, 30]);
+      const minute = newDate.getMinutes();
+      if (hour === 11 && minute < 30) newDate.setHours(hour, 30);
+      else if (hour === 12 && minute > 30) newDate.setHours(12, 30);
+      else newDate.setHours(hour);
     } else if (type === 'minute') {
-      newDate.setMinutes(parseInt(value, 10));
+      const minute = parseInt(value, 10);
+      newDate.setMinutes(minute);
     }
 
     form.setValue('receiveTime', newDate);
@@ -112,6 +127,7 @@ export default function CheckoutPage() {
         customerId: user?.id || 0,
         phoneNumber: data.customerPhone,
         paymentMethodId: 2,
+        pickUpTime: getReceiveTimeString(data.receiveTime),
         orderItems: items.map((item) => ({
           productId: item.productId,
           quantity: item.quantity,
@@ -119,14 +135,7 @@ export default function CheckoutPage() {
         })),
       };
 
-      // Simulate API call
       placeOrderMutate(orderData);
-
-      // Here you would typically send the data to your backend
-      toast.success('Đơn hàng của bạn đã được xác nhận. Chúng tôi sẽ liên hệ với bạn sớm nhất.');
-
-      // Reset form after successful submission
-      form.reset();
     } catch (error) {
       console.error('Order submission error:', error);
       toast.error('Không thể đặt hàng. Vui lòng thử lại sau.');
@@ -167,6 +176,9 @@ export default function CheckoutPage() {
                             <FormItem className='space-y-2'>
                               <FormLabel htmlFor='customerName'>Tên khách hàng</FormLabel>
                               <Input id='customerName' placeholder='Nhập tên của bạn' {...field} />
+                              {form.getFieldState(field.name).error && (
+                                <p className='text-red-500 text-sm'>{form.getFieldState(field.name).error?.message}</p>
+                              )}
                             </FormItem>
                           )}
                         ></FormField>
@@ -177,6 +189,9 @@ export default function CheckoutPage() {
                             <FormItem className='space-y-2'>
                               <FormLabel htmlFor='customerPhone'>Số điện thoại</FormLabel>
                               <Input id='customerPhone' placeholder='Nhập số điện thoại' {...field} />
+                              {form.getFieldState(field.name).error && (
+                                <p className='text-red-500 text-sm'>{form.getFieldState(field.name).error?.message}</p>
+                              )}
                             </FormItem>
                           )}
                         ></FormField>
@@ -193,6 +208,9 @@ export default function CheckoutPage() {
                               placeholder='Nhập email (không bắt buộc)'
                               {...field}
                             />
+                            {form.getFieldState(field.name).error && (
+                              <p className='text-red-500 text-sm'>{form.getFieldState(field.name).error?.message}</p>
+                            )}
                           </FormItem>
                         )}
                       ></FormField>
@@ -216,6 +234,7 @@ export default function CheckoutPage() {
                               <div className='flex'>
                                 <ControlledDateTimePicker
                                   field={field.value}
+                                  timeRestriction={timeRestriction}
                                   handleDateSelect={handleDateSelect}
                                   handleTimeChange={handleTimeChange}
                                 />
