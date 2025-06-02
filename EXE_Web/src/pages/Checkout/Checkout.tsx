@@ -37,11 +37,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 export default function CheckoutPage() {
   useDocumentTitle('Tấm Tắc | Xác nhận đơn hàng');
   useScrollTop();
-  const { items, getTotalPrice, getTotalItems } = useCart();
-  if (getTotalItems() === 0) {
-    window.location.href = '/';
-    return null; // Prevent rendering if cart is empty
-  }
+  const { items, getTotalPrice } = useCart();
   const { user } = useAuth();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -55,11 +51,12 @@ export default function CheckoutPage() {
     refetchOnWindowFocus: false,
   });
 
-  const { mutate: placeOrderMutate } = useMutation({
+  const { mutate: placeOrderMutate, isPending: isPlacingOrderPending } = useMutation({
     mutationFn: (order: Order) => placeOrder(order),
     onSuccess: (data) => {
       toast.success('Đặt hàng thành công! Chuyển hướng đến thanh toán...');
       setCookie('is_paying', 'true', new Date(Date.now() + 10 * 60 * 1000));
+      setIsSubmitting(false);
       setTimeout(() => {
         window.location.href = data.data.payment_url;
       }, 1000);
@@ -71,6 +68,7 @@ export default function CheckoutPage() {
 
   const form = useForm<CheckoutFormData>({
     resolver: zodResolver(checkoutSchema),
+    mode: 'onChange',
     defaultValues: {
       customerName: '',
       customerPhone: user?.phoneNumber,
@@ -83,7 +81,7 @@ export default function CheckoutPage() {
   useEffect(() => {
     if (userData) {
       form.reset({
-        customerName: userData.fullName || '',
+        customerName: userData.fullName || undefined,
         customerPhone: userData.phone || '',
         customerEmail: userData.email || undefined,
         receiveTime: z.date().safeParse(getReceiveTime()).success ? getReceiveTime() : new Date(),
@@ -119,6 +117,7 @@ export default function CheckoutPage() {
   }
 
   const onSubmit = async (data: CheckoutFormData) => {
+    if (form.formState.isValidating || isPlacingOrderPending || isSubmitting) return;
     setIsSubmitting(true);
 
     try {
@@ -136,11 +135,10 @@ export default function CheckoutPage() {
       };
 
       placeOrderMutate(orderData);
+      console.log('Order Data:', orderData);
     } catch (error) {
       console.error('Order submission error:', error);
       toast.error('Không thể đặt hàng. Vui lòng thử lại sau.');
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -243,8 +241,8 @@ export default function CheckoutPage() {
                             <div className='flex items-start text-sm text-medium ml-3 mt-2'>
                               <MapPin className='h-4 w-4 mr-2 mt-0.5 flex-shrink-0' />
                               <span className='font-medium'>
-                                {STORE_INFO.name}
-                                <p className='font-normal'>{STORE_INFO.address}</p>
+                                {STORE_INFO.name} (gần Trà sữa BeTea)
+                                <p className='font-normal'>Cổng trước {STORE_INFO.address}</p>
                               </span>
                             </div>
                           </FormItem>

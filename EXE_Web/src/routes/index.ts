@@ -77,33 +77,43 @@ const router = createBrowserRouter([
               Component: (await import('@/pages/Profile')).default,
             }),
           },
+        ],
+      },
+    ],
+  },
+  {
+    lazy: orderGuardLazy,
+    children: [
+      {
+        lazy: mainLayoutLazy,
+        children: [
           {
-            lazy: orderGuardLazy,
-            children: [
-              {
-                path: configs.routes.checkout,
-                lazy: async () => ({
-                  Component: (await import('@/pages/Checkout')).default,
-                }),
-              },
-            ],
+            path: configs.routes.checkout,
+            lazy: async () => ({
+              Component: (await import('@/pages/Checkout')).default,
+            }),
+          },
+        ],
+      },
+    ],
+  },
+  {
+    lazy: paymentGuardLazy,
+    children: [
+      {
+        lazy: mainLayoutLazy,
+        children: [
+          {
+            path: configs.routes.paymentFailed,
+            lazy: async () => ({
+              Component: (await import('@/pages/PaymentResult')).PaymentFailed,
+            }),
           },
           {
-            lazy: paymentGuardLazy,
-            children: [
-              {
-                path: configs.routes.paymentFailed,
-                lazy: async () => ({
-                  Component: (await import('@/pages/PaymentResult')).PaymentFailed,
-                }),
-              },
-              {
-                path: configs.routes.paymentSuccess,
-                lazy: async () => ({
-                  Component: (await import('@/pages/PaymentResult')).PaymentSuccess,
-                }),
-              },
-            ],
+            path: configs.routes.paymentSuccess,
+            lazy: async () => ({
+              Component: (await import('@/pages/PaymentResult')).PaymentSuccess,
+            }),
           },
         ],
       },
