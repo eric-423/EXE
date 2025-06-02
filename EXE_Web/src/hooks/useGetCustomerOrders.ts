@@ -54,6 +54,8 @@ export const useGetCustomerOrders = () => {
     queryKey: [GET_CUSTOMER_ORDER_QUERY_KEY],
     queryFn: () => getCustomerOrders(user?.id || 0),
     select: (data) => data.data.content,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   });
 
   const filterOrders = (order: RawOrder) => {

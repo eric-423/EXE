@@ -17,10 +17,13 @@ export function OrderCard({ order, onViewDetails }: OrderCardProps) {
 
   // Get status badge
   const getStatusBadge = (status: string) => {
+    console.log('getStatusBadge called with status:', status);
     switch (status) {
       case OrderStatus.UNPAID:
         return <Badge className='bg-yellow-500'>{OrderStatus.UNPAID}</Badge>;
-      case OrderStatus.PROCESSING || OrderStatus.VERIFIED || OrderStatus.IN_DELIVERY:
+      case OrderStatus.PROCESSING:
+      case OrderStatus.VERIFIED:
+      case OrderStatus.IN_DELIVERY:
         return <Badge className='bg-blue-500'>{status}</Badge>;
       case OrderStatus.COMPLETED:
         return <Badge className='bg-green-500'>{OrderStatus.COMPLETED}</Badge>;

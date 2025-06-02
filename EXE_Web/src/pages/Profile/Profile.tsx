@@ -4,6 +4,7 @@ import { GET_ME_QUERY_KEY, getMe } from '@/apis/user.api';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/hooks';
+import useDocumentTitle from '@/hooks/useDocumentTitle';
 import { useGetCustomerOrders } from '@/hooks/useGetCustomerOrders';
 import useScrollTop from '@/hooks/useScrollTop';
 
@@ -19,6 +20,7 @@ import { useQuery } from '@tanstack/react-query';
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState('profile');
   const { user } = useAuth();
+  useDocumentTitle('Tấm Tắc | Thông tin cá nhân');
   useScrollTop();
 
   const { orders, isLoadingOrders } = useGetCustomerOrders();
@@ -27,6 +29,8 @@ export default function ProfilePage() {
     queryKey: [GET_ME_QUERY_KEY],
     queryFn: () => getMe(user?.id || 0),
     select: (data) => data.data.data,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   });
 
   return (

@@ -1,11 +1,11 @@
-import { emailSchema, phoneSchema } from '@/utils/schema';
+import { phoneSchema } from '@/utils/schema';
 
 import z from 'zod';
 
 export const checkoutSchema = z.object({
   customerName: z.string().min(2, 'Tên không hợp lệ').max(50, 'Tên không hợp lệ'),
   customerPhone: phoneSchema,
-  customerEmail: emailSchema,
+  customerEmail: z.string().email('Email không hợp lệ').max(100, 'Email không hợp lệ').optional(),
   receiveTime: z.date({
     required_error: 'Vui lòng chọn thời gian nhận hàng',
   }),
