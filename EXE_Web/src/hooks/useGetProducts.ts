@@ -18,6 +18,8 @@ const useGetProducts = ({ size, productType }: useGetProductsProps) => {
   const { data: fetchedProducts, isLoading: isLoadingProducts } = useQuery({
     queryKey: [GET_PRODUCTS_BY_BRANCH_QUERY_KEY, productType, page],
     queryFn: () => getProducts(page, size, productType),
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   });
 
   const nextPage = () => {

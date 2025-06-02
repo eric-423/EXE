@@ -57,6 +57,7 @@ const useAuth = () => {
       }
     },
     onError: (error) => {
+      if (!isMountedRef.current) return;
       console.error('Token refresh failed:', error);
       removeAccessToken();
       removeRefreshToken();
@@ -176,9 +177,9 @@ const useAuth = () => {
     () => ({
       user: authState.user,
       isAuthenticated: authState.isAuthenticated,
-      isLoading: isLoading || !authState.isInitialized,
+      isLoading: !authState.isInitialized,
     }),
-    [authState.user, authState.isAuthenticated, authState.isInitialized, isLoading],
+    [authState.user, authState.isAuthenticated, authState.isInitialized],
   );
 };
 

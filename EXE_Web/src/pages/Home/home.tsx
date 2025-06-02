@@ -6,6 +6,8 @@ import StyledHeading from '@/components/common/styled-heading';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks';
+import useDocumentTitle from '@/hooks/useDocumentTitle';
+import useScrollTop from '@/hooks/useScrollTop';
 
 import { ChevronRight } from 'lucide-react';
 import { useState } from 'react';
@@ -20,18 +22,25 @@ import SetPasswordDialog from './components/set-password-dialog';
 import { useQuery } from '@tanstack/react-query';
 
 export default function Home() {
+  useDocumentTitle('Tấm Tắc');
+  useScrollTop();
+
   const { user } = useAuth();
   const [updatePasswordDialogOpen, setUpdatePasswordDialogOpen] = useState(true);
   const { data: products, isLoading: isLoadingProducts } = useQuery({
     queryKey: [GET_PRODUCTS_QUERY_KEY],
     queryFn: () => getProducts(),
     select: (data) => data.content.slice(0, 3),
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   });
 
   const { data: branches, isLoading: isLoadingBranches } = useQuery({
     queryKey: [GET_BRANCHES_QUERY_KEY],
     queryFn: () => getBranches(),
     staleTime: GET_BRANCHES_STALE_TIME,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   });
   return (
     <>
