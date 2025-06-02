@@ -4,13 +4,16 @@ import logo from '@/assets/favicon.svg';
 import { LoadingSpinner } from '@/components/common/loading-spinner';
 import StyledHeading from '@/components/common/styled-heading';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
+import configs from '@/configs';
 import { useAuth } from '@/hooks';
 import useDocumentTitle from '@/hooks/useDocumentTitle';
 import useScrollTop from '@/hooks/useScrollTop';
+import { cn } from '@/lib/utils';
 
 import { ChevronRight } from 'lucide-react';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import BestSellerList from './components/best-seller-list';
 import BlogList from './components/blog-list';
@@ -91,10 +94,16 @@ export default function Home() {
               <BestSellerList products={products} />
 
               <div className='mt-12 text-right'>
-                <Button variant='outline' className='border-primary text-primary hover:bg-primary hover:text-white'>
+                <Link
+                  className={cn(
+                    buttonVariants({ variant: 'outline' }),
+                    'border-primary text-primary hover:bg-primary hover:text-white',
+                  )}
+                  to={configs.routes.menu}
+                >
                   Xem thêm món ăn
                   <ChevronRight className='h-4 w-4 ml-2' />
-                </Button>
+                </Link>
               </div>
             </div>
           </section>
