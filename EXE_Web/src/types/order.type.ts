@@ -16,7 +16,7 @@ export interface Order {
   latitude: string;
   orderItems: OrderProduct[];
   pickUp: boolean;
-  pickUpTime: string;
+  pickupTime: string;
 }
 
 export const initialOrder: Order = {
@@ -33,7 +33,7 @@ export const initialOrder: Order = {
   latitude: '',
   orderItems: [],
   pickUp: true,
-  pickUpTime: '',
+  pickupTime: '',
 };
 
 export interface OrderResponse {
@@ -48,4 +48,6 @@ export interface OrderResponse {
   customerName: string;
   customerPhone: string;
   rated?: boolean;
+  pickupTime: string;
+  payment_code?: string;
 }

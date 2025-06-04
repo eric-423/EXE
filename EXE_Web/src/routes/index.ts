@@ -6,6 +6,10 @@ const mainLayoutLazy = async () => ({
   Component: (await import('@/layout/MainLayout')).default,
 });
 
+const authLayoutLazy = async () => ({
+  Component: (await import('@/layout/AuthLayout')).default,
+});
+
 const guestGuardLazy = async () => ({
   Component: (await import('@/guards/GuestGuard')).default,
 });
@@ -15,7 +19,7 @@ const customerGuardLazy = async () => ({
 });
 
 const authGuardLazy = async () => ({
-  Component: (await import('@/guards/CustomerGuard')).default,
+  Component: (await import('@/guards/AuthGuard')).default,
 });
 const orderGuardLazy = async () => ({
   Component: (await import('@/guards/OrderGuard')).default,
@@ -52,7 +56,7 @@ const router = createBrowserRouter([
     lazy: guestGuardLazy,
     children: [
       {
-        lazy: mainLayoutLazy,
+        lazy: authLayoutLazy,
         children: [
           {
             path: configs.routes.login,

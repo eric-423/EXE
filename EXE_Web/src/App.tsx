@@ -20,10 +20,12 @@ export default function App() {
           </CartProvider>
           <ToastContainer
             position='top-right'
+            className={'mt-15'}
             autoClose={3000}
-            hideProgressBar={false}
+            hideProgressBar={true}
             newestOnTop={false}
-            pauseOnHover
+            pauseOnHover={false}
+            closeOnClick
             theme='light'
           />
         </CookiesProvider>

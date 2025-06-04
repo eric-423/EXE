@@ -12,3 +12,8 @@ export const getCustomerOrders = async (userId: number) => {
   const { data } = await http.get(`/orders/customer/${userId}`);
   return data;
 };
+
+export const cancelOrder = async (orderId: number, customerId: number) => {
+  const { data } = await http.put(`/orders/cancel/${orderId}?customerId=${customerId}`);
+  return data;
+};

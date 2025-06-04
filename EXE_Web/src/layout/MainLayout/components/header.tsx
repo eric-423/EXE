@@ -109,7 +109,7 @@ function ActionButtons({
     onClick();
     removeAccessToken();
     removeRefreshToken();
-    window.location.href = configs.routes.home;
+    window.location.reload();
   };
 
   return (

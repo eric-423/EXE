@@ -55,7 +55,7 @@ export default function CheckoutPage() {
     mutationFn: (order: Order) => placeOrder(order),
     onSuccess: (data) => {
       toast.success('Đặt hàng thành công! Chuyển hướng đến thanh toán...');
-      setCookie('is_paying', 'true', new Date(Date.now() + 10 * 60 * 1000));
+      setCookie('is_paying', 'true');
       setIsSubmitting(false);
       setTimeout(() => {
         window.location.href = data.data.payment_url;
@@ -126,7 +126,7 @@ export default function CheckoutPage() {
         customerId: user?.id || 0,
         phoneNumber: data.customerPhone,
         paymentMethodId: 2,
-        pickUpTime: getReceiveTimeString(data.receiveTime),
+        pickupTime: getReceiveTimeString(data.receiveTime),
         orderItems: items.map((item) => ({
           productId: item.productId,
           quantity: item.quantity,
@@ -135,7 +135,6 @@ export default function CheckoutPage() {
       };
 
       placeOrderMutate(orderData);
-      console.log('Order Data:', orderData);
     } catch (error) {
       console.error('Order submission error:', error);
       toast.error('Không thể đặt hàng. Vui lòng thử lại sau.');

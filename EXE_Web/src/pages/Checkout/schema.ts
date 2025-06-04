@@ -3,7 +3,10 @@ import { phoneSchema } from '@/utils/schema';
 import z from 'zod';
 
 export const checkoutSchema = z.object({
-  customerName: z.string().min(2, 'Tên không hợp lệ').max(50, 'Tên không hợp lệ'),
+  customerName: z
+    .string({ required_error: 'Vui lòng nhập tên' })
+    .min(2, 'Tên không hợp lệ')
+    .max(50, 'Tên không hợp lệ'),
   customerPhone: phoneSchema,
   customerEmail: z.string().email('Email không hợp lệ').max(100, 'Email không hợp lệ').optional(),
   receiveTime: z.date({

@@ -24,7 +24,7 @@ const ORDER_STATUS_FILTERS = [
   },
   {
     label: 'Hoàn thành',
-    value: 'completed',
+    value: OrderStatus.COMPLETED,
   },
   {
     label: 'Đang xử lý',
@@ -32,7 +32,7 @@ const ORDER_STATUS_FILTERS = [
   },
   {
     label: 'Đã hủy',
-    value: 'cancelled',
+    value: OrderStatus.CANCELLED,
   },
 ];
 
@@ -118,10 +118,12 @@ export default function OrderHistorySection({ orders, isLoadingOrders }: OrderHi
                     </p>
                   </div>
                 ) : (
-                  <div className='space-y-4'>
-                    {getFilteredOrders().map((order) => (
-                      <OrderCard key={order.id} order={order} onViewDetails={() => handleOrderClick(order)} />
-                    ))}
+                  <div className='flex flex-col gap-7'>
+                    <div className='grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 gap-7'>
+                      {getFilteredOrders().map((order) => (
+                        <OrderCard key={order.id} order={order} onViewDetails={() => handleOrderClick(order)} />
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>
