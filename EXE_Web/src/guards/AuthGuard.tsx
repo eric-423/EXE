@@ -5,12 +5,13 @@ import { config } from '@/configs/app';
 import { useAuth } from '@/hooks';
 
 import { type FC, type PropsWithChildren, useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 
-const AuthGuard: FC<PropsWithChildren> = ({ children }) => {
+const AuthGuard: FC<PropsWithChildren> = () => {
   const { isLoading, isAuthenticated } = useAuth();
   const [shouldRedirect, setShouldRedirect] = useState(false);
 
+  console.log('AuthGuard rendered', { isLoading, isAuthenticated });
   // Add a small delay before redirecting to prevent flickering
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -39,7 +40,7 @@ const AuthGuard: FC<PropsWithChildren> = ({ children }) => {
     return <Navigate to={config.routes.login} replace />;
   }
 
-  return <>{children}</>;
+  return <Outlet />;
 };
 
 export default AuthGuard;

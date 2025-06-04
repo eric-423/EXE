@@ -88,7 +88,7 @@ export const useCustomerOrders = () => {
       orderStatus: order.orderStatus,
       rated: items.some((item) => item.feedback !== null),
       payment_code: order.payment_code,
-      pickupTime: order.pickupTime,
+      pickupTime: order?.pickupTime,
     } as OrderResponse;
   };
 

@@ -19,7 +19,7 @@ import useScrollTop from '@/hooks/useScrollTop';
 import { cn } from '@/lib/utils';
 import { initialOrder, Order } from '@/types/order.type';
 import { setCookie } from '@/utils/cookies';
-import { getReceiveTime, getReceiveTimeString } from '@/utils/getReceiveTime';
+import { getReceiveTime } from '@/utils/getReceiveTime';
 import { STORE_INFO } from '@/utils/mockupData';
 
 import { Clock, CreditCard, MapPin, QrCode, ShieldCheck, User } from 'lucide-react';
@@ -126,7 +126,7 @@ export default function CheckoutPage() {
         customerId: user?.id || 0,
         phoneNumber: data.customerPhone,
         paymentMethodId: 2,
-        pickupTime: getReceiveTimeString(data.receiveTime),
+        pickupTime: data.receiveTime.toISOString(),
         orderItems: items.map((item) => ({
           productId: item.productId,
           quantity: item.quantity,
