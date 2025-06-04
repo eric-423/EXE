@@ -23,12 +23,13 @@ export function reducer(state: CartState, action: CartActionPayload): CartState 
     case CartAction.ADD_ITEM: {
       const item = action.payload;
       const existingItemIndex = state.items.findIndex(
-        (existingItem: CartItem) => existingItem.productId === item.productId && existingItem.note === item.note,
+        (existingItem: CartItem) => existingItem.productId === item.productId,
       );
 
       if (existingItemIndex > -1) {
         const updatedItems = [...state.items];
         updatedItems[existingItemIndex].quantity += item.quantity;
+        item?.note && item.note.length > 0 && (updatedItems[existingItemIndex].note = item.note);
         return { ...state, items: updatedItems };
       }
 
@@ -41,9 +42,7 @@ export function reducer(state: CartState, action: CartActionPayload): CartState 
     case CartAction.REMOVE_ITEM:
       return {
         ...state,
-        items: state.items.filter(
-          (item: CartItem) => item.productId !== action.payload.productId || item.note !== action.payload.note,
-        ),
+        items: state.items.filter((item: CartItem) => item.productId !== action.payload.productId),
       };
 
     case CartAction.UPDATE_QUANTITY: {
@@ -52,7 +51,7 @@ export function reducer(state: CartState, action: CartActionPayload): CartState 
       if (item.quantity <= 0) {
         return {
           ...state,
-          items: state.items.filter((item: CartItem) => item.productId !== item.productId || item.note !== item.note),
+          items: state.items.filter((item: CartItem) => item.productId !== item.productId),
         };
       }
 
