@@ -12,7 +12,7 @@ const promoteContent = [
     title: 'NGUYÊN LIỆU TƯƠI NGON',
     subtitle: 'ĂN TOÀN',
     icon: <Sparkles className='h-6 w-6 text-primary' />,
-    img: `${image}`,
+    img: `${image1}`,
     description:
       'Chúng tôi chỉ sử dụng những nguyên liệu tươi ngon nhất, được chọn lọc kỹ càng để đảm bảo hương vị tuyệt hảo cho mỗi món ăn.',
   } as Content,
@@ -21,7 +21,7 @@ const promoteContent = [
     title: 'CÔNG THỨC ĐỘC ĐÁO',
     subtitle: 'NGON CHUẨN VỊ',
     icon: <Award className='h-6 w-6 text-primary' />,
-    img: `${image1}`,
+    img: `${image}`,
     description:
       'Công thức độc quyền được phát triển bởi các đầu bếp hàng đầu, giữ trọn hương vị truyền thống Sài Gòn với chút biến tấu hiện đại.',
   } as Content,
