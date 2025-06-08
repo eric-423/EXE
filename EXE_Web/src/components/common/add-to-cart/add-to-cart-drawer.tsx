@@ -89,7 +89,7 @@ export function AddToCartDrawer({ open, onOpenChange, product }: AddToCartDrawer
             <h3 className='font-medium text-lg mb-3'>Ghi chú</h3>
             <Textarea
               value={notes}
-              placeholder='Nhập ghi chú của bạn ở đây...'
+              placeholder='Đối với combo hãy ghi chú cả topping đặc biệt ở đây, hoặc tụi mình sẽ tự chọn cho bạn'
               className='resize-none h-24 mb-1'
               onChange={(e) => setNotes(e.target.value)}
             />
