@@ -125,6 +125,7 @@ export default function CheckoutPage() {
       const orderData: Order = {
         ...initialOrder,
         customerId: user?.id || 0,
+        customerName: data.customerName,
         phoneNumber: data.customerPhone,
         paymentMethodId: 2,
         note: data.note || '',

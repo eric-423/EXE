@@ -4,6 +4,7 @@ import { OrderProduct, OrderProductResponse } from './product.type';
 
 export interface Order {
   customerId: number;
+  customerName: string;
   promotionCode: string;
   note: string;
   address: string;
@@ -21,6 +22,7 @@ export interface Order {
 
 export const initialOrder: Order = {
   customerId: 0,
+  customerName: '',
   promotionCode: '',
   note: '',
   address: '',
