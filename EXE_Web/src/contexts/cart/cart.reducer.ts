@@ -51,7 +51,7 @@ export function reducer(state: CartState, action: CartActionPayload): CartState 
       if (item.quantity <= 0) {
         return {
           ...state,
-          items: state.items.filter((item: CartItem) => item.productId !== item.productId),
+          items: state.items.filter((item: CartItem) => item.productId !== action.payload.productId),
         };
       }
 
