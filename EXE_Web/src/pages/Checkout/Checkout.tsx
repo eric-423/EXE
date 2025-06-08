@@ -127,6 +127,7 @@ export default function CheckoutPage() {
         customerId: user?.id || 0,
         phoneNumber: data.customerPhone,
         paymentMethodId: 2,
+        note: data.note || '',
         pickupTime: data.receiveTime.toISOString(),
         orderItems: items.map((item) => ({
           productId: item.productId,
