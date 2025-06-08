@@ -19,7 +19,7 @@ import useScrollTop from '@/hooks/useScrollTop';
 import { cn } from '@/lib/utils';
 import { initialOrder, Order } from '@/types/order.type';
 import { setCookie } from '@/utils/cookies';
-import { getReceiveTime, getReceiveTimeString } from '@/utils/getReceiveTime';
+import { getReceiveTime } from '@/utils/getReceiveTime';
 import { STORE_INFO } from '@/utils/mockupData';
 
 import { Clock, CreditCard, MapPin, QrCode, ShieldCheck, User } from 'lucide-react';
@@ -37,11 +37,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 export default function CheckoutPage() {
   useDocumentTitle('Tấm Tắc | Xác nhận đơn hàng');
   useScrollTop();
-  const { items, getTotalPrice, getTotalItems } = useCart();
-  if (getTotalItems() === 0) {
-    window.location.href = '/';
-    return null; // Prevent rendering if cart is empty
-  }
+  const { items, getTotalPrice } = useCart();
   const { user } = useAuth();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -55,22 +51,25 @@ export default function CheckoutPage() {
     refetchOnWindowFocus: false,
   });
 
-  const { mutate: placeOrderMutate } = useMutation({
+  const { mutate: placeOrderMutate, isPending: isPlacingOrderPending } = useMutation({
     mutationFn: (order: Order) => placeOrder(order),
     onSuccess: (data) => {
       toast.success('Đặt hàng thành công! Chuyển hướng đến thanh toán...');
-      setCookie('is_paying', 'true', new Date(Date.now() + 10 * 60 * 1000));
+      setCookie('is_paying', 'true');
+      setIsSubmitting(false);
       setTimeout(() => {
         window.location.href = data.data.payment_url;
       }, 1000);
     },
     onError: () => {
       toast.error('Không thể đặt hàng. Vui lòng thử lại sau.');
+      setIsSubmitting(false);
     },
   });
 
   const form = useForm<CheckoutFormData>({
     resolver: zodResolver(checkoutSchema),
+    mode: 'onChange',
     defaultValues: {
       customerName: '',
       customerPhone: user?.phoneNumber,
@@ -83,7 +82,7 @@ export default function CheckoutPage() {
   useEffect(() => {
     if (userData) {
       form.reset({
-        customerName: userData.fullName || '',
+        customerName: userData.fullName || undefined,
         customerPhone: userData.phone || '',
         customerEmail: userData.email || undefined,
         receiveTime: z.date().safeParse(getReceiveTime()).success ? getReceiveTime() : new Date(),
@@ -119,15 +118,18 @@ export default function CheckoutPage() {
   }
 
   const onSubmit = async (data: CheckoutFormData) => {
+    if (form.formState.isValidating || isPlacingOrderPending || isSubmitting) return;
     setIsSubmitting(true);
 
     try {
       const orderData: Order = {
         ...initialOrder,
         customerId: user?.id || 0,
+        customerName: data.customerName,
         phoneNumber: data.customerPhone,
         paymentMethodId: 2,
-        pickUpTime: getReceiveTimeString(data.receiveTime),
+        note: data.note || '',
+        pickupTime: data.receiveTime.toISOString(),
         orderItems: items.map((item) => ({
           productId: item.productId,
           quantity: item.quantity,
@@ -139,8 +141,6 @@ export default function CheckoutPage() {
     } catch (error) {
       console.error('Order submission error:', error);
       toast.error('Không thể đặt hàng. Vui lòng thử lại sau.');
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -196,24 +196,32 @@ export default function CheckoutPage() {
                           )}
                         ></FormField>
                       </div>
-                      <FormField
+                      {/* <FormField
                         control={form.control}
                         name='customerEmail'
-                        render={({ field }) => (
-                          <FormItem className='space-y-2'>
-                            <FormLabel htmlFor='customerEmail'>Email</FormLabel>
-                            <Input
-                              id='customerEmail'
-                              type='email'
-                              placeholder='Nhập email (không bắt buộc)'
-                              {...field}
-                            />
-                            {form.getFieldState(field.name).error && (
-                              <p className='text-red-500 text-sm'>{form.getFieldState(field.name).error?.message}</p>
-                            )}
-                          </FormItem>
-                        )}
-                      ></FormField>
+                        render={({ field }) => {
+                          console.log(field);
+                          return (
+                            <FormItem className='space-y-2'>
+                              <FormLabel htmlFor='customerEmail'>Email</FormLabel>
+                              <Input
+                                id='customerEmail'
+                                type='email'
+                                placeholder='Nhập email (không bắt buộc)'
+                                {...field}
+                                onChange={(e) => {
+                                  if (e.target.value === '') {
+                                    field.onChange(undefined);
+                                  }
+                                }}
+                              />
+                              {form.getFieldState(field.name).error && (
+                                <p className='text-red-500 text-sm'>{form.getFieldState(field.name).error?.message}</p>
+                              )}
+                            </FormItem>
+                          );
+                        }}
+                      ></FormField> */}
                       <Separator className='my-8 bg-foreground/20' />
                     </CheckoutSection>
 
@@ -243,8 +251,8 @@ export default function CheckoutPage() {
                             <div className='flex items-start text-sm text-medium ml-3 mt-2'>
                               <MapPin className='h-4 w-4 mr-2 mt-0.5 flex-shrink-0' />
                               <span className='font-medium'>
-                                {STORE_INFO.name}
-                                <p className='font-normal'>{STORE_INFO.address}</p>
+                                {STORE_INFO.name} (gần Trà sữa BeTea)
+                                <p className='font-normal'>Cổng trước {STORE_INFO.address}</p>
                               </span>
                             </div>
                           </FormItem>

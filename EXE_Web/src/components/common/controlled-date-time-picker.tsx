@@ -34,6 +34,7 @@ const ControlledDateTimePicker = ({
                 'w-full pl-3 text-left font-normal rounded-xl  hover:bg-secondary  ',
                 !field && 'text-muted-foreground',
               )}
+              type='button'
             >
               {field ? format(field, 'dd/MM/yyyy - HH:mm') : <span>Chọn ngày</span>}
               <CalendarIcon className='ml-auto h-4 w-4 text-foreground/70' />

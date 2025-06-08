@@ -34,7 +34,7 @@ const useAuth = () => {
   // Track if the component is mounted to prevent state updates after unmount
   const isMountedRef = useRef(true);
 
-  const { mutate: refreshTokenMutation, isPending: isLoading } = useMutation({
+  const { mutate: refreshTokenMutation } = useMutation({
     mutationFn: () => refetchToken(refreshToken),
     onSuccess: (data) => {
       if (!isMountedRef.current) return;

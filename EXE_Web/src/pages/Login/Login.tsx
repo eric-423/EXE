@@ -5,7 +5,9 @@ import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import useDocumentTitle from '@/hooks/useDocumentTitle';
 import useScrollTop from '@/hooks/useScrollTop';
+import { setAccessToken, setRefreshToken } from '@/utils/cookies';
 
+import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
@@ -16,12 +18,14 @@ import { AuthFormValues } from './schema';
 
 import { useMutation } from '@tanstack/react-query';
 
-type FormStep = 'phone' | 'login' | 'otp';
+type FormStep = 'phone' | 'login' | 'otp' | 'setPassword';
 
 const Login = () => {
   useDocumentTitle('Tấm Tắc | Đăng nhập');
   const [formStep, setFormStep] = useState<FormStep>('phone');
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [accessTokenTemp, setAccessTokenTemp] = useState('');
+  const [isCreatingPassword, setIsCreatingPassword] = useState(false);
   const formFields = SET_FORM_FIELDS[formStep];
   const formContents = FORM_CONTENTS[formStep];
   useScrollTop();
@@ -39,8 +43,9 @@ const Login = () => {
     onSuccess: () => {
       sendOTPMutate(phoneNumber);
     },
-    onError: () => {
-      setFormStep('login');
+    onError: (error: AxiosError) => {
+      if (error.response?.data === 'Account is not verified yet') sendOTPMutate(phoneNumber);
+      else setFormStep('login');
     },
   });
 
@@ -51,13 +56,18 @@ const Login = () => {
     },
     onError: () => {
       toast.error('Gửi mã xác thực thất bại, xin vui lòng thử lại sau');
+      setFormStep('phone');
     },
   });
 
   const { mutate: verifyOTPMutate, isPending: isVerifyingOTP } = useMutation({
     mutationFn: (data: { phoneNumber: string; otp: string }) => verifyOTP(data.phoneNumber, data.otp),
-    onSuccess: () => {
-      toast.success('Chào mừng bạn đến với Tấm Tắc!');
+    onSuccess: (response) => {
+      if (response.data.access_token) {
+        setAccessTokenTemp(response.data.access_token);
+        setRefreshToken(response.data.refresh_token);
+      }
+      setFormStep('setPassword');
     },
     onError: (error) => {
       console.error('Error verifying OTP:', error);
@@ -75,7 +85,35 @@ const Login = () => {
     },
   });
 
-  const isLoading = isSendingOTP || isVerifyingOTP || isSigningIn || isSigningUp;
+  const handlePasswordSubmit = async (pass: string) => {
+    setIsCreatingPassword(true);
+    try {
+      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/customer/change-password`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessTokenTemp}`,
+        },
+        body: JSON.stringify({
+          phoneNumber: phoneNumber,
+          password: pass,
+        }),
+      });
+      if (response.ok) {
+        setIsCreatingPassword(false);
+        setAccessToken(accessTokenTemp);
+        toast.success('Chào mừng bạn đến với Tấm Tắc!');
+      }
+    } catch (error) {
+      setFormStep('phone');
+      console.error('Error creating password:', error);
+      toast.error('Không thể tạo mật khẩu. Vui lòng thử lại sau.');
+    } finally {
+      setIsCreatingPassword(false);
+    }
+  };
+
+  const isLoading = isSendingOTP || isVerifyingOTP || isSigningIn || isSigningUp || isCreatingPassword;
 
   const onSubmit = (data: AuthFormValues) => {
     if (formStep === 'phone') {
@@ -95,6 +133,9 @@ const Login = () => {
         phoneNumber: phoneNumber,
         otp: data.otp ?? '',
       });
+    } else if (formStep === 'setPassword') {
+      // Create password for user
+      handlePasswordSubmit(data.password ?? '');
     }
   };
 
@@ -155,6 +196,17 @@ const Login = () => {
                       <div className='flex-grow border-t border-border'></div>
                     </div>
                   </form>
+
+                  {formStep === 'phone' && (
+                    <Button
+                      type='button'
+                      variant={'link'}
+                      className='w-full py-4'
+                      onClick={() => (window.location.href = '/')}
+                    >
+                      Về trang chủ
+                    </Button>
+                  )}
                 </Form>
               </div>
             </div>

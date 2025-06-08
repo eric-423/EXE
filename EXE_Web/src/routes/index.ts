@@ -6,6 +6,10 @@ const mainLayoutLazy = async () => ({
   Component: (await import('@/layout/MainLayout')).default,
 });
 
+const authLayoutLazy = async () => ({
+  Component: (await import('@/layout/AuthLayout')).default,
+});
+
 const guestGuardLazy = async () => ({
   Component: (await import('@/guards/GuestGuard')).default,
 });
@@ -15,7 +19,7 @@ const customerGuardLazy = async () => ({
 });
 
 const authGuardLazy = async () => ({
-  Component: (await import('@/guards/CustomerGuard')).default,
+  Component: (await import('@/guards/AuthGuard')).default,
 });
 const orderGuardLazy = async () => ({
   Component: (await import('@/guards/OrderGuard')).default,
@@ -52,7 +56,7 @@ const router = createBrowserRouter([
     lazy: guestGuardLazy,
     children: [
       {
-        lazy: mainLayoutLazy,
+        lazy: authLayoutLazy,
         children: [
           {
             path: configs.routes.login,
@@ -77,33 +81,43 @@ const router = createBrowserRouter([
               Component: (await import('@/pages/Profile')).default,
             }),
           },
+        ],
+      },
+    ],
+  },
+  {
+    lazy: orderGuardLazy,
+    children: [
+      {
+        lazy: mainLayoutLazy,
+        children: [
           {
-            lazy: orderGuardLazy,
-            children: [
-              {
-                path: configs.routes.checkout,
-                lazy: async () => ({
-                  Component: (await import('@/pages/Checkout')).default,
-                }),
-              },
-            ],
+            path: configs.routes.checkout,
+            lazy: async () => ({
+              Component: (await import('@/pages/Checkout')).default,
+            }),
+          },
+        ],
+      },
+    ],
+  },
+  {
+    lazy: paymentGuardLazy,
+    children: [
+      {
+        lazy: mainLayoutLazy,
+        children: [
+          {
+            path: configs.routes.paymentFailed,
+            lazy: async () => ({
+              Component: (await import('@/pages/PaymentResult')).PaymentFailed,
+            }),
           },
           {
-            lazy: paymentGuardLazy,
-            children: [
-              {
-                path: configs.routes.paymentFailed,
-                lazy: async () => ({
-                  Component: (await import('@/pages/PaymentResult')).PaymentFailed,
-                }),
-              },
-              {
-                path: configs.routes.paymentSuccess,
-                lazy: async () => ({
-                  Component: (await import('@/pages/PaymentResult')).PaymentSuccess,
-                }),
-              },
-            ],
+            path: configs.routes.paymentSuccess,
+            lazy: async () => ({
+              Component: (await import('@/pages/PaymentResult')).PaymentSuccess,
+            }),
           },
         ],
       },

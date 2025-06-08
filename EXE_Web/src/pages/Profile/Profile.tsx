@@ -4,8 +4,8 @@ import { GET_ME_QUERY_KEY, getMe } from '@/apis/user.api';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/hooks';
+import { useCustomerOrders } from '@/hooks/useCustomerOrders';
 import useDocumentTitle from '@/hooks/useDocumentTitle';
-import { useGetCustomerOrders } from '@/hooks/useGetCustomerOrders';
 import useScrollTop from '@/hooks/useScrollTop';
 
 import { Lock, ShoppingBag, User } from 'lucide-react';
@@ -23,7 +23,7 @@ export default function ProfilePage() {
   useDocumentTitle('Tấm Tắc | Thông tin cá nhân');
   useScrollTop();
 
-  const { orders, isLoadingOrders } = useGetCustomerOrders();
+  const { orders, isLoadingOrders } = useCustomerOrders();
 
   const { data: userData, isLoading: isLoadingUserData } = useQuery({
     queryKey: [GET_ME_QUERY_KEY],

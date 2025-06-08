@@ -5,9 +5,10 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
 import { ArrowRight, CheckCircle2, Home, ShoppingBag, XCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export function PaymentResultContent({ isSuccess = true }) {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   return (
     <div className='from-orange-50 to-amber-50 py-8 px-4 md:px-6'>
       <div className='container mx-auto max-w-2xl'>
@@ -58,12 +59,15 @@ export function PaymentResultContent({ isSuccess = true }) {
                   <Home className='h-4 w-4 mr-2' />
                   Về trang chủ
                 </Button>
-                <Button variant='outline' className='py-3'>
+                <Button variant='outline' className='py-3' onClick={() => navigate('/menu')}>
                   <ShoppingBag className='h-4 w-4 mr-2' />
                   Tiếp tục đặt hàng
                 </Button>
 
-                <Button className='w-full bg-primary hover:bg-primary/90 text-white py-3'>
+                <Button
+                  className='w-full bg-primary hover:bg-primary/90 text-white py-3'
+                  onClick={() => navigate('/profile')}
+                >
                   Xem chi tiết đơn hàng
                   <ArrowRight className='h-4 w-4' />
                 </Button>
@@ -72,7 +76,7 @@ export function PaymentResultContent({ isSuccess = true }) {
           ) : (
             <>
               <div className='flex items-center justify-center'>
-                <Button variant='outline' className='py-3 w-50'>
+                <Button variant='outline' className='py-3 w-50' onClick={() => navigate('/')}>
                   <Home className='h-4 w-4 mr-2' />
                   Về trang chủ
                 </Button>

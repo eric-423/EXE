@@ -4,6 +4,7 @@ import { OrderProduct, OrderProductResponse } from './product.type';
 
 export interface Order {
   customerId: number;
+  customerName: string;
   promotionCode: string;
   note: string;
   address: string;
@@ -16,11 +17,12 @@ export interface Order {
   latitude: string;
   orderItems: OrderProduct[];
   pickUp: boolean;
-  pickUpTime: string;
+  pickupTime: string;
 }
 
 export const initialOrder: Order = {
   customerId: 0,
+  customerName: '',
   promotionCode: '',
   note: '',
   address: '',
@@ -33,7 +35,7 @@ export const initialOrder: Order = {
   latitude: '',
   orderItems: [],
   pickUp: true,
-  pickUpTime: '',
+  pickupTime: '',
 };
 
 export interface OrderResponse {
@@ -48,4 +50,6 @@ export interface OrderResponse {
   customerName: string;
   customerPhone: string;
   rated?: boolean;
+  pickupTime: string;
+  payment_code?: string;
 }

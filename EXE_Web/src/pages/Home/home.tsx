@@ -4,20 +4,20 @@ import logo from '@/assets/favicon.svg';
 import { LoadingSpinner } from '@/components/common/loading-spinner';
 import StyledHeading from '@/components/common/styled-heading';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { useAuth } from '@/hooks';
+import { buttonVariants } from '@/components/ui/button';
+import configs from '@/configs';
 import useDocumentTitle from '@/hooks/useDocumentTitle';
 import useScrollTop from '@/hooks/useScrollTop';
+import { cn } from '@/lib/utils';
 
 import { ChevronRight } from 'lucide-react';
-import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import BestSellerList from './components/best-seller-list';
 import BlogList from './components/blog-list';
 import BranchList from './components/branch-list';
 import ContentList from './components/content-list';
 import FranchiseForm from './components/franchise-form';
-import SetPasswordDialog from './components/set-password-dialog';
 
 import { useQuery } from '@tanstack/react-query';
 
@@ -25,8 +25,6 @@ export default function Home() {
   useDocumentTitle('Tấm Tắc');
   useScrollTop();
 
-  const { user } = useAuth();
-  const [updatePasswordDialogOpen, setUpdatePasswordDialogOpen] = useState(true);
   const { data: products, isLoading: isLoadingProducts } = useQuery({
     queryKey: [GET_PRODUCTS_QUERY_KEY],
     queryFn: () => getProducts(),
@@ -50,9 +48,6 @@ export default function Home() {
         </div>
       ) : (
         <main className='min-h-screen bg-background overflow-x-hidden'>
-          {user?.isNewUser && updatePasswordDialogOpen && (
-            <SetPasswordDialog open={updatePasswordDialogOpen} onOpenChange={() => setUpdatePasswordDialogOpen(true)} />
-          )}
           {/* Why Choose Us Section */}
           <section className='relative pb-20 pt-3 overflow-hidden lg:px-30'>
             <div className='container mx-auto px-4'>
@@ -91,10 +86,16 @@ export default function Home() {
               <BestSellerList products={products} />
 
               <div className='mt-12 text-right'>
-                <Button variant='outline' className='border-primary text-primary hover:bg-primary hover:text-white'>
+                <Link
+                  className={cn(
+                    buttonVariants({ variant: 'outline' }),
+                    'border-primary text-primary hover:bg-primary hover:text-white',
+                  )}
+                  to={configs.routes.menu}
+                >
                   Xem thêm món ăn
                   <ChevronRight className='h-4 w-4 ml-2' />
-                </Button>
+                </Link>
               </div>
             </div>
           </section>

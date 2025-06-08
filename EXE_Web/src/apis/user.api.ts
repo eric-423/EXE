@@ -6,7 +6,7 @@ export const GET_ME_QUERY_KEY = 'GET_ME_QUERY_KEY';
 
 export const signUp = (phoneNumber: string) => http.post('/customer/sign-up', { phoneNumber });
 
-export const sendOTP = (phoneNumber: string) => http.post('/verify-code/send?mode=dev', { phoneNumber });
+export const sendOTP = (phoneNumber: string) => http.post('/verify-code/send?mode=', { phoneNumber });
 
 export const verifyOTP = (phoneNumber: string, otp: string) =>
   http.post(`/verify-code/verify?phoneNumber=${phoneNumber}&code=${otp}`);

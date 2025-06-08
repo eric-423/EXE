@@ -5,6 +5,7 @@ import { CartDrawer, CartPopover } from '@/components/common/cart';
 import { Button } from '@/components/ui/button';
 import configs from '@/configs';
 import { useAuth } from '@/hooks';
+import { useOutsideClicked } from '@/hooks/useOutsideClicked';
 import { removeAccessToken, removeRefreshToken } from '@/utils/cookies';
 
 import { LogIn, LogOut, Menu, User, X } from 'lucide-react';
@@ -14,6 +15,8 @@ import { Link, useLocation } from 'react-router-dom';
 export default function Header() {
   const { isAuthenticated } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useOutsideClicked(document.getElementById('mobile-menu') as HTMLDivElement, () => setIsMenuOpen(false), isMenuOpen);
 
   return (
     <header className='sticky top-0 z-50 w-full bg-background shadow-sm'>
@@ -40,37 +43,38 @@ export default function Header() {
           variant='ghost'
           size='icon'
           className='md:hidden text-primary'
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          onClick={() => setIsMenuOpen(true)}
+          disabled={isMenuOpen}
         >
           {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </Button>
       </div>
 
       {/* Mobile Menu */}
-      {isMenuOpen && (
-        <div className='md:hidden bg-background border-t py-4 px-4'>
-          <div className='container mx-auto px-4 flex flex-col space-y-4'>
-            <nav className='flex flex-col space-y-3'>
-              <NavLinks mobile />
-            </nav>
-            <div className='flex justify-center space-x-6 pt-4 border-t'>
-              <ActionButtons mobile isAuthenticated={isAuthenticated} onClick={() => setIsMenuOpen(!isMenuOpen)} />
-            </div>
+      <div
+        className={`md:hidden bg-background border-t py-4 px-4 transition-transform duration-300 ease-in-out ${isMenuOpen ? 'visible' : 'hidden'}`}
+        id='mobile-menu'
+      >
+        <div className='container mx-auto px-4 flex flex-col space-y-4'>
+          <nav className='flex flex-col space-y-3'>
+            <NavLinks mobile onClick={() => setIsMenuOpen(!isMenuOpen)} />
+          </nav>
+          <div className='flex justify-center space-x-6 pt-4 border-t'>
+            <ActionButtons mobile isAuthenticated={isAuthenticated} onClick={() => setIsMenuOpen(!isMenuOpen)} />
           </div>
         </div>
-      )}
+      </div>
     </header>
   );
 }
 
-function NavLinks({ mobile = false }: { mobile?: boolean }) {
+function NavLinks({ mobile = false, onClick }: { mobile?: boolean; onClick?: () => void }) {
   const links = [
-    { href: '/about', label: 'Về Tấm Tắc' },
-    { href: configs.routes.menu, label: 'Đặt Hàng' },
-    { href: '/ai-menu', label: 'Thực đơn từ AI' },
-    { href: '/story', label: 'Chuyện Cơm Tấm' },
-    { href: '/franchise', label: 'Nhượng Quyền' },
-    { href: '/stores', label: 'Cửa Hàng' },
+    // { href: '', label: 'Về Tấm Tắc' },
+    { href: configs.routes.menu, label: 'Đặt Hàng Ngay!' },
+    // { href: '', label: 'Chuyện Cơm Tấm' },
+    // { href: '', label: 'Nhượng Quyền' },
+    // { href: '', label: 'Cửa Hàng' },
   ];
 
   return (
@@ -79,7 +83,8 @@ function NavLinks({ mobile = false }: { mobile?: boolean }) {
         <Link
           key={link.href}
           to={link.href}
-          className={`font-medium text-primary group transition-all duration-300 ease-in-out ${mobile ? 'text-lg py-4' : ''}`}
+          onClick={onClick}
+          className={`font-medium mx-8 text-primary group transition-all duration-300 ease-in-out ${mobile ? 'text-lg py-4' : ''}`}
         >
           <span className='bg-left-bottom bg-gradient-to-r from-primary to-primary bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out'>
             {link.label}
@@ -104,7 +109,7 @@ function ActionButtons({
     onClick();
     removeAccessToken();
     removeRefreshToken();
-    window.location.href = configs.routes.home;
+    window.location.reload();
   };
 
   return (

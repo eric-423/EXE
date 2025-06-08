@@ -9,7 +9,6 @@ import {
   removeAccessToken,
   removeRefreshToken,
   setAccessToken,
-  setCookie,
   setRefreshToken,
 } from './cookies';
 
@@ -43,18 +42,12 @@ class Http {
     this.instance.interceptors.response.use(
       (response) => {
         const { url, method } = response.config;
-        if (
-          (method === 'post' && url?.includes('/verify-code/verify')) ||
-          (method === 'post' && url?.includes('token/refresh'))
-        ) {
+        if (method === 'post' && url?.includes('token/refresh')) {
           if (response.data.access_token) {
             this.accessToken = response.data.access_token;
             this.refreshToken = response.data.refresh_token;
             setAccessToken(this.accessToken);
             setRefreshToken(this.refreshToken);
-            if (url?.includes('/verify-code/verify')) {
-              setCookie(configs.cookies.isNew, 'true');
-            }
           }
         } else if (method === 'post' && url?.includes('sign-in')) {
           if (response.data.data.access_token) {

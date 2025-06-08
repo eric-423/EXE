@@ -25,8 +25,8 @@ interface SetPasswordDialogProps {
 const SetPasswordDialog = ({ open, onOpenChange }: SetPasswordDialogProps) => {
   const [isOpen, setIsOpen] = useState(open);
   const { user } = useAuth();
-  const formContents = FORM_CONTENTS['register'];
-  const formFields = SET_FORM_FIELDS['register'];
+  const formContents = FORM_CONTENTS['setPassword'];
+  const formFields = SET_FORM_FIELDS['setPassword'];
   const form = useForm<setPasswordFormData>({
     resolver: zodResolver(setPasswordSchema),
     defaultValues: {
