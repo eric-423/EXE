@@ -55,7 +55,7 @@ export function PaymentResultContent({ isSuccess = true }) {
           {isSuccess ? (
             <>
               <div className='grid grid-cols-1 md:grid-cols-3 gap-3'>
-                <Button variant='outline' className='py-3'>
+                <Button variant='outline' className='py-3' onClick={() => navigate('/')}>
                   <Home className='h-4 w-4 mr-2' />
                   Về trang chủ
                 </Button>

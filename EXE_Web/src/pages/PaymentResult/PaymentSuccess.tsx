@@ -11,11 +11,11 @@ export default function PaymentSuccess() {
   useDocumentTitle('Tấm Tắc | Kết quả thanh toán');
   useScrollTop();
   const { clearCart } = useCart();
-  clearCart();
   useEffect(() => {
     return () => {
       removeCookie('is_paying');
+      clearCart();
     };
-  });
+  }, []);
   return <PaymentResultContent isSuccess={true} />;
 }
