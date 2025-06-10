@@ -126,6 +126,7 @@ export default function CheckoutPage() {
         ...initialOrder,
         customerId: user?.id || 0,
         customerName: data.customerName,
+        customerEmail: data.customerEmail || '',
         phoneNumber: data.customerPhone,
         paymentMethodId: 2,
         note: data.note || '',
@@ -196,32 +197,29 @@ export default function CheckoutPage() {
                           )}
                         ></FormField>
                       </div>
-                      {/* <FormField
+                      <FormField
                         control={form.control}
                         name='customerEmail'
-                        render={({ field }) => {
-                          console.log(field);
-                          return (
-                            <FormItem className='space-y-2'>
-                              <FormLabel htmlFor='customerEmail'>Email</FormLabel>
-                              <Input
-                                id='customerEmail'
-                                type='email'
-                                placeholder='Nhập email (không bắt buộc)'
-                                {...field}
-                                onChange={(e) => {
-                                  if (e.target.value === '') {
-                                    field.onChange(undefined);
-                                  }
-                                }}
-                              />
-                              {form.getFieldState(field.name).error && (
-                                <p className='text-red-500 text-sm'>{form.getFieldState(field.name).error?.message}</p>
-                              )}
-                            </FormItem>
-                          );
-                        }}
-                      ></FormField> */}
+                        render={({ field }) => (
+                          <FormItem className='space-y-2'>
+                            <FormLabel htmlFor='customerEmail'>Email</FormLabel>
+                            <Input
+                              id='customerEmail'
+                              type='email'
+                              placeholder='Nhập email (không bắt buộc)'
+                              {...field}
+                              onChange={(e) => {
+                                if (e.target.value.trim().length === 0) {
+                                  field.onChange(undefined);
+                                } else field.onChange(e);
+                              }}
+                            />
+                            {form.getFieldState(field.name).error && (
+                              <p className='text-red-500 text-sm'>{form.getFieldState(field.name).error?.message}</p>
+                            )}
+                          </FormItem>
+                        )}
+                      ></FormField>
                       <Separator className='my-8 bg-foreground/20' />
                     </CheckoutSection>
 
