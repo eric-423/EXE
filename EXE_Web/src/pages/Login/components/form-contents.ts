@@ -23,7 +23,7 @@ export const FORM_CONTENTS = {
   },
   otp: {
     title: 'Xác thực OTP',
-    description: 'Mã xác thực đã được gửi đến số điện thoại của bạn',
+    description: 'Mã xác thực đã được gửi đến Zalo của bạn, đừng chặn tin nhắn từ người lạ nhé!',
   },
   setPassword: {
     title: 'Đăng ký mật khẩu',
