@@ -1,7 +1,7 @@
 export function getReceiveTime() {
   const now = new Date();
   const receiveTime = now;
-  if (now.getHours() > 9 || (now.getHours() === 9 && now.getMinutes() >= 30)) {
+  if (now.getHours() > 10) {
     receiveTime.setDate(receiveTime.getDate() + 1);
     if (receiveTime.getDay() === 0) {
       receiveTime.setDate(receiveTime.getDate() + 1);

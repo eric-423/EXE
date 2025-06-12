@@ -9,7 +9,7 @@ export const placeOrder = async (order: Order) => {
 };
 
 export const getCustomerOrders = async (userId: number) => {
-  const { data } = await http.get(`/orders/customer/${userId}`);
+  const { data } = await http.get(`/orders/customer/${userId}?size=100`);
   return data;
 };
 
