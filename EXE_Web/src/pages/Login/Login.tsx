@@ -154,7 +154,7 @@ const Login = () => {
     <div className='min-h-screen w-full'>
       <div className='flex min-h-screen'>
         {/* Image Section */}
-        <div className='hidden md:block md:w-1/2 relative overflow-hidden'>
+        <div className='hidden md:block md:w-2/3 relative overflow-hidden'>
           <img
             src={bannerImage || '/placeholder.svg'}
             alt='Cơm tấm banner'
@@ -169,7 +169,7 @@ const Login = () => {
           </div>
         ) : (
           <>
-            <div className='w-full md:w-1/2 bg-background flex items-center justify-center p-4'>
+            <div className='w-full md:w-1/2 bg-background flex items-center justify-center p-8'>
               <div className='w-full max-w-[500px] px-2 md:px-4'>
                 <div className='flex justify-between items-center mb-0'>
                   <h1 className='font-bold text-2xl md:text-3xl'>
@@ -187,21 +187,27 @@ const Login = () => {
                       type='submit'
                       className='w-full py-4 bg-primary text-primary-foreground border-none rounded-lg text-lg font-medium h-[60px] flex items-center justify-center hover:opacity-90 transition-opacity'
                     >
-                      Đăng nhập
+                      {formStep === 'phone'
+                        ? 'Tiếp tục'
+                        : formStep === 'login'
+                          ? 'Đăng nhập'
+                          : formStep === 'otp'
+                            ? 'Xác thực OTP'
+                            : 'Tạo mật khẩu'}
                     </Button>
 
-                    <div className='relative flex items-center py-4'>
+                    {/* <div className='relative flex items-center py-4'>
                       <div className='flex-grow border-t border-border'></div>
                       <span className='flex-shrink mx-4 text-muted-foreground'>Bạn là người nhà của Tấm Tắc?</span>
                       <div className='flex-grow border-t border-border'></div>
-                    </div>
+                    </div> */}
                   </form>
 
                   {formStep === 'phone' && (
                     <Button
                       type='button'
                       variant={'link'}
-                      className='w-full py-4'
+                      className='w-full py-8'
                       onClick={() => (window.location.href = '/')}
                     >
                       Về trang chủ
