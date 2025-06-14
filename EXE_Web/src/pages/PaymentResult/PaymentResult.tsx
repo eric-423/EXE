@@ -3,6 +3,7 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { STORE_INFO } from '@/utils/mockupData';
 
 import { ArrowRight, CheckCircle2, Home, ShoppingBag, XCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -95,7 +96,7 @@ export function PaymentResultContent({ isSuccess = true }) {
                 <>
                   Nếu bạn cần hỗ trợ, vui lòng liên hệ:
                   <br />
-                  <span className='text-secondary font-bold'>1900 1234</span>
+                  <span className='text-secondary font-bold'>{STORE_INFO.phone}</span>
                 </>
               )}
             </p>
